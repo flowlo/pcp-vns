@@ -1,4 +1,4 @@
-/// This file contains all neccessary definitions to perform the onestep color-
+/// This file contains all necessary definitions to perform the onestep color-
 /// degree contruction heuristic
 
 #ifndef ONE_STEP_H
@@ -8,7 +8,7 @@
 namespace pcp {
 	/// Takes an existing full graph and performs the onestep color-degree 
 	/// heuristic on a copy of the existing graph, and returns the newly found
-	/// solution
+	/// solution.
 	Solution onestepCD(Solution& s);
 	
 	/// Remove all vertices from a partition, with the exception of the given
@@ -22,7 +22,7 @@ namespace pcp {
 	/// starting a color conflict.
 	int minPossibleColor(Vertex node, Solution& s);
 	
-	/// Return the number of colored adjacencies of the given vertex node
+	/// Return the number of colored adjacencies of the given vertex node.
 	int colorDegree(Vertex node, Solution& s);
 }
 

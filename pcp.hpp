@@ -1,5 +1,5 @@
-/// This file contains the basic definitions and classes neccessary to solve the
-/// PCP problem, as well as some usefull shortcuts and helper definitions 
+/// This file contains the basic definitions and classes necessary to solve the
+/// PCP, as well as some useful shortcuts and helper definitions 
 
 #ifndef PCP_H
 #define PCP_H
