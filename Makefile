@@ -8,19 +8,19 @@ PROG=pcp
 
 all: $(PROG)
 
-pcp: $(OBJECTS) $(HEADERS)
+pcp: $(OBJECTS) 
 	$(LD) $(LDFLAGS) $(OBJECTS) -o $(PROG)
 	
-main.o:
+main.o: main.cpp $(HEADERS)
 	$(CC) $(CFLAGS) -o main.o main.cpp
 	
-parser.o:
+parser.o: parser.cpp header/parser.hpp
 	$(CC) $(CFLAGS) -o parser.o parser.cpp
 
-oneStepCd.o:
+oneStepCd.o: oneStepCd.cpp header/oneStepCd.hpp
 	$(CC) $(CFLAGS) -o oneStepCd.o oneStepCd.cpp
 
-vns.o:
+vns.o: vns.cpp header/vns.hpp
 	$(CC) $(CFLAGS) -o vns.o vns.cpp
 
 clean: 

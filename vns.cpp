@@ -56,12 +56,11 @@ namespace pcp {
 		int no_imp_runs = 0;
 		int curNeighbor = 0;
 		int shake_val = SHAKE_START;
-		bool abort = false;
 		Solution *toImprove = new Solution(&best);
 		Solution *curBest = &best;
 		
 		/// Run as long as shaking still produces usefull solution
-		while (!abort) {
+		while (true) {
 			
 			/// Run all possible neighborhood
 			while (curNeighbor < NUM_VNS) {
@@ -109,14 +108,20 @@ namespace pcp {
 			/// Reset local best solution to global best Solution
 			else {
 				toImprove = curBest;
+				no_imp_runs++;
 			}
 			
 			/// TODO: Shake that!
 			
+			/// 
+			if (no_imp_runs > unsuccessfulShake) {
+				break;
+			}
+			
 			/// No time left, abort main loop
 			if (startTime + maxTime < time(NULL)) {
 				cout<<"Time's up"<<endl;
-				abort = true;
+				break;
 			}
 		}
 		
