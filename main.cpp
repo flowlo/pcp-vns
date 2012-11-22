@@ -1,9 +1,6 @@
 #include <iostream>                  // for //cout
 #include <string>
 #include <utility>                   // for pair
-#include <boost/graph/graph_traits.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/tokenizer.hpp>
 #include <boost/graph/graphviz.hpp>
 #include "header/pcp.hpp"
 #include "header/parser.hpp"
