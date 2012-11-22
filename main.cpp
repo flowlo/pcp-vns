@@ -5,10 +5,10 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/tokenizer.hpp>
 #include <boost/graph/graphviz.hpp>
-#include "pcp.hpp"
-#include "parser.hpp"
-#include "oneStepCd.hpp"
-#include "vns.hpp"
+#include "header/pcp.hpp"
+#include "header/parser.hpp"
+#include "header/oneStepCd.hpp"
+#include "header/vns.hpp"
 
 using namespace std;
 using namespace pcp;

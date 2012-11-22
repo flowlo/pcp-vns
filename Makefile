@@ -10,7 +10,6 @@ all: pcp
 
 pcp: $(OBJECTS)
 	$(LD) $(OBJECTS) -o pcp
-	cp pcp $(BIN)/pcp
 	
 clean: 
 	rm *.o
