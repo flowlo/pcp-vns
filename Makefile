@@ -1,5 +1,5 @@
-CC=g++
-LD=g++
+CC=clang++
+LD=clang++
 CFLAGS=-Wall -std=c++11 -g -c
 LDFLAGS=-Wall -g
 OBJECTS=main.o parser.o oneStepCd.o vns.o
