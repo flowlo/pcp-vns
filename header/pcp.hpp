@@ -22,7 +22,7 @@ namespace pcp {
 											VertexProperty, EdgeProperty> Graph;
 											
 	/// Represents a vertex
-	typedef typename boost::graph_traits<Graph>::vertex_descriptor Vertex;
+	typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 	
 	/// Standard vertex_iterator
 	typedef boost::graph_traits<Graph>::vertex_iterator vertex_iter;

@@ -9,17 +9,17 @@ using namespace std;
 namespace pcp {
 	
 	/// Implementation of onestepCD from oneStepCd.hpp
-	Solution onestepCD(Solution& s) {
+	Solution *onestepCD(Solution& s) {
 	
 		/// Number of colors used for the onestepCd solution
 		int numColors = 0;
 		
 		/// Copy the old solution
-		Solution sol = new Solution(s);
+		Solution *sol = new Solution(s);
 
 		/// Remove all edges between nodes of the same partition, as they are of
 		/// no use
-		removePartEdges(sol);
+		removePartEdges(*sol);
 
 		/// Initialize the heuristics' parameters
 		int minDegree[s.numParts];
@@ -27,11 +27,11 @@ namespace pcp {
 		std::pair<vertex_iter, vertex_iter> vp;
 		
 		/// Set the partitions color to "not set"
-		for (int i = 0; i < sol.numParts; i++)
-			sol.partition[i] = -1;
+		for (int i = 0; i < sol->numParts; i++)
+			sol->partition[i] = -1;
 	
 		/// Get the property map which stores the partition ID for all vertices
-		VertexPart_Map vertex_part = get(vertex_index1_t(), *sol.g);
+		VertexPart_Map vertex_part = get(vertex_index1_t(), *sol->g);
 	
 		/// Repeat until there are no uncolored partitions
 		for (int j = 0; j < s.numParts; j++) {	
@@ -44,16 +44,16 @@ namespace pcp {
 			maxDegree = -1;
 
 			/// For each vertex in the graph
-		 	for (vp = vertices(*sol.g); vp.first != vp.second; ++vp.first) {
+		 	for (vp = vertices(*sol->g); vp.first != vp.second; ++vp.first) {
 		 		
 		 		/// Compute the color degree for the vertex
-				cd = colorDegree(*vp.first, sol);
+				cd = colorDegree(*vp.first, *sol);
 				
 				/// If the color degree of the selected vertex is less than that of
 				/// previous vertices in the same partition, and the partition is 
 				/// uncolored
 				if (cd < minDegree[get(vertex_part, *vp.first)] && 
-					 sol.partition[get(vertex_part, *vp.first)] == -1) {
+					 sol->partition[get(vertex_part, *vp.first)] == -1) {
 				
 					/// Set the minimal color degree for the vertex' partition to cd
 					minDegree[get(vertex_part, *vp.first)] = cd;
@@ -70,16 +70,16 @@ namespace pcp {
 			/// Compute the minimal possible color of the target vertex, set the 
 			/// corresponding partition to that color and remove all other vertices
 			/// in the partition
-			int color = minPossibleColor(target, sol);
-			sol.partition[get(vertex_part, target)] = color;
+			int color = minPossibleColor(target, *sol);
+			sol->partition[get(vertex_part, target)] = color;
 			if (numColors < color)
 				numColors = color;
 				
-			removeOthers(target, sol);
+			removeOthers(target, *sol);
 		}
 		
 		
-		sol.colorsUsed = numColors + 1;
+		sol->colorsUsed = numColors + 1;
 		return sol;
 	}
 

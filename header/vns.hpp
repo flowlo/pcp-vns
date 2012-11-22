@@ -3,7 +3,8 @@
 #include "pcp.hpp"
 
 namespace pcp {
-	Solution vnsRun(Solution& best, Solution& orig, int k, int time);
+	Solution vnsRun(Solution& best, Solution& orig, int unsuccessfulShake, 
+																	int maxTime);
 }
 
 #endif

@@ -9,7 +9,7 @@ namespace pcp {
 	/// Takes an existing full graph and performs the onestep color-degree 
 	/// heuristic on a copy of the existing graph, and returns the newly found
 	/// solution.
-	Solution onestepCD(Solution& s);
+	Solution *onestepCD(Solution& s);
 	
 	/// Remove all vertices from a partition, with the exception of the given
 	/// vertex node.

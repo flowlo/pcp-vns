@@ -30,29 +30,23 @@ Solution::Solution(Solution *toCopy) {
 
 
 int main(int, char*[]) {
+	Solution *fullG = new Solution();
 	
-	// declare a graph object
-	Graph g(0);
-	Solution fullG = new Solution;
-	
-	if (!readGraph(cin, fullG)) {
+	if (!readGraph(cin, *fullG)) {
 		cerr<<"Error reading from stdin"<<endl;
 	}
 	
-	Solution onestep = onestepCD(fullG);
+	Solution *onestep = (onestepCD(*fullG));
 	
 	graph_traits<Graph>::edge_iterator ei, ei_end;
 	
 
-	VertexID_Map vertex_id = get(vertex_index2_t(), *onestep.g);
-	VertexPart_Map vertex_part = get(vertex_index1_t(), *onestep.g);
 
-	cout<<"Onestep solution uses "<<onestep.colorsUsed<<" colors"<<endl;
+	cout<<"Onestep solution uses "<<onestep->colorsUsed<<" colors"<<endl;
 	
-	Solution best = vnsRun(onestep, fullG, 1, 0);
-	
-	
+	Solution best = vnsRun(*onestep, *fullG, 1, 0);
+	VertexID_Map vertex_id = get(vertex_index2_t(), *best.g);
 	write_graphviz(cout, *best.g, make_label_writer(vertex_id));
-	
+	cout<<"Writing complete"<<endl;
 	return 0;
 }
