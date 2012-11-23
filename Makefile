@@ -1,5 +1,5 @@
-CC=clang++
-LD=clang++
+CC=g++
+LD=g++
 PCH=pch
 CFLAGS=-Wall -std=c++11 -g -c
 LDFLAGS=-Wall -g
@@ -7,10 +7,10 @@ OBJECTS=main.o parser.o oneStepCd.o vns.o
 HEADERS=header/vns.hpp.$(PCH) header/pcp.hpp.$(PCH) header/oneStepCd.hpp.$(PCH) header/parser.hpp.$(PCH) header/main.hpp.$(PCH)
 PROG=pcp
 
-all: $(PROG)
+all: gcc
 
 clang:
-	$(MAKE) CC=clang++ LD=clang++ PCH=pch
+	$(MAKE) CC=clang++ LD=clang++ PCH=pch $(PROG)
 
 gcc:
 	$(MAKE) CC=g++ LD=g++ PCH=gch $(PROG)
