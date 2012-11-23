@@ -1,3 +1,6 @@
+#ifndef MAIN_H
+#define MAIN_H
+
 #include <iostream>                  // for //cout
 #include <string>
 #include <utility>                   // for pair
@@ -6,3 +9,5 @@
 #include "parser.hpp"
 #include "oneStepCd.hpp"
 #include "vns.hpp"
+
+#endif
