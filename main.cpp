@@ -1,11 +1,4 @@
-#include <iostream>                  // for //cout
-#include <string>
-#include <utility>                   // for pair
-#include <boost/graph/graphviz.hpp>
-#include "header/pcp.hpp"
-#include "header/parser.hpp"
-#include "header/oneStepCd.hpp"
-#include "header/vns.hpp"
+#include "header/main.hpp"
 
 using namespace std;
 using namespace pcp;
