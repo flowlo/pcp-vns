@@ -23,6 +23,11 @@ namespace pcp {
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full) {
 				return &curBest;
 			}
+			
+			/// Shuffle a solution using the neighborhood as a base
+			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps) {
+				return &full;
+			}
 	};
 	
 	/// Implement a dummy tabu search, see VNS_Unit
