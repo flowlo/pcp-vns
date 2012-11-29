@@ -1,7 +1,6 @@
 /// This file contains the implementation of VNS
 #include "header/vns-priv.hpp"
 
-
 using namespace std;
 
 namespace pcp {
@@ -11,10 +10,9 @@ namespace pcp {
 	/// Some constants
 	const int NUM_VNS = 1;
 	const int SHAKE_START = 1;
-	const int SHAKE_STEPS = 1;
 	
 	/// Implementation of VNS, see vns.hpp
-	Solution vnsRun(Solution& best, Solution& orig, int unsuccessfulShake, int maxTime) {
+	Solution vnsRun(Solution& best, Solution& orig, int unsuccessfulShake, int shakeStart, int shakeIncrement, int maxTime) {
 
 		/// Backup the starting solutions
 		bestSolution = new Solution(best);
@@ -31,7 +29,7 @@ namespace pcp {
 		time_t startTime = time(NULL);
 		int no_imp_runs = 0;
 		int curNeighbor = 0;
-		int shake_val = SHAKE_START;
+		int shakeSteps = shakeStart - shakeIncrement;
 		Solution *toImprove = new Solution(&best);
 		Solution *curBest = &best;
 		
@@ -76,7 +74,7 @@ namespace pcp {
 				curBest = toImprove;
 				toImprove = new Solution(curBest);
 				no_imp_runs = 0;
-				shake_val = SHAKE_START;
+				shakeSteps = shakeStart - shakeIncrement;
 			}
 			/// Reset local best solution to global best Solution
 			else {
@@ -89,11 +87,10 @@ namespace pcp {
 				}
 			}
 			
-			// TODO randomize
-			int shakeNeighbor = NUM_VNS - 1;
+			int shakeNeighbor = rand() % NUM_VNS;
 
 			VNS_Unit *shaker = neighbors[shakeNeighbor];
-			toImprove = shaker->shuffleSolution(*toImprove, orig, SHAKE_STEPS);
+			toImprove = shaker->shuffleSolution(*toImprove, orig, (shakeSteps += shakeIncrement));
 
 			/// No time left, abort main loop
 			if (startTime + maxTime < time(NULL)) {
