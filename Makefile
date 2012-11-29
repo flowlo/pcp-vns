@@ -40,7 +40,7 @@ vns.o: vns.cpp header/vns.hpp$(PCH)
 unit.a:
 	@cd units; $(MAKE) $(MFLAGS) unit.a
 
-header/vns-priv.hpp$(PCH): header/vns-priv.hpp header/pcp.hpp
+header/vns-priv.hpp$(PCH): header/vns-priv.hpp header/pcp.hpp header/vns.hpp
 	@echo $(CC)": Precompiling "$@
 	@$(CC) $(CFLAGS) -x c++-header header/vns-priv.hpp -o header/vns-priv.hpp$(PCH)
 
@@ -52,7 +52,7 @@ header/pcp.hpp$(PCH): header/pcp.hpp
 	@echo $(CC)": Precompiling "$@
 	@$(CC) $(CFLAGS) -x c++-header header/pcp.hpp -o header/pcp.hpp$(PCH)
 
-header/main.hpp$(PCH): header/main.hpp header/pcp.hpp
+header/main.hpp$(PCH): header/main.hpp header/pcp.hpp header/oneStepCd.hpp header/parser.hpp header/vns.hpp 
 	@echo $(CC)": Precompiling "$@
 	@$(CC) $(CFLAGS) -x c++-header header/main.hpp -o header/main.hpp$(PCH)
 	
