@@ -1,6 +1,6 @@
 /// This file contains the implementation of VNS
-#include "header/vns.hpp"
-#include <time.h>
+#include "header/vns-priv.hpp"
+
 
 using namespace std;
 
@@ -12,36 +12,6 @@ namespace pcp {
 	const int NUM_VNS = 1;
 	const int SHAKE_START = 1;
 	
-	/// every neighborhood has to be inherited from this class
-	class VNS_Unit {
-		public:
-			/// Returns a given name for the neighborhood
-			virtual const char *name() {
-				return "DUMMY";
-			}
-			/// Compute the new improved solution of this neighborhood
-			virtual Solution *findLocalMin(Solution& curBest, Solution& full) {
-				return &curBest;
-			}
-			
-			/// Shuffle a solution using the neighborhood as a base
-			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps) {
-				return &full;
-			}
-	};
-	
-	/// Implement a dummy tabu search, see VNS_Unit
-	class tabuSearch : public VNS_Unit {
-		public:
-			virtual const char *name() {
-				return "Tabu Search";
-			}
-			virtual Solution *findLocalMin(Solution& curBest, Solution& full) {
-				cout<<"Hello this is tabusearch speaking"<<endl;
-				return new Solution(&full);			
-			}
-	};
-
 	/// Implementation of VNS, see vns.hpp
 	Solution vnsRun(Solution& best, Solution& orig, int unsuccessfulShake,
 																	int maxTime) {

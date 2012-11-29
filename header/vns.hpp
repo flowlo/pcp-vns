@@ -4,6 +4,7 @@
 #define VNS_H
 #include "pcp.hpp"
 
+
 namespace pcp {
 	/// Run the VNS with a maximum of k iterations.
 	/// Returns after either there were a number of unsuccessful shakes 
