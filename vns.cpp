@@ -11,10 +11,11 @@ namespace pcp {
 	/// Some constants
 	const int NUM_VNS = 1;
 	const int SHAKE_START = 1;
+	const int SHAKE_STEPS = 1;
 	
 	/// Implementation of VNS, see vns.hpp
-	Solution vnsRun(Solution& best, Solution& orig, int unsuccessfulShake,
-																	int maxTime) {
+	Solution vnsRun(Solution& best, Solution& orig, int unsuccessfulShake, int maxTime) {
+
 		/// Backup the starting solutions
 		bestSolution = new Solution(best);
 		origSolution = new Solution(orig);
@@ -53,13 +54,10 @@ namespace pcp {
 					delete toImprove;
 					toImprove = improved;
 					
-					cout<<"Improvement found with"<<neigh->name()<<endl;
+					cout<<"Improvement found with "<<neigh->name()<<endl;
 					
 					/// Restart neighborhoods
-					if (curNeighbor == 0)
-						curNeighbor = 1;
-					else
-						curNeighbor = 0;
+					curNeighbor = curNeighbor == 0 ? 1 : 0;
 				}
 				
 				/// Step to next neighborhood, no improvement found
@@ -84,15 +82,19 @@ namespace pcp {
 			else {
 				toImprove = curBest;
 				no_imp_runs++;
+
+				/// Stopping condition, quit VNS
+				if (no_imp_runs > unsuccessfulShake) {
+					break;
+				}
 			}
 			
-			/// TODO: Shake that!
-			
-			/// 
-			if (no_imp_runs > unsuccessfulShake) {
-				break;
-			}
-			
+			// TODO randomize
+			int shakeNeighbor = NUM_VNS - 1;
+
+			VNS_Unit *shaker = neighbors[shakeNeighbor];
+			toImprove = shaker->shuffleSolution(*toImprove, orig, SHAKE_STEPS);
+
 			/// No time left, abort main loop
 			if (startTime + maxTime < time(NULL)) {
 				cout<<"Time's up"<<endl;
