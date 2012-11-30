@@ -31,10 +31,20 @@ Solution* tabuSearch::findLocalMin(Solution& curBest, Solution& full) {
 	}
 	cout<<"Current conflicts in solution "<<conflicts(*s)<<endl;
 	
-	/*int conflicting[s->numParts];
+	typedef boost::graph_traits<Graph>::adjacency_iterator AdjIter;
+	pair<AdjIter, AdjIter> ai;
+	int conflicting[s->numParts];
 	for (int i = 0; i < s->numParts; i++) {
-		
-	}*/
+		conflicting[i] = 0;
+		for (ai = adjacent_vertices(i, *s->g); ai.first != ai.second; 
+			 ai.first++) {
+		 	if (s->partition[vParts[i]] == s->partition[vParts[*ai.first]]) {
+		 		cout<<"Node "<<vIndex[i]<<" is in a conflict"<<endl;
+		 		conflicting[i] = 1;
+		 		break;
+		 	}
+		}
+	}
 	
 	return s;			
 }
