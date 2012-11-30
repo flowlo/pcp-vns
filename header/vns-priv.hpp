@@ -3,6 +3,7 @@
 #include "pcp.hpp"
 #include "vns.hpp"
 #include <time.h>
+#include <utility>   
 
 namespace pcp {
 	/// every neighborhood has to be inherited from this class
@@ -27,7 +28,8 @@ namespace pcp {
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
 			
 			/// Shuffle a solution using the neighborhood as a base
-			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
+			virtual Solution *shuffleSolution(Solution& cur, Solution& full,
+											  int numSteps);
 	};
 	
 	/// Implement a dummy tabu search, see VNS_Unit
@@ -40,7 +42,10 @@ namespace pcp {
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
 			
 			/// Shuffle a solution using the neighborhood as a base
-			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
+			virtual Solution *shuffleSolution(Solution& cur, Solution& full,
+				 							  int numSteps);
+		private:
+			int conflicts(Solution& s);
 	};
 }
 #endif

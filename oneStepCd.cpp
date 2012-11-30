@@ -24,7 +24,7 @@ namespace pcp {
 		/// Initialize the heuristics' parameters
 		int minDegree[s.numParts];
 		int maxDegree, target = -1, cd = 0;
-		std::pair<vertex_iter, vertex_iter> vp;
+		std::pair<VertexIter, VertexIter> vp;
 		
 		/// Set the partitions color to "not set"
 		for (int i = 0; i < sol->numParts; i++)
@@ -123,7 +123,7 @@ namespace pcp {
 	void removeOthers(Vertex node, Solution& s) {
 		VertexPart_Map vertex_part = get(vertex_index1_t(), *s.g);
 		
-		std::pair<vertex_iter, vertex_iter> vp;
+		std::pair<VertexIter, VertexIter> vp;
 		
 		for (vp = vertices(*s.g); vp.first != vp.second; ++vp.first) {
 	 		if (node != *vp.first && 
