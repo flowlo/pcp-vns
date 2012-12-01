@@ -81,7 +81,7 @@ Solution* tabuSearch::findLocalMin(Solution& curBest, Solution& full) {
 				list<tabuInfo>::iterator li2;
 				for (li2 = tabuList.begin(); li2 != tabuList.end() && !found; 
 					li2++) {
-					if (get<2>(*li2) > iter) {
+					if (get<2>(*li2) > iterations) {
 						tabuList.erase(li2);
 					}
 					else if ((get<0>(*li2) && get<1>(*li2) == parts[*nodeIter]) ||
@@ -92,8 +92,8 @@ Solution* tabuSearch::findLocalMin(Solution& curBest, Solution& full) {
 			}
 		}
 	}
-	if (conflicts(s) == 0) {
-		
+	if (conflicts(*s) == 0) {
+		maxColor -= 1;
 	}
 	return s;			
 }
