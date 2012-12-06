@@ -19,7 +19,7 @@ namespace pcp {
 			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
 	};
 	
-	class dummy : public VNS_Unit {
+	class changeColor : public VNS_Unit {
 		public:
 			/// Returns a given name for the neighborhood
 			virtual const char *name();

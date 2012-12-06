@@ -23,7 +23,7 @@ namespace pcp {
 		
 		/// Define the neighborhoods to use
 		VNS_Unit **neighbors = new VNS_Unit*[NUM_VNS];
-		tabuSearch *ts = new tabuSearch;
+		changeColor *ts = new changeColor;
 		neighbors[0] = ts;
 		
 		time_t startTime = time(NULL);
