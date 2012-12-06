@@ -7,6 +7,8 @@ namespace pcp {
 	Solution bestSolution;
 	Solution origSolution;
 
+	bool checkValid(Solution* s);
+
 	/// Some constants
 	const int NUM_VNS = 1;
 	const int SHAKE_START = 1;
@@ -45,7 +47,8 @@ namespace pcp {
 				
 				/// Compute the minimum for this neighborhood
 				Solution *improved = neigh->findLocalMin(best, orig);
-				
+				cout<<"Valid solution: "<<((checkValid(improved)) ? "true" : "false");
+				cout<<endl;
 				/// Replace the existing solution with the new solution if it is an
 				/// improvement
 				if (improved->colorsUsed < toImprove->colorsUsed) {
@@ -71,7 +74,7 @@ namespace pcp {
 			/// solution
 			if (toImprove->colorsUsed < best.colorsUsed) {
 				cout<<"Improvement to global best solution found"<<endl;
-				curBest = toImprove;
+				best = toImprove;
 				toImprove = new Solution(curBest);
 				no_imp_runs = 0;
 				shakeSteps = shakeStart - shakeIncrement;
@@ -101,5 +104,46 @@ namespace pcp {
 		
 		return new Solution(curBest);
 	}
+	
+	bool checkValid(Solution* s) {
+	pair<VertexIter, VertexIter> vIter;
+	int parts[s->numParts];
+	typedef boost::graph_traits<Graph>::adjacency_iterator AdjIter;
+	VertexPart_Map vParts = get(boost::vertex_index1_t(), *s->g);
+	bool valid = true;
+	
+	for (int i = 0; i < s->numParts; i++) {
+		parts[i] = 0;
+	}
+	
+	for (vIter = vertices(*s->g); vIter.first != vIter.second; vIter.first++) {
+		parts[vParts[*vIter.first]] = 1;
+		
+		pair<AdjIter, AdjIter> aIter;
+		for (aIter = adjacent_vertices(*vIter.first, *s->g); 
+			  aIter.first != aIter.second; aIter.first++) {
+			
+			if (s->partition[vParts[*aIter.first]] == 
+				 s->partition[vParts[*vIter.first]]) {
+				
+				valid = false;
+				cerr<<"Solution is invalid"<<endl;
+				cerr<<"Adjacent vertices "<<*aIter.first<<" and "<<*vIter.first;
+				cerr<<" have same color "<<s->partition[vParts[*vIter.first]];
+				cerr<<endl;
+			}
+		}
+	}
+	
+	for (int i = 0; i < s->numParts; i++) {
+		if (parts[i] == 0) {
+			valid = false;
+			cerr<<"Solution is invalid"<<endl;
+			cerr<<"partition "<<i<<" seems to be missing"<<endl;
+		}
+	}
+	
+	return valid;
+}
 }
 
