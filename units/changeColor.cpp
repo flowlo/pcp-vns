@@ -14,10 +14,10 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 	const int ITER_MAX = 100;
 	pair<VertexIter, VertexIter> vIter;
 	VertexPart_Map vParts = get(vertex_index1_t(), *s->g);
-	//VertexID_Map vIndex = get(vertex_index2_t(), *s->g);
 	
 	cout<<"Starting changeColor"<<endl;
-	
+
+	/// Change the color of all nodes with maxColor to a random color	
 	for (vIter = vertices(*s->g); vIter.first != vIter.second; vIter.first++) {
 		if (s->partition[vParts[*vIter.first]] == maxColor) {
 			int col = rand() % maxColor;
@@ -33,8 +33,8 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 	int i = 0;
 	int iter = 0;
 	std::vector<Vertex> conflicts(2);
-	conflicts.clear();
-	
+
+	/// Add all conflicting nodes to vector "conflicts"
 	for (vIter = vertices(*s->g); vIter.first != vIter.second; 
 			  vIter.first++) {
 			
@@ -53,8 +53,12 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 		}
 	}
 	
+	/// Run until there are no more conflicts, or the iteration limit has been
+	/// reached
 	while (conflicts.size() != 0 && iter < ITER_MAX) {
 		iter++;
+		
+		/// Choose random conflicting node for recoloring
 		int random = rand() % conflicts.size();
 		cout<<"Chose conflicting node "<<conflicts[random]<<endl;
 		for (i = 0; i < s->numParts; i++) {
@@ -67,6 +71,7 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 			colors[s->partition[vParts[*ai.first]]] = 1;
 		}
 		
+		/// Search for new suitable color for Node
 		bool found = false;
 		for (i = 0; i < maxColor && !found; i++) {
 			if (colors[i] == 0) {
@@ -81,15 +86,17 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 				}
 			}
 		}
+		/// No suitable color found, try random recoloring of node
 		if (!found) {
 			int col = rand() % maxColor;
 			s->partition[vParts[conflicts[random]]] = col;
 			cout<<"Recolor node "<<conflicts[random]<<" with color ";
 			cout<<col<<endl;
 		
+			/// Search for conflicts with the randomly recolored node
 			pair<AdjIter, AdjIter> aIter;
-			for (aIter = adjacent_vertices(conflicts[random], *s->g); aIter.first != aIter.second; 
-				  aIter.first++) {
+			for (aIter = adjacent_vertices(conflicts[random], *s->g); 
+				  aIter.first != aIter.second; aIter.first++) {
 				  
 				for (i = 0; i < s->numParts; i++) {
 					colors[i] = 0;
@@ -101,6 +108,7 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 					colors[s->partition[vParts[*ai.first]]] = 1;
 				}
 			
+				/// Try recoloring conflicting nodes
 				bool found = false;
 				for (i = 0; i < maxColor && !found; i++) {
 					if (colors[i] == 0) {
@@ -114,13 +122,15 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 						}
 					}
 				}
+				/// Conflict could not be resolved
 				if (!found) {
 					cout<<"Conflict could not be resolved for Node ";
 					cout<<*aIter.first<<endl;
-					conflicts.push_back(*aIter.first);
 				}
 			}
 		}
+		
+		/// Rebuild conflicting nodes
 		conflicts.clear();
 		for (vIter = vertices(*s->g); vIter.first != vIter.second; 
 			  vIter.first++) {
@@ -141,18 +151,20 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 		}
 	}
 	
+	/// New solution is not conflict free, return curBest
 	if (conflicts.size() != 0) {
 		cout<<"Conflict found"<<endl;
 		delete s;
 		return new Solution(&curBest);
 	}
+	
+	/// New solution is conflict free, count colorsUsed and return
 	else {
 		maxColor = 0;
-		for (vIter = vertices(*s->g); vIter.first != vIter.second; 
-			  vIter.first++) {
+		for (int i = 0; i < s->numParts; i++) {
 			
-			if (s->partition[vParts[*vIter.first]] > maxColor) {
-				maxColor = s->partition[vParts[*vIter.first]];
+			if (s->partition[i] > maxColor) {
+				maxColor = s->partition[i];
 			}
 		}
 		s->colorsUsed = maxColor + 1;
