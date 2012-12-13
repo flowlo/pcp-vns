@@ -29,12 +29,9 @@ int main(int, char*[]) {
 		cerr<<"Error reading from stdin"<<endl;
 	}
 	
-	Solution *onestep = (onestepCD(*fullG));
+	Solution *onestep = onestepCD(*fullG);
 	
-	graph_traits<Graph>::edge_iterator ei, ei_end;
 	
-
-
 	cout<<"Onestep solution uses "<<onestep->colorsUsed<<" colors"<<endl;
 	
 	Solution best = vnsRun(*onestep, *fullG, 1, 0, 10, 0);

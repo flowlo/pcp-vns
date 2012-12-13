@@ -15,7 +15,7 @@ namespace pcp {
 		int numColors = 0;
 		
 		/// Copy the old solution
-		Solution *sol = new Solution(s);
+		Solution *sol = new Solution(&s);
 
 		/// Remove all edges between nodes of the same partition, as they are of
 		/// no use
