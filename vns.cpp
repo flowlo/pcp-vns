@@ -10,7 +10,7 @@ namespace pcp {
 	bool checkValid(Solution* s);
 
 	/// Some constants
-	const int NUM_VNS = 1;
+	const int NUM_VNS = 2;
 	const int SHAKE_START = 1;
 	
 	/// Implementation of VNS, see vns.hpp
@@ -25,8 +25,10 @@ namespace pcp {
 		
 		/// Define the neighborhoods to use
 		VNS_Unit **neighbors = new VNS_Unit*[NUM_VNS];
-		changeColor *ts = new changeColor;
-		neighbors[0] = ts;
+		changeNode *cN = new changeNode;
+		changeColor *cC = new changeColor;
+		neighbors[0] = cN;
+		neighbors[1] = cC;
 		
 		time_t startTime = time(NULL);
 		int no_imp_runs = 0;
@@ -68,6 +70,9 @@ namespace pcp {
 					curNeighbor++;
 					cout<<"Test next neighborhood"<<endl;
 				}
+				cout<<endl;
+				cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+				cout<<endl<<endl;
 			} // end while neighborhood
 			
 			/// Local minimum of neighborhoods is better than current best
