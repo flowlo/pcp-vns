@@ -68,3 +68,7 @@ clean:
 	@echo "rm: Cleaning directory ."
 	@rm -f $(PROG) $(OBJECTS)
 	@cd units; $(MAKE) clean
+
+clean-header:
+	@echo "rm: Cleaning precompiled headers"
+	@rm -f header/*.pch header/*.gch
