@@ -34,10 +34,8 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 	int colors[s->numParts];
 	int i = 0;
 	int iter = 0;
-	std::vector<Vertex> conflicts(2);
-	std::vector<Vertex> partition(2);
-	conflicts.clear();
-	partition.clear();
+	std::vector<Vertex> conflicts;
+	std::vector<Vertex> partition;
 	
 	/// Add all nodes of a conflict to vector conflict
 	for (vIter = vertices(*s->g); vIter.first != vIter.second; 
