@@ -50,6 +50,7 @@ namespace pcp {
 			while (curNeighbor < NUM_VNS) {
 				
 				/// Select the new neighborhood
+				clock_t start = clock();
 				VNS_Unit *neigh = neighbors[curNeighbor];
 				
 				if (DEBUG_LEVEL > 1) {
@@ -59,6 +60,9 @@ namespace pcp {
 				/// Compute the minimum for this neighborhood
 				Solution *improved = neigh->findLocalMin(best, orig);
 				if (DEBUG_LEVEL > 1) {
+					cout<<neigh->name()<<" took about ";
+					cout<<(clock() - start)/(float)CLOCKS_PER_SEC;
+					cout<<" seconds to complete"<<endl;
 					cout<<"Valid solution: "<<((checkValid(improved)) ? "true" : "false");
 					cout<<endl;
 				}
