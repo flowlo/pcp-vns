@@ -4,7 +4,7 @@ PCH=
 CFLAGS=-Wall -std=c++11 -g -c
 LDFLAGS=
 OBJECTS=main.o parser.o oneStepCd.o vns.o unit.a
-HEADERS=header/vns.hpp$(PCH) header/pcp.hpp$(PCH) header/oneStepCd.hpp$(PCH) header/parser.hpp$(PCH) header/main.hpp$(PCH) header/vns-priv.hpp$(PCH)
+HEADERS=header/vns.hpp$(PCH) header/pcp.hpp$(PCH) header/oneStepCd.hpp$(PCH) header/parser.hpp$(PCH) header/main.hpp$(PCH)
 PROG=pcp
 
 all: gcc
@@ -33,7 +33,7 @@ oneStepCd.o: oneStepCd.cpp header/oneStepCd.hpp$(PCH)
 	@echo $(CC)": Compiling "$@
 	@$(CC) $(CFLAGS) -include header/oneStepCd.hpp -o oneStepCd.o oneStepCd.cpp
 
-vns.o: vns.cpp header/vns.hpp$(PCH)
+vns.o: vns.cpp header/vns-priv.hpp$(PCH)
 	@echo $(CC)": Compiling "$@
 	@$(CC) $(CFLAGS) -include header/vns-priv.hpp -o vns.o vns.cpp
 	
