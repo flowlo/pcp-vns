@@ -101,6 +101,7 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 			
 			/// Clear old vertex of all edges
 			clear_vertex(v, *s->g);	
+			vIndex[v] = rep;
 			
 			for (i = 0; i < s->numParts; i++) {
 				colors[i] = 0;
@@ -221,6 +222,7 @@ Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 		if (vIndex[ret->representatives[part]] != replacement) {
 			
 			clear_vertex(v, *ret->g);
+			vIndex[v] = replacement;
 			
 			for (i = 0; i < ret->numParts; i++) {
 				colors[i] = 0;
@@ -241,14 +243,56 @@ Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 			for (i = 0; i < ret->numParts; i++) {
 				if (colors[i] == 0) {
 					ret->partition[part] = i;
-					if (i >= ret->colorsUsed) {
-						ret->colorsUsed = i + 1;
-					}
 					break;
 				}
 			}
 		}
 	}
 	
+	for (i = 0; i < ret->numParts; i++) {
+				colors[i] = 0;
+	}
+	
+	int maxColor = 0;
+	bool gap = false;
+	for (i = 0; i < ret->numParts; i++) { 
+		colors[ret->partition[i]] = 1;
+		if (maxColor < ret->partition[i]) {
+			maxColor = ret->partition[i];
+		}
+	}
+	int minGap = 0;
+	for (i = 0; i < maxColor + 1; i++) {
+		if (colors[i] == 0) {
+			gap = true;
+			minGap = i;
+			break;
+		}
+	}
+	while (gap) {
+		gap = false;
+		for (i = minGap; i < ret->numParts; i++) {
+				colors[i] = 0;
+		}
+		maxColor = 0;
+		for (i = 0; i < ret->numParts; i++) {
+			if (ret->partition[i] > minGap) {
+				ret->partition[i]--;
+				colors[ret->partition[i]] = 1;
+				if (maxColor < ret->partition[i]) {
+					maxColor = ret->partition[i];
+				}
+			} 
+		}
+		for (i = minGap; i < maxColor + 1; i++) {
+			if (colors[i] == 0) {
+				gap = true;
+				minGap = i;
+				break;
+			}
+		}
+	}
+	
+	ret->colorsUsed = maxColor + 1;
 	return ret;
 }
