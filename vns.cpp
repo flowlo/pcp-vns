@@ -105,7 +105,6 @@ namespace pcp {
 				
 				best = toImprove;
 				toImprove = new Solution(curBest);
-				curNeighbor = 0;
 				no_imp_runs = 0;
 				shakeSteps = shakeStart - shakeIncrement;
 			}
@@ -117,20 +116,21 @@ namespace pcp {
 				/// Stopping condition, quit VNS
 				if (no_imp_runs > unsuccessfulShake) {
 					if (DEBUG_LEVEL > 0) {
-						cout<<"To many unsuccessful shakes"<<endl;
+						cout<<"Too many unsuccessful shakes"<<endl;
 					}
 					break;
 				}
 			}
 			
 			int shakeNeighbor = rand() % NUM_VNS;
-
+			curNeighbor = 0;
 			VNS_Unit *shaker = neighbors[shakeNeighbor];
 			toImprove = shaker->shuffleSolution(*toImprove, orig, (shakeSteps += shakeIncrement));
 			
 			if (DEBUG_LEVEL > 1) {
 				cout<<"Shaking Solution using "<<shaker->name()<<" with ";
 				cout<<shakeSteps<<" steps"<<endl;
+				cout<<"Shake was valid: "<<((checkValid(toImprove)) ? "true" : "false")<<endl;
 			}
 	
 			/// No time left, abort main loop
@@ -140,6 +140,13 @@ namespace pcp {
 				}
 				break;
 			}
+		}
+		if (DEBUG_LEVEL > 0) {
+			cout<<endl;
+			cout<<"Final best solution uses "<<curBest->colorsUsed<<" colors";
+			cout<<endl;
+			cout<<"The solution appears to be ";
+			cout<<((checkValid(curBest)) ? "valid" : "invalid")<<endl;
 		}
 		
 		return new Solution(curBest);
@@ -197,6 +204,12 @@ namespace pcp {
 				valid = false;
 				cerr<<"Solution is invalid"<<endl;
 				cerr<<"partition "<<i<<" seems to be missing"<<endl;
+			}
+			if (s->representatives[vParts[i]] != i) {
+				valid = false;
+				cerr<<"Solution is invalid"<<endl;
+				cerr<<"Node "<<i<<" is not representative of partition "<<vParts[i];
+				cerr<<endl;
 			}
 		}
 	
