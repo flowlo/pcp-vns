@@ -63,4 +63,8 @@ namespace pcp {
 			int *representatives;
 	};
 }
+/// Global variable holding the debug level.
+/// Number between 0 and 4, with 4 being the most verbose.
+extern int DEBUG_LEVEL;
+
 #endif

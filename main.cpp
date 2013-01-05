@@ -24,12 +24,14 @@ Solution::Solution(Solution *toCopy) {
 	copy_graph(*toCopy->g, *this->g);
 }
 
+int DEBUG_LEVEL = 2;
 
 int main(int num, char* args[]) {
 	ostream* out = &cout;
 	
 	/// Argument parsing
 	for (int i = 1; i < num; i++) {
+		/// Print to specify graphviz output file
 		if (strcmp(args[i], "-p") == 0) {
 			i++;
 			if (i == num) {
@@ -43,6 +45,20 @@ int main(int num, char* args[]) {
 				cerr<<"Error when trying to access file: "<<args[i]<<endl;
 				return -1;
 			}
+		}
+		/// Specify debug level
+		else if (strcmp(args[i], "-d") == 0) {
+			i++;
+			if (i == num) {
+				cerr<<"Bad or no debug level for option -d"<<endl;
+				cerr<<"Usage: -d [0-4]"<<endl;
+				return -1;
+			}
+			DEBUG_LEVEL = atoi(args[i]);
+			if (DEBUG_LEVEL > 4)
+				DEBUG_LEVEL = 4;
+			if (DEBUG_LEVEL < 0)
+				DEBUG_LEVEL = 0;
 		}
 	}
 	
