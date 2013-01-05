@@ -14,14 +14,20 @@ namespace pcp {
 	const int SHAKE_START = 1;
 	
 	/// Implementation of VNS, see vns.hpp
-	Solution vnsRun(Solution& best, Solution& orig, int unsuccessfulShake, int shakeStart, int shakeIncrement, int maxTime) {
+	Solution vnsRun(Solution& best, Solution& orig, int unsuccessfulShake, 
+						 int shakeStart, int shakeIncrement, int maxTime) {
 
 		/// Backup the starting solutions
 		bestSolution = new Solution(best);
 		origSolution = new Solution(orig);
 		
-		cout<<"Best solution uses "<<bestSolution.colorsUsed<<" colors"<<endl;
-		cout<<"Full solution uses "<<origSolution.colorsUsed<<" colors"<<endl;
+		if (DEBUG_LEVEL > 2) {
+			cout<<"Best solution uses "<<bestSolution.colorsUsed<<" colors"<<endl;
+			cout<<"Full solution uses "<<origSolution.colorsUsed<<" colors"<<endl;
+		}
+		if (DEBUG_LEVEL > 1) {
+			cout<<"The supplied solution is valid: "<<(checkValid(&best) ? "true": "false")<<endl;
+		}
 		
 		/// Define the neighborhoods to use
 		VNS_Unit **neighbors = new VNS_Unit*[NUM_VNS];
@@ -45,19 +51,26 @@ namespace pcp {
 				
 				/// Select the new neighborhood
 				VNS_Unit *neigh = neighbors[curNeighbor];
-				cout<<"Running: "<< neigh->name() <<endl;
+				
+				if (DEBUG_LEVEL > 1) {
+					cout<<"Running: "<< neigh->name() <<endl;
+				}
 				
 				/// Compute the minimum for this neighborhood
 				Solution *improved = neigh->findLocalMin(best, orig);
-				cout<<"Valid solution: "<<((checkValid(improved)) ? "true" : "false");
-				cout<<endl;
+				if (DEBUG_LEVEL > 1) {
+					cout<<"Valid solution: "<<((checkValid(improved)) ? "true" : "false");
+					cout<<endl;
+				}
 				/// Replace the existing solution with the new solution if it is an
 				/// improvement
 				if (improved->colorsUsed < toImprove->colorsUsed) {
 					delete toImprove;
 					toImprove = improved;
 					
-					cout<<"Improvement found with "<<neigh->name()<<endl;
+					if (DEBUG_LEVEL > 1) {
+						cout<<"Improvement found with "<<neigh->name()<<endl;
+					}
 					
 					/// Restart neighborhoods
 					curNeighbor = curNeighbor == 0 ? 1 : 0;
@@ -65,20 +78,27 @@ namespace pcp {
 				
 				/// Step to next neighborhood, no improvement found
 				else {
-					cout<<"No improvement found"<<endl;
+					if (DEBUG_LEVEL > 1) {
+						cout<<"No improvement found"<<endl;
+						cout<<"Test next neighborhood"<<endl;
+					}
 					delete improved;
 					curNeighbor++;
-					cout<<"Test next neighborhood"<<endl;
 				}
-				cout<<endl;
-				cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
-				cout<<endl<<endl;
+				if (DEBUG_LEVEL > 1) {
+					cout<<endl;
+					cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+					cout<<endl<<endl;
+				}
 			} // end while neighborhood
 			
 			/// Local minimum of neighborhoods is better than current best
 			/// solution
 			if (toImprove->colorsUsed < best.colorsUsed) {
-				cout<<"Improvement to global best solution found"<<endl;
+				if (DEBUG_LEVEL > 1) {
+					cout<<"Improvement to global best solution found"<<endl;
+				}
+				
 				best = toImprove;
 				toImprove = new Solution(curBest);
 				no_imp_runs = 0;
@@ -102,7 +122,9 @@ namespace pcp {
 
 			/// No time left, abort main loop
 			if (startTime + maxTime < time(NULL)) {
-				cout<<"Time's up"<<endl;
+				if (DEBUG_LEVEL > 0) {
+					cout<<"Time's up"<<endl;
+				}
 				break;
 			}
 		}

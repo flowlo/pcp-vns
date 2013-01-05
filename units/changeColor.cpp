@@ -14,16 +14,20 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 	const int ITER_MAX = 100;
 	pair<VertexIter, VertexIter> vIter;
 	VertexPart_Map vParts = get(vertex_index1_t(), *s->g);
-	
-	cout<<"Starting changeColor"<<endl;
 
+	if (DEBUG_LEVEL > 2) {
+		cout<<"Starting changeColor"<<endl;
+	}
+	
 	/// Change the color of all nodes with maxColor to a random color	
 	for (vIter = vertices(*s->g); vIter.first != vIter.second; vIter.first++) {
 		if (s->partition[vParts[*vIter.first]] == maxColor) {
 			int col = rand() % maxColor;
-			cout<<"Recoloring "<<*vIter.first<<" with color ";
-			cout<<col<<endl;
 			s->partition[vParts[*vIter.first]] = col;
+			if (DEBUG_LEVEL > 3) {	
+				cout<<"Recoloring "<<*vIter.first<<" with color ";
+				cout<<col<<endl;
+			}
 		}
 	}
 	
@@ -44,9 +48,11 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 			if (s->partition[vParts[*ai.first]] ==
 				 s->partition[vParts[*vIter.first]]) {
 				
-				cout<<"Conflicting node "<<*vIter.first<< " with color ";
-				cout<<s->partition[vParts[*vIter.first]]<<" added to conflicts";
-				cout<<endl;
+				if (DEBUG_LEVEL > 3) {
+					cout<<"Conflicting node "<<*vIter.first<< " with color ";
+					cout<<s->partition[vParts[*vIter.first]]<<" added to conflicts";
+					cout<<endl;
+				}
 				conflicts.push_back(*vIter.first);
 				break;
 			}
@@ -60,7 +66,11 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 		
 		/// Choose random conflicting node for recoloring
 		int random = rand() % conflicts.size();
-		cout<<"Chose conflicting node "<<conflicts[random]<<endl;
+		
+		if (DEBUG_LEVEL > 3) {
+			cout<<"Chose conflicting node "<<conflicts[random]<<endl;
+		}
+		
 		for (i = 0; i < s->numParts; i++) {
 			colors[i] = 0;
 		}
@@ -77,11 +87,13 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 			if (colors[i] == 0) {
 				found = true;
 			 	if (s->partition[conflicts[random]] != i) {
-					cout<<"Found new suitable color "<<i<<" for Node ";
-					cout<<conflicts[random]<<endl;
+			 		if (DEBUG_LEVEL > 3) {
+						cout<<"Found new suitable color "<<i<<" for Node ";
+						cout<<conflicts[random]<<endl;
+					}
+					
 					found = true;
 					s->partition[vParts[conflicts[random]]] = i;
-					cout<<s->partition[vParts[conflicts[random]]]<<endl;
 					break;
 				}
 			}
@@ -90,8 +102,10 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 		if (!found) {
 			int col = rand() % maxColor;
 			s->partition[vParts[conflicts[random]]] = col;
-			cout<<"Recolor node "<<conflicts[random]<<" with color ";
-			cout<<col<<endl;
+			if (DEBUG_LEVEL > 3) {
+				cout<<"Recolor node "<<conflicts[random]<<" with color ";
+				cout<<col<<endl;
+			}
 		
 			/// Search for conflicts with the randomly recolored node
 			pair<AdjIter, AdjIter> aIter;
@@ -114,8 +128,10 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 					if (colors[i] == 0) {
 						found = true;
 					 	if (s->partition[vParts[*aIter.first]] != i) {
-							cout<<"Found new suitable color "<<i<<" for Node ";
-							cout<<*aIter.first<<endl;
+					 		if (DEBUG_LEVEL > 3) {
+								cout<<"Found new suitable color "<<i<<" for Node ";
+								cout<<*aIter.first<<endl;
+							}
 							found = true;
 							s->partition[vParts[*aIter.first]] = i;
 							break;
@@ -124,8 +140,10 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 				}
 				/// Conflict could not be resolved
 				if (!found) {
-					cout<<"Conflict could not be resolved for Node ";
-					cout<<*aIter.first<<endl;
+					if (DEBUG_LEVEL > 2) {
+						cout<<"Conflict could not be resolved for Node ";
+						cout<<*aIter.first<<endl;
+					}
 				}
 			}
 		}
@@ -140,10 +158,12 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 			
 				if (s->partition[vParts[*ai.first]] ==
 					 s->partition[vParts[*vIter.first]]) {
-				
-					cout<<"Conflicting node "<<*vIter.first<< " with color ";
-					cout<<s->partition[vParts[*vIter.first]]<<" added to conflicts";
-					cout<<endl;
+					
+					if (DEBUG_LEVEL > 3) {
+						cout<<"Conflicting node "<<*vIter.first<< " with color ";
+						cout<<s->partition[vParts[*vIter.first]]<<" added to conflicts";
+						cout<<endl;
+					}
 					conflicts.push_back(*vIter.first);
 					break;
 				}
@@ -153,7 +173,9 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 	
 	/// New solution is not conflict free, return curBest
 	if (conflicts.size() != 0) {
-		cout<<"Conflict found"<<endl;
+		if (DEBUG_LEVEL > 1) {
+			cout<<"Conflict found"<<endl;
+		}
 		delete s;
 		return new Solution(&curBest);
 	}
@@ -174,7 +196,9 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 			s = temp;
 		}
 	}
-	cout<<"Change Color uses "<<s->colorsUsed<<" colors"<<endl; 
+	if (DEBUG_LEVEL > 1) {
+		cout<<"Change Color uses "<<s->colorsUsed<<" colors"<<endl; 
+	}
 	return s;
 }
 
