@@ -21,7 +21,7 @@ namespace pcp {
 		bestSolution = new Solution(best);
 		origSolution = new Solution(orig);
 		
-		if (DEBUG_LEVEL > 2) {
+		if (DEBUG_LEVEL > 1) {
 			cout<<"Best solution uses "<<bestSolution.colorsUsed<<" colors"<<endl;
 			cout<<"Full solution uses "<<origSolution.colorsUsed<<" colors"<<endl;
 		}
@@ -142,6 +142,7 @@ namespace pcp {
 	
 		for (int i = 0; i < s->numParts; i++) {
 			parts[i] = 0;
+			colors[i] = 0;
 		}
 	
 		for (vIter = vertices(*s->g); vIter.first != vIter.second; vIter.first++) {
