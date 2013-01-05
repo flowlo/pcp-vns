@@ -8,6 +8,10 @@ const char* tabuSearch::name() {
 	return "Tabu Search";
 }
 
+const char tabuSearch::abbreviation() {
+	return 't';
+}
+
 Solution* tabuSearch::findLocalMin(Solution& curBest, Solution& full) {
 	cout<<"Hello this is tabusearch speaking"<<endl;
 	cout<<"Current conflicts in curBest "<<conflicts(curBest)<<endl;
