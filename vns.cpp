@@ -101,6 +101,7 @@ namespace pcp {
 				
 				best = toImprove;
 				toImprove = new Solution(curBest);
+				curNeighbor = 0;
 				no_imp_runs = 0;
 				shakeSteps = shakeStart - shakeIncrement;
 			}
@@ -111,6 +112,9 @@ namespace pcp {
 
 				/// Stopping condition, quit VNS
 				if (no_imp_runs > unsuccessfulShake) {
+					if (DEBUG_LEVEL > 0) {
+						cout<<"To many unsuccessful shakes"<<endl;
+					}
 					break;
 				}
 			}
@@ -119,7 +123,12 @@ namespace pcp {
 
 			VNS_Unit *shaker = neighbors[shakeNeighbor];
 			toImprove = shaker->shuffleSolution(*toImprove, orig, (shakeSteps += shakeIncrement));
-
+			
+			if (DEBUG_LEVEL > 1) {
+				cout<<"Shaking Solution using "<<shaker->name()<<" with ";
+				cout<<shakeSteps<<" steps"<<endl;
+			}
+	
 			/// No time left, abort main loop
 			if (startTime + maxTime < time(NULL)) {
 				if (DEBUG_LEVEL > 0) {

@@ -74,7 +74,7 @@ int main(int num, char* args[]) {
 	if (DEBUG_LEVEL > 2)
 		cout<<"Onestep solution uses "<<onestep->colorsUsed<<" colors"<<endl;
 	
-	Solution best = vnsRun(*onestep, *fullG, 1, 0, 10, 0);
+	Solution best = vnsRun(*onestep, *fullG, 20, 0, 10, 10);
 	VertexID_Map vertex_id = get(vertex_index2_t(), *best.g);
 	write_graphviz(*out, *best.g, make_label_writer(vertex_id));
 	

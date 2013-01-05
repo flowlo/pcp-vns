@@ -11,7 +11,7 @@ const char *changeNode::name() {
 Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 	Solution* s = new Solution(&best);
 	int maxColor = best.colorsUsed - 1;
-	const int ITER_MAX = 100;
+	const int ITER_MAX = 1000;
 	pair<VertexIter, VertexIter> vIter;
 	VertexPart_Map vParts = get(vertex_index1_t(), *s->g);
 	VertexPart_Map vPartsOrig = get(vertex_index1_t(), *full.g);
