@@ -14,8 +14,11 @@ Solution::Solution(Solution *toCopy) {
 	this->g = new Graph(0);
 	this->numParts = toCopy->numParts;
 	this->partition = new int[this->numParts];
+	this->representatives = new int[this->numParts];
+
 	for (int i = 0; i < this->numParts; i++) {
 		this->partition[i] = toCopy->partition[i];
+		this->representatives[i] = toCopy->representatives[i];
 	}
 	this->colorsUsed = toCopy->colorsUsed;
 	copy_graph(*toCopy->g, *this->g);

@@ -58,6 +58,9 @@ namespace pcp {
 
 			/// Colors used by this solution
 			int colorsUsed;
+			
+			/// Provides a matching from partitions to chosen nodes
+			int *representatives;
 	};
 }
 #endif

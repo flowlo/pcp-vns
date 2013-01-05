@@ -37,6 +37,7 @@ namespace pcp {
 		
 		/// Initialize the solution to the read parameters
 		s.partition = new int[nums[parts]];
+		s.representatives = new int[nums[parts]];
 		s.numParts = nums[parts];
 		s.colorsUsed = nums[parts];
 

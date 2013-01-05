@@ -98,13 +98,14 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 			for (ai = adjacent_vertices(rep, *full.g); 
 				  ai.first != ai.second; ai.first++) {
 				  
-				while (i < s->numParts - 1 && *ai.first > vIndex[i]) {
-					i++;
+				if (vIndex[s->representatives[vPartsOrig[*ai.first]]] == *ai.first
+					 && vPartsOrig[*ai.first] != vParts[v]) {
+					
+					add_edge(v, s->representatives[vPartsOrig[*ai.first]], *s->g);
+					colors[s->partition[vParts[ 
+					       s->representatives[vPartsOrig[*ai.first]]]]] = 1;
 				}
-				if (*ai.first == vIndex[i] && v != i) {
-					add_edge(v, i, *s->g);
-					colors[s->partition[vParts[i]]] = 1;
-				}
+				
 			}
 			
 			bool found = false;
