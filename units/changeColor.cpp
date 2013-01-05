@@ -8,6 +8,10 @@ const char *changeColor::name() {
 	return "changeColor";
 }
 
+const char changeColor::abbreviation() {
+	return 'c';
+}
+
 Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 	Solution *s = new Solution(&curBest);
 	int maxColor = curBest.colorsUsed - 1;
