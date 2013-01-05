@@ -25,7 +25,28 @@ Solution::Solution(Solution *toCopy) {
 }
 
 
-int main(int, char*[]) {
+int main(int num, char* args[]) {
+	ostream* out = &cout;
+	
+	/// Argument parsing
+	for (int i = 1; i < num; i++) {
+		if (strcmp(args[i], "-p") == 0) {
+			i++;
+			if (i == num) {
+				cerr<<"Bad or no filename for option -p"<<endl;
+				cerr<<"Usage: -p [FILENAME]"<<endl;
+				return -1;
+			}
+			
+			out = new fstream(args[i], fstream::out);
+			if (out->fail()) {
+				cerr<<"Error when trying to access file: "<<args[i]<<endl;
+				return -1;
+			}
+		}
+	}
+	
+	
 	Solution *fullG = new Solution();
 	
 	if (!readGraph(cin, *fullG)) {
@@ -39,7 +60,12 @@ int main(int, char*[]) {
 	
 	Solution best = vnsRun(*onestep, *fullG, 1, 0, 10, 0);
 	VertexID_Map vertex_id = get(vertex_index2_t(), *best.g);
-	write_graphviz(cout, *best.g, make_label_writer(vertex_id));
+	write_graphviz(*out, *best.g, make_label_writer(vertex_id));
 	cout<<"Writing complete"<<endl;
+	
+	out->flush();
+	if (out != &cout) {
+		((fstream*)out)->close();
+	}
 	return 0;
 }

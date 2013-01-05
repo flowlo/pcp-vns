@@ -2,7 +2,9 @@
 #define MAIN_H
 
 #include <iostream>                  // for //cout
-#include <string>
+#include <fstream>
+#include <stdio.h>
+#include <string.h>
 #include <utility>                   // for pair
 #include <boost/graph/graphviz.hpp>
 #include "pcp.hpp"
