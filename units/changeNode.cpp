@@ -107,7 +107,6 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 			}
 			
 			/// Search matching edges for replacement vertex
-			i = 0;
 			for (ai = adjacent_vertices(rep, *full.g); 
 				  ai.first != ai.second; ai.first++) {
 				  
@@ -115,8 +114,7 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 					 && vPartsOrig[*ai.first] != vParts[v]) {
 					
 					add_edge(v, s->representatives[vPartsOrig[*ai.first]], *s->g);
-					colors[s->partition[vParts[ 
-					       s->representatives[vPartsOrig[*ai.first]]]]] = 1;
+					colors[s->partition[vPartsOrig[*ai.first]]] = 1;
 				}
 				
 			}
@@ -202,6 +200,55 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 }
 
 Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
-				 							  int numSteps) {
-	return new Solution(&cur);
+				 							  	  int numSteps) {
+	Solution* ret = new Solution(&cur);
+	
+	VertexPart_Map vPartsOrig = get(vertex_index1_t(), *full.g);
+	VertexID_Map vIndex = get(vertex_index2_t(), *ret->g);
+	typedef boost::graph_traits<Graph>::adjacency_iterator AdjIter;
+	pair<AdjIter, AdjIter> ai;
+	int colors[ret->numParts];
+	int i = 0;
+	
+	for (int a = 0; a < numSteps; a++) {
+		/// Select a random node in the original graph and replace it in the 
+		/// solution graph
+		Vertex replacement = rand() % num_vertices(*full.g);
+		int part = vPartsOrig[replacement];
+		Vertex v = ret->representatives[part];
+		
+		/// If it isn't already the current chosen node
+		if (vIndex[ret->representatives[part]] != replacement) {
+			
+			clear_vertex(v, *ret->g);
+			
+			for (i = 0; i < ret->numParts; i++) {
+				colors[i] = 0;
+			}
+			
+			/// Search matching edges for replacement vertex
+			for (ai = adjacent_vertices(replacement, *full.g); 
+				  ai.first != ai.second; ai.first++) {
+				  
+				if (vIndex[ret->representatives[vPartsOrig[*ai.first]]] == *ai.first
+					 && vPartsOrig[*ai.first] != part) {
+					
+					add_edge(v, ret->representatives[vPartsOrig[*ai.first]], *ret->g);
+					colors[ret->partition[vPartsOrig[*ai.first]]] = 1;
+				}
+			}
+			
+			for (i = 0; i < ret->numParts; i++) {
+				if (colors[i] == 0) {
+					ret->partition[part] = i;
+					if (i >= ret->colorsUsed) {
+						ret->colorsUsed = i + 1;
+					}
+					break;
+				}
+			}
+		}
+	}
+	
+	return ret;
 }
