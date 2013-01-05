@@ -251,6 +251,8 @@ Solution *changeColor::shuffleSolution(Solution& cur, Solution& full,
 				ret->partition[vParts[node]] = i;
 				if (i > maxColor)
 					maxColor = i;
+					
+				break;
 			}
 		}
 	}
