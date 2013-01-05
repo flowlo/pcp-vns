@@ -4,7 +4,6 @@ using namespace std;
 using namespace pcp;
 using namespace boost;
 
-
 Solution::Solution() {
 	this->g = new Graph(0);
 	this->colorsUsed = 0;
@@ -28,11 +27,25 @@ int DEBUG_LEVEL = 2;
 
 int main(int num, char* args[]) {
 	ostream* out = &cout;
+	istream* in = &cin;
+	char* units;
+	
+	int unsuccessfulShake = 10, shakeStart = 0, shakeIncrement = 10, maxTime = 10;
 	
 	/// Argument parsing
 	for (int i = 1; i < num; i++) {
 		/// Print to specify graphviz output file
-		if (strcmp(args[i], "-p") == 0) {
+		if  (strcmp(args[i], "-n") == 0) {
+			i++;
+			if (i == num) {
+				cerr<<"No VNS unit sequence specified for option -n"<<endl;
+				cerr<<"Usage: -n [STRING]"<<endl;
+				return -1;
+			}
+			
+			units = args[i];
+		}
+		else if (strcmp(args[i], "-p") == 0) {
 			i++;
 			if (i == num) {
 				cerr<<"Bad or no filename for option -p"<<endl;
@@ -46,6 +59,20 @@ int main(int num, char* args[]) {
 				return -1;
 			}
 		}
+		else if (strcmp(args[i], "-i") == 0) {
+			i++;
+			if (i == num) {
+				cerr<<"Bad or no filename for option -i"<<endl;
+				cerr<<"Usage: -i [FILENAME]"<<endl;
+				return -1;
+			}
+			
+			in = new fstream(args[i], fstream::in);
+			if (in->fail()) {
+				cerr<<"Error when trying to access file: "<<args[i]<<endl;
+				return -1;
+			}
+		}
 		/// Specify debug level
 		else if (strcmp(args[i], "-d") == 0) {
 			i++;
@@ -55,18 +82,65 @@ int main(int num, char* args[]) {
 				return -1;
 			}
 			DEBUG_LEVEL = atoi(args[i]);
-			if (DEBUG_LEVEL > 4)
+			if (DEBUG_LEVEL > 4) {
 				DEBUG_LEVEL = 4;
-			if (DEBUG_LEVEL < 0)
+				
+				cout << "The specified debug level (-d) exceeds"
+				<< " the maximum. It was set to " << DEBUG_LEVEL
+				<< "." << endl;
+			}
+			else if (DEBUG_LEVEL < 0) {
 				DEBUG_LEVEL = 0;
+			}
+		}
+		else if (strcmp(args[i], "-u")) {
+			i++;
+			if (i == num) {
+				cerr<<"Bad or no unsuccessful shake threshold for option -u"<<endl;
+				cerr<<"Usage: -u [POSITIVE INTEGER]"<<endl;
+				return -1;
+			}
+			unsuccessfulShake = atoi(args[i]);
+			
+			if (unsuccessfulShake < 0) {
+				cerr << "Invalid unsuccessful shake threshold." << endl;
+				return -1;
+			}
+		}
+		else if (strcmp(args[i], "-s")) {
+			i++;
+			if (i == num) {
+				cerr<<"Bad or no shake start for option -s"<<endl;
+				cerr<<"Usage: -s [POSITIVE INTEGER]"<<endl;
+				return -1;
+			}
+			shakeStart = atoi(args[i]);
+			
+			if (shakeStart < 0) {
+				cerr << "Invalid shake start." << endl;
+				return -1;
+			}
+		}
+		else if (strcmp(args[i], "-t")) {
+			i++;
+			if (i == num) {
+				cerr<<"Bad or no time limit for option -t"<<endl;
+				cerr<<"Usage: -t [POSITIVE INTEGER]"<<endl;
+				return -1;
+			}
+			maxTime = atoi(args[i]);
+			
+			if (maxTime < 0) {
+				cerr << "Invalid maximum time." << endl;
+				return -1;
+			}
 		}
 	}
 	
-	
 	Solution *fullG = new Solution();
 	
-	if (!readGraph(cin, *fullG)) {
-		cerr<<"Error reading from stdin"<<endl;
+	if (!readGraph(*in, *fullG)) {
+		cerr << "Error reading from stdin" << endl;
 	}
 	
 	Solution *onestep = onestepCD(*fullG);
@@ -74,7 +148,7 @@ int main(int num, char* args[]) {
 	if (DEBUG_LEVEL > 2)
 		cout<<"Onestep solution uses "<<onestep->colorsUsed<<" colors"<<endl;
 	
-	Solution best = vnsRun(*onestep, *fullG, 20, 0, 10, 10);
+	Solution best = vnsRun(*onestep, *fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime);
 	VertexID_Map vertex_id = get(vertex_index2_t(), *best.g);
 	write_graphviz(*out, *best.g, make_label_writer(vertex_id));
 	
@@ -82,8 +156,12 @@ int main(int num, char* args[]) {
 		cout<<"Writing complete"<<endl;
 	
 	out->flush();
+	
 	if (out != &cout) {
 		((fstream*)out)->close();
+	}
+	if (in != &cin) {
+		((fstream*)in)->close();
 	}
 	return 0;
 }

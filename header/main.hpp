@@ -3,13 +3,14 @@
 
 #include <iostream>                  // for //cout
 #include <fstream>
-#include <stdio.h>
-#include <string.h>
+#include <vector>
+#include <cstring>
 #include <utility>                   // for pair
 #include <boost/graph/graphviz.hpp>
 #include "pcp.hpp"
 #include "parser.hpp"
 #include "oneStepCd.hpp"
 #include "vns.hpp"
+#include "vns-priv.hpp"
 
 #endif

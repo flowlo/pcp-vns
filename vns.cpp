@@ -14,7 +14,7 @@ namespace pcp {
 	const int SHAKE_START = 1;
 	
 	/// Implementation of VNS, see vns.hpp
-	Solution vnsRun(Solution& best, Solution& orig, int unsuccessfulShake, 
+	Solution vnsRun(Solution& best, Solution& orig, char* units, int unsuccessfulShake, 
 						 int shakeStart, int shakeIncrement, int maxTime) {
 
 		/// Backup the starting solutions
@@ -35,7 +35,7 @@ namespace pcp {
 		changeColor *cC = new changeColor;
 		neighbors[0] = cN;
 		neighbors[1] = cC;
-		
+	
 		time_t startTime = time(NULL);
 		int no_imp_runs = 0;
 		int curNeighbor = 0;

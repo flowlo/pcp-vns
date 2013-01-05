@@ -12,6 +12,10 @@ namespace pcp {
 			/// Returns a given name for the neighborhood
 			virtual const char *name();
 			
+			/// Returns a given (unique) character used to quickly reference
+			/// an unit via command line argument.
+			static const char abbreviation();
+			
 			/// Compute the new improved solution of this neighborhood
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
 			
@@ -23,6 +27,8 @@ namespace pcp {
 		public:
 			/// Returns a given name for the neighborhood
 			virtual const char *name();
+			
+			static const char abbreviation();
 			
 			/// Compute the new improved solution of this neighborhood
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
@@ -37,6 +43,8 @@ namespace pcp {
 			/// Returns a given name for the neighborhood
 			virtual const char *name();
 			
+			static const char abbreviation();
+			
 			/// Compute the new improved solution of this neighborhood
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
 			
@@ -50,6 +58,8 @@ namespace pcp {
 		public:
 			/// Returns a given name for the neighborhood
 			virtual const char *name();
+			
+			static const char abbreviation();
 			
 			/// Compute the new improved solution of this neighborhood
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
