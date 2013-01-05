@@ -6,6 +6,13 @@ using namespace pcp;
 const char* VNS_Unit::name() {
 	return "DUMMY";
 }
+
+/// Returns a given (unique) character used to quickly reference
+/// an unit via command line argument.
+const char VNS_Unit::abbreviation() {
+	return '\0';
+}
+
 /// Compute the new improved solution of this neighborhood
 Solution* VNS_Unit::findLocalMin(Solution& curBest, Solution& full) {
 	return &curBest;

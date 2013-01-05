@@ -8,6 +8,10 @@ const char *changeNode::name() {
 	return "changeNode";
 }
 
+const char changeNode::abbreviation() {
+	return 'n';
+}
+
 Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 	Solution* s = new Solution(&best);
 	int maxColor = best.colorsUsed - 1;
