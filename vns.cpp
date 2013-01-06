@@ -8,10 +8,6 @@ namespace pcp {
 	Solution origSolution;
 
 	bool checkValid(Solution* s);
-
-	/// Some constants
-	const int NUM_VNS = 2;
-	const int SHAKE_START = 1;
 	
 	/// Implementation of VNS, see vns.hpp
 	Solution vnsRun(Solution& best, Solution& orig, char* units, int unsuccessfulShake, 
