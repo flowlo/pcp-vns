@@ -152,6 +152,7 @@ namespace pcp {
 		return new Solution(curBest);
 	}
 	
+	/// validate solutions
 	bool checkValid(Solution* s) {
 		pair<VertexIter, VertexIter> vIter;
 		int parts[s->numParts];
@@ -160,15 +161,19 @@ namespace pcp {
 		VertexPart_Map vParts = get(boost::vertex_index1_t(), *s->g);
 		bool valid = true;
 	
+		/// Initialize parts and colors
 		for (int i = 0; i < s->numParts; i++) {
 			parts[i] = 0;
 			colors[i] = 0;
 		}
 	
+		/// Check all vertices
 		for (vIter = vertices(*s->g); vIter.first != vIter.second; vIter.first++) {
+			/// Mark partition and color as used
 			parts[vParts[*vIter.first]] = 1;
 			colors[s->partition[vParts[*vIter.first]]] = 1;
 			
+			/// Check color conflicts
 			pair<AdjIter, AdjIter> aIter;
 			for (aIter = adjacent_vertices(*vIter.first, *s->g); 
 				  aIter.first != aIter.second; aIter.first++) {
@@ -185,6 +190,7 @@ namespace pcp {
 			}
 		}
 		
+		/// Check colorsUsed
 		int count = 0;
 		for (int i = 0; i < s->numParts; i++) {
 			if (colors[i] == 1) {
@@ -198,7 +204,7 @@ namespace pcp {
 			cerr<<", computed: "<<count<<endl;
 		}
 		
-		
+		/// Check partitions and representatives
 		for (int i = 0; i < s->numParts; i++) {
 			if (parts[i] == 0) {
 				valid = false;
