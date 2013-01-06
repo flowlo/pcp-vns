@@ -87,7 +87,6 @@ namespace pcp {
 				Solution *improved = neigh->findLocalMin(*toImprove, orig);
 				
 				/// Stats tracking
-				impStats[curNeighbor] += (toImprove->colorsUsed - improved->colorsUsed);
 				clockStats[curNeighbor] += (clock() - start);
 				runStats[curNeighbor]++;
 				
@@ -101,6 +100,9 @@ namespace pcp {
 				/// Replace the existing solution with the new solution if it is an
 				/// improvement
 				if (improved->colorsUsed < toImprove->colorsUsed) {
+					/// Stats tracking 
+					impStats[curNeighbor] += (toImprove->colorsUsed - improved->colorsUsed);
+				
 					delete toImprove;
 					toImprove = improved;
 					
