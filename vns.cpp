@@ -34,6 +34,8 @@ namespace pcp {
 				neighbors.push_back(new changeColor());
 			else if (*units == tabuSearch::abbreviation())
 				neighbors.push_back(new tabuSearch());
+			else if (*units == dsatur::abbreviation())
+				neighbors.push_back(new dsatur());
 			else {
 				cerr << "Invalid unit specified. " << *units << endl;
 				return NULL;
