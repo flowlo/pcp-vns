@@ -73,7 +73,7 @@ Solution* dsatur::findLocalMin(Solution& curBest, Solution& full) {
 	
 	VertexPart_Map vParts = get(vertex_index1_t(), *s->g);
 	
-	int numColors = -1, candidate, maxColorDegree, maxBlankDegree, colorDegree, blankDegree, candidate;
+	int numColors = -1, candidate, maxColorDegree, maxBlankDegree, colorDegree, blankDegree;
 	
 	std::pair<VertexIter, VertexIter> vp;
 	
@@ -82,12 +82,13 @@ Solution* dsatur::findLocalMin(Solution& curBest, Solution& full) {
 			cout << "New iteration!" << endl;
 
 		candidate = -1;
-		maxColorDegree = 0
-		maxBlankDegree = 0
+		maxColorDegree = 0;
+		maxBlankDegree = 0;
 		
 	 	for (vp = vertices(*s->g); vp.first != vp.second; ++vp.first) {
 	 		if (s->partition[get(vParts, *vp.first)] != -1) {
-	 			cout << "Skipping " << *vp.first << endl;
+	 			if (DEBUG_LEVEL == 4)
+		 			cout << "Skipping " << *vp.first << endl;
 	 			continue;
 	 		}
 	 		
