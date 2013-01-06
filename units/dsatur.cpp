@@ -18,20 +18,16 @@ const char dsatur::abbreviation() {
 int getColorDegree(Vertex node, Solution& s) {
 	typename boost::graph_traits<Graph>::adjacency_iterator adj_i, adj_end;
 	
-	VertexPart_Map vParts = get(vertex_index1_t(), *s.g);
-	
 	int colored = 0;
 
 	for (tie(adj_i, adj_end) = adjacent_vertices(node, *s.g); adj_i != adj_end; adj_i++)
-		if (s.partition[get(vParts, *adj_i)] != -1)
+		if (s.isPartitionColored(*adj_i))
 			colored++;
 
 	return colored;
 }
 
 int minPossibleColor(Vertex node, Solution& s) {
-	VertexPart_Map vParts = get(vertex_index1_t(), *s.g);
-	
 	int colors[s.numParts];
 
 	for (int i = 0; i < s.numParts; i++)
@@ -40,8 +36,8 @@ int minPossibleColor(Vertex node, Solution& s) {
 	typename boost::graph_traits<Graph>::adjacency_iterator iter, last;
 
 	for (tie(iter, last) = adjacent_vertices(node, *s.g); iter != last; ++iter)
-		if (s.partition[get(vParts, *iter)] != -1)
-			colors[s.partition[get(vParts, *iter)]] = 1;
+		if (s.isPartitionColored(*iter))
+			colors[s.partition[s.getPartition(*iter)]] = 1;
 
 	for (int i = 0; i < s.numParts; i++)
 		if (colors[i] == 0)
@@ -57,8 +53,6 @@ Solution* dsatur::findLocalMin(Solution& curBest, Solution& full) {
 	
 	std::fill(s->partition, s->partition + s->numParts, -1);
 	
-	VertexPart_Map vParts = get(vertex_index1_t(), *s->g);
-	
 	int numColors = -1, candidate, maxColorDegree, maxBlankDegree, colorDegree, blankDegree;
 	
 	std::pair<VertexIter, VertexIter> vp;
@@ -72,7 +66,7 @@ Solution* dsatur::findLocalMin(Solution& curBest, Solution& full) {
 		maxBlankDegree = 0;
 		
 	 	for (vp = vertices(*s->g); vp.first != vp.second; ++vp.first) {
-	 		if (s->partition[get(vParts, *vp.first)] != -1) {
+	 		if (s->isPartitionColored(*vp.first)) {
 	 			if (DEBUG_LEVEL == 4)
 		 			cout << "Skipping " << *vp.first << endl;
 	 			continue;
@@ -102,7 +96,8 @@ Solution* dsatur::findLocalMin(Solution& curBest, Solution& full) {
 		}
 		
 		int color = minPossibleColor(candidate, *s);
-		s->partition[get(vParts, candidate)] = color;
+		s->setPartitionColor(candidate, color);
+
 		
 		if (DEBUG_LEVEL == 4)
 			cout << "Colored " << candidate << " with " << color << endl;
