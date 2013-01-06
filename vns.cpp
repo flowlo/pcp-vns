@@ -35,6 +35,11 @@ namespace pcp {
 		changeColor *cC = new changeColor;
 		neighbors[0] = cN;
 		neighbors[1] = cC;
+		
+		/// Initialize stat-tracking arrays
+		int impStats[NUM_VNS];
+		int clockStats[NUM_VNS];
+		int runStats[NUM_VNS];
 	
 		time_t startTime = time(NULL);
 		int no_imp_runs = 0;
@@ -58,7 +63,13 @@ namespace pcp {
 				}
 				
 				/// Compute the minimum for this neighborhood
-				Solution *improved = neigh->findLocalMin(best, orig);
+				Solution *improved = neigh->findLocalMin(*toImprove, orig);
+				
+				/// Stats tracking
+				impStats[curNeighbor] += (toImprove->colorsUsed - improved->colorsUsed);
+				clockStats[curNeighbor] += (clock() - start);
+				runStats[curNeighbor]++;
+				
 				if (DEBUG_LEVEL > 1) {
 					cout<<neigh->name()<<" took about ";
 					cout<<(clock() - start)/(float)CLOCKS_PER_SEC;
@@ -74,6 +85,7 @@ namespace pcp {
 					
 					if (DEBUG_LEVEL > 1) {
 						cout<<"Improvement found with "<<neigh->name()<<endl;
+						cout<<"Current solution uses "<<toImprove->colorsUsed<<" colors"<<endl;
 					}
 					
 					/// Restart neighborhoods
@@ -95,6 +107,12 @@ namespace pcp {
 					cout<<endl<<endl;
 				}
 			} // end while neighborhood
+			
+			if (DEBUG_LEVEL > 1) {
+				cout<<endl;
+				cout<<"###################### End inner VNS loop ##################"<<endl;
+				cout<<endl;
+			}
 			
 			/// Local minimum of neighborhoods is better than current best
 			/// solution
@@ -131,6 +149,7 @@ namespace pcp {
 				cout<<"Shaking Solution using "<<shaker->name()<<" with ";
 				cout<<shakeSteps<<" steps"<<endl;
 				cout<<"Shake was valid: "<<((checkValid(toImprove)) ? "true" : "false")<<endl;
+				cout<<"Solution now uses "<<toImprove->colorsUsed<<" colors"<<endl;
 			}
 	
 			/// No time left, abort main loop
@@ -147,6 +166,26 @@ namespace pcp {
 			cout<<endl;
 			cout<<"The solution appears to be ";
 			cout<<((checkValid(curBest)) ? "valid" : "invalid")<<endl;
+		}
+		/// Print stats
+		if (DEBUG_LEVEL > 1) {
+			cout<<endl;
+			cout<<"#################### STAT TRACKING ####################"<<endl;
+			cout<<"#                                                     "<<endl;
+			
+			for (int i = 0; i < NUM_VNS; i++) {
+				VNS_Unit *cur = neighbors[i];
+				cout<<"# "<<cur->abbreviation()<<": Name: "<<cur->name()<<endl;
+				cout<<"# Runs: "<<runStats[i]<<" runtime: ";
+				cout<<((float)clockStats[i]/CLOCKS_PER_SEC)<<" imrovements: ";
+				cout<<impStats[i]<<endl;
+				cout<<"#                                                     "<<endl;
+			}
+			cout<<"# Global improvment of ";
+			cout<<(bestSolution.colorsUsed - curBest->colorsUsed);
+			cout<<" colors, down to "<<curBest->colorsUsed<<" colors "<<endl;
+			cout<<"#                                                     "<<endl;
+			cout<<"##################### END TRACKING ####################"<<endl;
 		}
 		
 		return new Solution(curBest);
