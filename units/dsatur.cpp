@@ -29,20 +29,6 @@ int getColorDegree(Vertex node, Solution& s) {
 	return colored;
 }
 
-int getBlankDegree(Vertex node, Solution& s) {
-	typename boost::graph_traits<Graph>::adjacency_iterator adj_i, adj_end;
-	
-	VertexPart_Map vParts = get(vertex_index1_t(), *s.g);
-	
-	int colored = 0;
-
-	for (tie(adj_i, adj_end) = adjacent_vertices(node, *s.g); adj_i != adj_end; adj_i++)
-		if (s.partition[get(vParts, *adj_i)] == -1)
-			colored++;
-
-	return colored;
-}
-
 int minPossibleColor(Vertex node, Solution& s) {
 	VertexPart_Map vParts = get(vertex_index1_t(), *s.g);
 	
@@ -97,13 +83,13 @@ Solution* dsatur::findLocalMin(Solution& curBest, Solution& full) {
 			if (colorDegree > maxColorDegree) {
 				candidate = *vp.first;
 				maxColorDegree = colorDegree;
-				maxBlankDegree = getBlankDegree(*vp.first, *s);
+				maxBlankDegree = degree(*vp.first, *s->g) - colorDegree;
 				
 				if (DEBUG_LEVEL == 4)
 					cout << "New best " << candidate << " having (" << maxColorDegree << "|" << maxBlankDegree << ")" << endl;
 			}
 			else if (colorDegree == maxColorDegree) {
-				blankDegree = getBlankDegree(*vp.first, *s);
+				blankDegree = degree(*vp.first, *s->g) - colorDegree;
 				if (maxBlankDegree < blankDegree) {
 					candidate = *vp.first;
 					maxColorDegree = colorDegree;
