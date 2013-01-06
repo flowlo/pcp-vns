@@ -27,7 +27,7 @@ namespace pcp {
 		
 		vector<VNS_Unit*> neighbors = vector<VNS_Unit*>();
 		
-		while (*units != '\0') {
+		do {
 			if (*units == changeNode::abbreviation())
 				neighbors.push_back(new changeNode());
 			else if (*units == changeColor::abbreviation())
@@ -38,8 +38,7 @@ namespace pcp {
 				cerr << "Invalid unit specified. " << *units << endl;
 				return NULL;
 			}
-			units++;
-		}
+		} while (*(++units) != '\0') ;
 		units = NULL;
 
 		/// Initialize stat-tracking arrays
@@ -56,6 +55,14 @@ namespace pcp {
 		
 		/// Run as long as shaking still produces usefull solution
 		while (true) {
+			
+			/// No time left, abort main loop
+			if (startTime + maxTime < time(NULL)) {
+				if (DEBUG_LEVEL > 0) {
+					cout<<"Time's up"<<endl;
+				}
+				break;
+			}
 			
 			/// Run all possible neighborhood
 			while (curNeighbor < neighbors.size()) {
@@ -157,14 +164,6 @@ namespace pcp {
 				cout<<"Shake was valid: "<<((checkValid(toImprove)) ? "true" : "false")<<endl;
 				cout<<"Solution now uses "<<toImprove->colorsUsed<<" colors"<<endl;
 			}
-	
-			/// No time left, abort main loop
-			if (startTime + maxTime < time(NULL)) {
-				if (DEBUG_LEVEL > 0) {
-					cout<<"Time's up"<<endl;
-				}
-				break;
-			}
 		}
 		if (DEBUG_LEVEL > 0) {
 			cout<<endl;
@@ -183,7 +182,7 @@ namespace pcp {
 				VNS_Unit *cur = neighbors[i];
 				cout<<"# "<<cur->abbreviation()<<": Name: "<<cur->name()<<endl;
 				cout<<"# Runs: "<<runStats[i]<<" runtime: ";
-				cout<<((float)clockStats[i]/CLOCKS_PER_SEC)<<" imrovements: ";
+				cout<<((float)clockStats[i]/CLOCKS_PER_SEC)<<" improvements: ";
 				cout<<impStats[i]<<endl;
 				cout<<"#                                                     "<<endl;
 			}
