@@ -53,6 +53,12 @@ namespace pcp {
 			int getPartition(Vertex v);
 			
 			int getOriginalId(Vertex v);
+			
+			void setPartitionColor(Vertex v, int color);
+			
+			int getPartitionColor(Vertex v);
+			
+			bool isPartitionColored(Vertex v);
 
 			/// Number of partitions in the PCP instance
 			int numParts;
