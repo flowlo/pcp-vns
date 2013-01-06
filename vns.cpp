@@ -29,12 +29,23 @@ namespace pcp {
 			cout<<"The supplied solution is valid: "<<(checkValid(&best) ? "true": "false")<<endl;
 		}
 		
-		/// Define the neighborhoods to use
-		VNS_Unit **neighbors = new VNS_Unit*[NUM_VNS];
-		changeNode *cN = new changeNode;
-		changeColor *cC = new changeColor;
-		neighbors[0] = cN;
-		neighbors[1] = cC;
+		vector<VNS_Unit*> neighbors = vector<VNS_Unit*>();
+		
+		while (*units != '\0') {
+			if (*units == changeNode::abbreviation())
+				neighbors.push_back(new changeNode());
+			else if (*units == changeColor::abbreviation())
+				neighbors.push_back(new changeColor());
+			else if (*units == tabuSearch::abbreviation())
+				neighbors.push_back(new tabuSearch());
+			else {
+				cerr << "Invalid unit specified. " << *units << endl;
+				return NULL;
+			}
+			units++;
+		}
+		units = NULL;
+
 		
 		/// Initialize stat-tracking arrays
 		int impStats[NUM_VNS];
@@ -43,7 +54,7 @@ namespace pcp {
 	
 		time_t startTime = time(NULL);
 		int no_imp_runs = 0;
-		int curNeighbor = 0;
+		unsigned int curNeighbor = 0;
 		int shakeSteps = shakeStart - shakeIncrement;
 		Solution *toImprove = new Solution(&best);
 		Solution *curBest = &best;
@@ -52,7 +63,7 @@ namespace pcp {
 		while (true) {
 			
 			/// Run all possible neighborhood
-			while (curNeighbor < NUM_VNS) {
+			while (curNeighbor < neighbors.size()) {
 				
 				/// Select the new neighborhood
 				clock_t start = clock();

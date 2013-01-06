@@ -28,7 +28,7 @@ int DEBUG_LEVEL = 2;
 int main(int num, char* args[]) {
 	ostream* out = &cout;
 	istream* in = &cin;
-	char* units;
+	char* units = "nc";
 	
 	int unsuccessfulShake = 10, shakeStart = 0, shakeIncrement = 10, maxTime = 10;
 	
