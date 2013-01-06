@@ -35,6 +35,18 @@ int Solution::getOriginalId(Vertex v) {
 	return get(this->idMap, v);
 }
 
+int Solution::getPartitionColor(Vertex v) {
+	return partition[getPartition(v)];
+}
+
+void Solution::setPartitionColor(Vertex v, int color) {
+	partition[getPartition(v)] = color;
+}
+
+bool Solution::isPartitionColored(Vertex v) {
+	return getPartitionColor(v) != -1;
+}
+
 int DEBUG_LEVEL = 2;
 
 int main(int num, char* args[]) {
