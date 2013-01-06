@@ -7,6 +7,8 @@ using namespace boost;
 Solution::Solution() {
 	this->g = new Graph(0);
 	this->colorsUsed = 0;
+	this->partitionMap = get(vertex_index1_t(), *this->g);
+	this->idMap = get(vertex_index2_t(), *this->g);
 }
 
 Solution::Solution(Solution *toCopy) {
@@ -21,6 +23,16 @@ Solution::Solution(Solution *toCopy) {
 	}
 	this->colorsUsed = toCopy->colorsUsed;
 	copy_graph(*toCopy->g, *this->g);
+	this->partitionMap = get(vertex_index1_t(), *this->g);
+	this->idMap = get(vertex_index2_t(), *this->g);
+}
+
+int Solution::getPartition(Vertex v) {
+	return get(this->partitionMap, v);
+}
+
+int Solution::getOriginalId(Vertex v) {
+	return get(this->idMap, v);
 }
 
 int DEBUG_LEVEL = 2;

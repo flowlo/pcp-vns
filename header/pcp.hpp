@@ -49,6 +49,10 @@ namespace pcp {
 
 			/// Graph representating the PCP instance
 			Graph *g;
+			
+			int getPartition(Vertex v);
+			
+			int getOriginalId(Vertex v);
 
 			/// Number of partitions in the PCP instance
 			int numParts;
@@ -61,6 +65,10 @@ namespace pcp {
 			
 			/// Provides a matching from partitions to chosen nodes
 			int *representatives;
+		
+		private:
+			boost::property_map<Graph, boost::vertex_index1_t>::type partitionMap;
+			boost::property_map<Graph, boost::vertex_index2_t>::type idMap;
 	};
 }
 /// Global variable holding the debug level.
