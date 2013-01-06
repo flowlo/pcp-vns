@@ -70,5 +70,22 @@ namespace pcp {
 		private:
 			int conflicts(Solution& s);
 	};
+	
+	class dsatur : public VNS_Unit {
+		public:
+			/// Returns a given name for the neighborhood
+			virtual const char *name();
+			
+			static const char abbreviation();
+			
+			/// Compute the new improved solution of this neighborhood
+			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
+			
+			/// Shuffle a solution using the neighborhood as a base
+			virtual Solution *shuffleSolution(Solution& cur, Solution& full,
+				 							  int numSteps);
+		private:
+			int conflicts(Solution& s);
+	};
 }
 #endif
