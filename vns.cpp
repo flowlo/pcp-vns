@@ -10,7 +10,7 @@ namespace pcp {
 	bool checkValid(Solution* s);
 	
 	/// Implementation of VNS, see vns.hpp
-	Solution vnsRun(Solution& best, Solution& orig, char* units, int unsuccessfulShake, 
+	Solution *vnsRun(Solution& best, Solution& orig, char* units, int unsuccessfulShake, 
 						 int shakeStart, int shakeIncrement, int maxTime) {
 
 		/// Backup the starting solutions
