@@ -16,12 +16,12 @@ const char dsatur::abbreviation() {
 }
 
 int getColorDegree(Vertex node, Solution& s) {
-	typename boost::graph_traits<Graph>::adjacency_iterator adj_i, adj_end;
+	typename boost::graph_traits<Graph>::adjacency_iterator i, end;
 	
 	int colored = 0;
 
-	for (tie(adj_i, adj_end) = adjacent_vertices(node, *s.g); adj_i != adj_end; adj_i++)
-		if (s.isPartitionColored(*adj_i))
+	for (tie(i, end) = adjacent_vertices(node, *s.g); i != end; i++)
+		if (s.isPartitionColored(*i))
 			colored++;
 
 	return colored;
@@ -46,66 +46,57 @@ int minPossibleColor(Vertex node, Solution& s) {
 	return -1;
 }
 
-
 /// Compute the new improved solution of this neighborhood
 Solution* dsatur::findLocalMin(Solution& curBest, Solution& full) {
 	Solution* s = new Solution(&curBest);
 	
-	std::fill(s->partition, s->partition + s->numParts, -1);
+	fill(s->partition, s->partition + s->numParts, -1);
 	
-	int numColors = -1, candidate, maxColorDegree, maxBlankDegree, colorDegree, blankDegree;
+	int numColors = -1, target, maxColorDegree, maxBlankDegree, colorDegree, blankDegree, color;
 	
-	std::pair<VertexIter, VertexIter> vp;
+	pair<VertexIter, VertexIter> v;
 	
 	for (int j = 0; j < s->numParts; j++) {
 		if (DEBUG_LEVEL == 4)
 			cout << "New iteration!" << endl;
 
-		candidate = -1;
-		maxColorDegree = 0;
-		maxBlankDegree = 0;
+		target = maxColorDegree = maxBlankDegree = -1;
 		
-	 	for (vp = vertices(*s->g); vp.first != vp.second; ++vp.first) {
-	 		if (s->isPartitionColored(*vp.first)) {
+	 	for (v = vertices(*s->g); v.first != v.second; ++v.first) {
+	 		if (s->isPartitionColored(*v.first)) {
 	 			if (DEBUG_LEVEL == 4)
-		 			cout << "Skipping " << *vp.first << endl;
+		 			cout << "Skipping " << *v.first << endl;
 	 			continue;
 	 		}
 	 		
-			colorDegree = getColorDegree(*vp.first, *s);
+			colorDegree = getColorDegree(*v.first, *s);
 			
-			if (colorDegree > maxColorDegree) {
-				candidate = *vp.first;
-				maxColorDegree = colorDegree;
-				maxBlankDegree = degree(*vp.first, *s->g) - colorDegree;
+			if (colorDegree < maxColorDegree)
+				continue;
+			
+			blankDegree = degree(*v.first, *s->g) - colorDegree;
+			
+			if (colorDegree == maxColorDegree && blankDegree <= maxBlankDegree)
+				continue;
 				
-				if (DEBUG_LEVEL == 4)
-					cout << "New best " << candidate << " having (" << maxColorDegree << "|" << maxBlankDegree << ")" << endl;
-			}
-			else if (colorDegree == maxColorDegree) {
-				blankDegree = degree(*vp.first, *s->g) - colorDegree;
-				if (maxBlankDegree < blankDegree) {
-					candidate = *vp.first;
-					maxColorDegree = colorDegree;
-					maxBlankDegree = blankDegree;
-					
-					if (DEBUG_LEVEL == 4)
-						cout << "New best " << candidate << " having (" << maxColorDegree << "|" << maxBlankDegree << ")" << endl;
-				}
-			}
+			target = *v.first;
+			maxColorDegree = colorDegree;
+			maxBlankDegree = blankDegree;
+			
+			if (DEBUG_LEVEL == 4)
+				cout << "New best " << target << " having (" << maxColorDegree << "|" << maxBlankDegree << ")" << endl;
 		}
 		
-		int color = minPossibleColor(candidate, *s);
-		s->setPartitionColor(candidate, color);
-
+		color = minPossibleColor(target, *s);
+		s->setPartitionColor(target, color);
 		
 		if (DEBUG_LEVEL == 4)
-			cout << "Colored " << candidate << " with " << color << endl;
+			cout << "Colored " << target << " with " << color << endl;
 		
 		if (numColors < color)
 			numColors = color;
 	}
-	
+
 	s->colorsUsed = numColors + 1;
 	return s;
 }
