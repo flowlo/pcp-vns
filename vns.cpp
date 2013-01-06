@@ -47,6 +47,12 @@ namespace pcp {
 		int impStats[neighbors.size()];
 		int clockStats[neighbors.size()];
 		int runStats[neighbors.size()];
+		
+		for (int i = 0; i < neighbors.size(); i++) {
+			impStats[i] = 0;
+			clockStats[i] = 0;
+			runStats[i] = 0;
+		}
 	
 		time_t startTime = time(NULL);
 		int no_imp_runs = 0;
@@ -188,7 +194,7 @@ namespace pcp {
 				cout<<impStats[i]<<endl;
 				cout<<"#                                                     "<<endl;
 			}
-			cout<<"# Global improvment of ";
+			cout<<"# Global improvement of ";
 			cout<<(bestSolution.colorsUsed - curBest->colorsUsed);
 			cout<<" colors, down to "<<curBest->colorsUsed<<" colors "<<endl;
 			cout<<"#                                                     "<<endl;
