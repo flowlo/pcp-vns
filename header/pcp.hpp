@@ -59,6 +59,10 @@ namespace pcp {
 			int getPartitionColor(Vertex v);
 			
 			bool isPartitionColored(Vertex v);
+			
+			int getColorDegree(Vertex v);
+			
+			int minPossibleColor(Vertex v);
 
 			/// Number of partitions in the PCP instance
 			int numParts;

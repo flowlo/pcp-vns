@@ -47,6 +47,33 @@ bool Solution::isPartitionColored(Vertex v) {
 	return getPartitionColor(v) != -1;
 }
 
+int Solution::getColorDegree(Vertex node) {
+	int colored = 0;
+	typename graph_traits<Graph>::adjacency_iterator i, end;
+
+	for (tie(i, end) = adjacent_vertices(node, *this->g); i != end; i++)
+		if (this->isPartitionColored(*i))
+			colored++;
+
+	return colored;
+}
+
+int Solution::minPossibleColor(Vertex node) {
+	bool colors[this->numParts];
+	fill(colors, colors + this->numParts, false);
+	typename graph_traits<Graph>::adjacency_iterator i, end;
+
+	for (tie(i, end) = adjacent_vertices(node, *this->g); i != end; i++)
+		if (this->isPartitionColored(*i))
+			colors[this->partition[this->getPartition(*i)]] = true;
+
+	for (int i = 0; i < this->numParts; i++)
+		if (!colors[i])
+			return i;
+
+	return -1;
+}
+
 int DEBUG_LEVEL = 2;
 
 int main(int num, char* args[]) {

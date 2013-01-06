@@ -24,14 +24,11 @@ namespace pcp {
 		/// Initialize the heuristics' parameters
 		int minDegree[s.numParts];
 		int maxDegree, target = -1, cd = 0;
-		std::pair<VertexIter, VertexIter> vp;
+		pair<VertexIter, VertexIter> vp;
 		
 		/// Set the partitions color to "not set"
 		for (int i = 0; i < sol->numParts; i++)
 			sol->partition[i] = -1;
-	
-		/// Get the property map which stores the partition ID for all vertices
-		VertexPart_Map vParts = get(vertex_index1_t(), *sol->g);
 	
 		/// Repeat until there are no uncolored partitions
 		for (int j = 0; j < s.numParts; j++) {	
@@ -47,22 +44,20 @@ namespace pcp {
 		 	for (vp = vertices(*sol->g); vp.first != vp.second; ++vp.first) {
 		 		
 		 		/// Compute the color degree for the vertex
-				cd = colorDegree(*vp.first, *sol);
+				cd = sol->getColorDegree(*vp.first);
 				
 				/// If the color degree of the selected vertex is less than that of
 				/// previous vertices in the same partition, and the partition is 
 				/// uncolored
-				if (cd < minDegree[get(vParts, *vp.first)] && 
-					 sol->partition[get(vParts, *vp.first)] == -1) {
-				
+				if (cd < minDegree[sol->getPartition(*vp.first)] && sol->isPartitionColored(*vp.first)) {
 					/// Set the minimal color degree for the vertex' partition to cd
-					minDegree[get(vParts, *vp.first)] = cd;
+					minDegree[sol->getPartition(*vp.first)] = cd;
 					
 					/// If the vertex' color degree is more then the current maximum
 					/// degree, select the current node as the new target
 					if (cd > maxDegree) {
 						maxDegree = cd;
-						target = (*vp.first);
+						target = *vp.first;
 					}
 				}
 			}
@@ -70,8 +65,8 @@ namespace pcp {
 			/// Compute the minimal possible color of the target vertex, set the 
 			/// corresponding partition to that color and remove all other vertices
 			/// in the partition
-			int color = minPossibleColor(target, *sol);
-			sol->partition[get(vParts, target)] = color;
+			int color = sol->minPossibleColor(target);
+			sol->setPartitionColor(target, color);
 			if (numColors < color)
 				numColors = color;
 				
@@ -79,62 +74,18 @@ namespace pcp {
 		}
 		
 		/// Fill in the representatives
-		for (vp = vertices(*sol->g); vp.first != vp.second; vp.first++) {
-			Vertex node = *vp.first;
-			sol->representatives[vParts[node]] = node;
-		}
+		for (vp = vertices(*sol->g); vp.first != vp.second; vp.first++)
+			sol->representatives[sol->getPartition(*vp.first)] = *vp.first;
 		
 		sol->colorsUsed = numColors + 1;
 		return sol;
 	}
 
-	int colorDegree(Vertex node, Solution& s) {
-		typename boost::graph_traits<Graph>::adjacency_iterator adj_i, adj_end;
-		
-		VertexPart_Map vParts = get(vertex_index1_t(), *s.g);
-		
-		int colored = 0;
-
-		for (tie(adj_i, adj_end) = adjacent_vertices(node, *s.g); adj_i != adj_end; adj_i++)
-			if (s.partition[get(vParts, *adj_i)] != -1)
-				colored++;
-
-		//cout<<"Color degree of vertex "<<node<<" is "<<colored<<endl;
-
-		return colored;
-	}
-
-	int minPossibleColor(Vertex node, Solution& s) {
-		VertexPart_Map vParts = get(vertex_index1_t(), *s.g);
-		
-		int colors[s.numParts];
-	
-		for (int i = 0; i < s.numParts; i++)
-			colors[i] = 0;
-	
-		typename boost::graph_traits<Graph>::adjacency_iterator iter, last;
-	
-		for (tie(iter, last) = adjacent_vertices(node, *s.g); iter != last; ++iter)
-			if (s.partition[get(vParts, *iter)] != -1)
-				colors[s.partition[get(vParts, *iter)]] = 1;
-	
-		for (int i = 0; i < s.numParts; i++)
-			if (colors[i] == 0)
-				return i;
-
-		return -1;
-	}
-
 	void removeOthers(Vertex node, Solution& s) {
-		VertexPart_Map vParts = get(vertex_index1_t(), *s.g);
-		
-		std::pair<VertexIter, VertexIter> vp;
+		pair<VertexIter, VertexIter> vp;
 		
 		for (vp = vertices(*s.g); vp.first != vp.second; ++vp.first) {
-	 		if (node != *vp.first && 
-	 			 get(vParts, *vp.first) == get(vParts, node)) {
-	 			
-	 			//cout<<"Deleteing vertex "<<*vp.first<<endl;
+	 		if (node != *vp.first && s.getPartition(*vp.first) == s.getPartition(node)) {
 	 			clear_vertex(*vp.first, *s.g);
 	 			remove_vertex(*vp.first, *s.g);
 
@@ -146,15 +97,9 @@ namespace pcp {
 	}
 
 	void removePartEdges(Solution& s) {
-		VertexPart_Map vParts = get(vertex_index1_t(), *s.g);
-
-	
-		graph_traits<Graph>::edge_iterator iter, last;
-		for (tie(iter, last) = edges(*s.g); iter != last; ++iter) {
-			if (get(vParts, source(*iter, *s.g)) == 
-				 get(vParts, target(*iter, *s.g))) {
-				remove_edge(*iter--, *s.g);
-			}
-		}
+		graph_traits<Graph>::edge_iterator i, end;
+		for (tie(i, end) = edges(*s.g); i != end; i++)
+			if (s.getPartition(source(*i, *s.g)) == s.getPartition(target(*i, *s.g)))
+				remove_edge(*i--, *s.g);
 	}
 }

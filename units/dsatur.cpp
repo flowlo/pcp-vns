@@ -15,37 +15,6 @@ const char dsatur::abbreviation() {
 	return 'd';
 }
 
-int getColorDegree(Vertex node, Solution& s) {
-	typename boost::graph_traits<Graph>::adjacency_iterator i, end;
-	
-	int colored = 0;
-
-	for (tie(i, end) = adjacent_vertices(node, *s.g); i != end; i++)
-		if (s.isPartitionColored(*i))
-			colored++;
-
-	return colored;
-}
-
-int minPossibleColor(Vertex node, Solution& s) {
-	int colors[s.numParts];
-
-	for (int i = 0; i < s.numParts; i++)
-		colors[i] = 0;
-
-	typename boost::graph_traits<Graph>::adjacency_iterator iter, last;
-
-	for (tie(iter, last) = adjacent_vertices(node, *s.g); iter != last; ++iter)
-		if (s.isPartitionColored(*iter))
-			colors[s.partition[s.getPartition(*iter)]] = 1;
-
-	for (int i = 0; i < s.numParts; i++)
-		if (colors[i] == 0)
-			return i;
-
-	return -1;
-}
-
 /// Compute the new improved solution of this neighborhood
 Solution* dsatur::findLocalMin(Solution& curBest, Solution& full) {
 	Solution* s = new Solution(&curBest);
@@ -69,7 +38,7 @@ Solution* dsatur::findLocalMin(Solution& curBest, Solution& full) {
 	 			continue;
 	 		}
 	 		
-			colorDegree = getColorDegree(*v.first, *s);
+			colorDegree = s->getColorDegree(*v.first);
 			
 			if (colorDegree < maxColorDegree)
 				continue;
@@ -87,7 +56,7 @@ Solution* dsatur::findLocalMin(Solution& curBest, Solution& full) {
 				cout << "New best " << target << " having (" << maxColorDegree << "|" << maxBlankDegree << ")" << endl;
 		}
 		
-		color = minPossibleColor(target, *s);
+		color = s->minPossibleColor(target);
 		s->setPartitionColor(target, color);
 		
 		if (DEBUG_LEVEL == 4)
