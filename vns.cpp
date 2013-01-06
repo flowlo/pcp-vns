@@ -42,11 +42,10 @@ namespace pcp {
 		}
 		units = NULL;
 
-		
 		/// Initialize stat-tracking arrays
-		int impStats[NUM_VNS];
-		int clockStats[NUM_VNS];
-		int runStats[NUM_VNS];
+		int impStats[neighbors.size()];
+		int clockStats[neighbors.size()];
+		int runStats[neighbors.size()];
 	
 		time_t startTime = time(NULL);
 		int no_imp_runs = 0;
@@ -147,7 +146,7 @@ namespace pcp {
 				}
 			}
 			
-			int shakeNeighbor = rand() % NUM_VNS;
+			int shakeNeighbor = rand() % neighbors.size();
 			curNeighbor = 0;
 			VNS_Unit *shaker = neighbors[shakeNeighbor];
 			toImprove = shaker->shuffleSolution(*toImprove, orig, (shakeSteps += shakeIncrement));
@@ -180,7 +179,7 @@ namespace pcp {
 			cout<<"#################### STAT TRACKING ####################"<<endl;
 			cout<<"#                                                     "<<endl;
 			
-			for (int i = 0; i < NUM_VNS; i++) {
+			for (unsigned int i = 0; i < neighbors.size(); i++) {
 				VNS_Unit *cur = neighbors[i];
 				cout<<"# "<<cur->abbreviation()<<": Name: "<<cur->name()<<endl;
 				cout<<"# Runs: "<<runStats[i]<<" runtime: ";
