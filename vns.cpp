@@ -41,20 +41,11 @@ namespace pcp {
 				return NULL;
 			}
 		}
-
-		/// Initialize stat-tracking arrays
-		int impStats[neighbors.size()];
-		int clockStats[neighbors.size()];
-		int runStats[neighbors.size()];
 		
-		for (int i = 0; i < neighbors.size(); i++) {
-			impStats[i] = 0;
-			clockStats[i] = 0;
-			runStats[i] = 0;
-		}
+		vector<pair<int, int>> stats[neighbors.size()];
 	
 		time_t startTime = time(NULL);
-		int no_imp_runs = 0;
+		int no_imp_runs = 0, improvement;
 		unsigned int curNeighbor = 0;
 		int shakeSteps = shakeStart - shakeIncrement;
 		Solution *toImprove = new Solution(&best);
@@ -85,9 +76,10 @@ namespace pcp {
 				/// Compute the minimum for this neighborhood
 				Solution *improved = neigh->findLocalMin(*toImprove, orig);
 				
+				improvement = toImprove->colorsUsed < 1 ? 0 : toImprove->colorsUsed - improved->colorsUsed;
+				
 				/// Stats tracking
-				clockStats[curNeighbor] += (clock() - start);
-				runStats[curNeighbor]++;
+				stats[curNeighbor].push_back(pair<int, int>(clock() - start, improvement));
 				
 				if (DEBUG_LEVEL > 1) {
 					cout<<neigh->name()<<" took about ";
@@ -98,10 +90,7 @@ namespace pcp {
 				}
 				/// Replace the existing solution with the new solution if it is an
 				/// improvement
-				if (improved->colorsUsed < toImprove->colorsUsed) {
-					/// Stats tracking 
-					impStats[curNeighbor] += (toImprove->colorsUsed - improved->colorsUsed);
-				
+				if (improvement > 0) {
 					delete toImprove;
 					toImprove = improved;
 					
@@ -183,23 +172,88 @@ namespace pcp {
 		}
 		/// Print stats
 		if (DEBUG_LEVEL > 1) {
-			cout<<endl;
-			cout<<"#################### STAT TRACKING ####################"<<endl;
-			cout<<"#                                                     "<<endl;
-			
+			cout << "{" << endl;
+			cout << "  \"units\": \"" << units << "\"," << endl;
+			cout << "  \"improvement\" : " << (bestSolution.colorsUsed - curBest->colorsUsed) << "," << endl;
+			cout << "  \"colors\" : " << curBest->colorsUsed << "," << endl;
+			cout << "  \"stats\": [" << endl;
+		
 			for (unsigned int i = 0; i < neighbors.size(); i++) {
+				int impCount;
+				pair<int, int> all, imp;
+				for (vector<pair<int, int>>::iterator j = stats[i].begin(); j < stats[i].end(); j++) {
+					all.first += (*j).first;
+					all.second += (*j).second;
+					if ((*j).second > 0) {
+						imp.first += (*j).first;
+						imp.second += (*j).second;
+						impCount++;
+					}
+				}
+				
+				pair<double, double> allAvg, impAvg;
+				allAvg.first = all.first / (double)stats[i].size();
+				allAvg.second = all.second / (double)stats[i].size();
+				impAvg.first = imp.first / (double)impCount;
+				impAvg.second = imp.second / (double)impCount;
+				
+				pair<double, double> allDev, impDev;
+				for (vector<pair<int, int>>::iterator j = stats[i].begin(); j < stats[i].end(); j++) {
+					allDev.first += pow((double)((*j).first - allDev.first), 2);
+					allDev.second += pow((double)((*j).second - allDev.second), 2);
+					
+					if ((*j).second > 0) {
+						impDev.first += pow((double)((*j).first - impDev.first), 2);
+						impDev.second += pow((double)((*j).second - impDev.second), 2);
+					}
+				}
+				
+				allDev.first = sqrt(allDev.first / (double)stats[i].size());
+				allDev.second = sqrt(allDev.second / (double)stats[i].size());
+				impDev.first = sqrt(impDev.first / (double)impCount);
+				impDev.second = sqrt(impDev.second / (double)impCount);
+			
 				VNS_Unit *cur = neighbors[i];
-				cout<<"# "<<cur->abbreviation()<<": Name: "<<cur->name()<<endl;
-				cout<<"# Runs: "<<runStats[i]<<" runtime: ";
-				cout<<((float)clockStats[i]/CLOCKS_PER_SEC)<<" improvements: ";
-				cout<<impStats[i]<<endl;
-				cout<<"#                                                     "<<endl;
+				
+				cout << "    {" << endl;
+				cout << "      \"name\" : \"" << cur->name() << "\"," << endl;
+				cout << "      \"abbrevition\" : \"" << cur->abbreviation() << "\"," << endl;
+				cout << "      \"all\" : {" << endl;
+				cout << "        \"runs\" : " << stats[i].size() << "," << endl;
+				cout << "        \"time\" : { " << endl;
+				cout << "          \"sum\" : " << all.first << "," << endl;
+				cout << "          \"avg\" : " << allAvg.first << "," << endl;
+				cout << "          \"dev\" : " << allDev.first << endl;
+				cout << "        }," << endl;
+				cout << "        \"improvements\" : { " << endl;
+				cout << "          \"sum\" : " << all.second << "," << endl;
+				cout << "          \"avg\" : " << allAvg.second << "," << endl;
+				cout << "          \"dev\" : " << allDev.second << endl;
+				cout << "        }" << endl;
+				cout << "      }," << endl;
+				cout << "      \"improving\" : {" << endl;
+				cout << "        \"runs\" : " << impCount << "," << endl;
+				cout << "        \"time\" : { " << endl;
+				cout << "          \"sum\" : " << imp.first << "," << endl;
+				cout << "          \"avg\" : " << impAvg.first << "," << endl;
+				cout << "          \"dev\" : " << impDev.first << endl;
+				cout << "        }," << endl;
+				cout << "        \"improvements\" : { " << endl;
+				cout << "          \"sum\" : " << imp.second << "," << endl;
+				cout << "          \"avg\" : " << impAvg.second << "," << endl;
+				cout << "          \"dev\" : " << impDev.second << endl;
+				cout << "        }" << endl;
+				cout << "      }" << endl;
+				cout << "    }";
+				
+				if (i != neighbors.size() - 1)
+					cout << ",";
+					
+				cout << endl;
 			}
-			cout<<"# Global improvement of ";
-			cout<<(bestSolution.colorsUsed - curBest->colorsUsed);
-			cout<<" colors, down to "<<curBest->colorsUsed<<" colors "<<endl;
-			cout<<"#                                                     "<<endl;
-			cout<<"##################### END TRACKING ####################"<<endl;
+			
+			cout << "  ]" << endl;
+			cout << "}" << endl;
 		}
 		
 		return new Solution(curBest);
