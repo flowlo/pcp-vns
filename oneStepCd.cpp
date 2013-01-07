@@ -42,20 +42,19 @@ namespace pcp {
 
 			/// For each vertex in the graph
 		 	for (vp = vertices(*sol->g); vp.first != vp.second; ++vp.first) {
-		 		
 		 		/// Compute the color degree for the vertex
 				cd = sol->getColorDegree(*vp.first);
 				
 				/// If the color degree of the selected vertex is less than that of
 				/// previous vertices in the same partition, and the partition is 
 				/// uncolored
-				if (cd < minDegree[sol->getPartition(*vp.first)] && sol->isPartitionColored(*vp.first)) {
+				if (cd < minDegree[sol->getPartition(*vp.first)] && !sol->isPartitionColored(*vp.first)) {
 					/// Set the minimal color degree for the vertex' partition to cd
 					minDegree[sol->getPartition(*vp.first)] = cd;
 					
 					/// If the vertex' color degree is more then the current maximum
 					/// degree, select the current node as the new target
-					if (cd > maxDegree) {
+					if (cd > maxDegree) {					
 						maxDegree = cd;
 						target = *vp.first;
 					}
