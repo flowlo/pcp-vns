@@ -10,7 +10,7 @@ namespace pcp {
 	bool checkValid(Solution* s);
 	
 	/// Implementation of VNS, see vns.hpp
-	Solution *vnsRun(Solution& best, Solution& orig, char* units, int unsuccessfulShake, 
+	Solution *vnsRun(Solution& best, Solution& orig, string units, int unsuccessfulShake, 
 						 int shakeStart, int shakeIncrement, int maxTime) {
 
 		/// Backup the starting solutions
@@ -27,21 +27,20 @@ namespace pcp {
 		
 		vector<VNS_Unit*> neighbors = vector<VNS_Unit*>();
 		
-		do {
-			if (*units == changeNode::abbreviation())
+		for (string::iterator i = units.begin(); i < units.end(); i++) {
+			if (*i == changeNode::abbreviation())
 				neighbors.push_back(new changeNode());
-			else if (*units == changeColor::abbreviation())
+			else if (*i == changeColor::abbreviation())
 				neighbors.push_back(new changeColor());
-			else if (*units == tabuSearch::abbreviation())
+			else if (*i == tabuSearch::abbreviation())
 				neighbors.push_back(new tabuSearch());
-			else if (*units == dsatur::abbreviation())
+			else if (*i == dsatur::abbreviation())
 				neighbors.push_back(new dsatur());
 			else {
-				cerr << "Invalid unit specified. " << *units << endl;
+				cerr << "Invalid unit specified. " << units << endl;
 				return NULL;
 			}
-		} while (*(++units) != '\0') ;
-		units = NULL;
+		}
 
 		/// Initialize stat-tracking arrays
 		int impStats[neighbors.size()];

@@ -2,7 +2,7 @@ CC=g++
 LD=g++
 PCH=
 CFLAGS=-Wall -std=c++11 -g -c
-LDFLAGS=
+LDFLAGS=-lboost_program_options
 OBJECTS=main.o parser.o oneStepCd.o vns.o unit.a
 HEADERS=header/vns.hpp$(PCH) header/pcp.hpp$(PCH) header/oneStepCd.hpp$(PCH) header/parser.hpp$(PCH) header/main.hpp$(PCH)
 PROG=pcp
