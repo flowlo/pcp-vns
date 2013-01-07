@@ -54,7 +54,7 @@ namespace pcp {
 					
 					/// If the vertex' color degree is more then the current maximum
 					/// degree, select the current node as the new target
-					if (cd > maxDegree) {					
+					if (cd > maxDegree) {			
 						maxDegree = cd;
 						target = *vp.first;
 					}

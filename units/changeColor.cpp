@@ -213,8 +213,7 @@ Solution *changeColor::shuffleSolution(Solution& cur, Solution& full,
 				 							  int numSteps) {
 	
 	Solution *ret = new Solution(&cur);
-	VertexPart_Map vParts = get(vertex_index1_t(), *ret->g);
-	std::vector<Vertex> uncolored;
+	vector<Vertex> uncolored;
 	
 	/// Reset all colors
 	for (int i = 0; i < ret->numParts; i++) {
@@ -222,39 +221,18 @@ Solution *changeColor::shuffleSolution(Solution& cur, Solution& full,
 		uncolored.push_back(i);
 	}
 	
-	std::random_shuffle(uncolored.begin(), uncolored.end());
+	random_shuffle(uncolored.begin(), uncolored.end());
 	/// Proceed until all nodes are colored
 	Vertex node = 0;
-	int colors[ret->numParts];
+	int color;
 	int maxColor = -1;
 	while (uncolored.size() != 0) {
 		node = uncolored.back();
 		uncolored.pop_back();
-		
-		for (int i = 0; i < ret->numParts; i++) {
-			colors[i] = 0;
-		}
-		
-		
-		typedef boost::graph_traits<Graph>::adjacency_iterator AdjIter;
-		pair<AdjIter, AdjIter> aIter;
-		for (aIter = adjacent_vertices(node, *ret->g); aIter.first != aIter.second; 
-			  aIter.first++) {
-			  
-			if (ret->partition[vParts[*aIter.first]] != -1) 
-				colors[ret->partition[vParts[*aIter.first]]] = 1;
-			
-		}
-		
-		for (int i = 0; i < ret->numParts; i++) { 
-			if (colors[i] == 0) {
-				ret->partition[vParts[node]] = i;
-				if (i > maxColor)
-					maxColor = i;
-					
-				break;
-			}
-		}
+		color = ret->minPossibleColor(node);
+		ret->setPartitionColor(node, color);
+		if (color > maxColor)
+			maxColor = color;
 	}
 	ret->colorsUsed = maxColor + 1;
 	

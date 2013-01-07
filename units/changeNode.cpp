@@ -107,9 +107,7 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 			clear_vertex(v, *s->g);	
 			vIndex[v] = rep;
 			
-			for (i = 0; i < s->numParts; i++) {
-				colors[i] = 0;
-			}
+			fill(colors, colors + s->numParts, 0);
 			
 			/// Search matching edges for replacement vertex
 			for (ai = adjacent_vertices(rep, *full.g); 
@@ -228,9 +226,7 @@ Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 			clear_vertex(v, *ret->g);
 			vIndex[v] = replacement;
 			
-			for (i = 0; i < ret->numParts; i++) {
-				colors[i] = 0;
-			}
+			fill(colors, colors + ret->numParts, 0);
 			
 			/// Search matching edges for replacement vertex
 			for (ai = adjacent_vertices(replacement, *full.g); 
