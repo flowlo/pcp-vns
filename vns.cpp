@@ -7,7 +7,7 @@ namespace pcp {
 	Solution bestSolution;
 	Solution origSolution;
 
-	bool checkValid(Solution* s);
+	bool checkValid(Solution* s, Solution* full);
 	
 	/// Implementation of VNS, see vns.hpp
 	Solution *vnsRun(Solution& best, Solution& orig, string units, int unsuccessfulShake, 
@@ -22,7 +22,7 @@ namespace pcp {
 			cout<<"Full solution uses "<<origSolution.colorsUsed<<" colors"<<endl;
 		}
 		if (DEBUG_LEVEL > 1) {
-			cout<<"The supplied solution is valid: "<<(checkValid(&best) ? "true": "false")<<endl;
+			cout<<"The supplied solution is valid: "<<(checkValid(&best, &orig) ? "true": "false")<<endl;
 		}
 		
 		vector<VNS_Unit*> neighbors = vector<VNS_Unit*>();
@@ -93,7 +93,7 @@ namespace pcp {
 					cout<<neigh->name()<<" took about ";
 					cout<<(clock() - start)/(float)CLOCKS_PER_SEC;
 					cout<<" seconds to complete"<<endl;
-					cout<<"Valid solution: "<<((checkValid(improved)) ? "true" : "false");
+					cout<<"Valid solution: "<<((checkValid(improved, &orig)) ? "true" : "false");
 					cout<<endl;
 				}
 				/// Replace the existing solution with the new solution if it is an
@@ -170,7 +170,7 @@ namespace pcp {
 			if (DEBUG_LEVEL > 1) {
 				cout<<"Shaking Solution using "<<shaker->name()<<" with ";
 				cout<<shakeSteps<<" steps"<<endl;
-				cout<<"Shake was valid: "<<((checkValid(toImprove)) ? "true" : "false")<<endl;
+				cout<<"Shake was valid: "<<((checkValid(toImprove, &orig)) ? "true" : "false")<<endl;
 				cout<<"Solution now uses "<<toImprove->colorsUsed<<" colors"<<endl;
 			}
 		}
@@ -179,7 +179,7 @@ namespace pcp {
 			cout<<"Final best solution uses "<<curBest->colorsUsed<<" colors";
 			cout<<endl;
 			cout<<"The solution appears to be ";
-			cout<<((checkValid(curBest)) ? "valid" : "invalid")<<endl;
+			cout<<((checkValid(curBest, &orig)) ? "valid" : "invalid")<<endl;
 		}
 		/// Print stats
 		if (DEBUG_LEVEL > 1) {
@@ -206,13 +206,15 @@ namespace pcp {
 	}
 	
 	/// validate solutions
-	bool checkValid(Solution* s) {
+	bool checkValid(Solution* s, Solution *full) {
 		pair<VertexIter, VertexIter> vIter;
 		int parts[s->numParts];
 		int colors[s->numParts];
 		typedef boost::graph_traits<Graph>::adjacency_iterator AdjIter;
+		pair<AdjIter, AdjIter> aIter;
 		VertexPart_Map vParts = get(boost::vertex_index1_t(), *s->g);
 		bool valid = true;
+		list<Vertex> allOrigIds;
 	
 		/// Initialize parts and colors
 		for (int i = 0; i < s->numParts; i++) {
@@ -226,8 +228,9 @@ namespace pcp {
 			parts[vParts[*vIter.first]] = 1;
 			colors[s->partition[vParts[*vIter.first]]] = 1;
 			
+			allOrigIds.push_back(s->getOriginalId(*vIter.first));
+			
 			/// Check color conflicts
-			pair<AdjIter, AdjIter> aIter;
 			for (aIter = adjacent_vertices(*vIter.first, *s->g); 
 				  aIter.first != aIter.second; aIter.first++) {
 			
@@ -271,6 +274,63 @@ namespace pcp {
 				cerr<<endl;
 			}
 		}
+		
+		/// Compares the solution to the full graph, to report missing edges, 
+		/// wrong adjacency and other bad stuff
+		list<Vertex> origAdj;
+		list<Vertex> curAdj;
+		
+		for (vIter = vertices(*s->g); vIter.first != vIter.second; 
+			  vIter.first++) {
+			
+			origAdj.clear();
+			curAdj.clear();
+			
+			Vertex toCompare = *vIter.first;
+			Vertex origComp = s->getOriginalId(toCompare);
+			
+			/// Fill in all adjacencies in the original graph
+			for (aIter = adjacent_vertices(origComp, *full->g); 
+				  aIter.first != aIter.second; aIter.first++) {
+				
+				origAdj.push_back(*aIter.first);
+			}
+			
+			/// Fill in all current adjacencies
+			for (aIter = adjacent_vertices(toCompare, *s->g); 
+				  aIter.first != aIter.second; aIter.first++) {
+				
+				curAdj.push_back(*aIter.first);
+			}
+			
+			/// Check if all current adjacencies are part of the original graph
+			list<Vertex>::iterator lIter, found;
+			for (lIter = curAdj.begin(); lIter != curAdj.end(); lIter++) {
+				found = find(origAdj.begin(), origAdj.end(), 
+								 s->getOriginalId(*lIter));
+								 
+				if (found == origAdj.end()) {
+					cerr<<"Edge ("<<*lIter<<"|"<<toCompare<<") is not in the";
+					cerr<<" original graph"<<endl;
+					valid = false;
+				}
+				else {
+					origAdj.erase(found);
+				}
+			}
+			
+			/// Check if there are missing adjacencies
+			for (lIter = origAdj.begin(); lIter != origAdj.end(); lIter++) {
+			
+				found = find(allOrigIds.begin(), allOrigIds.end(), *lIter);
+				if (found != allOrigIds.end()) {
+					cerr<<"Vertex "<<toCompare<<" seems to be an missing edge to ";
+					cerr<<"original vertex "<<*found<<endl;
+					valid = false;
+				}
+			}
+		}
+		
 	
 		return valid;
 	}
