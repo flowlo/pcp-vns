@@ -3,7 +3,7 @@
 using namespace std;
 using namespace pcp;
 using namespace boost;
-namespace po = boost::program_options;
+using namespace boost::program_options;
 
 Solution::Solution() {
 	this->g = new Graph(0);
@@ -83,28 +83,28 @@ int main(int argc, char* argv[]) {
 	
 	int unsuccessfulShake, shakeStart, shakeIncrement, maxTime;
 	
-	po::options_description options("General options");
+	options_description options("General options");
 	options.add_options()
 		("help,h", "produce help message")
-		("print,p", po::value<string>(&printFile), "set print file (*.gv)")
-		("debug,d", po::value<int>(&DEBUG_LEVEL)->default_value(0), "set debug level")
+		("print,p", value<string>(&printFile), "set print file (*.gv)")
+		("debug,d", value<int>(&DEBUG_LEVEL)->default_value(0), "set debug level")
 	;
 	
-	po::options_description vnsOptions("Variable Neighborhood Search options");
+	options_description vnsOptions("Variable Neighborhood Search options");
 	vnsOptions.add_options()
-		("units,n", po::value<string>(&units)->default_value("nc"), "set units")
-		("shakeStart,s", po::value<int>(&shakeStart)->default_value(0), "set shake start")
-		("shakeIncrement,i", po::value<int>(&shakeIncrement)->default_value(10), "set shake increment")
-		("unsuccessfulShake, u", po::value<int>(&unsuccessfulShake)->default_value(10), "set unsuccessful shake threshold")
-		("maxTime,t", po::value<int>(&maxTime)->default_value(10), "set VNS running time (seconds)")
+		("units,n", value<string>(&units)->default_value("nc"), "set units")
+		("shakeStart,s", value<int>(&shakeStart)->default_value(0), "set shake start")
+		("shakeIncrement,i", value<int>(&shakeIncrement)->default_value(10), "set shake increment")
+		("unsuccessfulShake, u", value<int>(&unsuccessfulShake)->default_value(10), "set unsuccessful shake threshold")
+		("maxTime,t", value<int>(&maxTime)->default_value(10), "set VNS running time (seconds)")
 	;
 	
-	po::options_description all("Allowed options");
+	options_description all("Allowed options");
 	all.add(options).add(vnsOptions);
 	
-	po::variables_map vm;
-	po::store(po::parse_command_line(argc, argv, all), vm);
-	po::notify(vm);
+	variables_map vm;
+	store(parse_command_line(argc, argv, all), vm);
+	notify(vm);
 	
 	if (vm.count("help")) {
 		cout << all << endl;
@@ -123,7 +123,7 @@ int main(int argc, char* argv[]) {
 	}
 	
 	if (vm.count("print")) {
-		out = new fstream(vm["print"].as<string>(), fstream::out);
+		out = new ofstream(vm["print"].as<string>());
 		if (out->fail()) {
 			cerr << "Error when trying to access file: " << vm["print"].as<string>() << endl;
 			return -1;
