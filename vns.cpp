@@ -289,6 +289,12 @@ namespace pcp {
 			Vertex toCompare = *vIter.first;
 			Vertex origComp = s->getOriginalId(toCompare);
 			
+			/// Check if the partitions match
+			if (s->getPartition(toCompare) != full->getPartition(origComp)) {
+				cerr<<"Vertex "<<toCompare<<" has other partition than the ";
+				cerr<<"original vertex "<<origComp<<endl;
+			}
+			
 			/// Fill in all adjacencies in the original graph
 			for (aIter = adjacent_vertices(origComp, *full->g); 
 				  aIter.first != aIter.second; aIter.first++) {
