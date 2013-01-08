@@ -78,7 +78,6 @@ int Solution::minPossibleColor(Vertex node) {
 int DEBUG_LEVEL = 2;
 
 int main(int argc, char* argv[]) {
-	ostream* out = &cout;
 	string units, printFile;
 	int unsuccessfulShake, shakeStart, shakeIncrement, maxTime;
 	
@@ -123,41 +122,38 @@ int main(int argc, char* argv[]) {
 		DEBUG_LEVEL = 0;
 	}
 	
-	if (vm.count("print")) {
-		out = new ofstream(vm["print"].as<string>());
-		if (out->fail()) {
-			cerr << "Error when trying to access file: " << vm["print"].as<string>() << endl;
-			return -1;
-		}
-	}
-	
 	Solution *fullG = new Solution();
 	
 	if (!readGraph(cin, *fullG)) {
-		cerr << "Error reading from stdin" << endl;
+		cerr << "Error reading from stdin!" << endl;
 	}
 	
 	Solution *onestep = onestepCD(*fullG);
 	
 	if (DEBUG_LEVEL > 2)
-		cout<<"Onestep solution uses "<<onestep->colorsUsed<<" colors"<<endl;
+		cout << "Onestep solution uses " << onestep->colorsUsed << " colors." << endl;
 	
 	Solution *best = vnsRun(*onestep, *fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), vm.count("checkFinal"));
 	
-	if (best == NULL) {
+	if (best == NULL)
 		return -1;
-	}
 	
-	VertexID_Map vertex_id = get(vertex_index2_t(), *best->g);
-	write_graphviz(*out, *best->g, make_label_writer(vertex_id));
-	
-	if (DEBUG_LEVEL > 1)
-		cout<<"Writing complete"<<endl;
-	
-	out->flush();
-	
-	if (out != &cout) {
-		((fstream*)out)->close();
+	if (vm.count("print")) {
+		ofstream out(vm["print"].as<string>());
+		
+		if (out.fail()) {
+			cerr << "Error when trying to access file: " << vm["print"].as<string>() << endl;
+			return -1;
+		}
+		
+		VertexID_Map vertex_id = get(vertex_index2_t(), *best->g);
+		write_graphviz(out, *best->g, make_label_writer(vertex_id));
+		
+		out.flush();
+		out.close();
+		
+		if (DEBUG_LEVEL > 1)
+			cout << "Printing to '" << vm["print"].as<string>() << "' done!" << endl;
 	}
 
 	return 0;
