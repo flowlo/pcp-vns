@@ -38,8 +38,7 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 			}
 		}
 	}
-	
-	typedef boost::graph_traits<Graph>::adjacency_iterator AdjIter;
+
 	pair<AdjIter, AdjIter> ai;
 	int colors[s->numParts];
 	int i = 0;

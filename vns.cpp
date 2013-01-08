@@ -32,8 +32,8 @@ namespace pcp {
 				neighbors.push_back(new changeNode());
 			else if (*i == changeColor::getStaticAbbreviation())
 				neighbors.push_back(new changeColor());
-			else if (*i == tabuSearch::getStaticAbbreviation())
-				neighbors.push_back(new tabuSearch());
+			/*else if (*i == tabuSearch::getStaticAbbreviation())
+				neighbors.push_back(new tabuSearch());*/
 			else if (*i == dsatur::getStaticAbbreviation())
 				neighbors.push_back(new dsatur());
 			else {
@@ -291,7 +291,6 @@ namespace pcp {
 		pair<VertexIter, VertexIter> vIter;
 		int parts[s->numParts];
 		int colors[s->numParts];
-		typedef boost::graph_traits<Graph>::adjacency_iterator AdjIter;
 		pair<AdjIter, AdjIter> aIter;
 		VertexPart_Map vParts = get(boost::vertex_index1_t(), *s->g);
 		bool valid = true;
