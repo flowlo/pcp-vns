@@ -34,6 +34,8 @@ namespace pcp {
 	/// Property map used to store the partition to which the vertex belongs
 	typedef boost::property_map<Graph, boost::vertex_index1_t>::type
 		VertexPart_Map;
+		
+	const std::string graphvizColors[17] = { "navyblue", "firebrick", "chartreuse4", "darkorange", "chocolate", "darkorchid", "gold", "darkseagreen", "coral", "steelblue", "seagreen", "violetred3", "yellowgreen", "wheat4", "salmon", "rosybrown", "olivedrab3" };
 	
 	/// Stores a Solution for the PCP-Problem
 	/// Contains the graph representing the solution, the number of
@@ -63,6 +65,8 @@ namespace pcp {
 			int getColorDegree(Vertex v);
 			
 			int minPossibleColor(Vertex v);
+			
+			void print(std::ostream& out);
 
 			/// Number of partitions in the PCP instance
 			int numParts;

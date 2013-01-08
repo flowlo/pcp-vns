@@ -75,6 +75,33 @@ int Solution::minPossibleColor(Vertex node) {
 	return -1;
 }
 
+void Solution::print(ostream& out) {
+	vector<string> partitions(this->numParts);
+	
+	pair<VertexIter, VertexIter> vp;
+	for (vp = vertices(*this->g); vp.first != vp.second; ++vp.first) {
+		partitions[this->getPartition(*vp.first)] += lexical_cast<string>(this->getOriginalId(*vp.first)) + ";\n";
+ 	}
+ 	
+ 	out << "graph pcp {" << endl;
+ 	out << "node [shape = circle]" << endl;
+ 	out << "style = rounded" << endl;
+ 	
+ 	int counter = 0;
+ 	for (vector<string>::iterator i = partitions.begin(); i < partitions.end(); i++) {
+ 		out << "\tsubgraph cluster" << counter << " {" << endl;
+ 		out << *i << endl;
+ 		out << "color=" << graphvizColors[counter++] << endl;
+ 		out << "}" << endl;
+ 	}
+ 	
+ 	graph_traits<Graph>::edge_iterator i, end;
+	for (tie(i, end) = edges(*this->g); i != end; i++)
+		out << lexical_cast<string>(getOriginalId(source(*i, *this->g))) << " -- " << lexical_cast<string>(getOriginalId(target(*i, *this->g))) << ";" << endl;
+ 	
+ 	out << "}" << endl;
+}
+
 int DEBUG_LEVEL = 2;
 
 int main(int argc, char* argv[]) {
@@ -148,10 +175,7 @@ int main(int argc, char* argv[]) {
 			cerr << "Error when trying to access file: " << vm["print"].as<string>() << endl;
 			return -1;
 		}
-		
-		VertexID_Map vertex_id = get(vertex_index2_t(), *best->g);
-		write_graphviz(out, *best->g, make_label_writer(vertex_id));
-		
+		best->print(out);
 		out.flush();
 		out.close();
 		
