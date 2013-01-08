@@ -80,24 +80,25 @@ void Solution::print(ostream& out) {
 	
 	pair<VertexIter, VertexIter> vp;
 	for (vp = vertices(*this->g); vp.first != vp.second; ++vp.first) {
-		partitions[this->getPartition(*vp.first)] += lexical_cast<string>(this->getOriginalId(*vp.first)) + ";\n";
+		partitions[this->getPartition(*vp.first)] += "\t\t" + lexical_cast<string>(this->getOriginalId(*vp.first)) + ";\n";
  	}
  	
  	out << "graph pcp {" << endl;
- 	out << "node [shape = circle]" << endl;
- 	out << "style = rounded" << endl;
+ 	out << "\tnode [shape = circle]" << endl;
+ 	out << "\tstyle = rounded" << endl;
  	
  	int counter = 0;
  	for (vector<string>::iterator i = partitions.begin(); i < partitions.end(); i++) {
  		out << "\tsubgraph cluster" << counter << " {" << endl;
  		out << *i << endl;
- 		out << "color=" << graphvizColors[partition[counter++]] << endl;
- 		out << "}" << endl;
+ 		out << "\t\tcolor = " << graphvizColors[partition[counter]] << endl;
+ 		out << "\t\tlabel = " << counter++ << endl;
+ 		out << "\t}" << endl;
  	}
  	
  	graph_traits<Graph>::edge_iterator i, end;
 	for (tie(i, end) = edges(*this->g); i != end; i++)
-		out << lexical_cast<string>(getOriginalId(source(*i, *this->g))) << " -- " << lexical_cast<string>(getOriginalId(target(*i, *this->g))) << ";" << endl;
+		out << "\t" << lexical_cast<string>(getOriginalId(source(*i, *this->g))) << " -- " << lexical_cast<string>(getOriginalId(target(*i, *this->g))) << ";" << endl;
  	
  	out << "}" << endl;
 }
