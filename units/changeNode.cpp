@@ -88,7 +88,8 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 		/// Find all vertices of the chosen partition
 		for (vIter = vertices(*full.g); vIter.first != vIter.second; 
 			  vIter.first++) {
-			if (vPartsOrig[*vIter.first] == part && *vIter.first != vIndex[v]) {
+			if (vPartsOrig[*vIter.first] == part && 
+				 (int)(*vIter.first) != vIndex[v]) {
 				if (DEBUG_LEVEL > 3) {
 					cout<<"Found node "<<*vIter.first<<" in partition "<<part<<endl;
 				}
@@ -116,8 +117,8 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 			for (ai = adjacent_vertices(rep, *full.g); 
 				  ai.first != ai.second; ai.first++) {
 				  
-				if (vIndex[s->representatives[vPartsOrig[*ai.first]]] == *ai.first
-					 && vPartsOrig[*ai.first] != vParts[v]) {
+				if (vIndex[s->representatives[vPartsOrig[*ai.first]]] == 
+					 (int)*ai.first && vPartsOrig[*ai.first] != vParts[v]) {
 					
 					add_edge(v, s->representatives[vPartsOrig[*ai.first]], *s->g);
 					colors[s->partition[vPartsOrig[*ai.first]]] = 1;
@@ -223,7 +224,7 @@ Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 		Vertex v = ret->representatives[part];
 		
 		/// If it isn't already the current chosen node
-		if (vIndex[ret->representatives[part]] != replacement) {
+		if (vIndex[ret->representatives[part]] != (int)replacement) {
 			
 			clear_vertex(v, *ret->g);
 			vIndex[v] = replacement;
@@ -234,8 +235,8 @@ Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 			for (ai = adjacent_vertices(replacement, *full.g); 
 				  ai.first != ai.second; ai.first++) {
 				  
-				if (vIndex[ret->representatives[vPartsOrig[*ai.first]]] == *ai.first
-					 && vPartsOrig[*ai.first] != part) {
+				if (vIndex[ret->representatives[vPartsOrig[*ai.first]]] == 
+					 (int)*ai.first && vPartsOrig[*ai.first] != part) {
 					
 					add_edge(v, ret->representatives[vPartsOrig[*ai.first]], *ret->g);
 					colors[ret->partition[vPartsOrig[*ai.first]]] = 1;
