@@ -91,7 +91,7 @@ void Solution::print(ostream& out) {
  	for (vector<string>::iterator i = partitions.begin(); i < partitions.end(); i++) {
  		out << "\tsubgraph cluster" << counter << " {" << endl;
  		out << *i << endl;
- 		out << "color=" << graphvizColors[counter++] << endl;
+ 		out << "color=" << graphvizColors[partition[counter++]] << endl;
  		out << "}" << endl;
  	}
  	
