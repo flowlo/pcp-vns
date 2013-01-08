@@ -12,5 +12,4 @@
 #include "parser.hpp"
 #include "oneStepCd.hpp"
 #include "vns.hpp"
-#include "vns-priv.hpp"
 #endif
