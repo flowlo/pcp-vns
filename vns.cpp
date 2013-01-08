@@ -11,7 +11,7 @@ namespace pcp {
 	
 	/// Implementation of VNS, see vns.hpp
 	Solution *vnsRun(Solution& best, Solution& orig, string units, int unsuccessfulShake, 
-						 int shakeStart, int shakeIncrement, int maxTime) {
+						 int shakeStart, int shakeIncrement, int maxTime, bool checkIntermediate, bool checkFinal) {
 
 		/// Backup the starting solutions
 		bestSolution = new Solution(best);
@@ -57,7 +57,7 @@ namespace pcp {
 			/// No time left, abort main loop
 			if (startTime + maxTime < time(NULL)) {
 				if (DEBUG_LEVEL > 0) {
-					cout<<"Time's up"<<endl;
+					cout << "Time's up! Aborting VNS ..." << endl;
 				}
 				break;
 			}
@@ -70,7 +70,7 @@ namespace pcp {
 				VNS_Unit *neigh = neighbors[curNeighbor];
 				
 				if (DEBUG_LEVEL > 1) {
-					cout<<"Running: "<< neigh->name() <<endl;
+					cout << "Running " << neigh->name() << " ..." << endl;
 				}
 				
 				/// Compute the minimum for this neighborhood
@@ -84,9 +84,7 @@ namespace pcp {
 				if (DEBUG_LEVEL > 1) {
 					cout<<neigh->name()<<" took about ";
 					cout<<(clock() - start)/(float)CLOCKS_PER_SEC;
-					cout<<" seconds to complete"<<endl;
-					cout<<"Valid solution: "<<((checkValid(improved, &orig)) ? "true" : "false");
-					cout<<endl;
+					cout<<" seconds to complete."<<endl;
 				}
 				/// Replace the existing solution with the new solution if it is an
 				/// improvement
@@ -95,8 +93,13 @@ namespace pcp {
 					toImprove = improved;
 					
 					if (DEBUG_LEVEL > 1) {
-						cout<<"Improvement found with "<<neigh->name()<<endl;
-						cout<<"Current solution uses "<<toImprove->colorsUsed<<" colors"<<endl;
+						cout << "Improvement found! ";
+						cout << "New solution uses " << toImprove->colorsUsed << " colors";
+						
+						if (checkIntermediate)
+							cout << " and is "<<((checkValid(improved, &orig)) ? "valid" : "invalid");
+						
+						cout << "." << endl;
 					}
 					
 					/// Restart neighborhoods
@@ -105,17 +108,16 @@ namespace pcp {
 				
 				/// Step to next neighborhood, no improvement found
 				else {
-					if (DEBUG_LEVEL > 1) {
-						cout<<"No improvement found"<<endl;
-						cout<<"Test next neighborhood"<<endl;
-					}
+					if (DEBUG_LEVEL > 1)
+						cout << "No improvement found." << endl;
+
 					delete improved;
 					curNeighbor++;
 				}
 				if (DEBUG_LEVEL > 1) {
 					cout<<endl;
 					cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
-					cout<<endl<<endl;
+					cout<<endl;
 				}
 			} // end while neighborhood
 			
@@ -129,7 +131,7 @@ namespace pcp {
 			/// solution
 			if (toImprove->colorsUsed < best.colorsUsed) {
 				if (DEBUG_LEVEL > 1) {
-					cout<<"Improvement to global best solution found"<<endl;
+					cout << "Improvement to global best solution found!" << endl;
 				}
 				
 				best = toImprove;
@@ -145,7 +147,7 @@ namespace pcp {
 				/// Stopping condition, quit VNS
 				if (no_imp_runs > unsuccessfulShake) {
 					if (DEBUG_LEVEL > 0) {
-						cout<<"Too many unsuccessful shakes"<<endl;
+						cout << "Too many unsuccessful shakes!" << endl;
 					}
 					break;
 				}
@@ -157,18 +159,24 @@ namespace pcp {
 			toImprove = shaker->shuffleSolution(*toImprove, orig, (shakeSteps += shakeIncrement));
 			
 			if (DEBUG_LEVEL > 1) {
-				cout<<"Shaking Solution using "<<shaker->name()<<" with ";
-				cout<<shakeSteps<<" steps"<<endl;
-				cout<<"Shake was valid: "<<((checkValid(toImprove, &orig)) ? "true" : "false")<<endl;
-				cout<<"Solution now uses "<<toImprove->colorsUsed<<" colors"<<endl;
+				cout << "Shaking Solution using " << shaker->name()<< " with ";
+				cout << shakeSteps << " steps returned a ";
+				
+				if (checkIntermediate)
+					cout << ((checkValid(toImprove, &orig)) ? "valid" : "invalid");
+				else
+					cout << "new";
+
+				cout << " solution using " << toImprove->colorsUsed << " colors." << endl;
 			}
 		}
 		if (DEBUG_LEVEL > 0) {
-			cout<<endl;
-			cout<<"Final best solution uses "<<curBest->colorsUsed<<" colors";
-			cout<<endl;
-			cout<<"The solution appears to be ";
-			cout<<((checkValid(curBest, &orig)) ? "valid" : "invalid")<<endl;
+			cout << "Final best solution uses " << curBest->colorsUsed << " colors";
+			
+			if (checkFinal)
+				cout << " and is " <<((checkValid(curBest, &orig)) ? "valid" : "invalid");
+				
+			cout << "." << endl;
 		}
 		/// Print stats
 		if (DEBUG_LEVEL > 1) {
@@ -390,7 +398,6 @@ namespace pcp {
 				}
 			}
 		}
-		
 	
 		return valid;
 	}

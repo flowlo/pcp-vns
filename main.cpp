@@ -80,7 +80,6 @@ int DEBUG_LEVEL = 2;
 int main(int argc, char* argv[]) {
 	ostream* out = &cout;
 	string units, printFile;
-	
 	int unsuccessfulShake, shakeStart, shakeIncrement, maxTime;
 	
 	options_description options("General options");
@@ -97,6 +96,8 @@ int main(int argc, char* argv[]) {
 		("shakeIncrement,i", value<int>(&shakeIncrement)->default_value(10), "set shake increment")
 		("unsuccessfulShake, u", value<int>(&unsuccessfulShake)->default_value(10), "set unsuccessful shake threshold")
 		("maxTime,t", value<int>(&maxTime)->default_value(10), "set VNS running time (seconds)")
+		("checkFinal,c", "disable final check after VNS has finished")
+		("checkIntermediate,m", "enable check after each improvement/shake")
 	;
 	
 	options_description all("Allowed options");
@@ -141,8 +142,7 @@ int main(int argc, char* argv[]) {
 	if (DEBUG_LEVEL > 2)
 		cout<<"Onestep solution uses "<<onestep->colorsUsed<<" colors"<<endl;
 	
-	Solution *best = vnsRun(*onestep, *fullG, units, unsuccessfulShake, 
-								  shakeStart, shakeIncrement, maxTime);
+	Solution *best = vnsRun(*onestep, *fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), vm.count("checkFinal"));
 	
 	if (best == NULL) {
 		return -1;
