@@ -170,11 +170,14 @@ namespace pcp {
 				cout << " solution using " << toImprove->colorsUsed << " colors." << endl;
 			}
 		}
+		bool isValid = false;
 		if (DEBUG_LEVEL > 0) {
 			cout << "Final best solution uses " << curBest->colorsUsed << " colors";
 			
-			if (checkFinal)
-				cout << " and is " <<((checkValid(curBest, &orig)) ? "valid" : "invalid");
+			if (checkFinal) {
+				isValid = checkValid(curBest, &orig);
+				cout << " and is " << (isValid ? "valid" : "invalid");
+			}
 				
 			cout << "." << endl;
 		}
@@ -183,6 +186,10 @@ namespace pcp {
 		cout << "  \"units\": \"" << units << "\"," << endl;
 		cout << "  \"improvement\" : " << (bestSolution.colorsUsed - curBest->colorsUsed) << "," << endl;
 		cout << "  \"colors\" : " << curBest->colorsUsed << "," << endl;
+		
+		if (checkFinal)
+			cout << "  \"valid\" : " << (isValid ? "true" : "false") << "," << endl;
+
 		cout << "  \"stats\": [" << endl;
 	
 		for (unsigned int i = 0; i < neighbors.size(); i++) {
@@ -244,20 +251,26 @@ namespace pcp {
 			cout << "          \"avg\" : " << allAvg.second << "," << endl;
 			cout << "          \"dev\" : " << allDev.second << endl;
 			cout << "        }" << endl;
-			cout << "      }," << endl;
-			cout << "      \"improving\" : {" << endl;
-			cout << "        \"runs\" : " << impCount << "," << endl;
-			cout << "        \"time\" : { " << endl;
-			cout << "          \"sum\" : " << imp.first << "," << endl;
-			cout << "          \"avg\" : " << impAvg.first << "," << endl;
-			cout << "          \"dev\" : " << impDev.first << endl;
-			cout << "        }," << endl;
-			cout << "        \"improvements\" : { " << endl;
-			cout << "          \"sum\" : " << imp.second << "," << endl;
-			cout << "          \"avg\" : " << impAvg.second << "," << endl;
-			cout << "          \"dev\" : " << impDev.second << endl;
-			cout << "        }" << endl;
-			cout << "      }" << endl;
+			cout << "      }";
+			if (impCount) {
+				cout << "," << endl;
+				cout << "      \"improving\" : {" << endl;
+				cout << "        \"runs\" : " << impCount << "," << endl;
+				cout << "        \"time\" : { " << endl;
+				cout << "          \"sum\" : " << imp.first << "," << endl;
+				cout << "          \"avg\" : " << impAvg.first << "," << endl;
+				cout << "          \"dev\" : " << impDev.first << endl;
+				cout << "        }," << endl;
+				cout << "        \"improvements\" : { " << endl;
+				cout << "          \"sum\" : " << imp.second << "," << endl;
+				cout << "          \"avg\" : " << impAvg.second << "," << endl;
+				cout << "          \"dev\" : " << impDev.second << endl;
+				cout << "        }" << endl;
+				cout << "      }" << endl;
+			}
+			else {
+				cout << endl;
+			}
 			cout << "    }";
 			
 			if (i != neighbors.size() - 1)
