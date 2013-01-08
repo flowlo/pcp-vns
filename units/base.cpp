@@ -1,15 +1,17 @@
 #include "../header/vns-priv.hpp"
 
 using namespace pcp;
+using namespace std;
 
-/// Returns a given name for the neighborhood
-const char* VNS_Unit::name() {
-	return "DUMMY";
+const string VNS_Unit::getName() {
+	return "";
 }
 
-/// Returns a given (unique) character used to quickly reference
-/// an unit via command line argument.
-const char VNS_Unit::abbreviation() {
+const char VNS_Unit::getAbbreviation() {
+	return getStaticAbbreviation();
+}
+
+const char VNS_Unit::getStaticAbbreviation() {
 	return '\0';
 }
 

@@ -4,11 +4,15 @@ using namespace pcp;
 using namespace std;
 using namespace boost;
 
-const char* tabuSearch::name() {
-	return "Tabu Search";
+const string tabuSearch::getName() {
+	return "tabuSearch";
 }
 
-const char tabuSearch::abbreviation() {
+const char tabuSearch::getAbbreviation() {
+	return getStaticAbbreviation();
+}
+
+const char tabuSearch::getStaticAbbreviation() {
 	return 't';
 }
 

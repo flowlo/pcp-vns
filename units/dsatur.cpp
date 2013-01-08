@@ -4,14 +4,15 @@ using namespace std;
 using namespace boost;
 using namespace pcp;
 
-/// Returns a given name for the neighborhood
-const char* dsatur::name() {
-	return "DSATUR";
+const string dsatur::getName() {
+	return "dsatur";
 }
 
-/// Returns a given (unique) character used to quickly reference
-/// an unit via command line argument.
-const char dsatur::abbreviation() {
+const char dsatur::getAbbreviation() {
+	return getStaticAbbreviation();
+}
+
+const char dsatur::getStaticAbbreviation() {
 	return 'd';
 }
 

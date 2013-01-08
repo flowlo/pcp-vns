@@ -28,13 +28,13 @@ namespace pcp {
 		vector<VNS_Unit*> neighbors = vector<VNS_Unit*>();
 		
 		for (string::iterator i = units.begin(); i < units.end(); i++) {
-			if (*i == changeNode::abbreviation())
+			if (*i == changeNode::getStaticAbbreviation())
 				neighbors.push_back(new changeNode());
-			else if (*i == changeColor::abbreviation())
+			else if (*i == changeColor::getStaticAbbreviation())
 				neighbors.push_back(new changeColor());
-			else if (*i == tabuSearch::abbreviation())
+			else if (*i == tabuSearch::getStaticAbbreviation())
 				neighbors.push_back(new tabuSearch());
-			else if (*i == dsatur::abbreviation())
+			else if (*i == dsatur::getStaticAbbreviation())
 				neighbors.push_back(new dsatur());
 			else {
 				cerr << "Invalid unit specified. " << units << endl;
@@ -70,7 +70,7 @@ namespace pcp {
 				VNS_Unit *neigh = neighbors[curNeighbor];
 				
 				if (DEBUG_LEVEL > 1) {
-					cout << "Running " << neigh->name() << " ..." << endl;
+					cout << "Running " << neigh->getName() << " ..." << endl;
 				}
 				
 				/// Compute the minimum for this neighborhood
@@ -82,7 +82,7 @@ namespace pcp {
 				stats[curNeighbor].push_back(pair<int, int>(clock() - start, improvement));
 				
 				if (DEBUG_LEVEL > 1) {
-					cout<<neigh->name()<<" took about ";
+					cout<<neigh->getName()<<" took about ";
 					cout<<(clock() - start)/(float)CLOCKS_PER_SEC;
 					cout<<" seconds to complete."<<endl;
 				}
@@ -159,7 +159,7 @@ namespace pcp {
 			toImprove = shaker->shuffleSolution(*toImprove, orig, (shakeSteps += shakeIncrement));
 			
 			if (DEBUG_LEVEL > 1) {
-				cout << "Shaking Solution using " << shaker->name()<< " with ";
+				cout << "Shaking Solution using " << shaker->getName()<< " with ";
 				cout << shakeSteps << " steps returned a ";
 				
 				if (checkIntermediate)
@@ -237,8 +237,8 @@ namespace pcp {
 			VNS_Unit *cur = neighbors[i];
 			
 			cout << "    {" << endl;
-			cout << "      \"name\" : \"" << cur->name() << "\"," << endl;
-			cout << "      \"abbreviation\" : \"" << cur->abbreviation() << "\"," << endl;
+			cout << "      \"name\" : \"" << cur->getName() << "\"," << endl;
+			cout << "      \"abbreviation\" : \"" << cur->getAbbreviation() << "\"," << endl;
 			cout << "      \"all\" : {" << endl;
 			cout << "        \"runs\" : " << stats[i].size() << "," << endl;
 			cout << "        \"time\" : { " << endl;

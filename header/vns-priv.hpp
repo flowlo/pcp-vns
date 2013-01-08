@@ -9,81 +9,64 @@ namespace pcp {
 	/// every neighborhood has to be inherited from this class
 	class VNS_Unit {
 		public:
-			/// Returns a given name for the neighborhood
-			virtual const char *name();
-			
-			/// Returns a given (unique) character used to quickly reference
-			/// an unit via command line argument.
-			static const char abbreviation();
-			
 			/// Compute the new improved solution of this neighborhood
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
-			
+
 			/// Shuffle a solution using the neighborhood as a base
 			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
+		
+			/// Returns a given name for the neighborhood
+			virtual const std::string getName();
+
+			/// Returns a given (unique) character used to quickly reference
+			/// an unit via command line argument.
+			virtual const char getAbbreviation();
+			static const char getStaticAbbreviation();
 	};
 	
 	class changeColor : public VNS_Unit {
 		public:
-			/// Returns a given name for the neighborhood
-			virtual const char *name();
-			
-			static const char abbreviation();
-			
-			/// Compute the new improved solution of this neighborhood
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
-			
-			/// Shuffle a solution using the neighborhood as a base
-			virtual Solution *shuffleSolution(Solution& cur, Solution& full,
-											  int numSteps);
+			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
+
+			virtual const std::string getName();
+			virtual const char getAbbreviation();
+			static const char getStaticAbbreviation();
 	};
 	
 	class changeNode : public VNS_Unit {
 		public:
-			/// Returns a given name for the neighborhood
-			virtual const char *name();
-			
-			static const char abbreviation();
-			
-			/// Compute the new improved solution of this neighborhood
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
+			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);								  
 			
-			/// Shuffle a solution using the neighborhood as a base
-			virtual Solution *shuffleSolution(Solution& cur, Solution& full,
-											  int numSteps);
+			virtual const std::string getName();
+			virtual const char getAbbreviation();
+			static const char getStaticAbbreviation();
 	};
 	
 	/// Implement a dummy tabu search, see VNS_Unit
 	class tabuSearch : public VNS_Unit {
 		public:
-			/// Returns a given name for the neighborhood
-			virtual const char *name();
-			
-			static const char abbreviation();
-			
-			/// Compute the new improved solution of this neighborhood
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
+			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
 			
-			/// Shuffle a solution using the neighborhood as a base
-			virtual Solution *shuffleSolution(Solution& cur, Solution& full,
-				 							  int numSteps);
+			virtual const std::string getName();
+			virtual const char getAbbreviation();
+			static const char getStaticAbbreviation();
+			
 		private:
 			int conflicts(Solution& s);
 	};
 	
 	class dsatur : public VNS_Unit {
 		public:
-			/// Returns a given name for the neighborhood
-			virtual const char *name();
-			
-			static const char abbreviation();
-			
-			/// Compute the new improved solution of this neighborhood
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
+			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
+
+			virtual const std::string getName();
+			virtual const char getAbbreviation();
+			static const char getStaticAbbreviation();
 			
-			/// Shuffle a solution using the neighborhood as a base
-			virtual Solution *shuffleSolution(Solution& cur, Solution& full,
-				 							  int numSteps);
 		private:
 			int conflicts(Solution& s);
 	};

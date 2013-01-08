@@ -4,12 +4,16 @@ using namespace pcp;
 using namespace std;
 using namespace boost;
 
-const char *changeColor::name() {
+const string changeColor::getName() {
 	return "changeColor";
 }
 
-const char changeColor::abbreviation() {
-	return 'c';
+const char changeColor::getAbbreviation() {
+	return getStaticAbbreviation();
+}
+
+const char changeColor::getStaticAbbreviation() {
+	return 'c' ;
 }
 
 Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {

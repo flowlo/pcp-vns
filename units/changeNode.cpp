@@ -4,11 +4,15 @@ using namespace std;
 using namespace boost;
 using namespace pcp;
 
-const char *changeNode::name() {
+const string changeNode::getName() {
 	return "changeNode";
 }
 
-const char changeNode::abbreviation() {
+const char changeNode::getAbbreviation() {
+	return getStaticAbbreviation();
+}
+
+const char changeNode::getStaticAbbreviation() {
 	return 'n';
 }
 
