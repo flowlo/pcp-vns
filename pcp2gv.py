@@ -18,6 +18,7 @@ i = 0
 for cluster in clusters:
 	print '\tsubgraph cluster' + str(i) + ' {'
 	print cluster
+	print '\t\tlabel = ' + str(i)
 	print '\t}'
 	i += 1
 
