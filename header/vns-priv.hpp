@@ -45,7 +45,7 @@ namespace pcp {
 	};
 	
 	/// Implement a dummy tabu search, see VNS_Unit
-	class tabuSearch : public VNS_Unit {
+	/*class tabuSearch : public VNS_Unit {
 		public:
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
 			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
@@ -56,7 +56,7 @@ namespace pcp {
 			
 		private:
 			int conflicts(Solution& s);
-	};
+	};*/
 	
 	class dsatur : public VNS_Unit {
 		public:

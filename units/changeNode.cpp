@@ -41,7 +41,6 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 		}
 	}
 	
-	typedef boost::graph_traits<Graph>::adjacency_iterator AdjIter;
 	pair<AdjIter, AdjIter> ai;
 	int colors[s->numParts];
 	int i = 0;
@@ -212,7 +211,6 @@ Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 	
 	VertexPart_Map vPartsOrig = get(vertex_index1_t(), *full.g);
 	VertexID_Map vIndex = get(vertex_index2_t(), *ret->g);
-	typedef boost::graph_traits<Graph>::adjacency_iterator AdjIter;
 	pair<AdjIter, AdjIter> ai;
 	int colors[ret->numParts];
 	int i = 0;

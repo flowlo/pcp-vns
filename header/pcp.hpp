@@ -27,6 +27,9 @@ namespace pcp {
 	/// Standard vertex_iterator
 	typedef boost::graph_traits<Graph>::vertex_iterator VertexIter;
 	
+	/// Iterator for adjacent vertices
+	typedef boost::graph_traits<Graph>::adjacency_iterator AdjIter;
+	
 	/// Property map used to store the "original" ID of a vertex
 	typedef boost::property_map<Graph, boost::vertex_index2_t>::type
 		VertexID_Map;

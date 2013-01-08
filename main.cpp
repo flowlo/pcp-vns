@@ -50,7 +50,7 @@ bool Solution::isPartitionColored(Vertex v) {
 
 int Solution::getColorDegree(Vertex node) {
 	int colored = 0;
-	typename graph_traits<Graph>::adjacency_iterator i, end;
+	AdjIter i, end;
 
 	for (tie(i, end) = adjacent_vertices(node, *this->g); i != end; i++)
 		if (this->isPartitionColored(*i))
@@ -62,7 +62,7 @@ int Solution::getColorDegree(Vertex node) {
 int Solution::minPossibleColor(Vertex node) {
 	bool colors[this->numParts];
 	fill(colors, colors + this->numParts, false);
-	typename graph_traits<Graph>::adjacency_iterator i, end;
+	AdjIter i, end;
 
 	for (tie(i, end) = adjacent_vertices(node, *this->g); i != end; i++)
 		if (this->isPartitionColored(*i))

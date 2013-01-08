@@ -4,12 +4,12 @@ PCH=
 CFLAGS=-Wall -std=c++11 -g -c
 LDFLAGS=-lboost_program_options
 OBJECTS=main.o parser.o oneStepCd.o vns.o unit.a
-HEADERS=header/vns.hpp$(PCH) header/pcp.hpp$(PCH) header/oneStepCd.hpp$(PCH) header/parser.hpp$(PCH) header/main.hpp$(PCH)
+HEADERS=header/vns.hpp$(PCH) header/oneStepCd.hpp$(PCH) header/parser.hpp$(PCH) header/main.hpp$(PCH)
 PROG=pcp
 
 all: gcc
 
-.PHONY: unit.a
+.PHONY: temp
 
 clang:
 	@$(MAKE) CC=clang++ LD=clang++ PCH=.pch $(PROG)
@@ -37,7 +37,7 @@ vns.o: vns.cpp header/vns-priv.hpp$(PCH)
 	@echo $(CC)": Compiling "$@
 	@$(CC) $(CFLAGS) -include header/vns-priv.hpp -o vns.o vns.cpp
 	
-unit.a:
+unit.a: temp
 	@cd units; $(MAKE) $(MFLAGS) unit.a
 
 header/vns-priv.hpp$(PCH): header/vns-priv.hpp header/pcp.hpp header/vns.hpp
@@ -47,10 +47,6 @@ header/vns-priv.hpp$(PCH): header/vns-priv.hpp header/pcp.hpp header/vns.hpp
 header/vns.hpp$(PCH): header/vns.hpp header/pcp.hpp
 	@echo $(CC)": Precompiling "$@
 	@$(CC) $(CFLAGS) -x c++-header header/vns.hpp -o header/vns.hpp$(PCH)
-
-header/pcp.hpp$(PCH): header/pcp.hpp
-	@echo $(CC)": Precompiling "$@
-	@$(CC) $(CFLAGS) -x c++-header header/pcp.hpp -o header/pcp.hpp$(PCH)
 
 header/main.hpp$(PCH): header/main.hpp header/pcp.hpp header/oneStepCd.hpp header/parser.hpp header/vns.hpp 
 	@echo $(CC)": Precompiling "$@
