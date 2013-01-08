@@ -79,7 +79,7 @@ int DEBUG_LEVEL = 2;
 
 int main(int argc, char* argv[]) {
 	string units, printFile;
-	int unsuccessfulShake, shakeStart, shakeIncrement, maxTime;
+	int unsuccessfulShake, shakeStart, shakeIncrement, maxTime, rSeed;
 	
 	options_description options("General options");
 	options.add_options()
@@ -97,6 +97,7 @@ int main(int argc, char* argv[]) {
 		("maxTime,t", value<int>(&maxTime)->default_value(10), "set VNS running time (seconds)")
 		("checkFinal,c", "disable final check after VNS has finished")
 		("checkIntermediate,m", "enable check after each improvement/shake")
+		("seed,r", value<int>(&rSeed)->default_value(time(NULL)), "set seed for random number generator")
 	;
 	
 	options_description all("Allowed options");
@@ -110,6 +111,8 @@ int main(int argc, char* argv[]) {
 		cout << all << endl;
 		return 0;
 	}
+	
+	srand(rSeed);
 	
 	if (DEBUG_LEVEL > 4) {
 		DEBUG_LEVEL = 4;
