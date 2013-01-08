@@ -156,6 +156,7 @@ int main(int argc, char* argv[]) {
 	
 	if (!readGraph(cin, *fullG)) {
 		cerr << "Error reading from stdin!" << endl;
+		return -1;
 	}
 	
 	Solution *onestep = onestepCD(*fullG);
