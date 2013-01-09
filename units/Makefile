@@ -6,10 +6,7 @@ ifeq ($(CXX),clang++)
 else ifeq ($(CXX),g++)
 	PCH=.gch
 endif
-CFLAGS=-Wall -std=c++11 -g -c
-ifeq ($(TRAVIS),true)
-        CFLAGS=-Wall -std=c++0x -g -c
-endif
+CFLAGS=-Wall -std=c++0x -g -c
 LDFLAGS=-lboost_program_options
 OBJECTS=$(patsubst %.cpp,%.o,$(wildcard *.cpp))
 HEADER=../header/vns-priv.hpp

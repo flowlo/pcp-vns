@@ -6,10 +6,7 @@ ifeq ($(CXX),clang++)
 else ifeq ($(CXX),g++)
 	PCH=.gch
 endif
-CFLAGS=-Wall -std=c++11 -g -c
-ifeq ($(TRAVIS),true)
-	CFLAGS=-Wall -std=c++0x -g -c
-endif
+CFLAGS=-Wall -std=c++0x -g -c
 LDFLAGS=-lboost_program_options
 OBJECTS=main.o parser.o oneStepCd.o vns.o unit.a
 HEADERS=header/vns.hpp$(PCH) header/oneStepCd.hpp$(PCH) header/parser.hpp$(PCH) header/main.hpp$(PCH)

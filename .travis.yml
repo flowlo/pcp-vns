@@ -1,8 +1,5 @@
 language: cpp
-compiler:
-  - gcc
-  - clang
-before_script: ./travis-deps.sh
+compiler: gcc
 script: make
 notifications:
   email:
