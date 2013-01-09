@@ -87,23 +87,28 @@ namespace pcp {
 
 	void removeOthers(Vertex node, Solution& s) {
 		pair<VertexIter, VertexIter> vp;
-		vp = vertices(*s.g);
-		vp.second--;
 		Vertex origNode = s.getOriginalId(node);
 		int part = s.getPartition(node);
+		list<Vertex> deletion;
 		
-		for (; vp.first != vp.second; --vp.second) {
-	 		if (origNode != s.getOriginalId(*vp.second) && 
-	 			 s.getPartition(*vp.second) == part) {
+		for (vp = vertices(*s.g); vp.first != vp.second; vp.first++) {
+	 		if (origNode != s.getOriginalId(*vp.first) && 
+	 			 s.getPartition(*vp.first) == part) {
 	 			 
-	 			clear_vertex(*vp.second, *s.g);
-	 			remove_vertex(*vp.second, *s.g);
-
+	 			deletion.push_back(*vp.first);
 				if (DEBUG_LEVEL > 3) {
-					cout<<"remove vertex "<<*vp.second<<endl;
+					cout<<"Marked vertex "<<*vp.second<<" for deletion"<<endl;
 				}
 	 		}
 	 	}
+	 	
+	 	while (deletion.size() != 0) {
+	 		Vertex n = deletion.back();
+	 		clear_vertex(n, *s.g);
+	 		remove_vertex(n, *s.g);
+	 		deletion.pop_back();
+	 	}
+	 	
 	 	if (DEBUG_LEVEL > 3) {
 	 		cout<<"removeOthers complete"<<endl;
 	 	}
