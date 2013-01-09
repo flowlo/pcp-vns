@@ -1,6 +1,6 @@
 ## pcp-vns
 
-[![Build Status](https://secure.travis-ci.org/flowlo/pcp-vns.png?branch=master)](http://travis-ci.org/flowlo/pcp-vns)
+[![Build Status](https://travis-ci.org/flowlo/pcp-vns.png?branch=master)](https://travis-ci.org/flowlo/pcp-vns)
 
 A VNS approach to solve the Partition Graph Coloring Problem.
 
