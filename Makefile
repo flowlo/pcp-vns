@@ -17,7 +17,7 @@ PROG=pcp
 
 $(PROG): $(OBJECTS)
 	@echo $(LD)": Linking executable "$(PROG)
-	@$(LD) $(LDFLAGS) $(OBJECTS) -o $(PROG)
+	@$(LD) $(OBJECTS) $(LDFLAGS) -o $(PROG)
 	
 main.o: main.cpp $(HEADERS)
 	@echo $(CXX)": Compiling "$@
