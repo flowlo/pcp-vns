@@ -4,3 +4,9 @@ compiler:
   - clang
 before_script: sudo apt-get install -qq libboost-all-dev libboost-dbg
 script: make
+notifications:
+  email:
+    recipients:
+      - lorenz.leutgeb@gmail.com
+    on_success: never
+    on_failure: change
