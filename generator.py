@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys, random
-from sys import argv
+from sys import argv, stderr, exit
 from random import randint, sample
 
 if len(argv) >= 4:
@@ -12,9 +12,19 @@ else:
 	print 'Usage: ' + argv[0] + ' <vertices> <edges> <partitions> [<seed>]'
 	sys.exit(0)
 
+if vertices < 1 or edges < 1 or partitions < 1:
+	print >> stderr, 'The number of vertices, edges and partitions must be greater than zero!'
+	exit(1)
+
+if vertices < partitions:
+	print >> stderr, 'The number of vertices must be greater than or equal to the number of partitions!'
+	exit(2)
+
 print ' '.join(argv[1:4])
 print '\n'.join(str(partition) for partition in sample(range(0, partitions), partitions))
-print '\n'.join(str(randint(0, partitions)) for i in range(partitions, vertices))
+
+if vertices > partitions:
+	print '\n'.join(str(randint(0, partitions - 1)) for i in range(partitions, vertices))
 
 edge = [None, None]
 edgeList = [edge]
