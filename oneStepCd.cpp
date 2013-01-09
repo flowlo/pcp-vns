@@ -77,28 +77,51 @@ namespace pcp {
 			sol->representatives[sol->getPartition(*vp.first)] = *vp.first;
 		
 		sol->colorsUsed = numColors + 1;
+		
+		if (DEBUG_LEVEL > 3) {
+			cout<<"onestepCD complete"<<endl;
+		}
+		
 		return sol;
 	}
 
 	void removeOthers(Vertex node, Solution& s) {
 		pair<VertexIter, VertexIter> vp;
+		vp = vertices(*s.g);
+		vp.second--;
+		Vertex origNode = s.getOriginalId(node);
+		int part = s.getPartition(node);
 		
-		for (vp = vertices(*s.g); vp.first != vp.second; ++vp.first) {
-	 		if (node != *vp.first && s.getPartition(*vp.first) == s.getPartition(node)) {
-	 			clear_vertex(*vp.first, *s.g);
-	 			remove_vertex(*vp.first, *s.g);
+		for (; vp.first != vp.second; --vp.second) {
+	 		if (origNode != s.getOriginalId(*vp.second) && 
+	 			 s.getPartition(*vp.second) == part) {
+	 			 
+	 			clear_vertex(*vp.second, *s.g);
+	 			remove_vertex(*vp.second, *s.g);
 
-	 			// TODO clean this shit
-	 			if (vp.first-- == vp.second - 1)
-	 				break;
+				if (DEBUG_LEVEL > 3) {
+					cout<<"remove vertex "<<*vp.second<<endl;
+				}
 	 		}
+	 	}
+	 	if (DEBUG_LEVEL > 3) {
+	 		cout<<"removeOthers complete"<<endl;
 	 	}
 	}
 
 	void removePartEdges(Solution& s) {
 		graph_traits<Graph>::edge_iterator i, end;
-		for (tie(i, end) = edges(*s.g); i != end; i++)
-			if (s.getPartition(source(*i, *s.g)) == s.getPartition(target(*i, *s.g)))
+		for (tie(i, end) = edges(*s.g); i != end; i++) {
+			if (s.getPartition(source(*i, *s.g)) == s.getPartition(target(*i, *s.g))) {
+				if (DEBUG_LEVEL > 3) {
+					cout<<"Remove edge "<<*i<<endl;
+				}
 				remove_edge(*i--, *s.g);
+			}
+		}
+		
+		if (DEBUG_LEVEL > 3) {
+			cout<<"removePartEdges complete"<<endl;
+		}
 	}
 }

@@ -160,6 +160,10 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 	
+	if (DEBUG_LEVEL > 3) {
+		cout<<"Begin Onestep"<<endl;
+	}
+	
 	Solution *onestep = onestepCD(*fullG);
 	
 	if (DEBUG_LEVEL > 2)
