@@ -34,7 +34,13 @@ int main(int argc, char* argv[]) {
 	all.add(options).add(vnsOptions);
 	
 	variables_map vm;
-	store(parse_command_line(argc, argv, all), vm);
+	try {
+		store(parse_command_line(argc, argv, all), vm);
+	}
+	catch(const boost::bad_any_cast& ex) {
+		cerr<<ex.what()<<endl;
+		return -1;
+	}
 	notify(vm);
 	
 	if (vm.count("help")) {
@@ -90,6 +96,8 @@ int main(int argc, char* argv[]) {
 		if (DEBUG_LEVEL > 1)
 			cout << "Printing to '" << vm["print"].as<string>() << "' done!" << endl;
 	}
+	delete best;
+	delete fullG;
 
 	return 0;
 }

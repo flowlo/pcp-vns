@@ -84,7 +84,7 @@ int Solution::minPossibleColor(Vertex node) {
 }
 
 Solution* Solution::fromPcpStream(istream& in) {
-	Solution *s = new Solution();
+	Solution *s = new Solution;
 
 	/// Convenient tokenizer to seperate the input string
 	typedef boost::tokenizer<boost::char_separator<char> > Tok;
@@ -106,12 +106,14 @@ Solution* Solution::fromPcpStream(istream& in) {
 	
 	/// Read first line and store the parameters in nums array
 	getline(in, buffer);
-	Tok tok(buffer, sep);
-	Tok::iterator iter = tok.begin(); 
+	Tok *tok = new Tok(buffer, sep);
+	Tok::iterator iter = tok->begin(); 
+	
 	int i;
-	for (i = 0; i < 3 && iter != tok.end(); i++)
+	for (i = 0; i < 3 && iter != tok->end(); i++)
 		nums[i] = atoi((*iter++).c_str());
 	
+	delete tok;
 	if (DEBUG_LEVEL > 3) {
 		cout<<"Read: vertices: "<<nums[vertices]<<" edges: "<<nums[edges];
 		cout<<" partitions: "<<nums[parts]<<endl;
@@ -166,7 +168,7 @@ Solution* Solution::fromPcpStream(istream& in) {
 }
 
 Solution* Solution::fromColStream(istream& in) {
-	Solution *s = new Solution();
+	Solution *s = new Solution;
 
 	char buffer[PARSER_COL_BUFFERSIZE];
 
