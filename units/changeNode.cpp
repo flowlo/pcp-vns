@@ -42,7 +42,7 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 	}
 	
 	pair<AdjIter, AdjIter> ai;
-	int colors[s->numParts];
+	int *colors = new int[s->numParts];
 	int i = 0;
 	int iter = 0;
 	std::vector<Vertex> conflicts;
@@ -203,6 +203,7 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 			s = temp;
 		}
 	}
+	delete[] colors;
 	return s;
 }
 
@@ -213,7 +214,7 @@ Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 	VertexPart_Map vPartsOrig = get(vertex_index1_t(), *full.g);
 	VertexID_Map vIndex = get(vertex_index2_t(), *ret->g);
 	pair<AdjIter, AdjIter> ai;
-	int colors[ret->numParts];
+	int *colors = new int[ret->numParts];
 	int i = 0;
 	
 	for (int a = 0; a < numSteps; a++) {
@@ -295,7 +296,7 @@ Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 			}
 		}
 	}
-	
+	delete[] colors;
 	ret->colorsUsed = maxColor + 1;
 	return ret;
 }
