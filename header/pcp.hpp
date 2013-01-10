@@ -51,6 +51,8 @@ namespace pcp {
 
 			/// Deep-copies the specified Solution
 			Solution(Solution *s);
+			
+			~Solution();
 
 			/// Graph representating the PCP instance
 			Graph *g;

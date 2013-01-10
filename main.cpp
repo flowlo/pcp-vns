@@ -28,6 +28,12 @@ Solution::Solution(Solution *toCopy) {
 	this->idMap = get(vertex_index2_t(), *this->g);
 }
 
+Solution::~Solution() {
+//	delete g;
+//	delete partition;
+//	delete representatives;
+}
+
 int Solution::getPartition(Vertex v) {
 	return get(this->partitionMap, v);
 }
