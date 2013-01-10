@@ -4,9 +4,8 @@
 using namespace std;
 
 namespace pcp {
-	Solution bestSolution;
-	Solution origSolution;
-
+	Solution *bestSolution;
+	
 	bool checkValid(Solution* s, Solution* full);
 	
 	/// Implementation of VNS, see vns.hpp
@@ -15,11 +14,10 @@ namespace pcp {
 
 		/// Backup the starting solutions
 		bestSolution = new Solution(&best);
-		origSolution = new Solution(&orig);
 		
 		if (DEBUG_LEVEL > 1) {
-			cout<<"Best solution uses "<<bestSolution.colorsUsed<<" colors"<<endl;
-			cout<<"Full solution uses "<<origSolution.colorsUsed<<" colors"<<endl;
+			cout<<"Best solution uses "<<bestSolution->colorsUsed<<" colors"<<endl;
+			cout<<"Full solution uses "<<orig.colorsUsed<<" colors"<<endl;
 		}
 		if (DEBUG_LEVEL > 1) {
 			cout<<"The supplied solution is valid: "<<(checkValid(&best, &orig) ? "true": "false")<<endl;
@@ -133,15 +131,16 @@ namespace pcp {
 				if (DEBUG_LEVEL > 1) {
 					cout << "Improvement to global best solution found!" << endl;
 				}
-				
-				best = toImprove;
+				delete curBest;
+				curBest = toImprove;
 				toImprove = new Solution(curBest);
 				no_imp_runs = 0;
 				shakeSteps = shakeStart - shakeIncrement;
 			}
 			/// Reset local best solution to global best Solution
 			else {
-				toImprove = curBest;
+				delete toImprove;
+				toImprove = new Solution(curBest);
 				no_imp_runs++;
 
 				/// Stopping condition, quit VNS
@@ -156,14 +155,26 @@ namespace pcp {
 			int shakeNeighbor = rand() % neighbors.size();
 			curNeighbor = 0;
 			VNS_Unit *shaker = neighbors[shakeNeighbor];
-			toImprove = shaker->shuffleSolution(*toImprove, orig, (shakeSteps += shakeIncrement));
+			Solution* t = shaker->shuffleSolution(*toImprove, orig, (shakeSteps += shakeIncrement));
+			
+			bool checkResult = false;
+			if (checkIntermediate) {
+				checkResult = checkValid(toImprove, &orig);
+				if (!checkResult) {
+					delete t;
+					t = new Solution(toImprove);
+				}
+			}
+			
+			delete toImprove;
+			toImprove = t;
 			
 			if (DEBUG_LEVEL > 1) {
 				cout << "Shaking Solution using " << shaker->getName()<< " with ";
 				cout << shakeSteps << " steps returned a ";
 				
 				if (checkIntermediate)
-					cout << ((checkValid(toImprove, &orig)) ? "valid" : "invalid");
+					cout << (checkResult ? "valid" : "invalid");
 				else
 					cout << "new";
 
@@ -186,7 +197,7 @@ namespace pcp {
 		/// Print stats
 		cout << "{" << endl;
 		cout << "  \"units\": \"" << units << "\"," << endl;
-		cout << "  \"improvement\" : " << (bestSolution.colorsUsed - curBest->colorsUsed) << "," << endl;
+		cout << "  \"improvement\" : " << (bestSolution->colorsUsed - curBest->colorsUsed) << "," << endl;
 		cout << "  \"colors\" : " << curBest->colorsUsed << "," << endl;
 		
 		if (checkFinal)
@@ -284,15 +295,19 @@ namespace pcp {
 		cout << "  ]" << endl;
 		cout << "}" << endl;
 	
+		Solution* res = new Solution(curBest);	
+		delete[] stats;
+		delete curBest;
+		delete toImprove;
 		
-		return new Solution(curBest);
+		return res;
 	}
 	
 	/// validate solutions
 	bool checkValid(Solution* s, Solution *full) {
 		pair<VertexIter, VertexIter> vIter;
-		int parts[s->numParts];
-		int colors[s->numParts];
+		int *parts = new int[s->numParts];
+		int *colors = new int[s->numParts];
 		pair<AdjIter, AdjIter> aIter;
 		VertexPart_Map vParts = get(boost::vertex_index1_t(), *s->g);
 		bool valid = true;
@@ -418,7 +433,9 @@ namespace pcp {
 				}
 			}
 		}
-	
+		delete[] parts;
+		delete[] colors;
+			
 		return valid;
 	}
 }

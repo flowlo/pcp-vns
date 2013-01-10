@@ -73,5 +73,5 @@ Solution* dsatur::findLocalMin(Solution& curBest, Solution& full) {
 
 /// Shuffle a solution using the neighborhood as a base
 Solution* dsatur::shuffleSolution(Solution& cur, Solution& full, int numSteps) {
-	return &cur;
+	return new Solution(&cur);
 }

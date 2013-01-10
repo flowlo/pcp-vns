@@ -29,9 +29,9 @@ Solution::Solution(Solution *toCopy) {
 }
 
 Solution::~Solution() {
-//	delete g;
-//	delete partition;
-//	delete representatives;
+	delete g;
+	delete[] partition;
+	delete[] representatives;
 }
 
 int Solution::getPartition(Vertex v) {
@@ -66,7 +66,7 @@ int Solution::getColorDegree(Vertex node) {
 }
 
 int Solution::minPossibleColor(Vertex node) {
-	bool colors[this->numParts];
+	bool* colors = new bool[this->numParts];
 	fill(colors, colors + this->numParts, false);
 	AdjIter i, end;
 
@@ -74,9 +74,12 @@ int Solution::minPossibleColor(Vertex node) {
 		if (this->isPartitionColored(*i))
 			colors[this->partition[this->getPartition(*i)]] = true;
 
-	for (int i = 0; i < this->numParts; i++)
-		if (!colors[i])
+	for (int i = 0; i < this->numParts; i++) {
+		if (!colors[i]) {
+			delete[] colors;
 			return i;
+		}
+	}
 
 	return -1;
 }
