@@ -15,12 +15,15 @@ namespace pcp {
 			/// Shuffle a solution using the neighborhood as a base
 			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
 		
+			virtual ~VNS_Unit();
+			
 			/// Returns a given name for the neighborhood
 			virtual const std::string getName();
 
 			/// Returns a given (unique) character used to quickly reference
 			/// an unit via command line argument.
 			virtual const char getAbbreviation();
+			
 			static const char getStaticAbbreviation();
 	};
 	
