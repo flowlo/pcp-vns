@@ -14,8 +14,8 @@ namespace pcp {
 						 int shakeStart, int shakeIncrement, int maxTime, bool checkIntermediate, bool checkFinal) {
 
 		/// Backup the starting solutions
-		bestSolution = new Solution(best);
-		origSolution = new Solution(orig);
+		bestSolution = new Solution(&best);
+		origSolution = new Solution(&orig);
 		
 		if (DEBUG_LEVEL > 1) {
 			cout<<"Best solution uses "<<bestSolution.colorsUsed<<" colors"<<endl;
