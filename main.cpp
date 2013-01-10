@@ -121,7 +121,7 @@ int main(int argc, char* argv[]) {
 		("units,n", value<string>(&units)->default_value("nc"), "set units")
 		("shakeStart,s", value<int>(&shakeStart)->default_value(0), "set shake start")
 		("shakeIncrement,i", value<int>(&shakeIncrement)->default_value(10), "set shake increment")
-		("unsuccessfulShake, u", value<int>(&unsuccessfulShake)->default_value(10), "set unsuccessful shake threshold")
+		("unsuccessfulShake,u", value<int>(&unsuccessfulShake)->default_value(10), "set unsuccessful shake threshold")
 		("maxTime,t", value<int>(&maxTime)->default_value(10), "set VNS running time (seconds)")
 		("checkFinal,c", "disable final check after VNS has finished")
 		("checkIntermediate,m", "enable check after each improvement/shake")
