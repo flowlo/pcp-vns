@@ -8,7 +8,7 @@ using namespace boost::program_options;
 int DEBUG_LEVEL = 2;
 
 int main(int argc, char* argv[]) {
-	string units, printFile;
+	string units, printFile, inputFile;
 	int unsuccessfulShake, shakeStart, shakeIncrement, maxTime, rSeed;
 	
 	options_description options("General options");
@@ -16,6 +16,7 @@ int main(int argc, char* argv[]) {
 		("help,h", "produce help message")
 		("print,p", value<string>(&printFile), "set print file (*.gv)")
 		("debug,d", value<int>(&DEBUG_LEVEL)->default_value(0), "set debug level")
+		("input,i", value<string>(&inputFile), "specify file to read")
 	;
 	
 	options_description vnsOptions("Variable Neighborhood Search options");

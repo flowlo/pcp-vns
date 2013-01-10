@@ -84,52 +84,25 @@ int Solution::minPossibleColor(Vertex node) {
 }
 
 Solution* Solution::fromPcpStream(istream& in) {
-	Solution *s = new Solution;
-
-	/// Convenient tokenizer to seperate the input string
-	typedef boost::tokenizer<boost::char_separator<char> > Tok;
-	boost::char_separator<char> sep; // default constructed
+	Solution *s = new Solution();
+	char buffer[PARSE_BUFFERSIZE];
 	
-	/// Used to stores lines from the inputstream
-	std::string buffer;
-
+	in.getline(buffer, PARSE_BUFFERSIZE, ' ');
+	int vertices = atoi(buffer);
+	in.getline(buffer, PARSE_BUFFERSIZE, ' ');
+	int edges = atoi(buffer);
+	in.getline(buffer, PARSE_BUFFERSIZE);
+	int partitions = atoi(buffer);
 	if (DEBUG_LEVEL > 3) {
-		cout<<"Reading from stdin"<<endl;
-	}
-	/// for easy access of the input parameters
-	enum {
-		vertices = 0,
-		edges = 1,
-		parts = 2
-	};
-	int nums[3]; // store first line numbers
-	
-	/// Read first line and store the parameters in nums array
-	getline(in, buffer);
-	Tok *tok = new Tok(buffer, sep);
-	Tok::iterator iter = tok->begin(); 
-	
-	int i;
-	for (i = 0; i < 3 && iter != tok->end(); i++)
-		nums[i] = atoi((*iter++).c_str());
-	
-	delete tok;
-	if (DEBUG_LEVEL > 3) {
-		cout<<"Read: vertices: "<<nums[vertices]<<" edges: "<<nums[edges];
-		cout<<" partitions: "<<nums[parts]<<endl;
-	}
-	
-	/// If the first line was malformed
-	if (i != 3) {
-		cerr<<"Wrong number of firstline arguments"<<endl;
-		return NULL;
+		cout << "Read " << vertices << " vertices, " << edges << " edges and ";
+		cout << partitions << " partitons." << endl;
 	}
 	
 	/// Initialize the solution to the read parameters
-	s->partition = new int[nums[parts]];
-	s->representatives = new int[nums[parts]];
-	s->numParts = nums[parts];
-	s->colorsUsed = nums[parts];
+	s->partition = new int[partitions];
+	s->representatives = new int[partitions];
+	s->numParts = partitions;
+	s->colorsUsed = partitions;
 
 	/// Initialize the property maps for partition and vertexID
 	VertexID_Map vertex_id = get(vertex_index2_t(), *s->g);
@@ -137,40 +110,42 @@ Solution* Solution::fromPcpStream(istream& in) {
 
 	/// Read partition info and store it into the property map, do the same 
 	/// for the "original" vertexID, so they can be compared on all graph
-	for (i = 0; i < nums[vertices]; i++) {
-		getline(in, buffer);
+	int i;
+	for (i = 0; i < vertices; i++) {
+		in.getline(buffer, PARSE_BUFFERSIZE);
+		
 		Vertex v = add_vertex(*s->g);
-		put(vertex_part, v, atoi(buffer.c_str())); 
+		put(vertex_part, v, atoi(buffer)); 
 		put(vertex_id, v, i);
 		
-		if (DEBUG_LEVEL > 3) {
-			cout<<"Added vertex "<<i<<" to partition "<<atoi(buffer.c_str())<<endl;
-		}
+		if (DEBUG_LEVEL > 3)
+			cout << "Added vertex " << i << " to partition " << buffer << "." << endl;
 	}
 
 	/// Read the input for edges between to vertices and add them to the 
 	/// solution graph
-	for (i = 0; i < nums[edges]; i++) {
-		getline(in, buffer, ' ');
-		int v1 = atoi(buffer.c_str());
-		getline(in, buffer);
-		int v2 = atoi(buffer.c_str());
+	for (i = 0; i < edges; i++) {
+		in.getline(buffer, PARSE_BUFFERSIZE, ' ');
+		int source = atoi(buffer);
+		in.getline(buffer, PARSE_BUFFERSIZE);
+		int target = atoi(buffer);
 	
 		if (DEBUG_LEVEL > 3) {
-			cout<<"Added edge ("<<v1<<"|"<<v2<<")"<<endl;
+			cout << "Added edge (" << source << "|" << target << ")" << endl;
 		}
-		add_edge(v1, v2, *s->g);
+		add_edge(source, target, *s->g);
 	}
-	if (DEBUG_LEVEL > 3) {
-		cout<<"Reading input finished"<<endl;
-	}
+	
+	if (DEBUG_LEVEL > 3)
+		cout << "Parsing input finished successfully!" << endl;
+
 	return s;
 }
 
 Solution* Solution::fromColStream(istream& in) {
 	Solution *s = new Solution;
 
-	char buffer[PARSER_COL_BUFFERSIZE];
+	char buffer[PARSE_BUFFERSIZE];
 
 	if (DEBUG_LEVEL > 3) {
 		cout << "Reading from stdin" << endl;
@@ -181,16 +156,16 @@ Solution* Solution::fromColStream(istream& in) {
 		in.ignore(numeric_limits<streamsize>::max(), '\n');
 
 	in.get();
-	in.getline(buffer, PARSER_COL_BUFFERSIZE, ' ');
+	in.getline(buffer, PARSE_BUFFERSIZE, ' ');
 
 	if (strcmp(buffer, "edge") != 0) {
 		cerr << "This parser is unable to read files using a FORMAT other than 'edge' ('" << buffer << "' specified)" << endl;
 		return NULL;
 	}
 
-	in.getline(buffer, PARSER_COL_BUFFERSIZE, ' ');
+	in.getline(buffer, PARSE_BUFFERSIZE, ' ');
 	int vertices = atoi(buffer);
-	in.getline(buffer, PARSER_COL_BUFFERSIZE);
+	in.getline(buffer, PARSE_BUFFERSIZE);
 	int edges = atoi(buffer);
 	
 	if (DEBUG_LEVEL > 3)
@@ -214,9 +189,9 @@ Solution* Solution::fromColStream(istream& in) {
 			continue;
 		}
 		in.get();
-		in.getline(buffer, PARSER_COL_BUFFERSIZE, ' ');
+		in.getline(buffer, PARSE_BUFFERSIZE, ' ');
 		int source = atoi(buffer);
-		in.getline(buffer, PARSER_COL_BUFFERSIZE);
+		in.getline(buffer, PARSE_BUFFERSIZE);
 		int target = atoi(buffer);
 		
 		if (!(source < vertices && target << vertices)) {
