@@ -83,7 +83,7 @@ int Solution::minPossibleColor(Vertex node) {
 	return -1;
 }
 
-Solution Solution::fromPcpStream(istream& in) {
+Solution* Solution::fromPcpStream(istream& in) {
 	Solution *s = new Solution();
 
 	/// Convenient tokenizer to seperate the input string
@@ -165,7 +165,7 @@ Solution Solution::fromPcpStream(istream& in) {
 	return s;
 }
 
-Solution Solution::fromColStream(istream& in) {
+Solution* Solution::fromColStream(istream& in) {
 	Solution *s = new Solution();
 
 	char buffer[PARSER_COL_BUFFERSIZE];
