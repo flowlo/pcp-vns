@@ -170,15 +170,16 @@ namespace pcp {
 				cout << " solution using " << toImprove->colorsUsed << " colors." << endl;
 			}
 		}
-		bool isValid = false, checkedFinal = false;
+		bool isValid = false;
+		
+		if (checkFinal)
+			isValid = checkValid(curBest, &orig);
+		
 		if (DEBUG_LEVEL > 0) {
 			cout << "Final best solution uses " << curBest->colorsUsed << " colors";
 			
-			if (checkFinal) {
-				isValid = checkValid(curBest, &orig);
-				checkedFinal = true;
+			if (checkFinal)
 				cout << " and is " << (isValid ? "valid" : "invalid");
-			}
 				
 			cout << "." << endl;
 		}
@@ -188,7 +189,7 @@ namespace pcp {
 		cout << "  \"improvement\" : " << (bestSolution.colorsUsed - curBest->colorsUsed) << "," << endl;
 		cout << "  \"colors\" : " << curBest->colorsUsed << "," << endl;
 		
-		if (checkedFinal)
+		if (checkFinal)
 			cout << "  \"valid\" : " << (isValid ? "true" : "false") << "," << endl;
 
 		cout << "  \"stats\": [" << endl;
