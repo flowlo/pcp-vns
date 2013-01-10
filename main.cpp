@@ -1,9 +1,11 @@
 #include "header/main.hpp"
 
+#include <boost/algorithm/string/predicate.hpp>
 using namespace std;
 using namespace pcp;
 using namespace boost;
 using namespace boost::program_options;
+using namespace boost::algorithm;
 
 int DEBUG_LEVEL = 2;
 
@@ -16,7 +18,6 @@ int main(int argc, char* argv[]) {
 		("help,h", "produce help message")
 		("print,p", value<string>(&printFile), "set print file (*.gv)")
 		("debug,d", value<int>(&DEBUG_LEVEL)->default_value(0), "set debug level")
-		("input,i", value<string>(&inputFile), "specify file to read")
 	;
 	
 	options_description vnsOptions("Variable Neighborhood Search options");
@@ -39,7 +40,7 @@ int main(int argc, char* argv[]) {
 		store(parse_command_line(argc, argv, all), vm);
 	}
 	catch(const boost::bad_any_cast& ex) {
-		cerr<<ex.what()<<endl;
+		cerr << ex.what() << endl;
 		return -1;
 	}
 	notify(vm);
@@ -61,13 +62,13 @@ int main(int argc, char* argv[]) {
 	else if (DEBUG_LEVEL < 0) {
 		DEBUG_LEVEL = 0;
 	}
+
+	Solution* fullG = isdigit(cin.peek()) ? Solution::fromPcpStream(cin) : Solution::fromColStream(cin);
 	
-	Solution* fullG = Solution::fromPcpStream(cin);
-	
-/*	if (fullG == NULL) {
-		cerr << "Error reading from stdin!" << endl;
+	if (fullG == NULL) {
+		cerr << "Failed to parse input!" << endl;
 		return -1;
-	} */
+	}
 
 	if (DEBUG_LEVEL > 3) {
 		cout<<"Begin Onestep"<<endl;

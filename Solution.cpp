@@ -94,8 +94,8 @@ Solution* Solution::fromPcpStream(istream& in) {
 	in.getline(buffer, PARSE_BUFFERSIZE);
 	int partitions = atoi(buffer);
 	if (DEBUG_LEVEL > 3) {
-		cout << "Read " << vertices << " vertices, " << edges << " edges and ";
-		cout << partitions << " partitons." << endl;
+		cout << "Reading " << vertices << " vertices, " << edges << " edges and ";
+		cout << partitions << " partitons ..." << endl;
 	}
 	
 	/// Initialize the solution to the read parameters
@@ -131,7 +131,7 @@ Solution* Solution::fromPcpStream(istream& in) {
 		int target = atoi(buffer);
 	
 		if (DEBUG_LEVEL > 3) {
-			cout << "Added edge (" << source << "|" << target << ")" << endl;
+			cout << "Added edge (" << source << "|" << target << ")." << endl;
 		}
 		add_edge(source, target, *s->g);
 	}
@@ -147,10 +147,6 @@ Solution* Solution::fromColStream(istream& in) {
 
 	char buffer[PARSE_BUFFERSIZE];
 
-	if (DEBUG_LEVEL > 3) {
-		cout << "Reading from stdin" << endl;
-	}
-	
 	/// Ignore all lines until first encounter of the p line
 	while (in.get() != 'p')
 		in.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -164,6 +160,7 @@ Solution* Solution::fromColStream(istream& in) {
 	}
 
 	in.getline(buffer, PARSE_BUFFERSIZE, ' ');
+	
 	int vertices = atoi(buffer);
 	in.getline(buffer, PARSE_BUFFERSIZE);
 	int edges = atoi(buffer);
@@ -200,14 +197,14 @@ Solution* Solution::fromColStream(istream& in) {
 		}
 		
 		if (DEBUG_LEVEL > 3)
-			cout << "Added edge (" << source << "|" << target << ")" << endl;
+			cout << "Added edge (" << source << "|" << target << ")." << endl;
 
 		add_edge(source, target, *s->g);
 		i++;
 	}
 
 	if (DEBUG_LEVEL > 3)
-		cout<<"Reading input finished"<<endl;
+		cout << "Reading input successfully finished!" << endl;
 
 	s->partition = new int[vertices];
 	s->representatives = new int[vertices];
