@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
 	try {
 		store(parse_command_line(argc, argv, all), vm);
 	}
-	catch(const boost::bad_any_cast& ex) {
+	catch(const boost::program_options::error& ex) {
 		cerr << ex.what() << endl;
 		return -1;
 	}
