@@ -15,6 +15,10 @@ const char VNS_Unit::getStaticAbbreviation() {
 	return '\0';
 }
 
+VNS_Unit::~VNS_Unit() {
+	
+}
+
 /// Compute the new improved solution of this neighborhood
 Solution* VNS_Unit::findLocalMin(Solution& curBest, Solution& full) {
 	return &curBest;

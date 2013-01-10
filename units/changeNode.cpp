@@ -180,6 +180,7 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 			cout<<"Conflict found"<<endl;
 		}
 		delete s;
+		delete[] colors;
 		return new Solution(&best);
 	}
 	

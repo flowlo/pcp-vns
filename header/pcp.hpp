@@ -85,8 +85,8 @@ namespace pcp {
 			/// Provides a matching from partitions to chosen nodes
 			int *representatives;
 			
-			static Solution fromColStream(std::istream& in);
-			static Solution fromPcpStream(std::istream& in);
+			static Solution* fromColStream(std::istream& in);
+			static Solution* fromPcpStream(std::istream& in);
 		
 		private:
 			boost::property_map<Graph, boost::vertex_index1_t>::type partitionMap;

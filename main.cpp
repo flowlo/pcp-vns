@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
 		DEBUG_LEVEL = 0;
 	}
 	
-	Solution fullG = Solution::fromPcpStream(cin);
+	Solution* fullG = Solution::fromPcpStream(cin);
 	
 /*	if (fullG == NULL) {
 		cerr << "Error reading from stdin!" << endl;
@@ -67,12 +67,12 @@ int main(int argc, char* argv[]) {
 		cout<<"Begin Onestep"<<endl;
 	}
 	
-	Solution *onestep = onestepCD(fullG);
+	Solution *onestep = onestepCD(*fullG);
 	
 	if (DEBUG_LEVEL > 2)
 		cout << "Onestep solution uses " << onestep->colorsUsed << " colors." << endl;
 	
-	Solution *best = vnsRun(*onestep, fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), vm.count("checkFinal"));
+	Solution *best = vnsRun(*onestep, *fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), vm.count("checkFinal"));
 	
 	if (best == NULL)
 		return -1;

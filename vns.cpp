@@ -299,6 +299,12 @@ namespace pcp {
 		delete[] stats;
 		delete curBest;
 		delete toImprove;
+		delete bestSolution;
+		
+		for(vector<VNS_Unit*>::iterator i = neighbors.begin(); i != neighbors.end();
+			 i++) {
+			delete *i;
+		}
 		
 		return res;
 	}
