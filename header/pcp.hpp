@@ -6,10 +6,6 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/copy.hpp>
 
-#include <iostream>
-#include <string>
-#include <boost/tokenizer.hpp>
-
 namespace pcp {
 	/// Properties that are stored for each vertex in a property map
 	/// vertex_index1 contains the partitionID for each vertex,

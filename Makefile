@@ -8,8 +8,8 @@ else ifeq ($(CXX),g++)
 endif
 CFLAGS=-Wall -std=c++0x -g -c
 LDFLAGS=-lboost_program_options
-OBJECTS=main.o oneStepCd.o vns.o unit.a
-HEADERS=header/vns.hpp$(PCH) header/oneStepCd.hpp$(PCH) header/main.hpp$(PCH)
+OBJECTS=main.o oneStepCd.o Solution.o vns.o unit.a
+HEADERS=header/vns.hpp$(PCH) header/oneStepCd.hpp$(PCH) header/main.hpp$(PCH) header/Solution.hpp$(PCH)
 PROG=pcp
 
 $(PROG): $(OBJECTS)
@@ -23,6 +23,10 @@ main.o: main.cpp $(HEADERS)
 oneStepCd.o: oneStepCd.cpp header/oneStepCd.hpp$(PCH)
 	@echo $(CXX)": Compiling "$@
 	@$(CXX) $(CFLAGS) -include header/oneStepCd.hpp -o oneStepCd.o oneStepCd.cpp
+	
+Solution.o: Solution.cpp header/Solution.hpp$(PCH)
+	@echo $(CXX)": Compiling "$@
+	@$(CXX) $(CFLAGS) -include header/Solution.hpp -o Solution.o Solution.cpp
 
 vns.o: vns.cpp header/vns-priv.hpp$(PCH)
 	@echo $(CXX)": Compiling "$@
@@ -46,6 +50,10 @@ header/main.hpp$(PCH): header/main.hpp header/pcp.hpp header/oneStepCd.hpp heade
 header/oneStepCd.hpp$(PCH): header/oneStepCd.hpp header/pcp.hpp
 	@echo $(CXX)": Precompiling "$@
 	@$(CXX) $(CFLAGS) -x c++-header header/oneStepCd.hpp -o header/oneStepCd.hpp$(PCH)
+
+header/Solution.hpp$(PCH): header/Solution.hpp header/pcp.hpp
+	@echo $(CXX)": Precompiling "$@
+	@$(CXX) $(CFLAGS) -x c++-header header/Solution.hpp -o header/Solution.hpp$(PCH)
 
 clean:
 	@echo "rm: Cleaning directory ."
