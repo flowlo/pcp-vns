@@ -6,6 +6,10 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/copy.hpp>
 
+#include <iostream>
+#include <string>
+#include <boost/tokenizer.hpp>
+
 namespace pcp {
 	/// Properties that are stored for each vertex in a property map
 	/// vertex_index1 contains the partitionID for each vertex,
@@ -82,6 +86,9 @@ namespace pcp {
 			
 			/// Provides a matching from partitions to chosen nodes
 			int *representatives;
+			
+			static Solution fromColStream(std::istream& in);
+			static Solution fromPcpStream(std::istream& in);
 		
 		private:
 			boost::property_map<Graph, boost::vertex_index1_t>::type partitionMap;

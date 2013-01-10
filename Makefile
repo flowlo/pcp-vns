@@ -8,8 +8,8 @@ else ifeq ($(CXX),g++)
 endif
 CFLAGS=-Wall -std=c++0x -g -c
 LDFLAGS=-lboost_program_options
-OBJECTS=main.o parser.o oneStepCd.o vns.o unit.a
-HEADERS=header/vns.hpp$(PCH) header/oneStepCd.hpp$(PCH) header/parser.hpp$(PCH) header/main.hpp$(PCH)
+OBJECTS=main.o oneStepCd.o vns.o unit.a
+HEADERS=header/vns.hpp$(PCH) header/oneStepCd.hpp$(PCH) header/main.hpp$(PCH)
 PROG=pcp
 
 $(PROG): $(OBJECTS)
@@ -19,10 +19,6 @@ $(PROG): $(OBJECTS)
 main.o: main.cpp $(HEADERS)
 	@echo $(CXX)": Compiling "$@
 	@$(CXX) $(CFLAGS) -include header/main.hpp -o main.o main.cpp
-	
-parser.o: parser.cpp header/parser.hpp$(PCH)
-	@echo $(CXX)": Compiling "$@
-	@$(CXX) $(CFLAGS) -include header/parser.hpp -o parser.o parser.cpp
 
 oneStepCd.o: oneStepCd.cpp header/oneStepCd.hpp$(PCH)
 	@echo $(CXX)": Compiling "$@
@@ -43,13 +39,9 @@ header/vns.hpp$(PCH): header/vns.hpp header/pcp.hpp
 	@echo $(CXX)": Precompiling "$@
 	@$(CXX) $(CFLAGS) -x c++-header header/vns.hpp -o header/vns.hpp$(PCH)
 
-header/main.hpp$(PCH): header/main.hpp header/pcp.hpp header/oneStepCd.hpp header/parser.hpp header/vns.hpp 
+header/main.hpp$(PCH): header/main.hpp header/pcp.hpp header/oneStepCd.hpp header/vns.hpp 
 	@echo $(CXX)": Precompiling "$@
 	@$(CXX) $(CFLAGS) -x c++-header header/main.hpp -o header/main.hpp$(PCH)
-	
-header/parser.hpp$(PCH): header/parser.hpp header/pcp.hpp
-	@echo $(CXX)": Precompiling "$@
-	@$(CXX) $(CFLAGS) -x c++-header header/parser.hpp -o header/parser.hpp$(PCH)
 
 header/oneStepCd.hpp$(PCH): header/oneStepCd.hpp header/pcp.hpp
 	@echo $(CXX)": Precompiling "$@
