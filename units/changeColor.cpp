@@ -213,21 +213,23 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 /// colored
 Solution *changeColor::shuffleSolution(Solution& cur, Solution& full,
 				 							  int numSteps) {
+	if (DEBUG_LEVEL > 3) {
+		cout<<"Shaking with changeColor with"<<endl;
+	}
 	
 	Solution *ret = &cur;
 	vector<Vertex> uncolored;
 	
 	/// Reset all colors
-	for (int i = 0; i < ret->numParts; i++) {
-		ret->partition[i] = -1;
-		uncolored.push_back(i);
+	for (int i = 0; i < numSteps; i++) {
+		uncolored.push_back(i % ret->numParts);
 	}
 	
 	random_shuffle(uncolored.begin(), uncolored.end());
 	/// Proceed until all nodes are colored
 	Vertex node = 0;
 	int color;
-	int maxColor = -1;
+	int maxColor = ret->colorsUsed - 1;
 	while (uncolored.size() != 0) {
 		node = uncolored.back();
 		uncolored.pop_back();
