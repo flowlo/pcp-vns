@@ -304,8 +304,10 @@ namespace pcp {
 		Solution* res = new Solution(curBest);	
 		delete[] stats;
 		delete curBest;
-		delete toImprove;
 		delete bestSolution;
+		
+		if (curBest != toImprove)
+			delete toImprove;
 		
 		for(vector<VNS_Unit*>::iterator i = neighbors.begin(); i != neighbors.end();
 			 i++) {
