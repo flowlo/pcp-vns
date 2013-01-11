@@ -4,6 +4,7 @@ using namespace std;
 using namespace pcp;
 using namespace boost;
 
+
 Solution::Solution() {
 	this->g = new Graph(0);
 	this->colorsUsed = 0;
@@ -32,6 +33,7 @@ Solution::~Solution() {
 	delete g;
 	delete[] partition;
 	delete[] representatives;
+	delete[] partNodes;
 }
 
 int Solution::getPartition(Vertex v) {

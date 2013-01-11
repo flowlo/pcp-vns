@@ -17,9 +17,9 @@ const char changeColor::getStaticAbbreviation() {
 }
 
 Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
-	Solution *s = new Solution(&curBest);
+	Solution *s = &curBest;
 	int maxColor = curBest.colorsUsed - 1;
-	const int ITER_MAX = 100;
+	const int ITER_MAX = s->numParts * 20;
 	pair<VertexIter, VertexIter> vIter;
 	VertexPart_Map vParts = get(vertex_index1_t(), *s->g);
 
@@ -177,8 +177,8 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 		if (DEBUG_LEVEL > 1) {
 			cout<<"Conflict found"<<endl;
 		}
-		delete s;
-		return new Solution(&curBest);
+		s->colorsUsed = s->numParts;
+		return s;
 	}
 	
 	/// New solution is conflict free, count colorsUsed and return
@@ -191,14 +191,19 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 			}
 		}
 		s->colorsUsed = maxColor + 1;
-		Solution *temp = this->findLocalMin(*s, full);
+		
+		if (DEBUG_LEVEL > 1) {
+			cout<<"Change Color uses "<<s->colorsUsed<<" colors"<<endl; 
+		}
+		
+		Solution *temp = new Solution(s);
+		temp = this->findLocalMin(*temp, full);
 		if (temp->colorsUsed < s->colorsUsed) {
 			delete s;
 			s = temp;
 		}
-	}
-	if (DEBUG_LEVEL > 1) {
-		cout<<"Change Color uses "<<s->colorsUsed<<" colors"<<endl; 
+		else 
+			delete temp;
 	}
 	return s;
 }
@@ -209,7 +214,7 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 Solution *changeColor::shuffleSolution(Solution& cur, Solution& full,
 				 							  int numSteps) {
 	
-	Solution *ret = new Solution(&cur);
+	Solution *ret = &cur;
 	vector<Vertex> uncolored;
 	
 	/// Reset all colors

@@ -121,6 +121,7 @@ int main(int argc, char* argv[]) {
 		if (DEBUG_LEVEL > 1)
 			cout << "Printing to '" << vm["print"].as<string>() << "' done!" << endl;
 	}
+	
 	delete best;
 	delete fullG;
 
