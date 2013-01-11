@@ -86,6 +86,7 @@ namespace pcp {
 			int *representatives;
 			
 			static Solution* fromColStream(std::istream& in);
+			static Solution* fromColBStream(std::istream& in);
 			static Solution* fromPcpStream(std::istream& in);
 		
 		private:

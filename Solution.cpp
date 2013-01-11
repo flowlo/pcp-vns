@@ -87,12 +87,9 @@ Solution* Solution::fromPcpStream(istream& in) {
 	Solution *s = new Solution();
 	char buffer[PARSE_BUFFERSIZE];
 	
-	in.getline(buffer, PARSE_BUFFERSIZE, ' ');
-	int vertices = atoi(buffer);
-	in.getline(buffer, PARSE_BUFFERSIZE, ' ');
-	int edges = atoi(buffer);
-	in.getline(buffer, PARSE_BUFFERSIZE);
-	int partitions = atoi(buffer);
+	int vertices, edges, partitions;
+	cin >> vertices >> edges >> partitions;
+	
 	if (DEBUG_LEVEL > 3) {
 		cout << "Reading " << vertices << " vertices, " << edges << " edges and ";
 		cout << partitions << " partitons ..." << endl;
@@ -110,12 +107,11 @@ Solution* Solution::fromPcpStream(istream& in) {
 
 	/// Read partition info and store it into the property map, do the same 
 	/// for the "original" vertexID, so they can be compared on all graph
-	int i;
+	int i, vertex;
 	for (i = 0; i < vertices; i++) {
-		in.getline(buffer, PARSE_BUFFERSIZE);
-		
+		cin >> vertex;
 		Vertex v = add_vertex(*s->g);
-		put(vertex_part, v, atoi(buffer)); 
+		put(vertex_part, v, vertex); 
 		put(vertex_id, v, i);
 		
 		if (DEBUG_LEVEL > 3)
@@ -125,11 +121,9 @@ Solution* Solution::fromPcpStream(istream& in) {
 	/// Read the input for edges between to vertices and add them to the 
 	/// solution graph
 	for (i = 0; i < edges; i++) {
-		in.getline(buffer, PARSE_BUFFERSIZE, ' ');
-		int source = atoi(buffer);
-		in.getline(buffer, PARSE_BUFFERSIZE);
-		int target = atoi(buffer);
-	
+		int source, target;
+		cin >> source >> target;
+
 		if (DEBUG_LEVEL > 3) {
 			cout << "Added edge (" << source << "|" << target << ")." << endl;
 		}
@@ -159,14 +153,16 @@ Solution* Solution::fromColStream(istream& in) {
 		return NULL;
 	}
 
-	in.getline(buffer, PARSE_BUFFERSIZE, ' ');
-	
-	int vertices = atoi(buffer);
-	in.getline(buffer, PARSE_BUFFERSIZE);
-	int edges = atoi(buffer);
+	int vertices, edges;
+	cin >> vertices >> edges;
 	
 	if (DEBUG_LEVEL > 3)
-		cout<< "Reading " << edges << " edges ..." << endl;
+		cout << "Reading " << edges << " edges ..." << endl;
+		
+	if (in.get() != '\n') {
+		cerr << "Malformed p-line detected (not terminated by newline)!" << endl;
+		return NULL;
+	}
 	
 	/// Initialize the property maps for partition and vertexID
 	VertexID_Map vertex_id = get(vertex_index2_t(), *s->g);
@@ -176,22 +172,23 @@ Solution* Solution::fromColStream(istream& in) {
 	for (i = 0; i < vertices; i++) {
 		Vertex v = add_vertex(*s->g);
 		put(vertex_part, v, i); 
-		put(vertex_id, v, i);
+		put(vertex_id, v + 1, i);
+		
+		if (DEBUG_LEVEL > 3)
+			cout << "Added vertex " << i << "." << endl; 
 	}
 
 	i = 0;
-	while (i < edges / 2) {
+	while (i++ < edges) {
 		if (in.get() != 'e') {
-			in.ignore(numeric_limits<streamsize>::max(), '\n');
-			continue;
+			cerr << "This parser is not capable of handling other information than edge definitions after the p-line." << endl;
+			return NULL;
 		}
-		in.get();
-		in.getline(buffer, PARSE_BUFFERSIZE, ' ');
-		int source = atoi(buffer);
-		in.getline(buffer, PARSE_BUFFERSIZE);
-		int target = atoi(buffer);
+
+		int source, target;
+		cin >> source >> target;
 		
-		if (!(source < vertices && target << vertices)) {
+		if (!(source <= vertices && target <= vertices)) {
 			cerr << "Invalid edge (" << source << "|" << target << ") read." << endl;
 			return NULL;
 		}
@@ -199,8 +196,12 @@ Solution* Solution::fromColStream(istream& in) {
 		if (DEBUG_LEVEL > 3)
 			cout << "Added edge (" << source << "|" << target << ")." << endl;
 
-		add_edge(source, target, *s->g);
-		i++;
+		add_edge(source - 1, target - 1, *s->g);
+
+		if (in.get() != '\n') {
+			cerr << "Malformed edge definition read (edge line " << (i + 1) << " not terminated by newline)!" << endl;
+			return NULL;
+		}
 	}
 
 	if (DEBUG_LEVEL > 3)
@@ -211,6 +212,53 @@ Solution* Solution::fromColStream(istream& in) {
 	s->numParts = vertices;
 	s->colorsUsed = vertices;
 
+	return s;
+}
+
+Solution* Solution::fromColBStream(istream& in) {
+	Solution *s = new Solution;
+	char buffer[PARSE_BUFFERSIZE];
+	
+	int length;
+	cin >> length;
+	
+	while (cin.get() != 'p')
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+	cin.get();
+	cin.getline(buffer, PARSE_BUFFERSIZE, ' ');
+
+	if (strcmp(buffer, "edge") != 0) {
+		cerr << "This parser is unable to read files using a FORMAT other than 'edge' ('" << buffer << "' specified)" << endl;
+		return NULL;
+	}
+
+	int vertices, edges, i, j;
+	cin >> vertices >> edges;
+	char bitmap[vertices][vertices / 8];
+	
+	VertexID_Map vertex_id = get(vertex_index2_t(), *s->g);
+	VertexPart_Map vertex_part = get(vertex_index1_t(), *s->g);
+	
+	for (i = 0; i < vertices; i++) {
+		Vertex v = add_vertex(*s->g);
+		put(vertex_part, v, i); 
+		put(vertex_id, v + 1, i);
+		
+		//if (DEBUG_LEVEL > 3)
+			//cout << "Added vertex " << i << endl;
+		
+		cin.read(bitmap[i], (i + 8) / 8);
+		
+		cout << bitmap[i];
+	}
+
+	for (i = 0; i < vertices; i++)
+		for (j = 0; j <= i; j++)
+				if ((bitmap[i][j >> 3] & (1 << (7 - (j & 7)))) != 0) {
+					cout << "Added edge (" << i << "|" << j << ")." << endl;
+					add_edge(i, j, *s->g);
+				}
 	return s;
 }
 
