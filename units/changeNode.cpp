@@ -85,17 +85,7 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 			cout<<vIndex[v]<<" in the original graph"<<endl;
 		}
 		
-		/// Find all vertices of the chosen partition
-		for (vIter = vertices(*full.g); vIter.first != vIter.second; 
-			  vIter.first++) {
-			if (vPartsOrig[*vIter.first] == part && 
-				 (int)(*vIter.first) != vIndex[v]) {
-				if (DEBUG_LEVEL > 3) {
-					cout<<"Found node "<<*vIter.first<<" in partition "<<part<<endl;
-				}
-				partition.push_back(*vIter.first);
-			}
-		}
+		partition.assign(full.partNodes[part].begin(), full.partNodes[part].end());
 		
 		/// If partition contains other vertices
 		if (partition.size() != 0) {

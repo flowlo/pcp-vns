@@ -12,6 +12,7 @@ Solution::Solution() {
 }
 
 Solution::Solution(Solution *toCopy) {
+	this->partNodes = NULL;
 	this->g = new Graph(0);
 	this->numParts = toCopy->numParts;
 	this->partition = new int[this->numParts];
@@ -85,7 +86,6 @@ int Solution::minPossibleColor(Vertex node) {
 
 Solution* Solution::fromPcpStream(istream& in) {
 	Solution *s = new Solution();
-	char buffer[PARSE_BUFFERSIZE];
 	
 	int vertices, edges, partitions;
 	cin >> vertices >> edges >> partitions;
@@ -98,6 +98,7 @@ Solution* Solution::fromPcpStream(istream& in) {
 	/// Initialize the solution to the read parameters
 	s->partition = new int[partitions];
 	s->representatives = new int[partitions];
+	s->partNodes = new vector<Vertex>[partitions];
 	s->numParts = partitions;
 	s->colorsUsed = partitions;
 
@@ -107,15 +108,17 @@ Solution* Solution::fromPcpStream(istream& in) {
 
 	/// Read partition info and store it into the property map, do the same 
 	/// for the "original" vertexID, so they can be compared on all graph
-	int i, vertex;
+	int i, part;
 	for (i = 0; i < vertices; i++) {
-		cin >> vertex;
+		cin >> part;
 		Vertex v = add_vertex(*s->g);
-		put(vertex_part, v, vertex); 
+		put(vertex_part, v, part);
 		put(vertex_id, v, i);
+		s->partNodes[part].push_back(v);
+		
 		
 		if (DEBUG_LEVEL > 3)
-			cout << "Added vertex " << i << " to partition " << buffer << "." << endl;
+			cout << "Added vertex " << i << " to partition " << part << "." << endl;
 	}
 
 	/// Read the input for edges between to vertices and add them to the 

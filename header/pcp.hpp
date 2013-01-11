@@ -78,6 +78,8 @@ namespace pcp {
 
 			/// Holds the color for each partition
 			int *partition;
+			
+			std::vector<Vertex> *partNodes;
 
 			/// Colors used by this solution
 			int colorsUsed;

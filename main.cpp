@@ -87,7 +87,6 @@ int main(int argc, char* argv[]) {
 	
 		fullG = Solution::fromColStream(cin);
 	}
-	return 0;
 	
 	if (fullG == NULL) {
 		cerr << "Failed to parse input!" << endl;
