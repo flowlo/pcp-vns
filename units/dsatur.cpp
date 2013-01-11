@@ -18,7 +18,7 @@ const char dsatur::getStaticAbbreviation() {
 
 /// Compute the new improved solution of this neighborhood
 Solution* dsatur::findLocalMin(Solution& curBest, Solution& full) {
-	Solution* s = new Solution(&curBest);
+	Solution* s = &curBest;
 	
 	fill(s->partition, s->partition + s->numParts, -1);
 	

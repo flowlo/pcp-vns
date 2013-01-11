@@ -17,9 +17,9 @@ const char changeNode::getStaticAbbreviation() {
 }
 
 Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
-	Solution* s = new Solution(&best);
+	Solution* s = &best;
 	int maxColor = best.colorsUsed - 1;
-	const int ITER_MAX = 1000;
+	const int ITER_MAX = s->numParts * 20;
 	pair<VertexIter, VertexIter> vIter;
 	VertexPart_Map vParts = get(vertex_index1_t(), *s->g);
 	VertexPart_Map vPartsOrig = get(vertex_index1_t(), *full.g);
@@ -164,35 +164,38 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 		}
 	}
 	
-	/// Solution contains conlficts, revert changes
+	/// New solution is not conflict free, return curBest
 	if (conflicts.size() != 0) {
 		if (DEBUG_LEVEL > 1) {
 			cout<<"Conflict found"<<endl;
 		}
-		delete s;
-		delete[] colors;
-		return new Solution(&best);
+		s->colorsUsed = s->numParts;
+		return s;
 	}
 	
-	/// Solution is free of conflicts
+	/// New solution is conflict free, count colorsUsed and return
 	else {
 		maxColor = 0;
-		for (vIter = vertices(*s->g); vIter.first != vIter.second; 
-			  vIter.first++) {
+		for (int i = 0; i < s->numParts; i++) {
 			
-			if (s->partition[vParts[*vIter.first]] > maxColor) {
-				maxColor = s->partition[vParts[*vIter.first]];
+			if (s->partition[i] > maxColor) {
+				maxColor = s->partition[i];
 			}
 		}
 		s->colorsUsed = maxColor + 1;
+		
 		if (DEBUG_LEVEL > 1) {
-			cout<<"changeNode uses "<<s->colorsUsed<<" colors"<<endl; 
+			cout<<"Change Node uses "<<s->colorsUsed<<" colors"<<endl; 
 		}
-		Solution *temp = this->findLocalMin(*s, full);
+		
+		Solution *temp = new Solution(s);
+		temp = this->findLocalMin(*temp, full);
 		if (temp->colorsUsed < s->colorsUsed) {
 			delete s;
 			s = temp;
 		}
+		else 
+			delete temp;
 	}
 	delete[] colors;
 	return s;
@@ -200,7 +203,7 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 
 Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 				 							  	  int numSteps) {
-	Solution* ret = new Solution(&cur);
+	Solution* ret = &cur;
 	
 	VertexPart_Map vPartsOrig = get(vertex_index1_t(), *full.g);
 	VertexID_Map vIndex = get(vertex_index2_t(), *ret->g);

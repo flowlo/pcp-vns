@@ -46,7 +46,7 @@ namespace pcp {
 		int no_imp_runs = 0, improvement;
 		unsigned int curNeighbor = 0;
 		int shakeSteps = shakeStart - shakeIncrement;
-		Solution *toImprove = new Solution(&best);
+		Solution *toImprove = &best;
 		Solution *curBest = &best;
 		
 		/// Run as long as shaking still produces usefull solution
@@ -60,6 +60,8 @@ namespace pcp {
 				break;
 			}
 			
+			Solution *tempImp = new Solution(toImprove);
+			
 			/// Run all possible neighborhood
 			while (curNeighbor < neighbors.size()) {
 				
@@ -72,9 +74,9 @@ namespace pcp {
 				}
 				
 				/// Compute the minimum for this neighborhood
-				Solution *improved = neigh->findLocalMin(*toImprove, orig);
+				Solution *imp = neigh->findLocalMin(*tempImp, orig);
 				
-				improvement = toImprove->colorsUsed < 1 ? 0 : toImprove->colorsUsed - improved->colorsUsed;
+				improvement = (toImprove->colorsUsed - imp->colorsUsed < 1) ? 0 : toImprove->colorsUsed - imp->colorsUsed;
 				
 				/// Stats tracking
 				stats[curNeighbor].push_back(pair<int, int>(clock() - start, improvement));
@@ -87,15 +89,18 @@ namespace pcp {
 				/// Replace the existing solution with the new solution if it is an
 				/// improvement
 				if (improvement > 0) {
-					delete toImprove;
-					toImprove = improved;
+					if (toImprove != curBest)
+						delete toImprove;
+						
+					toImprove = tempImp = imp;
+					tempImp = new Solution(tempImp);
 					
 					if (DEBUG_LEVEL > 1) {
 						cout << "Improvement found! ";
-						cout << "New solution uses " << toImprove->colorsUsed << " colors";
+						cout << "New solution uses " << tempImp->colorsUsed << " colors";
 						
 						if (checkIntermediate)
-							cout << " and is "<<((checkValid(improved, &orig)) ? "valid" : "invalid");
+							cout << " and is "<<((checkValid(tempImp, &orig)) ? "valid" : "invalid");
 						
 						cout << "." << endl;
 					}
@@ -108,8 +113,12 @@ namespace pcp {
 				else {
 					if (DEBUG_LEVEL > 1)
 						cout << "No improvement found." << endl;
-
-					delete improved;
+					
+					if (toImprove->colorsUsed - imp->colorsUsed < 0) {
+						delete tempImp;
+						tempImp = new Solution(toImprove);
+					}
+					
 					curNeighbor++;
 				}
 				if (DEBUG_LEVEL > 1) {
@@ -127,10 +136,11 @@ namespace pcp {
 			
 			/// Local minimum of neighborhoods is better than current best
 			/// solution
-			if (toImprove->colorsUsed < best.colorsUsed) {
+			if (toImprove->colorsUsed < curBest->colorsUsed) {
 				if (DEBUG_LEVEL > 1) {
 					cout << "Improvement to global best solution found!" << endl;
 				}
+				delete tempImp;
 				delete curBest;
 				curBest = toImprove;
 				toImprove = new Solution(curBest);
@@ -139,8 +149,7 @@ namespace pcp {
 			}
 			/// Reset local best solution to global best Solution
 			else {
-				delete toImprove;
-				toImprove = new Solution(curBest);
+				delete tempImp;
 				no_imp_runs++;
 
 				/// Stopping condition, quit VNS
@@ -155,19 +164,16 @@ namespace pcp {
 			int shakeNeighbor = rand() % neighbors.size();
 			curNeighbor = 0;
 			VNS_Unit *shaker = neighbors[shakeNeighbor];
-			Solution* t = shaker->shuffleSolution(*toImprove, orig, (shakeSteps += shakeIncrement));
+			toImprove = shaker->shuffleSolution(*toImprove, orig, (shakeSteps += shakeIncrement));
 			
 			bool checkResult = false;
 			if (checkIntermediate) {
 				checkResult = checkValid(toImprove, &orig);
 				if (!checkResult) {
-					delete t;
-					t = new Solution(toImprove);
+					delete toImprove;
+					toImprove = new Solution(curBest);
 				}
 			}
-			
-			delete toImprove;
-			toImprove = t;
 			
 			if (DEBUG_LEVEL > 1) {
 				cout << "Shaking Solution using " << shaker->getName()<< " with ";
