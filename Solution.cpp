@@ -116,7 +116,6 @@ Solution* Solution::fromPcpStream(istream& in) {
 		put(vertex_id, v, i);
 		s->partNodes[part].push_back(v);
 		
-		
 		if (DEBUG_LEVEL > 3)
 			cout << "Added vertex " << i << " to partition " << part << "." << endl;
 	}
@@ -171,14 +170,14 @@ Solution* Solution::fromColStream(istream& in) {
 	VertexID_Map vertex_id = get(vertex_index2_t(), *s->g);
 	VertexPart_Map vertex_part = get(vertex_index1_t(), *s->g);
 	
+	s->partNodes = new vector<Vertex>[vertices];
+	
 	int i;
 	for (i = 0; i < vertices; i++) {
 		Vertex v = add_vertex(*s->g);
 		put(vertex_part, v, i); 
 		put(vertex_id, v + 1, i);
-		
-		if (DEBUG_LEVEL > 3)
-			cout << "Added vertex " << i << "." << endl; 
+		s->partNodes[i].push_back(v);
 	}
 
 	i = 0;
@@ -243,16 +242,15 @@ Solution* Solution::fromColBStream(istream& in) {
 	VertexID_Map vertex_id = get(vertex_index2_t(), *s->g);
 	VertexPart_Map vertex_part = get(vertex_index1_t(), *s->g);
 	
+	s->partNodes = new vector<Vertex>[vertices];
+	
 	for (i = 0; i < vertices; i++) {
 		Vertex v = add_vertex(*s->g);
 		put(vertex_part, v, i); 
 		put(vertex_id, v + 1, i);
-		
-		//if (DEBUG_LEVEL > 3)
-			//cout << "Added vertex " << i << endl;
-		
+		s->partNodes[i].push_back(v);
+
 		cin.read(bitmap[i], (i + 8) / 8);
-		
 		cout << bitmap[i];
 	}
 
