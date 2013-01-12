@@ -1,0 +1,19 @@
+# binary
+*.o
+*.a
+*.?ch
+*.out
+pcp
+
+# input
+*.pcp
+*.col
+*.col.b
+*.in
+
+# output and graph drawing
+*.json
+*.gv
+
+# other nasty stuff
+*.pdf
