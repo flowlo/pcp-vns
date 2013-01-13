@@ -23,9 +23,9 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 	pair<VertexIter, VertexIter> vIter;
 	VertexPart_Map vParts = get(vertex_index1_t(), *s->g);
 	VertexPart_Map vPartsOrig = get(vertex_index1_t(), *full.g);
-   VertexID_Map vIndex = get(vertex_index2_t(), *s->g);
-   
-   if (DEBUG_LEVEL > 2) {
+	VertexID_Map vIndex = get(vertex_index2_t(), *s->g);
+
+	if (DEBUG_LEVEL > 2) {
 		cout<<"Starting changeNode"<<endl;
 	}
 	

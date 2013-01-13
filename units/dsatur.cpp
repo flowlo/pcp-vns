@@ -24,32 +24,29 @@ Solution* dsatur::findLocalMin(Solution& curBest, Solution& full) {
 	
 	int numColors = -1, target, maxColorDegree, maxBlankDegree, colorDegree, blankDegree, color;
 	
-	pair<VertexIter, VertexIter> v;
+	VertexIter i, end;
 	
 	for (int j = 0; j < s->numParts; j++) {
 		if (DEBUG_LEVEL == 4)
 			cout << "New iteration!" << endl;
 
 		target = maxColorDegree = maxBlankDegree = -1;
-		
-	 	for (v = vertices(*s->g); v.first != v.second; ++v.first) {
-	 		if (s->isPartitionColored(*v.first)) {
-	 			if (DEBUG_LEVEL == 4)
-		 			cout << "Skipping " << *v.first << endl;
+
+	 	for (tie(i, end) = vertices(*s->g); i != end; i++) {
+	 		if (s->isPartitionColored(*i))
 	 			continue;
-	 		}
-	 		
-			colorDegree = s->getColorDegree(*v.first);
-			
+
+			colorDegree = s->getColorDegree(*i);
+
 			if (colorDegree < maxColorDegree)
 				continue;
-			
-			blankDegree = degree(*v.first, *s->g) - colorDegree;
-			
+
+			blankDegree = degree(*i, *s->g) - colorDegree;
+
 			if (colorDegree == maxColorDegree && blankDegree <= maxBlankDegree)
 				continue;
-				
-			target = *v.first;
+
+			target = *i;
 			maxColorDegree = colorDegree;
 			maxBlankDegree = blankDegree;
 			
@@ -79,7 +76,7 @@ Solution* dsatur::shuffleSolution(Solution& cur, Solution& full, int numSteps) {
 	
 	int numColors = -1, target, maxColorDegree, maxBlankDegree, colorDegree, blankDegree, color;
 	
-	pair<VertexIter, VertexIter> v;
+	VertexIter i, end;
 	
 	for (int j = 0; j < s->numParts; j++) {
 		if (DEBUG_LEVEL == 4)
@@ -87,26 +84,23 @@ Solution* dsatur::shuffleSolution(Solution& cur, Solution& full, int numSteps) {
 
 		target = maxColorDegree = maxBlankDegree = -1;
 		
-	 	for (v = vertices(*s->g); v.first != v.second; ++v.first) {
-	 		if (s->isPartitionColored(*v.first)) {
-	 			if (DEBUG_LEVEL == 4)
-		 			cout << "Skipping " << *v.first << endl;
+	 	for (tie(i, end) = vertices(*s->g); i != end; i++) {
+	 		if (s->isPartitionColored(*i))
 	 			continue;
-	 		}
 	 		
-			colorDegree = s->getColorDegree(*v.first);
+			colorDegree = s->getColorDegree(*i);
 			
 			if (rand() % 2)
 				if (colorDegree < maxColorDegree)
 					continue;
 			
-			blankDegree = degree(*v.first, *s->g) - colorDegree;
+			blankDegree = degree(*i, *s->g) - colorDegree;
 			
 			if (rand() % 3)
 				if (colorDegree == maxColorDegree && blankDegree <= maxBlankDegree)
 					continue;
 				
-			target = *v.first;
+			target = *i;
 			maxColorDegree = colorDegree;
 			maxBlankDegree = blankDegree;
 			
