@@ -222,7 +222,7 @@ Solution *changeColor::shuffleSolution(Solution& cur, Solution& full,
 	
 	/// Reset all colors
 	for (int i = 0; i < numSteps; i++) {
-		uncolored.push_back(i % ret->numParts);
+		uncolored.push_back(rand() % ret->numParts);
 	}
 	
 	random_shuffle(uncolored.begin(), uncolored.end());
