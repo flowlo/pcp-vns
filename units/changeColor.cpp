@@ -35,7 +35,7 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 			
 			int j;
 			for (j = 0; j < colorRetries; j++) {
-				int nCol = rand() % maxColor - 1;
+				int nCol = rand() % (maxColor - 1);
 				s->setPartitionColor(*i, nCol);
 			
 				if (DEBUG_LEVEL > 3) {
@@ -86,11 +86,11 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 	Solution *temp = new Solution(s);
 	temp = this->findLocalMin(*temp, full);
 	if (temp->colorsUsed < s->colorsUsed) {
-		//delete s;
+		delete s;
 		s = temp;
 	}
-	//else 
-		//delete temp;
+	else 
+		delete temp;
 		
 	return s;
 }
