@@ -14,7 +14,7 @@ Solution::Solution() {
 
 Solution::Solution(Solution *toCopy) {
 	this->partNodes = NULL;
-	this->g = new Graph(0);
+	this->g = new Graph(*toCopy->g);
 	this->numParts = toCopy->numParts;
 	this->partition = new int[this->numParts];
 	this->representatives = new int[this->numParts];
@@ -24,7 +24,6 @@ Solution::Solution(Solution *toCopy) {
 		this->representatives[i] = toCopy->representatives[i];
 	}
 	this->colorsUsed = toCopy->colorsUsed;
-	copy_graph(*toCopy->g, *this->g);
 	this->partitionMap = get(vertex_index1_t(), *this->g);
 	this->idMap = get(vertex_index2_t(), *this->g);
 }
