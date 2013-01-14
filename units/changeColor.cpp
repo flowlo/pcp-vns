@@ -23,6 +23,10 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 	AdjIter a, aEnd;
 	const int colorRetries = maxColor;
 
+	if (maxColor <= 1) {
+		return s;
+	}
+
 	if (DEBUG_LEVEL > 2) {
 		cout<<"Starting changeColor"<<endl;
 	}
