@@ -2,6 +2,7 @@
 #include "header/vns-priv.hpp"
 
 using namespace std;
+using namespace boost;
 
 namespace pcp {
 	Solution *bestSolution;
@@ -205,6 +206,11 @@ namespace pcp {
 		cout << "  \"units\": \"" << units << "\"," << endl;
 		cout << "  \"improvement\" : " << (bestSolution->colorsUsed - curBest->colorsUsed) << "," << endl;
 		cout << "  \"colors\" : " << curBest->colorsUsed << "," << endl;
+		cout << "  \"instance\" : {" << endl;
+		cout << "    \"vertices\": " << num_vertices(*orig.g) << "," << endl;
+		cout << "    \"edges\": " << num_edges(*orig.g) << "," << endl;
+		cout << "    \"partitions\": " << orig.numParts << endl;
+		cout << "  }," << endl;
 		
 		if (checkFinal)
 			cout << "  \"valid\" : " << (isValid ? "true" : "false") << "," << endl;
