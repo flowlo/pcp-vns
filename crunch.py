@@ -1,31 +1,26 @@
 #!/usr/bin/env python
 
-import glob, sys, os
+import glob, sys, os, permute
 from subprocess import call
+from permute import permute
+from os import mkdir
+from os.path import abspath, basename
 
 args = '-c -t 30'
 
-def permute (word):
-    result=[]
-    if len(word) == 1:
-        result.append(word)
-    else:
-        for pos in range(len(word)): 
-            permutations = permute(word[0:pos]+word[pos+1:len(word)])
-            for item in permutations:
-                result.append(word[pos] + item)
-    return result
-
-if len(sys.argv) < 4:
-	print 'Usage: ' + sys.argv[0] + ' <units> <outdir> <instances>'
+if len(sys.argv) < 5:
+	print 'Usage: ' + sys.argv[0] + ' <runs> <units> <outdir> <instances>'
 	sys.exit(0)
 
-variations = permute(sys.argv[1])
-output = os.path.abspath(sys.argv[2]) + '/'
+runs = int(sys.argv[1])
+variations = permute(sys.argv[2])
+output = abspath(sys.argv[3]) + '/'
 
-for instance in sys.argv[3:]:
-	for variation in variations:
-		base = output + '/' + os.path.basename(instance) + '.' + variation
-		command = './pcp ' + args + ' -p ' + base + '.gv -n ' + variation + ' < ' + instance + ' > ' + base + '.json &'
-		print command
-		call(command, shell=True)
+for i in range(0, runs):
+	mkdir(output + '/' + str(i))
+	for instance in sys.argv[4:]:
+		for variation in variations:
+			base = output + '/' + str(i) + '/' + basename(instance) + '.' + variation
+			command = './pcp ' + args + ' -p ' + base + '.gv -n ' + variation + ' < ' + instance + ' > ' + base + '.json &'
+			print command
+			call(command, shell = True)

@@ -1,46 +1,41 @@
 #!/usr/bin/env python
 
-import json, numpy, pprint, sys, os
-from sys import argv
-from numpy import array
+import json, numpy, sys, os, permute
+from sys import argv, exit
+from numpy import array, average, std, empty, append
+from permute import permute
 
-def permute (word):
-	result=[]
-	if len(word) == 1:
-        	result.append(word)
-	else:
-		for pos in range(len(word)):
-			permutations = permute(word[0:pos]+word[pos+1:len(word)])
-			for item in permutations:
-				result.append(word[pos] + item)
-	return result
+if len(argv) < 4:
+	print 'Usage: ' + argv[0] + ' <units> <input> <instances>'
+	exit(0)
 
-instances = argv[1:]
-
+units = argv[1]
+basedir = argv[2]
+instances = argv[3:]
 
 for instance in instances:
 	infile = os.path.basename(instance)
 	bestLeastColors = 10000
 	bestInitialColors = 10000
-	bestColors = numpy.empty(1)
+	bestColors = empty(1)
 	bestpermut = ''
-	bestRunningTime = numpy.empty(1)
+	bestRunningTime = empty(1)
 	for permutation in permute('cdn'):
 		leastColors = 10000
 		initialColors = 10000
-		colors = numpy.empty(1)		
-		runningTime = numpy.empty(1)
+		colors = empty(1)		
+		runningTime = empty(1)
 		for i in range(0, 30):
-			json_data = open('output/' + str(i) + '/' + str(i) + infile + "." + permutation + '.json')
+			json_data = open('output/' + str(i) + '/' + infile + "." + permutation + '.json')
 			data = json.load(json_data)
 			json_data.close()
-			colors = numpy.append(colors, data['colors'])
+			colors = append(colors, data['colors'])
 			initial = data['colors'] + data['improvement']
 			runningTimeX = 0
 			for time in data['stats']:
 				runningTimeX = runningTimeX + time['all']['time']['sum']
 
-			runningTime = numpy.append(runningTime, runningTimeX)
+			runningTime = append(runningTime, runningTimeX)
 
 			if data['colors'] < leastColors:
 				leastColors = data['colors']
@@ -54,6 +49,15 @@ for instance in instances:
 			bestPermut = permutation
 			bestRunningTime = runningTime
 
-	avg = numpy.average(bestColors)
-	std = numpy.std(bestColors)
-	print "\\texttt{" + infile + "} & " + str(bestInitialColors) + " & \\texttt{" + bestPermut + "} & " + str(bestLeastColors) + " & " + str(round(avg, 2)) + " & " + str(round(std, 1)) + " & " + str(round((bestLeastColors - bestInitialColors) / (bestLeastColors / float(-100)), 2)) + " & " + str(round(numpy.average(bestRunningTime) / 1000.0, 1)) + "\\\\" #+ " " + str(round(numpy.std(bestRunningTime) / 1000.0, 1)) 
+	print ' & '.join(map(str,
+	[
+		'\\texttt{' + infile + '}',
+		str(bestInitialColors),
+		bestPermut,
+		bestLeastColors,
+		round(average(bestColors), 2),
+		round(std(bestColors), 1),
+		round((bestLeastColors - bestInitialColors) / (bestLeastColors / float(-100)), 2),
+		round(average(bestRunningTime) / 1000.0, 1)
+	]
+	)) + '\\\\'

@@ -21,7 +21,7 @@ if vertices < partitions:
 	exit(2)
 
 print ' '.join(argv[1:4])
-print '\n'.join(str(partition) for partition in sample(range(0, partitions), partitions))
+print '\n'.join(map(str, sample(range(0, partitions), partitions)))
 
 if vertices > partitions:
 	print '\n'.join(str(randint(0, partitions - 1)) for i in range(partitions, vertices))
@@ -33,4 +33,4 @@ for i in range(0, edges):
 	while edge in edgeList:
 		edge = sample(range(0, vertices), 2)
 	edgeList.append(edge)
-	print ' '.join(str(vertex) for vertex in edge)
+	print ' '.join(map(str, edge))
