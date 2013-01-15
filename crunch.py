@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 import glob, sys, os, permute
-from subprocess import call
-from permute import permute
 from os import mkdir
 from os.path import abspath, basename
+from permute import permute
+from subprocess import call
 
 args = '-c -t 30'
 

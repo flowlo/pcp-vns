@@ -9,8 +9,7 @@ if len(argv) < 4:
 	print 'Usage: ' + argv[0] + ' <units> <input> <instances>'
 	exit(0)
 
-units = argv[1]
-basedir = argv[2]
+units, basedir = argv[1:3]
 instances = argv[3:]
 
 for instance in instances:
@@ -20,22 +19,18 @@ for instance in instances:
 	bestColors = empty(1)
 	bestpermut = ''
 	bestRunningTime = empty(1)
-	for permutation in permute('cdn'):
+	for permutation in permute(units):
 		leastColors = 10000
 		initialColors = 10000
 		colors = empty(1)		
 		runningTime = empty(1)
-		for i in range(0, 30):
-			json_data = open('output/' + str(i) + '/' + infile + "." + permutation + '.json')
-			data = json.load(json_data)
-			json_data.close()
+		for i in range(1, 30):
+			jd = open('output/' + str(i) + '/' + str(i) + infile + "." + permutation + '.json')
+			data = json.load(jd)
+			jd.close()
 			colors = append(colors, data['colors'])
 			initial = data['colors'] + data['improvement']
-			runningTimeX = 0
-			for time in data['stats']:
-				runningTimeX = runningTimeX + time['all']['time']['sum']
-
-			runningTime = append(runningTime, runningTimeX)
+			runningTime = append(runningTime, sum(time['all']['time']['sum'] for time in data['stats']))
 
 			if data['colors'] < leastColors:
 				leastColors = data['colors']
@@ -49,14 +44,21 @@ for instance in instances:
 			bestPermut = permutation
 			bestRunningTime = runningTime
 
-	print ' & '.join(map(str,
+	original = open(instance)
+	nodes, vertices, partitions = original.readline().split(' ')
+	original.close()
+
+	print '\t& '.join(map(str,
 	[
 		'\\texttt{' + infile + '}',
-		str(bestInitialColors),
-		bestPermut,
+		nodes,
+		vertices,
+		partitions[:-1],
+		bestInitialColors,
+		'\\texttt{' + bestPermut + '}',
 		bestLeastColors,
 		round(average(bestColors), 2),
-		round(std(bestColors), 1),
+		round(std(bestColors), 2),
 		round((bestLeastColors - bestInitialColors) / (bestLeastColors / float(-100)), 2),
 		round(average(bestRunningTime) / 1000.0, 1)
 	]
