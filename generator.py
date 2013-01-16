@@ -4,13 +4,13 @@ import sys, random
 from sys import argv, stderr, exit
 from random import randint, sample, seed
 
-if len(argv) >= 4:
-	vertices, edges, partitions = map(int, argv[1:4])
-	if len(argv) >= 5:
-		seed(argv[4])
-else:
+if len(argv) < 4:
 	print 'Usage: ' + argv[0] + ' <vertices> <edges> <partitions> [<seed>]'
 	exit(0)
+
+vertices, edges, partitions = map(int, argv[1:4])
+if len(argv) >= 5:
+	seed(argv[4])
 
 if vertices < 1 or edges < 1 or partitions < 1:
 	print >> stderr, 'The number of vertices, edges and partitions must be greater than zero!'

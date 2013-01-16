@@ -25,7 +25,7 @@ for instance in instances:
 		colors = empty(1)		
 		runningTime = empty(1)
 		for i in range(1, 30):
-			jd = open('output/' + str(i) + '/' + str(i) + infile + "." + permutation + '.json')
+			jd = open('output/' + str(i) + '/' + infile + "." + permutation + '.json')
 			data = json.load(jd)
 			jd.close()
 			colors = append(colors, data['colors'])
