@@ -34,12 +34,12 @@ Solution* dsatur::findLocalMin(Solution& curBest, Solution& full) {
 			cout << "New iteration!" << endl;
 
 		target = maxColorDegree = maxBlankDegree = -1;
-		
-		fill(colors.begin(), colors.begin() + s->numParts, false);
 
 	 	for (tie(i, end) = vertices(*s->g); i != end; i++) {
 	 		if (s->isPartitionColored(*i))
 	 			continue;
+	 			
+	 		fill(colors.begin(), colors.begin() + s->numParts, false);
 			
 			for (tie(k, last) = adjacent_vertices(*i, *s->g); k != last; k++)
 				if (s->isPartitionColored(*k))
@@ -88,9 +88,12 @@ Solution* dsatur::shuffleSolution(Solution& cur, Solution& full, int numSteps) {
 	
 	fill(s->partition, s->partition + s->numParts, -1);
 	
-	int numColors = -1, target, maxColorDegree, maxBlankDegree, colorDegree, blankDegree, color;
+	int numColors = -1, target, maxColorDegree, maxBlankDegree, colorDegree, blankDegree, color, targetColor;
 	
 	VertexIter i, end;
+	AdjIter k, last;
+
+	vector<bool> colors = vector<bool>(s->numParts, false);
 	
 	for (int j = 0; j < s->numParts; j++) {
 		if (DEBUG_LEVEL == 4)
@@ -102,7 +105,19 @@ Solution* dsatur::shuffleSolution(Solution& cur, Solution& full, int numSteps) {
 	 		if (s->isPartitionColored(*i))
 	 			continue;
 	 		
-			colorDegree = s->getColorDegree(*i);
+	 		fill(colors.begin(), colors.begin() + s->numParts, false);
+			
+			for (tie(k, last) = adjacent_vertices(*i, *s->g); k != last; k++)
+				if (s->isPartitionColored(*k))
+					colors[s->partition[s->getPartition(*k)]] = true;
+
+			color = -1;
+			colorDegree = 0;
+			for (vector<bool>::iterator o = colors.begin(); o < colors.end(); o++)
+				if (*o)
+					colorDegree++;
+				else if (color < 0)
+					color = distance(colors.begin(), o);
 			
 			if (rand() % 2)
 				if (colorDegree < maxColorDegree)
@@ -117,19 +132,19 @@ Solution* dsatur::shuffleSolution(Solution& cur, Solution& full, int numSteps) {
 			target = *i;
 			maxColorDegree = colorDegree;
 			maxBlankDegree = blankDegree;
+			targetColor = color;
 			
 			if (DEBUG_LEVEL == 4)
 				cout << "New best " << target << " having (" << maxColorDegree << "|" << maxBlankDegree << ")" << endl;
 		}
 		
-		color = s->minPossibleColor(target);
-		s->setPartitionColor(target, color);
+		s->setPartitionColor(target, targetColor);
 		
 		if (DEBUG_LEVEL == 4)
-			cout << "Colored " << target << " with " << color << endl;
+			cout << "Colored " << target << " with " << targetColor << endl;
 		
-		if (numColors < color)
-			numColors = color;
+		if (numColors < targetColor)
+			numColors = targetColor;
 	}
 
 	s->colorsUsed = numColors + 1;
