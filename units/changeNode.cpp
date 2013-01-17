@@ -19,9 +19,10 @@ const char changeNode::getStaticAbbreviation() {
 Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 	Solution* s = &best;
 	int maxColor = best.colorsUsed - 1;
+	s->requestDeepCopy();
 	
 	VertexIter i, iEnd;
-	vector<Vertex> candidates;
+	vector<Vertex> *candidates;
 	
 	// Search all vertices for minimal colors
 	for (tie(i, iEnd) = vertices(*s->g); i != iEnd; i++) {
@@ -29,10 +30,10 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 			Vertex n = *i;
 			
 			// Only execute changeNode if there are nodes to replace
-			candidates = full.partNodes[s->getPartition(n)];
-			if (candidates.size() > 1) {
+			candidates = &(full.partNodes[s->getPartition(n)]);
+			if (candidates->size() > 1) {
 				vector<Vertex>::iterator r;
-				for (r = candidates.begin(); r != candidates.end(); r++) {
+				for (r = candidates->begin(); r != candidates->end(); r++) {
 					if (*r != s->getOriginalId(n)) {
 						clear_vertex(n, *s->g);
 						s->setOriginalId(n, *r);
@@ -59,7 +60,7 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 					}
 				}
 				// No candidates left to try...
-				if (r == candidates.end()) {
+				if (r == candidates->end()) {
 					s->colorsUsed = s->numParts;
 					return s;
 				}
@@ -97,6 +98,7 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 				 							  	  int numSteps) {
 	Solution* ret = &cur;
+	ret->requestDeepCopy();
 	
 	VertexPart_Map vPartsOrig = get(vertex_index1_t(), *full.g);
 	VertexID_Map vIndex = get(vertex_index2_t(), *ret->g);

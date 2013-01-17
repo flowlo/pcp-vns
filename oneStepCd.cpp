@@ -16,6 +16,7 @@ namespace pcp {
 		
 		/// Copy the old solution
 		Solution *sol = new Solution(&s);
+		sol->requestDeepCopy();
 
 		/// Remove all edges between nodes of the same partition, as they are of
 		/// no use

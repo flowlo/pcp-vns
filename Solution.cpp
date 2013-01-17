@@ -19,7 +19,7 @@ Solution::Solution(Solution *toCopy) {
 //	this->g = new Graph(*toCopy->g);
 	this->g = toCopy->g;
 	this->copyCounter = toCopy->copyCounter;
-	*this->copyCounter++;
+	*this->copyCounter += 1;
 	this->numParts = toCopy->numParts;
 	this->partition = new int[this->numParts];
 //	this->representatives = new int[this->numParts];
@@ -34,8 +34,8 @@ Solution::Solution(Solution *toCopy) {
 }
 
 Solution::~Solution() {
-	*this->copyCounter--;
-	if (this->copyCounter <= 0) {
+	*copyCounter -= 1;
+	if (*copyCounter <= 0) {
 		delete g;
 		delete copyCounter;
 		delete[] representatives;
@@ -72,6 +72,8 @@ bool Solution::isPartitionColored(Vertex v) {
 void Solution::requestDeepCopy() {
 	Graph *cp = g;
 	g = new Graph(*g);
+	this->partitionMap = get(vertex_index1_t(), *g);
+	this->idMap = get(vertex_index2_t(), *g);
 	
 	int *rep = representatives;
 	representatives = new int[numParts];
@@ -79,8 +81,8 @@ void Solution::requestDeepCopy() {
 		representatives[i] = rep[i];
 	}
 
-	*copyCounter--;	
-	if (copyCounter <= 0) {
+	*copyCounter -= 1;	
+	if (*copyCounter <= 0) {
 		delete copyCounter;
 		delete cp;
 		delete[] rep;
