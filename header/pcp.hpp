@@ -61,6 +61,8 @@ namespace pcp {
 			
 			int getOriginalId(Vertex v);
 			
+			void setOriginalId(Vertex v, int id);
+			
 			void setPartitionColor(Vertex v, int color);
 			
 			int getPartitionColor(Vertex v);

@@ -43,6 +43,10 @@ int Solution::getOriginalId(Vertex v) {
 	return get(this->idMap, v);
 }
 
+void Solution::setOriginalId(Vertex v, int id) {
+	put(this->idMap, v, id);
+}
+
 int Solution::getPartitionColor(Vertex v) {
 	return partition[getPartition(v)];
 }

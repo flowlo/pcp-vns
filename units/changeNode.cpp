@@ -19,185 +19,78 @@ const char changeNode::getStaticAbbreviation() {
 Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 	Solution* s = &best;
 	int maxColor = best.colorsUsed - 1;
-	const int ITER_MAX = s->numParts * 20;
-	pair<VertexIter, VertexIter> vIter;
-	VertexPart_Map vParts = get(vertex_index1_t(), *s->g);
-	VertexPart_Map vPartsOrig = get(vertex_index1_t(), *full.g);
-	VertexID_Map vIndex = get(vertex_index2_t(), *s->g);
-
-	if (DEBUG_LEVEL > 2) {
-		cout<<"Starting changeNode"<<endl;
-	}
 	
-	/// Recolor all nodes who use maxColor with a random color < maxColor
-	for (vIter = vertices(*s->g); vIter.first != vIter.second; vIter.first++) {
-		if (s->partition[vParts[*vIter.first]] == maxColor) {
-			int col = rand() % maxColor;
-			s->partition[vParts[*vIter.first]] = col;
-			if (DEBUG_LEVEL > 3) {		
-				cout<<"Recoloring "<<*vIter.first<<" with color ";
-				cout<<col<<endl;
-			}
-		}
-	}
+	VertexIter i, iEnd;
+	vector<Vertex> candidates;
 	
-	pair<AdjIter, AdjIter> ai;
-	int *colors = new int[s->numParts];
-	int i = 0;
-	int iter = 0;
-	std::vector<Vertex> conflicts;
-	std::vector<Vertex> partition;
-	
-	/// Add all nodes of a conflict to vector conflict
-	for (vIter = vertices(*s->g); vIter.first != vIter.second; 
-			  vIter.first++) {
+	// Search all vertices for minimal colors
+	for (tie(i, iEnd) = vertices(*s->g); i != iEnd; i++) {
+		if (s->getPartitionColor(*i) == maxColor) {
+			Vertex n = *i;
 			
-		for (ai = adjacent_vertices(*vIter.first, *s->g); 
-			  ai.first != ai.second; ai.first++) {
-			
-			if (s->partition[vParts[*ai.first]] ==
-				 s->partition[vParts[*vIter.first]]) {
-				
-				if (DEBUG_LEVEL > 3) {
-					cout<<"Conflicting node "<<*vIter.first<< " with color ";
-					cout<<s->partition[vParts[*vIter.first]]<<" added to conflicts";
-					cout<<endl;
-				}
-				conflicts.push_back(*vIter.first);
-				break;
-			}
-		}
-	}
-	
-	/// Run until there are no more conflicts, or there were to many iterations
-	while (conflicts.size() != 0 && iter < ITER_MAX) {
-		iter++;
-		
-		/// Pick a random conflicting partition
-		int random = rand() % conflicts.size();
-		Vertex v = conflicts[random];
-		partition.clear();
-		int part = vParts[v];
-		
-		if (DEBUG_LEVEL > 3) {
-			cout<<"Chose random Vertex "<<v<<" in partition "<<part;
-			cout<<" from conflicts, this vertex is equal to vertex ";
-			cout<<vIndex[v]<<" in the original graph"<<endl;
-		}
-		
-		partition.assign(full.partNodes[part].begin(), full.partNodes[part].end());
-		
-		/// If partition contains other vertices
-		if (partition.size() != 0) {
-		
-			/// Choose random replacement node
-			random = rand() % partition.size();
-			Vertex rep = partition[random];
-			if (DEBUG_LEVEL > 3) {
-				cout<<"Randomly chosen replacement is "<<rep<<endl;
-			}
-			
-			/// Clear old vertex of all edges
-			clear_vertex(v, *s->g);	
-			vIndex[v] = rep;
-			
-			fill(colors, colors + s->numParts, 0);
-			
-			/// Search matching edges for replacement vertex
-			for (ai = adjacent_vertices(rep, *full.g); 
-				  ai.first != ai.second; ai.first++) {
-				  
-				if (vIndex[s->representatives[vPartsOrig[*ai.first]]] == 
-					 (int)*ai.first && vPartsOrig[*ai.first] != vParts[v]) {
-					
-					add_edge(v, s->representatives[vPartsOrig[*ai.first]], *s->g);
-					colors[s->partition[vPartsOrig[*ai.first]]] = 1;
-				}
-				
-			}
-			
-			bool found = false;
-			for (i = 0; i < maxColor; i++) {
-				if (colors[i] == 0) {
-					if (DEBUG_LEVEL > 2) {
-						cout<<"Found new suitable color for node "<<v<<"; the color is ";
-						cout<<i<<endl;
+			// Only execute changeNode if there are nodes to replace
+			candidates = full.partNodes[s->getPartition(n)];
+			if (candidates.size() > 1) {
+				vector<Vertex>::iterator r;
+				for (r = candidates.begin(); r != candidates.end(); r++) {
+					if (*r != s->getOriginalId(n)) {
+						clear_vertex(n, *s->g);
+						s->setOriginalId(n, *r);
+						
+						// Check which edges should be added
+						AdjIter a, aEnd;
+						for (tie(a, aEnd) = adjacent_vertices(*r, *full.g); a != aEnd;
+							  a++) {
+							
+							if (full.getPartition(*a) != s->getPartition(n) &&	*a == 
+								 s->getOriginalId(s->representatives[full.getPartition(*a)])) {
+								
+								// add edge
+								add_edge(n, s->representatives[full.getPartition(*a)], *s->g);
+							}
+						}
+						
+						// Check for improvement
+						int color = s->minPossibleColor(n);
+						if (color < maxColor) {
+							s->setPartitionColor(n, color);
+							break;
+						}
 					}
-					
-					found = true;
-					s->partition[part] = i;
-					break;
+				}
+				// No candidates left to try...
+				if (r == candidates.end()) {
+					s->colorsUsed = s->numParts;
+					return s;
 				}
 			}
-			
-			/// No suitable color with color < maxColor found for replaced node
-			if (!found) {
-				if (DEBUG_LEVEL > 2) {
-					cout<<"Found no new suitable color for node "<<v<<", choose random";
-					cout<<" color"<<endl;
-				}
-				
-				s->partition[vParts[v]] = rand() % maxColor;
-			}
-		}
-				
-		/// Rebuild all conflicts in vector "conflicts"
-		conflicts.clear();
-		for (vIter = vertices(*s->g); vIter.first != vIter.second; 
-				  vIter.first++) {
-			
-			for (ai = adjacent_vertices(*vIter.first, *s->g); 
-				  ai.first != ai.second; ai.first++) {
-			
-				if (s->partition[vParts[*ai.first]] ==
-					 s->partition[vParts[*vIter.first]]) {
-				
-					if (DEBUG_LEVEL > 3) {
-						cout<<"Conflicting node "<<*vIter.first<< " with color ";
-						cout<<s->partition[vParts[*vIter.first]]<<" added to conflicts";
-						cout<<endl;
-					}
-					conflicts.push_back(*vIter.first);
-					break;
-				}
-			}
+			else
+				return s;
 		}
 	}
 	
-	/// New solution is not conflict free, return curBest
-	if (conflicts.size() != 0) {
-		if (DEBUG_LEVEL > 1) {
-			cout<<"Conflict found"<<endl;
+	maxColor = 0;
+	for (int i = 0; i < s->numParts; i++) {
+		
+		if (s->partition[i] > maxColor) {
+			maxColor = s->partition[i];
 		}
-		s->colorsUsed = s->numParts;
-		return s;
+	}
+	s->colorsUsed = maxColor + 1;
+	
+	if (DEBUG_LEVEL > 1) {
+		cout<<"Change Color uses "<<s->colorsUsed<<" colors"<<endl; 
 	}
 	
-	/// New solution is conflict free, count colorsUsed and return
-	else {
-		maxColor = 0;
-		for (int i = 0; i < s->numParts; i++) {
-			
-			if (s->partition[i] > maxColor) {
-				maxColor = s->partition[i];
-			}
-		}
-		s->colorsUsed = maxColor + 1;
-		
-		if (DEBUG_LEVEL > 1) {
-			cout<<"Change Node uses "<<s->colorsUsed<<" colors"<<endl; 
-		}
-		
-		Solution *temp = new Solution(s);
-		temp = this->findLocalMin(*temp, full);
-		if (temp->colorsUsed < s->colorsUsed) {
-			delete s;
-			s = temp;
-		}
-		else 
-			delete temp;
+	Solution *temp = new Solution(s);
+	temp = this->findLocalMin(*temp, full);
+	if (temp->colorsUsed < s->colorsUsed) {
+		delete s;
+		s = temp;
 	}
-	delete[] colors;
+	else 
+		delete temp;
+	
 	return s;
 }
 
