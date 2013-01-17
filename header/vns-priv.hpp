@@ -3,7 +3,8 @@
 #include "pcp.hpp"
 #include "vns.hpp"
 #include <time.h>
-#include <utility>   
+#include <utility>
+#include <boost/tuple/tuple.hpp>
 
 namespace pcp {
 	/// every neighborhood has to be inherited from this class

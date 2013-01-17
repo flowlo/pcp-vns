@@ -291,3 +291,23 @@ void Solution::print(ostream& out) {
  	
  	out << "}" << endl;
 }
+
+boost::tuple<int, int> Solution::getColorDegreeAndMinColor(Vertex v) {
+	vector<bool> colors = vector<bool>(this->numParts, false);
+	boost::tuple<int, int> result;
+	
+	AdjIter i, end;
+	for (tie(i, end) = adjacent_vertices(v, *this->g); i != end; i++)
+		if (this->isPartitionColored(*i))
+			colors[this->partition[this->getPartition(*i)]] = true;
+
+	result.get<0>() = 0;
+	result.get<1>() = -1;
+	for (vector<bool>::iterator i = colors.begin(); i < colors.end(); i++)
+		if (*i)
+			result.get<0>()++;
+		else if (result.get<1>() < 0)
+			result.get<1>() = distance(i, colors.begin());
+	
+	return result;
+}

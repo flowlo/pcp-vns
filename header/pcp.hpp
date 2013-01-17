@@ -5,6 +5,7 @@
 #define PCP_H
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/copy.hpp>
+#include <boost/tuple/tuple.hpp>
 
 namespace pcp {
 	/// Properties that are stored for each vertex in a property map
@@ -70,6 +71,8 @@ namespace pcp {
 			int getColorDegree(Vertex v);
 			
 			int minPossibleColor(Vertex v);
+			
+			boost::tuple<int, int> getColorDegreeAndMinColor(Vertex v);
 			
 			void print(std::ostream& out);
 
