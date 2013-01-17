@@ -8,30 +8,39 @@ using namespace boost;
 Solution::Solution() {
 	this->g = new Graph(0);
 	this->colorsUsed = 0;
+	this->copyCounter = new int;
+	*this->copyCounter = 1;
 	this->partitionMap = get(vertex_index1_t(), *this->g);
 	this->idMap = get(vertex_index2_t(), *this->g);
 }
 
 Solution::Solution(Solution *toCopy) {
 	this->partNodes = NULL;
-	this->g = new Graph(*toCopy->g);
+//	this->g = new Graph(*toCopy->g);
+	this->g = toCopy->g;
+	this->copyCounter = toCopy->copyCounter;
+	*this->copyCounter++;
 	this->numParts = toCopy->numParts;
 	this->partition = new int[this->numParts];
-	this->representatives = new int[this->numParts];
-
-	for (int i = 0; i < this->numParts; i++) {
-		this->partition[i] = toCopy->partition[i];
-		this->representatives[i] = toCopy->representatives[i];
-	}
+//	this->representatives = new int[this->numParts];
+	this->representatives = toCopy->representatives;
 	this->colorsUsed = toCopy->colorsUsed;
 	this->partitionMap = get(vertex_index1_t(), *this->g);
 	this->idMap = get(vertex_index2_t(), *this->g);
+	
+	for (int i = 0; i < this->numParts; i++) {
+		this->partition[i] = toCopy->partition[i];
+	}
 }
 
 Solution::~Solution() {
-	delete g;
+	*this->copyCounter--;
+	if (this->copyCounter <= 0) {
+		delete g;
+		delete copyCounter;
+		delete[] representatives;
+	}
 	delete[] partition;
-	delete[] representatives;
 	delete[] partNodes;
 }
 
@@ -57,6 +66,27 @@ void Solution::setPartitionColor(Vertex v, int color) {
 
 bool Solution::isPartitionColored(Vertex v) {
 	return getPartitionColor(v) != -1;
+}
+
+
+void Solution::requestDeepCopy() {
+	Graph *cp = g;
+	g = new Graph(*g);
+	
+	int *rep = representatives;
+	representatives = new int[numParts];
+	for (int i = 0; i < numParts; i++) {
+		representatives[i] = rep[i];
+	}
+
+	*copyCounter--;	
+	if (copyCounter <= 0) {
+		delete copyCounter;
+		delete cp;
+		delete[] rep;
+	}
+	copyCounter = new int;
+	*copyCounter = 1;
 }
 
 int Solution::getColorDegree(Vertex node) {

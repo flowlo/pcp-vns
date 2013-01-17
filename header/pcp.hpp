@@ -73,7 +73,7 @@ namespace pcp {
 			// Get the color of v's partitions
 			int getPartitionColor(Vertex v);
 			
-			// Returns true wheter v's partition colored
+			// Returns true whether v's partition colored
 			bool isPartitionColored(Vertex v);
 			
 			// Return v's colorDegree, which is specified as the number of adjacent
@@ -103,12 +103,18 @@ namespace pcp {
 			// Provides a matching from partitions to chosen nodes
 			int *representatives;
 			
+			// Keep track of copies of a graph
+			int *copyCounter;
+			
+			// Copy the graph, instead of only the colors
+			void requestDeepCopy();
+			
 			// Construction methods used for building a solution out of specific
 			// file types
 			static Solution* fromColStream(std::istream& in);
 			static Solution* fromColBStream(std::istream& in);
 			static Solution* fromPcpStream(std::istream& in);
-		
+			
 		private:
 			boost::property_map<Graph, boost::vertex_index1_t>::type partitionMap;
 			boost::property_map<Graph, boost::vertex_index2_t>::type idMap;
