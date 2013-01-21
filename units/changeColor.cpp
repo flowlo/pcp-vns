@@ -21,8 +21,12 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 	int maxColor = curBest.colorsUsed - 1;
 	VertexIter i, iEnd;
 	AdjIter a, aEnd;
-	const int colorRetries = maxColor;
+	list<int> colors;
+	for (int k = 0; k < maxColor - 1; k++) {
+		colors.push_back(k);
+	}
 
+	// Change color will not work here....
 	if (maxColor <= 1) {
 		return s;
 	}
@@ -31,21 +35,25 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 		cout<<"Starting changeColor"<<endl;
 	}
 	
+	// Try recoloring all vertices where color=maxColor
 	for (tie(i, iEnd) = vertices(*s->g); i != iEnd; i++) {
 		if (s->getPartitionColor(*i) == maxColor) {
 			if (DEBUG_LEVEL > 3) {
 				cout<<"vertex "<<*i<<"has maxColor; ";
 			}
 			
-			int j;
-			for (j = 0; j < colorRetries; j++) {
-				int nCol = rand() % (maxColor - 1);
+			// Try recoloring the vertex with every possible color < maxColor - 1
+			list<int>::iterator j;
+			for(j = colors.begin(); j != colors.end(); j++)  {
+				int nCol = *j;
 				s->setPartitionColor(*i, nCol);
 			
 				if (DEBUG_LEVEL > 3) {
 					cout<<"new color is "<<nCol<<endl;
 				}
 			
+				// Try recoloring adjacent vertices with a color smaller than 
+				// maxColor
 				bool allColored = true;
 				for (tie(a, aEnd) = adjacent_vertices(*i, *s->g); a != aEnd; a++) {
 					if (s->getPartitionColor(*a) == nCol) {
@@ -62,7 +70,8 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 				if (allColored)
 					break;
 			}
-			if (j == colorRetries) {
+			// No new color could be found for all adjacent vertices
+			if (j == colors.end()) {
 				if (DEBUG_LEVEL > 1) {
 					cout<<"Conflict found: could not resolve conflict with node ";
 					cout<<*i<<endl;
@@ -73,7 +82,7 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 		}
 	}
 	
-
+	// Find new maxColor and number of used colors
 	maxColor = 0;
 	for (int i = 0; i < s->numParts; i++) {
 		
@@ -87,6 +96,7 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 		cout<<"Change Color uses "<<s->colorsUsed<<" colors"<<endl; 
 	}
 	
+	// Try to take it one step further
 	Solution *temp = new Solution(s);
 	temp = this->findLocalMin(*temp, full);
 	if (temp->colorsUsed < s->colorsUsed) {
