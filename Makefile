@@ -71,3 +71,6 @@ clang:
 
 gcc:
 	@$(MAKE) CXX=g++ $(PROG)
+
+opt:
+	@$(MAKE) CXX=g++ CFLAGS="$(CFLAGS) -O3" $(PROG)
