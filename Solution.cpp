@@ -48,7 +48,7 @@ int Solution::getPartition(Vertex v) {
 	return get(this->partitionMap, v);
 }
 
-int Solution::getOriginalId(Vertex v) {
+unsigned int Solution::getOriginalId(Vertex v) {
 	return get(this->idMap, v);
 }
 

@@ -114,7 +114,7 @@ Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 		Vertex v = ret->representatives[part];
 		
 		/// If it isn't already the current chosen node
-		if (vIndex[ret->representatives[part]] != (int)replacement) {
+		if (vIndex[ret->representatives[part]] != replacement) {
 			
 			clear_vertex(v, *ret->g);
 			vIndex[v] = replacement;
@@ -126,7 +126,7 @@ Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 				  ai.first != ai.second; ai.first++) {
 				  
 				if (vIndex[ret->representatives[vPartsOrig[*ai.first]]] == 
-					 (int)*ai.first && vPartsOrig[*ai.first] != part) {
+					 *ai.first && vPartsOrig[*ai.first] != part) {
 					
 					add_edge(v, ret->representatives[vPartsOrig[*ai.first]], *ret->g);
 					colors[ret->partition[vPartsOrig[*ai.first]]] = 1;
