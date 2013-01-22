@@ -15,5 +15,8 @@ pcp
 *.json
 *.gv
 
+# temporary files
+*~
+
 # other nasty stuff
 *.pdf
