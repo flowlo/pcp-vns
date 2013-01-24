@@ -50,6 +50,8 @@ namespace pcp {
 		Solution *toImprove = &best;
 		Solution *curBest = &best;
 		
+		unordered_set<StoredSolution> set;
+		
 		/// Run as long as shaking still produces usefull solution
 		while (true) {
 			
@@ -75,7 +77,7 @@ namespace pcp {
 				}
 				
 				/// Compute the minimum for this neighborhood
-				Solution *imp = neigh->findLocalMin(*tempImp, orig);
+				Solution *imp = neigh->findLocalMin(*tempImp, orig);	
 				
 				improvement = (toImprove->colorsUsed - imp->colorsUsed < 1) ? 0 : toImprove->colorsUsed - imp->colorsUsed;
 				
@@ -92,34 +94,46 @@ namespace pcp {
 				if (improvement > 0) {
 					if (toImprove != curBest)
 						delete toImprove;
-						
+
+					StoredSolution check(imp);
+					if (set.find(check) != set.end()) {
+						cout << "Detected duplicate solution!" << endl;
+						curNeighbor = 0;
+						// delete check;
+						break;
+					}
+					else {
+						set.insert(check);
+						// delete check;
+					}
+
 					toImprove = tempImp = imp;
 					tempImp = new Solution(tempImp);
 					
 					if (DEBUG_LEVEL > 1) {
 						cout << "Improvement found! ";
 						cout << "New solution uses " << tempImp->colorsUsed << " colors";
-						
+
 						if (checkIntermediate)
 							cout << " and is "<<((checkValid(tempImp, &orig)) ? "valid" : "invalid");
-						
+
 						cout << "." << endl;
 					}
-					
+
 					/// Restart neighborhoods
 					curNeighbor = curNeighbor == 0 ? 1 : 0;
 				}
-				
+
 				/// Step to next neighborhood, no improvement found
 				else {
 					if (DEBUG_LEVEL > 1)
 						cout << "No improvement found." << endl;
-					
+
 					if (toImprove->colorsUsed - imp->colorsUsed < 0) {
 						delete tempImp;
 						tempImp = new Solution(toImprove);
 					}
-					
+
 					curNeighbor++;
 				}
 				if (DEBUG_LEVEL > 1) {
@@ -128,7 +142,7 @@ namespace pcp {
 					cout<<endl;
 				}
 			} // end while neighborhood
-			
+
 			if (DEBUG_LEVEL > 1) {
 				cout<<endl;
 				cout<<"###################### End inner VNS loop ##################"<<endl;
