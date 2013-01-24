@@ -100,15 +100,28 @@ namespace pcp {
 					
 					StoredSolution *check = new StoredSolution(*imp);
 					if (solutionStore.find(*check) != solutionStore.end()) {
-						cout << "Detected duplicate solution!" << endl;
+						if (DEBUG_LEVEL >= 3) {
+							cout << "Detected duplicate solution";
+							
+							if (DEBUG_LEVEL >= 4)
+								cout << " " << check->toString();
+
+							cout << ", proceeding to shake!" << endl;
+						}
 						curNeighbor = 0;
-						// delete check;
+						delete check;
 						break;
 					}
 					else {
-						//cout << "Added unique solution to set"<<endl;
 						solutionStore.insert(*check);
-						// delete check;
+						if (DEBUG_LEVEL >= 3) {
+							cout << "Added new solution ";
+							
+							if (DEBUG_LEVEL >= 4)
+								cout << check->toString() << " ";
+
+							cout << "to set." << endl;
+						}
 					}
 					
 					if (DEBUG_LEVEL > 1) {

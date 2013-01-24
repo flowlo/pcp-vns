@@ -23,14 +23,14 @@ StoredSolution::~StoredSolution() {
 string StoredSolution::toString() {
 	stringstream ss;
 	
-	ss << "{ representatives: [ " << this->representatives[0];
+	ss << "{ \"representatives\": [ " << this->representatives[0];
 	
 	for (int i = 1; i < this->n; i++)
 		ss << ", " << this->representatives[i];
 	
-	ss << " ], \"colors\": [" << this->colors[0];
+	ss << " ], \"colors\": [ " << this->colors[0];
 	for (int i = 1; i < this->n; i++)
-		ss << this->colors[i];
+		ss << ", " << this->colors[i];
 	
 	ss << " ] }";
 	return ss.str();
@@ -39,8 +39,8 @@ string StoredSolution::toString() {
 size_t StoredHash::operator()(StoredSolution const& sol) const
 {
 	size_t seed = 0;
-	hash_combine(seed, sol.colors);
-	hash_combine(seed, sol.representatives);
+	hash_range(seed, sol.colors, sol.colors + sol.n);
+	hash_range(seed, sol.representatives, sol.representatives + sol.n);
 	return seed;
 }
 

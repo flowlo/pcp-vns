@@ -331,14 +331,14 @@ void Solution::print(ostream& out) {
 std::string Solution::toString() {
 	std::stringstream ss;
 	
-	ss << "{ representatives: [ " << this->representatives[0];
+	ss << "{ \"representatives\": [ " << this->representatives[0];
 	
 	for (int i = 1; i < this->numParts; i++)
 		ss << ", " << this->representatives[i];
 	
-	ss << " ], \"colors\": [" << this->partition[0];
+	ss << " ], \"colors\": [ " << this->partition[0];
 	for (int i = 1; i < this->numParts; i++)
-		ss << this->partition[i];
+		ss << ", " << this->partition[i];
 	
 	ss << " ] }";
 	return ss.str();
