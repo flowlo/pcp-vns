@@ -39,7 +39,7 @@ StoredSolution.o: StoredSolution.cpp header/StoredSolution.hpp$(PCH)
 unit.a: temp
 	@cd units; $(MAKE) $(MFLAGS) unit.a
 
-header/vns-priv.hpp$(PCH): header/vns-priv.hpp header/pcp.hpp header/vns.hpp
+header/vns-priv.hpp$(PCH): header/vns-priv.hpp header/pcp.hpp header/vns.hpp header/StoredSolution.hpp
 	@echo $(CXX)": Precompiling "$@
 	@$(CXX) $(CFLAGS) -x c++-header header/vns-priv.hpp -o header/vns-priv.hpp$(PCH)
 
