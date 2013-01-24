@@ -8,7 +8,7 @@ else ifeq ($(CXX),g++)
 endif
 CFLAGS=-Wall -std=c++0x -g -c
 LDFLAGS=-lboost_program_options
-OBJECTS=main.o oneStepCd.o Solution.o vns.o unit.a
+OBJECTS=main.o oneStepCd.o Solution.o vns.o StoredSolution.o unit.a
 HEADERS=header/vns.hpp$(PCH) header/oneStepCd.hpp$(PCH) header/main.hpp$(PCH) header/Solution.hpp$(PCH)
 PROG=pcp
 
@@ -32,12 +32,20 @@ vns.o: vns.cpp header/vns-priv.hpp$(PCH)
 	@echo $(CXX)": Compiling "$@
 	@$(CXX) $(CFLAGS) -include header/vns-priv.hpp -o vns.o vns.cpp
 	
+StoredSolution.o: StoredSolution.cpp header/StoredSolution.hpp$(PCH)
+	@echo $(CXX)": Compiling "$@
+	@$(CXX) $(CFLAGS) -include header/StoredSolution.hpp -o StoredSolution.o StoredSolution.cpp
+
 unit.a: temp
 	@cd units; $(MAKE) $(MFLAGS) unit.a
 
 header/vns-priv.hpp$(PCH): header/vns-priv.hpp header/pcp.hpp header/vns.hpp
 	@echo $(CXX)": Precompiling "$@
 	@$(CXX) $(CFLAGS) -x c++-header header/vns-priv.hpp -o header/vns-priv.hpp$(PCH)
+
+header/StoredSolution.hpp$(PCH): header/StoredSolution.hpp header/pcp.hpp
+	@echo $(CXX)": Precompiling "$@
+	@$(CXX) $(CFLAGS) -x c++-header header/StoredSolution.hpp -o header/StoredSolution.hpp$(PCH)
 
 header/vns.hpp$(PCH): header/vns.hpp header/pcp.hpp
 	@echo $(CXX)": Precompiling "$@
