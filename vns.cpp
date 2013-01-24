@@ -106,7 +106,7 @@ namespace pcp {
 						break;
 					}
 					else {
-						cout << "Added unique solution to set"<<endl;
+						//cout << "Added unique solution to set"<<endl;
 						solutionStore.insert(*check);
 						// delete check;
 					}

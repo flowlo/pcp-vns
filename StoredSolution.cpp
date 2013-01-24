@@ -20,13 +20,23 @@ StoredSolution::~StoredSolution() {
 	delete[] representatives;
 }
 
-std::size_t StoredHash::operator()(StoredSolution const& sol) const
+size_t StoredHash::operator()(StoredSolution const& sol) const
 {
-	return 1;
+   size_t seed = 0;
+   hash_combine(seed, sol.colors);
+   hash_combine(seed, sol.representatives);
+	return seed;
 }
 
 bool StoredEqual::operator()(StoredSolution const& s1, 
 									  StoredSolution const& s2) const
 {
+	if (s1.n != s2.n)
+		return false;
+		
+	for (int i = 0; i < s1.n; i++)
+		if (s1.colors[i] != s2.colors[i] || s1.representatives[i] != s2.representatives[i])
+			return false;
+			
 	return true;
 }
