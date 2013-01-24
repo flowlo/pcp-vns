@@ -1,5 +1,5 @@
 /// This file contains the implementation of VNS
-#include "header/vns-priv.hpp"
+#include "include/vns-priv.hpp"
 
 using namespace std;
 using namespace boost;

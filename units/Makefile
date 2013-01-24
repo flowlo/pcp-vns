@@ -9,7 +9,7 @@ endif
 CFLAGS=-Wall -std=c++0x -g -c
 LDFLAGS=-lboost_program_options
 OBJECTS=$(patsubst %.cpp,%.o,$(wildcard *.cpp))
-HEADER=../header/vns-priv.hpp
+HEADER=../include/vns-priv.hpp
 
 unit.a: $(OBJECTS)
 	@echo "ar: Packing objectfiles into "$@
@@ -20,8 +20,8 @@ unit.a: $(OBJECTS)
 	@echo $(CXX)": Compiling "$@
 	@$(CXX) $(CFLAGS) -include $(HEADER) $< -o $@
 	
-$(HEADER)$(PCH): $(HEADER) ../header/pcp.hpp
-	@$(CXX) $(CFLAGS) -x c++-header ../header/vns-priv.hpp -o ../header/vns-priv.hpp$(PCH)	
+$(HEADER)$(PCH): $(HEADER) ../include/pcp.hpp
+	@$(CXX) $(CFLAGS) -x c++-header ../include/vns-priv.hpp -o ../include/vns-priv.hpp$(PCH)	
 
 clean:
 	@echo "rm: Cleaning directory ./units/"

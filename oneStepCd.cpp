@@ -1,7 +1,7 @@
 /// This file contains the implementation of the onestep color-degree 
 /// constructiion heuristic, see oneStepCd.hpp
 
-#include "header/oneStepCd.hpp"
+#include "include/oneStepCd.hpp"
 
 using namespace boost;
 using namespace std;

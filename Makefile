@@ -9,7 +9,7 @@ endif
 CFLAGS=-Wall -std=c++0x -g -c
 LDFLAGS=-lboost_program_options
 OBJECTS=main.o oneStepCd.o Solution.o vns.o StoredSolution.o unit.a
-HEADERS=header/vns.hpp$(PCH) header/oneStepCd.hpp$(PCH) header/main.hpp$(PCH) header/Solution.hpp$(PCH)
+HEADERS=include/vns.hpp$(PCH) include/oneStepCd.hpp$(PCH) include/main.hpp$(PCH) include/Solution.hpp$(PCH)
 PROG=pcp
 
 $(PROG): $(OBJECTS)
@@ -18,50 +18,50 @@ $(PROG): $(OBJECTS)
 	
 main.o: main.cpp $(HEADERS)
 	@echo $(CXX)": Compiling "$@
-	@$(CXX) $(CFLAGS) -include header/main.hpp -o main.o main.cpp
+	@$(CXX) $(CFLAGS) -include include/main.hpp -o main.o main.cpp
 
-oneStepCd.o: oneStepCd.cpp header/oneStepCd.hpp$(PCH)
+oneStepCd.o: oneStepCd.cpp include/oneStepCd.hpp$(PCH)
 	@echo $(CXX)": Compiling "$@
-	@$(CXX) $(CFLAGS) -include header/oneStepCd.hpp -o oneStepCd.o oneStepCd.cpp
+	@$(CXX) $(CFLAGS) -include include/oneStepCd.hpp -o oneStepCd.o oneStepCd.cpp
 	
-Solution.o: Solution.cpp header/Solution.hpp$(PCH)
+Solution.o: Solution.cpp include/Solution.hpp$(PCH)
 	@echo $(CXX)": Compiling "$@
-	@$(CXX) $(CFLAGS) -include header/Solution.hpp -o Solution.o Solution.cpp
+	@$(CXX) $(CFLAGS) -include include/Solution.hpp -o Solution.o Solution.cpp
 
-vns.o: vns.cpp header/vns-priv.hpp$(PCH)
+vns.o: vns.cpp include/vns-priv.hpp$(PCH)
 	@echo $(CXX)": Compiling "$@
-	@$(CXX) $(CFLAGS) -include header/vns-priv.hpp -o vns.o vns.cpp
+	@$(CXX) $(CFLAGS) -include include/vns-priv.hpp -o vns.o vns.cpp
 	
-StoredSolution.o: StoredSolution.cpp header/StoredSolution.hpp$(PCH)
+StoredSolution.o: StoredSolution.cpp include/StoredSolution.hpp$(PCH)
 	@echo $(CXX)": Compiling "$@
-	@$(CXX) $(CFLAGS) -include header/StoredSolution.hpp -o StoredSolution.o StoredSolution.cpp
+	@$(CXX) $(CFLAGS) -include include/StoredSolution.hpp -o StoredSolution.o StoredSolution.cpp
 
 unit.a: temp
 	@cd units; $(MAKE) $(MFLAGS) unit.a
 
-header/vns-priv.hpp$(PCH): header/vns-priv.hpp header/pcp.hpp header/vns.hpp header/StoredSolution.hpp
+include/vns-priv.hpp$(PCH): include/vns-priv.hpp include/pcp.hpp include/vns.hpp include/StoredSolution.hpp
 	@echo $(CXX)": Precompiling "$@
-	@$(CXX) $(CFLAGS) -x c++-header header/vns-priv.hpp -o header/vns-priv.hpp$(PCH)
+	@$(CXX) $(CFLAGS) -x c++-header include/vns-priv.hpp -o include/vns-priv.hpp$(PCH)
 
-header/StoredSolution.hpp$(PCH): header/StoredSolution.hpp header/pcp.hpp
+include/StoredSolution.hpp$(PCH): include/StoredSolution.hpp include/pcp.hpp
 	@echo $(CXX)": Precompiling "$@
-	@$(CXX) $(CFLAGS) -x c++-header header/StoredSolution.hpp -o header/StoredSolution.hpp$(PCH)
+	@$(CXX) $(CFLAGS) -x c++-header include/StoredSolution.hpp -o include/StoredSolution.hpp$(PCH)
 
-header/vns.hpp$(PCH): header/vns.hpp header/pcp.hpp
+include/vns.hpp$(PCH): include/vns.hpp include/pcp.hpp
 	@echo $(CXX)": Precompiling "$@
-	@$(CXX) $(CFLAGS) -x c++-header header/vns.hpp -o header/vns.hpp$(PCH)
+	@$(CXX) $(CFLAGS) -x c++-header include/vns.hpp -o include/vns.hpp$(PCH)
 
-header/main.hpp$(PCH): header/main.hpp header/pcp.hpp header/oneStepCd.hpp header/vns.hpp 
+include/main.hpp$(PCH): include/main.hpp include/pcp.hpp include/oneStepCd.hpp include/vns.hpp 
 	@echo $(CXX)": Precompiling "$@
-	@$(CXX) $(CFLAGS) -x c++-header header/main.hpp -o header/main.hpp$(PCH)
+	@$(CXX) $(CFLAGS) -x c++-header include/main.hpp -o include/main.hpp$(PCH)
 
-header/oneStepCd.hpp$(PCH): header/oneStepCd.hpp header/pcp.hpp
+include/oneStepCd.hpp$(PCH): include/oneStepCd.hpp include/pcp.hpp
 	@echo $(CXX)": Precompiling "$@
-	@$(CXX) $(CFLAGS) -x c++-header header/oneStepCd.hpp -o header/oneStepCd.hpp$(PCH)
+	@$(CXX) $(CFLAGS) -x c++-header include/oneStepCd.hpp -o include/oneStepCd.hpp$(PCH)
 
-header/Solution.hpp$(PCH): header/Solution.hpp header/pcp.hpp
+include/Solution.hpp$(PCH): include/Solution.hpp include/pcp.hpp
 	@echo $(CXX)": Precompiling "$@
-	@$(CXX) $(CFLAGS) -x c++-header header/Solution.hpp -o header/Solution.hpp$(PCH)
+	@$(CXX) $(CFLAGS) -x c++-header include/Solution.hpp -o include/Solution.hpp$(PCH)
 
 clean:
 	@echo "rm: Cleaning directory ."
@@ -70,7 +70,7 @@ clean:
 
 clean-header:
 	@echo "rm: Cleaning precompiled headers"
-	@rm -f header/*.pch header/*.gch
+	@rm -f include/*.pch include/*.gch
 
 .PHONY: temp
 
