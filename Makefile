@@ -82,3 +82,6 @@ gcc:
 
 opt:
 	@$(MAKE) CFLAGS="$(CFLAGS) -O3" $(PROG)
+
+static:
+	@$(MAKE) CFLAGS="$(CFLAGS) -O3" LDFLAGS="$(LDFLAGS) -static" $(PROG)
