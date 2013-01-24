@@ -1,5 +1,7 @@
 #include "header/StoredSolution.hpp"
 
+using namespace boost;
+using namespace std;
 using namespace pcp;
 
 StoredSolution::StoredSolution(Solution& toStore) {
@@ -16,4 +18,17 @@ StoredSolution::StoredSolution(Solution& toStore) {
 StoredSolution::~StoredSolution() {
 	delete[] colors;
 	delete[] representatives;
+}
+
+bool operator==(StoredSolution const& s1, StoredSolution const& s2)
+{
+	return false;
+}
+
+size_t hash_value(StoredSolution const& s) {
+	size_t seed = 0;
+	hash_combine(seed, s.n);
+	hash_combine(seed, s.colors);
+	hash_combine(seed, s.representatives);
+	return seed;
 }

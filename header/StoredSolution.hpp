@@ -1,12 +1,12 @@
 #ifndef SOL_STORE_H
 #define SOL_STORE_H
 #include "pcp.hpp"
-
+#include <boost/functional/hash.hpp>
 
 namespace pcp {
 	// Stores a solution in a memory saving fashion
-	class StoredSolution {
-		public:
+	struct StoredSolution {
+		//public:
 			// Construct a StoredSolution out of a normal solution
 			StoredSolution(Solution& toStore);
 			
@@ -19,7 +19,10 @@ namespace pcp {
 			// Contains the representatives of each partition, identified by their
 			// original index
 			int *representatives;
-		private:
+			
+			//bool operator==(StoredSolution const& s);
+			//std::size_t hash_value(StoredSolution const& s);
+		//private:
 			int n;
 	};
 }

@@ -5,6 +5,7 @@
 #include "pcp.hpp"
 #include <vector>
 #include <boost/unordered_set.hpp>
+#include <boost/functional/hash.hpp>
 
 namespace pcp {
 	/// Run the VNS with a maximum of k iterations.
