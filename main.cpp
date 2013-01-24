@@ -27,8 +27,8 @@ int main(int argc, char* argv[]) {
 		("shakeIncrement,i", value<int>(&shakeIncrement)->default_value(10), "set shake increment")
 		("unsuccessfulShake,u", value<int>(&unsuccessfulShake)->default_value(10), "set unsuccessful shake threshold")
 		("maxTime,t", value<int>(&maxTime)->default_value(10), "set VNS running time (seconds)")
-		("checkFinal,c", "disable final check after VNS has finished")
-		("checkIntermediate,m", "enable check after each improvement/shake")
+		("checkFinal,c", value<bool>()->default_value(true)->implicit_value(false)->zero_tokens() , "disable final check after VNS has finished")
+		("checkIntermediate,m", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "enable check after each improvement/shake")
 		("seed,r", value<int>(&rSeed)->default_value(time(NULL)), "set seed for random number generator")
 	;
 	
@@ -94,13 +94,13 @@ int main(int argc, char* argv[]) {
 	}
 
 	if (DEBUG_LEVEL > 3) {
-		cout<<"Begin Onestep"<<endl;
+		cout << "Constructing initial solution ..." << endl;
 	}
 	
 	Solution *onestep = onestepCD(*fullG);
 	
 	if (DEBUG_LEVEL > 2)
-		cout << "Onestep solution uses " << onestep->colorsUsed << " colors." << endl;
+		cout << "Initial solution uses " << onestep->colorsUsed << " colors." << endl;
 	
 	Solution *best = vnsRun(*onestep, *fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), vm.count("checkFinal"));
 	

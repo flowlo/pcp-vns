@@ -28,15 +28,13 @@ namespace pcp {
 		pair<VertexIter, VertexIter> vp;
 		
 		/// Set the partitions color to "not set"
-		for (int i = 0; i < sol->numParts; i++)
-			sol->partition[i] = -1;
+		fill(sol->partition, sol->partition + sol->numParts, -1);
 	
 		/// Repeat until there are no uncolored partitions
 		for (int j = 0; j < s.numParts; j++) {	
 			
 			/// Reset the minimal color degree to maximum each iteration
-			for (int i = 0; i < s.numParts; i++)
-				minDegree[i] = s.numParts + 1;
+			fill(minDegree, minDegree + s.numParts, s.numParts + 1);
 			
 			/// Reset the maximum degree
 			maxDegree = -1;
@@ -80,7 +78,7 @@ namespace pcp {
 		sol->colorsUsed = numColors + 1;
 		
 		if (DEBUG_LEVEL > 3) {
-			cout<<"onestepCD complete"<<endl;
+			cout << "onestepCD complete!" << endl;
 		}
 		
 		return sol;
@@ -98,7 +96,7 @@ namespace pcp {
 	 			 
 	 			deletion.push_back(*vp.first);
 				if (DEBUG_LEVEL > 3) {
-					cout<<"Marked vertex "<<*vp.second<<" for deletion"<<endl;
+					cout << "Marked vertex " << *vp.second << " for deletion" << endl;
 				}
 	 		}
 	 	}
@@ -111,7 +109,7 @@ namespace pcp {
 	 	}
 	 	
 	 	if (DEBUG_LEVEL > 3) {
-	 		cout<<"removeOthers complete"<<endl;
+	 		cout << "removeOthers complete!" << endl;
 	 	}
 	}
 
@@ -120,14 +118,14 @@ namespace pcp {
 		for (tie(i, end) = edges(*s.g); i != end; i++) {
 			if (s.getPartition(source(*i, *s.g)) == s.getPartition(target(*i, *s.g))) {
 				if (DEBUG_LEVEL > 3) {
-					cout<<"Remove edge "<<*i<<endl;
+					cout << "Removeing edge " << *i << endl;
 				}
 				remove_edge(*i--, *s.g);
 			}
 		}
 		
 		if (DEBUG_LEVEL > 3) {
-			cout<<"removePartEdges complete"<<endl;
+			cout << "removePartEdges complete!" << endl;
 		}
 	}
 }
