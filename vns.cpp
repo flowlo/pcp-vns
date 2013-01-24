@@ -50,7 +50,7 @@ namespace pcp {
 		Solution *toImprove = &best;
 		Solution *curBest = &best;
 		
-		unordered_set<StoredSolution> solutionStore;
+		unordered_set<StoredSolution, StoredHash, StoredEqual> solutionStore;
 		
 		/// Run as long as shaking still produces usefull solution
 		while (true) {
@@ -95,20 +95,21 @@ namespace pcp {
 					if (toImprove != curBest)
 						delete toImprove;
 
-					StoredSolution check(*imp);
-					if (solutionStore.find(check) != solutionStore.end()) {
+					toImprove = tempImp = imp;
+					tempImp = new Solution(tempImp);
+					
+					StoredSolution *check = new StoredSolution(*imp);
+					if (solutionStore.find(*check) != solutionStore.end()) {
 						cout << "Detected duplicate solution!" << endl;
 						curNeighbor = 0;
 						// delete check;
 						break;
-					}/*
+					}
 					else {
-						solutionStore.insert(check);
+						cout << "Added unique solution to set"<<endl;
+						solutionStore.insert(*check);
 						// delete check;
-					}*/
-
-					toImprove = tempImp = imp;
-					tempImp = new Solution(tempImp);
+					}
 					
 					if (DEBUG_LEVEL > 1) {
 						cout << "Improvement found! ";

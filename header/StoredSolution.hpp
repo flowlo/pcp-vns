@@ -25,6 +25,16 @@ namespace pcp {
 		//private:
 			int n;
 	};
+	
+	struct StoredHash
+	{
+		std::size_t operator()(StoredSolution const& sol) const;
+	};
+    
+	struct StoredEqual
+	{
+		bool operator()(StoredSolution const& s1, StoredSolution const& s2) const;
+	};
 }
 
 #endif
