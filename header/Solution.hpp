@@ -1,6 +1,7 @@
 #ifndef SOLUTION_H
 #define SOLUTION_H
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <boost/tokenizer.hpp>
 #include <boost/lexical_cast.hpp>

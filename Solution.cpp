@@ -328,6 +328,22 @@ void Solution::print(ostream& out) {
  	out << "}" << endl;
 }
 
+std::string Solution::toString() {
+	std::stringstream ss;
+	
+	ss << "{ representatives: [ " << this->representatives[0];
+	
+	for (int i = 1; i < this->numParts; i++)
+		ss << ", " << this->representatives[i];
+	
+	ss << " ], \"colors\": [" << this->partition[0];
+	for (int i = 1; i < this->numParts; i++)
+		ss << this->partition[i];
+	
+	ss << " ] }";
+	return ss.str();
+}
+
 boost::tuple<int, int> Solution::getColorDegreeAndMinColor(Vertex v) {
 	vector<bool> colors = vector<bool>(this->numParts, false);
 	boost::tuple<int, int> result;

@@ -1,6 +1,7 @@
 #ifndef SOL_STORE_H
 #define SOL_STORE_H
 #include "pcp.hpp"
+#include <sstream>
 #include <boost/functional/hash.hpp>
 
 namespace pcp {
@@ -19,6 +20,8 @@ namespace pcp {
 			// Contains the representatives of each partition, identified by their
 			// original index
 			int *representatives;
+			
+			std::string toString();
 			
 			//bool operator==(StoredSolution const& s);
 			//std::size_t hash_value(StoredSolution const& s);

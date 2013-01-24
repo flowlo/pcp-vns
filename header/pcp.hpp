@@ -86,8 +86,10 @@ namespace pcp {
 			
 			boost::tuple<int, int> getColorDegreeAndMinColor(Vertex v);
 			
-			// Print the graph with colors in graphvi format
+			// Print the graph with colors in graphviz format
 			void print(std::ostream& out);
+
+			std::string toString();
 
 			// Number of partitions in the PCP instance
 			int numParts;

@@ -20,11 +20,27 @@ StoredSolution::~StoredSolution() {
 	delete[] representatives;
 }
 
+string StoredSolution::toString() {
+	stringstream ss;
+	
+	ss << "{ representatives: [ " << this->representatives[0];
+	
+	for (int i = 1; i < this->n; i++)
+		ss << ", " << this->representatives[i];
+	
+	ss << " ], \"colors\": [" << this->colors[0];
+	for (int i = 1; i < this->n; i++)
+		ss << this->colors[i];
+	
+	ss << " ] }";
+	return ss.str();
+}
+
 size_t StoredHash::operator()(StoredSolution const& sol) const
 {
-   size_t seed = 0;
-   hash_combine(seed, sol.colors);
-   hash_combine(seed, sol.representatives);
+	size_t seed = 0;
+	hash_combine(seed, sol.colors);
+	hash_combine(seed, sol.representatives);
 	return seed;
 }
 
