@@ -85,3 +85,6 @@ opt:
 
 static:
 	@$(MAKE) CFLAGS="$(CFLAGS) -O3" LDFLAGS="$(LDFLAGS) -static" $(PROG)
+	
+behemoth: static
+	@./behemoth.sh
