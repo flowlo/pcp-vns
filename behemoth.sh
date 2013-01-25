@@ -1,21 +1,27 @@
 #!/bin/bash
+
+otherfiles='crunch.py generator.py outputter.py'
+host='behemoth.ads.tuwien.ac.at'
+target='~'
+
 if [ ! -f pcp ] ; then
-	echo Found no binary to push to behemoth.ads.tuwien.ac.at
+	echo Found no binary to sync with $host
 	exit
 fi
 
-ldd pcp | grep 'not a dynamic executable' > /dev/null
+file pcp | grep -q 'statically linked'
 
 if [ $? -ne 0 ] ; then
-	echo Found no statically linked binary to push to behemoth.ads.tuwien.ac.at
+	echo Found no statically linked binary to sync with $host
 	exit
 fi
-
-echo Pushing to behemoth.ads.tuwien.ac.at ...
 
 case $USER in
 	lorenz) remote='e1127842' ;;
-	moritz) remote='e1127848'
+	moritz) remote='e1127848' ;;
+	*) echo Unknown user! ; exit
 esac
 
-rsync -aiuz -e ssh pcp $remote@behemoth.ads.tuwien.ac.at:~/pcp
+echo Syncing $remote@$host ...
+
+rsync -aiuz -e ssh pcp $otherfiles $remote@$host:$target
