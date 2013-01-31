@@ -1,8 +1,7 @@
 #!/bin/bash
 
-otherfiles='crunch.py generator.py outputter.py'
 host='behemoth.ads.tuwien.ac.at'
-target='~'
+target='~/pcp-vns'
 
 if [ ! -f pcp ] ; then
 	echo Found no binary to sync with $host
@@ -24,4 +23,5 @@ esac
 
 echo Syncing $remote@$host ...
 
-rsync -aiuz -e ssh pcp $otherfiles $remote@$host:$target
+rsync -aiuz -e ssh pcp $remote@$host:$target
+ssh e1127842@behemoth.ads.tuwien.ac.at cd $target ; git checkout behemoth
