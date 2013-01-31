@@ -11,6 +11,7 @@ LDFLAGS=-lboost_program_options
 OBJECTS=main.o oneStepCd.o Solution.o vns.o StoredSolution.o unit.a
 HEADERS=include/vns.hpp$(PCH) include/oneStepCd.hpp$(PCH) include/main.hpp$(PCH) include/Solution.hpp$(PCH)
 PROG=pcp
+BRANCH=`git rev-parse --abbrev-ref HEAD`
 
 $(PROG): $(OBJECTS)
 	@echo $(LD)": Linking executable "$(PROG)
@@ -86,5 +87,8 @@ opt:
 static:
 	@$(MAKE) CFLAGS="$(CFLAGS) -O3" LDFLAGS="$(LDFLAGS) -static" $(PROG)
 	
-behemoth: static
+behemoth: clean
+	git checkout behemoth
+	@$(MAKE) static
+	git checkout $(BRANCH)
 	@./behemoth.sh

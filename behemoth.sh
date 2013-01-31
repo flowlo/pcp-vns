@@ -24,4 +24,4 @@ esac
 echo Syncing $remote@$host ...
 
 rsync -aiuz -e ssh pcp $remote@$host:$target
-ssh e1127842@behemoth.ads.tuwien.ac.at cd $target ; git checkout behemoth
+ssh $remote@$host git --git-dir=$target checkout behemoth
