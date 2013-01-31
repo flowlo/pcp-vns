@@ -20,3 +20,4 @@ pcp
 
 # other nasty stuff
 *.pdf
+/nbproject/private/
