@@ -20,4 +20,6 @@ pcp
 
 # other nasty stuff
 *.pdf
-/nbproject/private/
+
+# NetBeans local files
+/nbproject/private/*
