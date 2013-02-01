@@ -93,7 +93,7 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 	s->colorsUsed = maxColor + 1;
 	
 	if (DEBUG_LEVEL > 1) {
-		cout<<"Change Color uses "<<s->colorsUsed<<" colors"<<endl; 
+		cout<<"changeColor uses "<<s->colorsUsed<<" colors"<<endl; 
 	}
 	
 	// Try to take it one step further

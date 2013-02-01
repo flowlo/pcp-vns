@@ -80,7 +80,7 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 	s->colorsUsed = maxColor + 1;
 	
 	if (DEBUG_LEVEL > 1) {
-		cout<<"Change Color uses "<<s->colorsUsed<<" colors"<<endl; 
+		cout<<"changeNode uses "<<s->colorsUsed<<" colors"<<endl; 
 	}
 	
 	Solution *temp = new Solution(s);
