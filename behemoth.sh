@@ -23,5 +23,5 @@ esac
 
 echo Syncing $remote@$host ...
 
-rsync -aiuz -e ssh pcp $remote@$host:$target
+rsync -aiuz -e ssh pcp $remote@$host:$target/pcp-vns+$(git rev-parse --short HEAD)
 ssh $remote@$host git --git-dir=$target checkout behemoth
