@@ -24,4 +24,4 @@ esac
 echo Syncing $remote@$host ...
 
 rsync -aiuz -e ssh pcp $remote@$host:$target/pcp-vns+$(git rev-parse --short HEAD)
-ssh $remote@$host git --git-dir=$target checkout behemoth
+ssh $remote@$host git --git-dir=/home/$remote/pcp-vns pull origin behemoth ; git --git-dir=/home/$remote/pcp-vns checkout behemoth
