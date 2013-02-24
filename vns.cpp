@@ -9,12 +9,20 @@ namespace pcp {
 	
 	bool checkValid(Solution* s, Solution* full);
 	
+	bool TERM_SIGINT = false;
+	
+	void sigint_catch(int signum) {
+		TERM_SIGINT = signum == SIGINT;
+	}
+	
 	/// Implementation of VNS, see vns.hpp
 	Solution *vnsRun(Solution& best, Solution& orig, string units, int unsuccessfulShake, 
 						 int shakeStart, int shakeIncrement, int maxTime, bool checkIntermediate, bool checkFinal) {
 
 		/// Backup the starting solutions
 		bestSolution = new Solution(&best);
+		
+		signal(SIGINT, sigint_catch);
 		
 		if (DEBUG_LEVEL > 1) {
 			cout<<"Best solution uses "<<bestSolution->colorsUsed<<" colors"<<endl;
@@ -53,7 +61,7 @@ namespace pcp {
 		unordered_set<StoredSolution, StoredHash, StoredEqual> solutionStore;
 		
 		/// Run as long as shaking still produces usefull solution
-		while (true) {
+		while (!TERM_SIGINT) {
 			
 			/// No time left, abort main loop
 			if (startTime + maxTime < time(NULL)) {
@@ -66,7 +74,7 @@ namespace pcp {
 			Solution *tempImp = new Solution(toImprove);
 			
 			/// Run all possible neighborhood
-			while (curNeighbor < neighbors.size()) {
+			while (curNeighbor < neighbors.size() && !TERM_SIGINT) {
 				
 				/// Select the new neighborhood
 				clock_t start = clock();

@@ -6,6 +6,7 @@
 #include <time.h>
 #include <utility>
 #include <boost/tuple/tuple.hpp>
+#include <signal.h>
 
 namespace pcp {
 	/// every neighborhood has to be inherited from this class
