@@ -31,6 +31,9 @@ namespace pcp {
 	// Standard vertex_iterator
 	typedef boost::graph_traits<Graph>::vertex_iterator VertexIter;
 
+	// Standard vertex_iterator
+	typedef boost::graph_traits<Graph>::edge_iterator EdgeIter;
+	
 	// Iterator for adjacent vertices
 	typedef boost::graph_traits<Graph>::adjacency_iterator AdjIter;
 
@@ -127,7 +130,7 @@ namespace pcp {
 			void addVertex(int part, Vertex id);
 			void removeVertex(Vertex id);
 			void addEdge(Vertex v1, Vertex v2);
-			void clearVertex(Edge e);
+			void replaceVertex(Vertex toR, Vertex rep, Solution& full);
 			
 			#ifdef ubigraph
 			// Methods for drawing the ubigraph

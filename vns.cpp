@@ -181,6 +181,9 @@ namespace pcp {
 				delete curBest;
 				curBest = toImprove;
 				toImprove = new Solution(curBest);
+				#ifdef ubigraph
+				toImprove->redraw();
+				#endif
 				no_imp_runs = 0;
 				shakeSteps = shakeStart - shakeIncrement;
 			}
@@ -355,7 +358,9 @@ namespace pcp {
 			 i++) {
 			delete *i;
 		}
-		
+		#ifdef ubigraph
+		res->redraw();
+		#endif
 		return res;
 	}
 	

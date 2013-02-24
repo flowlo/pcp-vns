@@ -61,7 +61,7 @@ void Solution::setOriginalId(Vertex v, int id) {
 	put(this->idMap, v, id);
 	
 	#ifdef ubigraph
-	ubigraph_set_vertex_attribute(v, "label", to_string(v).c_str());
+	ubigraph_set_vertex_attribute(getOriginalId(v), "label", to_string(getOriginalId(v)).c_str());
 	//usleep(1000);
 	#endif
 }
@@ -89,15 +89,15 @@ bool Solution::isPartitionColored(Vertex v) {
 void Solution::addVertex(int part, Vertex id) {
 	Vertex v = add_vertex(*this->g);
 	partitionMap[v] = part;
-	idMap[v] = v;
+	idMap[v] = id;
 	partNodes[part].push_back(v);
 	
 	#ifdef ubigraph
-	ubigraph_new_vertex_w_id(v);
-	ubigraph_set_vertex_attribute(v, "label", to_string(v).c_str());
+	ubigraph_new_vertex_w_id(getOriginalId(v));
+	ubigraph_set_vertex_attribute(getOriginalId(v), "label", to_string(getOriginalId(v)).c_str());
 	
 	if (part < 9)
-		ubigraph_change_vertex_style(v, part);
+		ubigraph_change_vertex_style(getOriginalId(v), part);
 	#endif
 }
 
@@ -115,6 +115,8 @@ void Solution::addEdge(Vertex v1, Vertex v2) {
 	add_edge(v1, v2, *g);
 	
 #ifdef ubigraph
+	v1 = getOriginalId(v1);
+	v2 = getOriginalId(v2);
 	if (v1 > v2) {
 		Vertex temp = v1;
 		v1 = v2;
@@ -127,14 +129,103 @@ void Solution::addEdge(Vertex v1, Vertex v2) {
 #endif
 }
 
-void Solution::clearVertex(Edge v1) {
-/*	clear_vertex(id, *g);
+void Solution::replaceVertex(Vertex toR, Vertex rep, Solution& full) {
+	clear_vertex(toR, *g);
 	
 	#ifdef ubigraph
-	ubigraph_remove_vertex(getOriginalId(id));
-	usleep(500000);
-	#endif */
+	ubigraph_remove_vertex(getOriginalId(toR));
+	ubigraph_new_vertex_w_id(rep);
+	ubigraph_set_vertex_attribute(rep, "label", to_string(rep).c_str());
+	int part = full.getPartition(rep);
+	if (part < 9)
+		ubigraph_change_vertex_style(rep, part);
+	#endif
+	
+	setOriginalId(toR, rep);
+	
+	// Check which edges should be added
+	AdjIter a, aEnd;
+	for (tie(a, aEnd) = adjacent_vertices(rep, *full.g); a != aEnd;
+		  a++) {
+		
+		if (full.getPartition(*a) != getPartition(toR) &&	*a == 
+			 getOriginalId(representatives[full.getPartition(*a)])) {
+			
+			// add edge
+			add_edge(toR, representatives[full.getPartition(*a)], *g);
+			
+			#ifdef ubigraph
+			Vertex v1, v2;
+			v1 = rep;
+			v2 = *a;
+			if (v1 > v2) {
+				Vertex temp = v1;
+				v1 = v2;
+				v2 = temp;
+			}
+			ubigraph_new_edge_w_id(((v1 << 16) | v2), v1, v2);
+			ubigraph_set_edge_attribute(((v1 << 16) | v2), "width", "2.0");
+			ubigraph_set_edge_attribute(((v1 << 16) | v2), "color", "#ffffff");
+			usleep(10000);
+			#endif
+		}
+	}
 }
+
+#ifdef ubigraph
+void Solution::redraw() {
+	ubigraph_clear();
+	
+	ubigraph_set_vertex_style_attribute(0, "shape", "sphere");
+	ubigraph_set_edge_style_attribute(0, "strength", "0.1");
+	ubigraph_set_edge_style_attribute(0, "spline", "true");
+	if (numParts < 9) {
+		ubigraph_new_vertex_style_w_id(1, 0);
+		ubigraph_new_vertex_style_w_id(2, 0);
+		ubigraph_new_vertex_style_w_id(3, 0);
+		ubigraph_new_vertex_style_w_id(4, 0);
+		ubigraph_new_vertex_style_w_id(5, 0);
+		ubigraph_new_vertex_style_w_id(6, 0);
+		ubigraph_new_vertex_style_w_id(7, 0);
+		ubigraph_new_vertex_style_w_id(8, 0);
+		ubigraph_set_vertex_style_attribute(1, "shape", "cone");
+		ubigraph_set_vertex_style_attribute(2, "shape", "cube");
+		ubigraph_set_vertex_style_attribute(3, "shape", "dodecahedron");
+		ubigraph_set_vertex_style_attribute(4, "shape", "icosahedron");
+		ubigraph_set_vertex_style_attribute(5, "shape", "octahedron");
+		ubigraph_set_vertex_style_attribute(6, "shape", "sphere");
+		ubigraph_set_vertex_style_attribute(7, "shape", "tetrahedron");
+		ubigraph_set_vertex_style_attribute(8, "shape", "torus");
+	}
+	
+	VertexIter v, vEnd;
+	for (tie(v, vEnd) = vertices(*g); v != vEnd; v++) {
+		ubigraph_new_vertex_w_id(getOriginalId(*v));
+		ubigraph_set_vertex_attribute(getOriginalId(*v), "label", to_string(getOriginalId(*v)).c_str());
+		int color = getPartitionColor(*v);
+		color++;
+		if (color > 12)
+			color %= 13;
+		ubigraph_set_vertex_attribute(getOriginalId(*v), "color", colors[color].c_str());
+		usleep(500);
+	}
+	
+	EdgeIter e, eEnd;
+	for(tie(e, eEnd) = edges(*g); e != eEnd; e++) {
+		Vertex v1, v2;
+		v1 = getOriginalId(source(*e, *g));
+		v2 = getOriginalId(target(*e, *g));
+		if (v1 > v2) {
+			Vertex temp = v1;
+			v1 = v2;
+			v2 = temp;
+		}
+		ubigraph_new_edge_w_id(((v1 << 16) | v2), v1, v2);
+		ubigraph_set_edge_attribute(((v1 << 16) | v2), "width", "2.0");
+		ubigraph_set_edge_attribute(((v1 << 16) | v2), "color", "#ffffff");
+	}
+}
+#endif
 
 
 void Solution::requestDeepCopy() {
