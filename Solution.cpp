@@ -183,26 +183,15 @@ int Solution::minPossibleColor(Vertex node) {
 	return -1;
 }
 
-Solution* Solution::fromPcpStream(istream& in) {
-	Solution *s = new Solution();
-
 #ifdef ubigraph
+void Solution::prepareUbigraph() {
+
 	ubigraph_clear();
 	ubigraph_set_vertex_style_attribute(0, "shape", "sphere");
 	ubigraph_set_edge_style_attribute(0, "strength", "0.1");
 	ubigraph_set_edge_style_attribute(0, "spline", "true");
-#endif
 
-	int vertices, edges, partitions;
-	cin >> vertices >> edges >> partitions;
-	
-	if (DEBUG_LEVEL > 3) {
-		cout << "Reading " << vertices << " vertices, " << edges << " edges and ";
-		cout << partitions << " partitons ..." << endl;
-	}
-	
-#ifdef ubigraph
-	if (partitions < 9) {
+	if (this->numParts < 9) {
 		ubigraph_new_vertex_style_w_id(1, 0);
 		ubigraph_new_vertex_style_w_id(2, 0);
 		ubigraph_new_vertex_style_w_id(3, 0);
@@ -220,7 +209,19 @@ Solution* Solution::fromPcpStream(istream& in) {
 		ubigraph_set_vertex_style_attribute(7, "shape", "tetrahedron");
 		ubigraph_set_vertex_style_attribute(8, "shape", "torus");
 	}
+}
 #endif
+
+Solution* Solution::fromPcpStream(istream& in) {
+	Solution *s = new Solution();
+	
+	int vertices, edges, partitions;
+	cin >> vertices >> edges >> partitions;
+	
+	if (DEBUG_LEVEL > 3) {
+		cout << "Reading " << vertices << " vertices, " << edges << " edges and ";
+		cout << partitions << " partitons ..." << endl;
+	}
 	
 	/// Initialize the solution to the read parameters
 	s->partition = new int[partitions];
@@ -228,10 +229,10 @@ Solution* Solution::fromPcpStream(istream& in) {
 	s->partNodes = new vector<Vertex>[partitions];
 	s->numParts = partitions;
 	s->colorsUsed = partitions;
-
-	/// Initialize the property maps for partition and vertexID
-	VertexID_Map vertex_id = get(vertex_index2_t(), *s->g);
-	VertexPart_Map vertex_part = get(vertex_index1_t(), *s->g);
+	
+	#ifdef ubigraph
+	s->prepareUbigraph();
+	#endif
 
 	/// Read partition info and store it into the property map, do the same 
 	/// for the "original" vertexID, so they can be compared on all graph
@@ -287,6 +288,15 @@ Solution* Solution::fromColStream(istream& in) {
 	int vertices, edges;
 	cin >> vertices >> edges;
 	
+	s->numParts = vertices;
+	s->partition = new int[vertices];
+	s->representatives = new int[vertices];
+	s->colorsUsed = vertices;
+	
+	#ifdef ubigraph
+	s->prepareUbigraph();
+	#endif
+	
 	if (DEBUG_LEVEL > 3)
 		cout << "Reading " << edges << " edges ..." << endl;
 		
@@ -294,10 +304,6 @@ Solution* Solution::fromColStream(istream& in) {
 		cerr << "Malformed p-line detected (not terminated by newline)!" << endl;
 		return NULL;
 	}
-	
-	/// Initialize the property maps for partition and vertexID
-	VertexID_Map vertex_id = get(vertex_index2_t(), *s->g);
-	VertexPart_Map vertex_part = get(vertex_index1_t(), *s->g);
 	
 	s->partNodes = new vector<Vertex>[vertices];
 	
@@ -340,11 +346,6 @@ Solution* Solution::fromColStream(istream& in) {
 	if (DEBUG_LEVEL > 3)
 		cout << "Reading input successfully finished!" << endl;
 
-	s->partition = new int[vertices];
-	s->representatives = new int[vertices];
-	s->numParts = vertices;
-	s->colorsUsed = vertices;
-
 	return s;
 }
 
@@ -368,6 +369,13 @@ Solution* Solution::fromColBStream(istream& in) {
 
 	int vertices, edges, i, j;
 	cin >> vertices >> edges;
+	
+	s->numParts = vertices;
+	
+	#ifdef ubigraph
+	s->prepareUbigraph();
+	#endif
+	
 	char bitmap[vertices][vertices / 8];
 	
 	VertexID_Map vertex_id = get(vertex_index2_t(), *s->g);

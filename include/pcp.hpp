@@ -130,8 +130,7 @@ namespace pcp {
 			void clearVertex(Edge e);
 			
 			#ifdef ubigraph
-			// Methods for drawing the ubigraph
-			void redraw();
+			void prepareUbigraph();
 			#endif
 		private:
 			boost::property_map<Graph, boost::vertex_index1_t>::type partitionMap;
