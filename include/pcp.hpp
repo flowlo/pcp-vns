@@ -24,6 +24,9 @@ namespace pcp {
 
 	// Represents a vertex
 	typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
+	
+	// Represents an edge
+	typedef boost::graph_traits<Graph>::edge_descriptor Edge;
 
 	// Standard vertex_iterator
 	typedef boost::graph_traits<Graph>::vertex_iterator VertexIter;
@@ -119,7 +122,17 @@ namespace pcp {
 			static Solution* fromColStream(std::istream& in);
 			static Solution* fromColBStream(std::istream& in);
 			static Solution* fromPcpStream(std::istream& in);
-		
+			
+			// Methods for manipulating the graph
+			void addVertex(int part, Vertex id);
+			void removeVertex(Vertex id);
+			void addEdge(Vertex v1, Vertex v2);
+			void clearVertex(Edge e);
+			
+			#ifdef ubigraph
+			// Methods for drawing the ubigraph
+			void redraw();
+			#endif
 		private:
 			boost::property_map<Graph, boost::vertex_index1_t>::type partitionMap;
 			boost::property_map<Graph, boost::vertex_index2_t>::type idMap;

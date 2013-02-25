@@ -103,8 +103,9 @@ namespace pcp {
 	 	
 	 	while (deletion.size() != 0) {
 	 		Vertex n = deletion.back();
-	 		clear_vertex(n, *s.g);
-	 		remove_vertex(n, *s.g);
+	 		s.removeVertex(n);
+/*	 		clear_vertex(n, *s.g);
+	 		remove_vertex(n, *s.g);*/
 	 		deletion.pop_back();
 	 	}
 	 	

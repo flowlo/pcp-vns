@@ -4,6 +4,11 @@ using namespace std;
 using namespace pcp;
 using namespace boost;
 
+#ifdef ubigraph
+string colors[] = { "#ff0000", "#00ff00", "#0000ff", "#ffff00", "#00ffff", 
+						  "#ff00ff", "#ffffff", "#ff8800", "#88ff00", "#0088ff",
+						  "#ff0088", "#8800ff", "#00ff88"};
+#endif
 
 Solution::Solution() {
 	this->g = new Graph(0);
@@ -54,6 +59,11 @@ unsigned int Solution::getOriginalId(Vertex v) {
 
 void Solution::setOriginalId(Vertex v, int id) {
 	put(this->idMap, v, id);
+	
+	#ifdef ubigraph
+	ubigraph_set_vertex_attribute(v, "label", to_string(v).c_str());
+	//usleep(1000);
+	#endif
 }
 
 int Solution::getPartitionColor(Vertex v) {
@@ -62,10 +72,65 @@ int Solution::getPartitionColor(Vertex v) {
 
 void Solution::setPartitionColor(Vertex v, int color) {
 	partition[getPartition(v)] = color;
+	
+	#ifdef ubigraph
+	color++;
+	if (color > 12)
+		color %= 13;
+	ubigraph_set_vertex_attribute(getOriginalId(v), "color", colors[color].c_str());
+	usleep(500);
+	#endif
 }
 
 bool Solution::isPartitionColored(Vertex v) {
 	return getPartitionColor(v) != -1;
+}
+
+void Solution::addVertex(int part, Vertex id) {
+	Vertex v = add_vertex(*this->g);
+	partitionMap[v] = part;
+	idMap[v] = v;
+	partNodes[part].push_back(v);
+	
+	#ifdef ubigraph
+	ubigraph_new_vertex_w_id(v);
+	ubigraph_set_vertex_attribute(v, "label", to_string(v).c_str());
+	#endif
+}
+
+void Solution::removeVertex(Vertex id) {
+	#ifdef ubigraph
+	ubigraph_remove_vertex(getOriginalId(id));
+	usleep(500000);
+	#endif
+
+	clear_vertex(id, *g);
+	remove_vertex(id, *g);
+}
+
+void Solution::addEdge(Vertex v1, Vertex v2) {
+	add_edge(v1, v2, *g);
+	
+	#ifdef ubigraph
+	if (v1 > v2) {
+		Vertex temp = v1;
+		v1 = v2;
+		v2 = temp;
+	}
+	ubigraph_new_edge_w_id(((v1 << 16) | v2), v1, v2);
+	ubigraph_set_edge_attribute(((v1 << 16) | v2), "width", "2.0");
+	ubigraph_set_edge_attribute(((v1 << 16) | v2), "color", "#ffffff");
+	usleep(100000);
+	#endif 
+}
+
+void Solution::clearVertex(Vertex v1) {
+	clear_vertex(id, *g);
+	
+	#ifdef ubigraph
+	ubigraph_remove_vertex(getOriginalId(id));
+	usleep(500000);
+	#endif
 }
 
 
@@ -124,6 +189,7 @@ int Solution::minPossibleColor(Vertex node) {
 Solution* Solution::fromPcpStream(istream& in) {
 	Solution *s = new Solution();
 	
+	ubigraph_clear();
 	int vertices, edges, partitions;
 	cin >> vertices >> edges >> partitions;
 	
@@ -148,10 +214,11 @@ Solution* Solution::fromPcpStream(istream& in) {
 	int i, part;
 	for (i = 0; i < vertices; i++) {
 		cin >> part;
-		Vertex v = add_vertex(*s->g);
+		s->addVertex(part, i);
+/*		Vertex v = add_vertex(*s->g);
 		put(vertex_part, v, part);
 		put(vertex_id, v, i);
-		s->partNodes[part].push_back(v);
+		s->partNodes[part].push_back(v);*/
 		
 		if (DEBUG_LEVEL > 3)
 			cout << "Added vertex " << i << " to partition " << part << "." << endl;
@@ -166,7 +233,8 @@ Solution* Solution::fromPcpStream(istream& in) {
 		if (DEBUG_LEVEL > 3) {
 			cout << "Added edge (" << source << "|" << target << ")." << endl;
 		}
-		add_edge(source, target, *s->g);
+		s->addEdge(source, target);
+		//add_edge(source, target, *s->g);
 	}
 	
 	if (DEBUG_LEVEL > 3)
@@ -211,10 +279,12 @@ Solution* Solution::fromColStream(istream& in) {
 	
 	int i;
 	for (i = 0; i < vertices; i++) {
-		Vertex v = add_vertex(*s->g);
+/*		Vertex v = add_vertex(*s->g);
 		put(vertex_part, v, i); 
 		put(vertex_id, v + 1, i);
-		s->partNodes[i].push_back(v);
+	s->partNodes[i].push_back(v);*/
+		
+		s->addVertex(i, i);
 	}
 
 	i = 0;
