@@ -1,6 +1,6 @@
 language: cpp
 compiler: gcc
-before_script: sudo apt-get install -qq -y libboost-all-dev libboost-dbg
+before_script: sudo apt-get install -qq -y libboost-all-dev libboost-dbg ; sudo setup-ubigraph.sh
 script: make
 notifications:
   email:
