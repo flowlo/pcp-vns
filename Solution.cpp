@@ -96,7 +96,7 @@ void Solution::addVertex(int part, Vertex id) {
 	ubigraph_new_vertex_w_id(v);
 	ubigraph_set_vertex_attribute(v, "label", to_string(v).c_str());
 	
-	if (part < 9)
+	if (part < 9 && this->numParts < 9)
 		ubigraph_change_vertex_style(v, part);
 	#endif
 }
