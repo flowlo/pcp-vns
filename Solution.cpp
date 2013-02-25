@@ -95,6 +95,9 @@ void Solution::addVertex(int part, Vertex id) {
 	#ifdef ubigraph
 	ubigraph_new_vertex_w_id(v);
 	ubigraph_set_vertex_attribute(v, "label", to_string(v).c_str());
+	
+	if (part < 9)
+		ubigraph_change_vertex_style(v, part);
 	#endif
 }
 
@@ -111,7 +114,7 @@ void Solution::removeVertex(Vertex id) {
 void Solution::addEdge(Vertex v1, Vertex v2) {
 	add_edge(v1, v2, *g);
 	
-	#ifdef ubigraph
+#ifdef ubigraph
 	if (v1 > v2) {
 		Vertex temp = v1;
 		v1 = v2;
@@ -121,16 +124,16 @@ void Solution::addEdge(Vertex v1, Vertex v2) {
 	ubigraph_set_edge_attribute(((v1 << 16) | v2), "width", "2.0");
 	ubigraph_set_edge_attribute(((v1 << 16) | v2), "color", "#ffffff");
 	usleep(100000);
-	#endif 
+#endif
 }
 
-void Solution::clearVertex(Vertex v1) {
-	clear_vertex(id, *g);
+void Solution::clearVertex(Edge v1) {
+/*	clear_vertex(id, *g);
 	
 	#ifdef ubigraph
 	ubigraph_remove_vertex(getOriginalId(id));
 	usleep(500000);
-	#endif
+	#endif */
 }
 
 
@@ -188,8 +191,14 @@ int Solution::minPossibleColor(Vertex node) {
 
 Solution* Solution::fromPcpStream(istream& in) {
 	Solution *s = new Solution();
-	
+
+#ifdef ubigraph
 	ubigraph_clear();
+	ubigraph_set_vertex_style_attribute(0, "shape", "sphere");
+	ubigraph_set_edge_style_attribute(0, "strength", "0.1");
+	ubigraph_set_edge_style_attribute(0, "spline", "true");
+#endif
+
 	int vertices, edges, partitions;
 	cin >> vertices >> edges >> partitions;
 	
@@ -197,6 +206,27 @@ Solution* Solution::fromPcpStream(istream& in) {
 		cout << "Reading " << vertices << " vertices, " << edges << " edges and ";
 		cout << partitions << " partitons ..." << endl;
 	}
+	
+#ifdef ubigraph
+	if (partitions < 9) {
+		ubigraph_new_vertex_style_w_id(1, 0);
+		ubigraph_new_vertex_style_w_id(2, 0);
+		ubigraph_new_vertex_style_w_id(3, 0);
+		ubigraph_new_vertex_style_w_id(4, 0);
+		ubigraph_new_vertex_style_w_id(5, 0);
+		ubigraph_new_vertex_style_w_id(6, 0);
+		ubigraph_new_vertex_style_w_id(7, 0);
+		ubigraph_new_vertex_style_w_id(8, 0);
+		ubigraph_set_vertex_style_attribute(1, "shape", "cone");
+		ubigraph_set_vertex_style_attribute(2, "shape", "cube");
+		ubigraph_set_vertex_style_attribute(3, "shape", "dodecahedron");
+		ubigraph_set_vertex_style_attribute(4, "shape", "icosahedron");
+		ubigraph_set_vertex_style_attribute(5, "shape", "octahedron");
+		ubigraph_set_vertex_style_attribute(6, "shape", "sphere");
+		ubigraph_set_vertex_style_attribute(7, "shape", "tetrahedron");
+		ubigraph_set_vertex_style_attribute(8, "shape", "torus");
+	}
+#endif
 	
 	/// Initialize the solution to the read parameters
 	s->partition = new int[partitions];
