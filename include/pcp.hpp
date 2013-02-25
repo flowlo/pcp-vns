@@ -42,7 +42,7 @@ namespace pcp {
 	typedef boost::property_map<Graph, boost::vertex_index1_t>::type
 		VertexPart_Map;
 
-	const std::string graphvizColors[17] = { "navyblue", "firebrick", "chartreuse4", "darkorange", "chocolate", "darkorchid", "gold", "darkseagreen", "coral", "steelblue", "seagreen", "violetred3", "yellowgreen", "wheat4", "salmon", "rosybrown", "olivedrab3" };
+	const std::string hexColors[] = { "#ff0000", "#00ff00", "#0000ff", "#ffff00", "#00ffff", "#ff00ff", "#ffffff", "#ff8800", "#88ff00", "#0088ff", "#ff0088", "#8800ff", "#00ff88" };
 
 	// Stores a Solution for the PCP-Problem
 	// Contains the graph representing the solution, the number of

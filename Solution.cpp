@@ -4,12 +4,6 @@ using namespace std;
 using namespace pcp;
 using namespace boost;
 
-#ifdef ubigraph
-string colors[] = { "#ff0000", "#00ff00", "#0000ff", "#ffff00", "#00ffff", 
-						  "#ff00ff", "#ffffff", "#ff8800", "#88ff00", "#0088ff",
-						  "#ff0088", "#8800ff", "#00ff88"};
-#endif
-
 Solution::Solution() {
 	this->g = new Graph(0);
 	this->colorsUsed = 0;
@@ -77,7 +71,7 @@ void Solution::setPartitionColor(Vertex v, int color) {
 	color++;
 	if (color > 12)
 		color %= 13;
-	ubigraph_set_vertex_attribute(getOriginalId(v), "color", colors[color].c_str());
+	ubigraph_set_vertex_attribute(getOriginalId(v), "color", hexColors[color].c_str());
 	usleep(500);
 	#endif
 }
@@ -416,7 +410,7 @@ void Solution::print(ostream& out) {
  	for (vector<string>::iterator i = partitions.begin(); i < partitions.end(); i++) {
  		out << "\tsubgraph cluster" << counter << " {" << endl;
  		out << *i << endl;
- 		out << "\t\tcolor = " << graphvizColors[partition[counter]] << endl;
+ 		out << "\t\tcolor = \"" << hexColors[partition[counter]] << "\"" << endl;
  		out << "\t\tlabel = " << counter++ << endl;
  		out << "\t}" << endl;
  	}
