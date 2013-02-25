@@ -83,6 +83,9 @@ gcc:
 
 opt:
 	@$(MAKE) CFLAGS="$(CFLAGS) -O3" $(PROG)
+	
+ubigraph:
+	@$(MAKE) LDFLAGS="$(LDFLAGS) -lubigraphclient -lxmlrpc_client -lxmlrpc -lxmlrpc_util -lxmlrpc_xmlparse -lxmlrpc_xmltok" CFLAGS="$(CFLAGS) -Dubigraph" $(PROG)
 
 static:
 	@$(MAKE) CFLAGS="$(CFLAGS) -O3" LDFLAGS="$(LDFLAGS) -static" $(PROG)
