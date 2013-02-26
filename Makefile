@@ -85,7 +85,7 @@ opt:
 	@$(MAKE) CFLAGS="$(CFLAGS) -O3" $(PROG)
 	
 ubigraph:
-	@$(MAKE) LDFLAGS="$(LDFLAGS) -lubigraphclient -lxmlrpc_util -lxmlrpc_client -lxmlrpc_util" CFLAGS="$(CFLAGS) -Dubigraph" $(PROG)
+	@$(MAKE) LDFLAGS="$(LDFLAGS) -lubigraphclient -lxmlrpc -lxmlrpc_client -lxmlrpc_util" CFLAGS="$(CFLAGS) -Dubigraph" $(PROG)
 
 static:
 	@$(MAKE) CFLAGS="$(CFLAGS) -O3" LDFLAGS="$(LDFLAGS) -static" $(PROG)
