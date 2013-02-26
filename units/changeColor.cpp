@@ -102,7 +102,9 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 	if (temp->colorsUsed < s->colorsUsed) {
 		delete s;
 		s = temp;
+		#ifdef ubigraph
 		s->redraw();
+		#endif
 	}
 	else 
 		delete temp;
