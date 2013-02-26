@@ -102,6 +102,7 @@ Solution *changeColor::findLocalMin(Solution& curBest, Solution& full) {
 	if (temp->colorsUsed < s->colorsUsed) {
 		delete s;
 		s = temp;
+		s->redraw();
 	}
 	else 
 		delete temp;

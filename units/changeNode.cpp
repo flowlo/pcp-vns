@@ -35,21 +35,7 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 				vector<Vertex>::iterator r;
 				for (r = candidates->begin(); r != candidates->end(); r++) {
 					if (*r != s->getOriginalId(n)) {
-						clear_vertex(n, *s->g);
-						s->setOriginalId(n, *r);
-						
-						// Check which edges should be added
-						AdjIter a, aEnd;
-						for (tie(a, aEnd) = adjacent_vertices(*r, *full.g); a != aEnd;
-							  a++) {
-							
-							if (full.getPartition(*a) != s->getPartition(n) &&	*a == 
-								 s->getOriginalId(s->representatives[full.getPartition(*a)])) {
-								
-								// add edge
-								add_edge(n, s->representatives[full.getPartition(*a)], *s->g);
-							}
-						}
+						s->replaceVertex(n, *r, full);
 						
 						// Check for improvement
 						int color = s->minPossibleColor(n);
@@ -62,6 +48,9 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 				// No candidates left to try...
 				if (r == candidates->end()) {
 					s->colorsUsed = s->numParts;
+					#ifdef ubigraph
+					s->redraw();
+					#endif
 					return s;
 				}
 			}
@@ -88,6 +77,9 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 	if (temp->colorsUsed < s->colorsUsed) {
 		delete s;
 		s = temp;
+		#ifdef ubigraph
+		s->redraw();
+		#endif
 	}
 	else 
 		delete temp;
@@ -115,11 +107,12 @@ Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 		
 		/// If it isn't already the current chosen node
 		if (vIndex[ret->representatives[part]] != replacement) {
-			
+			ret->replaceVertex(v, replacement, full);
+			ret->setPartitionColor(v, ret->minPossibleColor(v));
+			/*
 			clear_vertex(v, *ret->g);
 			vIndex[v] = replacement;
 			
-			fill(colors, colors + ret->numParts, 0);
 			
 			/// Search matching edges for replacement vertex
 			for (ai = adjacent_vertices(replacement, *full.g); 
@@ -132,13 +125,14 @@ Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 					colors[ret->partition[vPartsOrig[*ai.first]]] = 1;
 				}
 			}
-			
+			fill(colors, colors + ret->numParts, 0);
+
 			for (i = 0; i < ret->numParts; i++) {
 				if (colors[i] == 0) {
 					ret->partition[part] = i;
 					break;
 				}
-			}
+			}*/
 		}
 	}
 	
