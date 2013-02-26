@@ -56,7 +56,6 @@ void Solution::setOriginalId(Vertex v, int id) {
 	
 	#ifdef ubigraph
 	ubigraph_set_vertex_attribute(getOriginalId(v), "label", to_string(getOriginalId(v)).c_str());
-	//usleep(1000);
 	#endif
 }
 
@@ -68,8 +67,7 @@ void Solution::setPartitionColor(Vertex v, int color) {
 	partition[getPartition(v)] = color;
 	
 	#ifdef ubigraph
-	color %= 13;
-	ubigraph_set_vertex_attribute(getOriginalId(v), "color", hexColors[color].c_str());
+	ubigraph_set_vertex_attribute(getOriginalId(v), "color", hexColors[color % hexColors.size()].c_str());
 	usleep(500);
 	#endif
 }
@@ -106,7 +104,7 @@ void Solution::removeVertex(Vertex id) {
 void Solution::addEdge(Vertex v1, Vertex v2) {
 	add_edge(v1, v2, *g);
 	
-#ifdef ubigraph
+	#ifdef ubigraph
 	v1 = getOriginalId(v1);
 	v2 = getOriginalId(v2);
 	if (v1 > v2) {
@@ -118,7 +116,7 @@ void Solution::addEdge(Vertex v1, Vertex v2) {
 	ubigraph_set_edge_attribute(((v1 << 16) | v2), "width", "2.0");
 	ubigraph_set_edge_attribute(((v1 << 16) | v2), "color", "#ffffff");
 	usleep(100000);
-#endif
+	#endif
 }
 
 void Solution::replaceVertex(Vertex toR, Vertex rep, Solution& full) {
@@ -128,10 +126,7 @@ void Solution::replaceVertex(Vertex toR, Vertex rep, Solution& full) {
 	ubigraph_remove_vertex(getOriginalId(toR));
 	ubigraph_new_vertex_w_id(rep);
 	ubigraph_set_vertex_attribute(rep, "label", to_string(rep).c_str());
-	
-	int color = getPartitionColor(toR);
-	color %= 13;
-	ubigraph_set_vertex_attribute(rep, "color", hexColors[color].c_str());
+	ubigraph_set_vertex_attribute(rep, "color", hexColors[getPartitionColor(toR) % hexColors.size()].c_str());
 	
 	int part = full.getPartition(rep);	
 	if (part < 9)
@@ -177,11 +172,7 @@ void Solution::redraw() {
 	for (tie(v, vEnd) = vertices(*g); v != vEnd; v++) {
 		ubigraph_new_vertex_w_id(getOriginalId(*v));
 		ubigraph_set_vertex_attribute(getOriginalId(*v), "label", to_string(getOriginalId(*v)).c_str());
-		int color = getPartitionColor(*v);
-		color++;
-		if (color > 12)
-			color %= 13;
-		ubigraph_set_vertex_attribute(getOriginalId(*v), "color", hexColors[color].c_str());
+		ubigraph_set_vertex_attribute(getOriginalId(*v), "color", hexColors[getPartitionColor(*v) % hexColors.size()].c_str());
 		usleep(500);
 	}
 	
@@ -201,7 +192,6 @@ void Solution::redraw() {
 	}
 }
 #endif
-
 
 void Solution::requestDeepCopy() {
 	Graph *cp = g;
@@ -257,7 +247,6 @@ int Solution::minPossibleColor(Vertex node) {
 
 #ifdef ubigraph
 void Solution::prepareUbigraph() {
-
 	ubigraph_clear();
 	ubigraph_set_vertex_style_attribute(0, "shape", "sphere");
 	ubigraph_set_edge_style_attribute(0, "strength", "0.1");

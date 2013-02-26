@@ -3,6 +3,7 @@
 
 #ifndef PCP_H
 #define PCP_H
+#include <boost/assign/list_of.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/copy.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -45,7 +46,7 @@ namespace pcp {
 	typedef boost::property_map<Graph, boost::vertex_index1_t>::type
 		VertexPart_Map;
 
-	const std::string hexColors[13] = { "#ff0000", "#00ff00", "#0000ff", "#ffff00", "#00ffff", "#ff00ff", "#ffffff", "#ff8800", "#88ff00", "#0088ff", "#ff0088", "#8800ff", "#00ff88" };
+	const std::vector<std::string> hexColors = boost::assign::list_of("#ff0000")("#00ff00")("#0000ff")("#ffff00")("#00ffff")("#ff00ff")("#ffffff")("#ff8800")("#88ff00")("#0088ff")("#ff0088")("#8800ff")("#00ff88");
 
 	// Stores a Solution for the PCP-Problem
 	// Contains the graph representing the solution, the number of
