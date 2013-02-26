@@ -7,7 +7,7 @@ from permute import permute
 from subprocess import call
 from sys import argv, exit
 
-args = '-c -t 30'
+args = '-s 10 -i 20 -u 1000 -t 600'
 
 if len(sys.argv) < 5:
 	print 'Usage: ' + argv[0] + ' <runs> <units> <outdir> <instances>'
@@ -22,4 +22,4 @@ for i in range(runs):
 	for n in argv[4:]:
 		for p in permutations:
 			base = output + '/' + str(i) + '/' + basename(n) + '.' + p
-			call('./pcp ' + args + ' -p ' + base + '.gv -n ' + p + ' < ' + n + ' > ' + base + '.json &', shell = True)
+			call('./pcp ' + args + ' -n ' + p + ' < ' + n + ' > ' + base + '.json &', shell = True)
