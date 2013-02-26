@@ -5,8 +5,10 @@
 #include <stdlib.h>
 #include <sstream>
 #include <string>
+#include <stack>
 #include <boost/tokenizer.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/assign/list_of.hpp>
 #include "pcp.hpp"
 #ifdef ubigraph
 extern "C"{

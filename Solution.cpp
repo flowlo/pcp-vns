@@ -3,6 +3,7 @@
 using namespace std;
 using namespace pcp;
 using namespace boost;
+using namespace boost::assign;
 
 Solution::Solution() {
 	this->g = new Graph(0);
@@ -113,8 +114,6 @@ void Solution::addEdge(Vertex v1, Vertex v2) {
 		v2 = temp;
 	}
 	ubigraph_new_edge_w_id(((v1 << 16) | v2), v1, v2);
-	ubigraph_set_edge_attribute(((v1 << 16) | v2), "width", "2.0");
-	ubigraph_set_edge_attribute(((v1 << 16) | v2), "color", "#ffffff");
 	usleep(100000);
 	#endif
 }
@@ -156,8 +155,6 @@ void Solution::replaceVertex(Vertex toR, Vertex rep, Solution& full) {
 				v2 = temp;
 			}
 			ubigraph_new_edge_w_id(((v1 << 16) | v2), v1, v2);
-			ubigraph_set_edge_attribute(((v1 << 16) | v2), "width", "2.0");
-			ubigraph_set_edge_attribute(((v1 << 16) | v2), "color", "#ffffff");
 			usleep(10000);
 			#endif
 		}
@@ -187,8 +184,6 @@ void Solution::redraw() {
 			v2 = temp;
 		}
 		ubigraph_new_edge_w_id(((v1 << 16) | v2), v1, v2);
-		ubigraph_set_edge_attribute(((v1 << 16) | v2), "width", "2.0");
-		ubigraph_set_edge_attribute(((v1 << 16) | v2), "color", "#ffffff");
 	}
 }
 #endif
@@ -249,26 +244,19 @@ int Solution::minPossibleColor(Vertex node) {
 void Solution::prepareUbigraph() {
 	ubigraph_clear();
 	ubigraph_set_vertex_style_attribute(0, "shape", "sphere");
-	ubigraph_set_edge_style_attribute(0, "strength", "0.1");
+	ubigraph_set_edge_style_attribute(0, "strength", "0");
 	ubigraph_set_edge_style_attribute(0, "spline", "true");
+	ubigraph_set_edge_style_attribute(0, "oriented", "true");
+	ubigraph_set_edge_style_attribute(0, "width", "2.0");
+	ubigraph_set_edge_style_attribute(0, "color", "#ffffff");
 
 	if (this->numParts < 9) {
-		ubigraph_new_vertex_style_w_id(1, 0);
-		ubigraph_new_vertex_style_w_id(2, 0);
-		ubigraph_new_vertex_style_w_id(3, 0);
-		ubigraph_new_vertex_style_w_id(4, 0);
-		ubigraph_new_vertex_style_w_id(5, 0);
-		ubigraph_new_vertex_style_w_id(6, 0);
-		ubigraph_new_vertex_style_w_id(7, 0);
-		ubigraph_new_vertex_style_w_id(8, 0);
-		ubigraph_set_vertex_style_attribute(1, "shape", "cone");
-		ubigraph_set_vertex_style_attribute(2, "shape", "cube");
-		ubigraph_set_vertex_style_attribute(3, "shape", "dodecahedron");
-		ubigraph_set_vertex_style_attribute(4, "shape", "icosahedron");
-		ubigraph_set_vertex_style_attribute(5, "shape", "octahedron");
-		ubigraph_set_vertex_style_attribute(6, "shape", "sphere");
-		ubigraph_set_vertex_style_attribute(7, "shape", "tetrahedron");
-		ubigraph_set_vertex_style_attribute(8, "shape", "torus");
+		stack<string> shapes = list_of("cone")("cube")("dodecahedron")("icosahedron")("octahedron")("sphere")("tetrahedron")("torus").to_adapter();
+		while (!shapes.empty()) {
+			ubigraph_new_vertex_style_w_id(shapes.size(), 0);
+			ubigraph_set_vertex_style_attribute(shapes.size(), "shape", shapes.top().c_str());
+			shapes.pop();
+		}
 	}
 }
 #endif
@@ -301,10 +289,6 @@ Solution* Solution::fromPcpStream(istream& in) {
 	for (i = 0; i < vertices; i++) {
 		cin >> part;
 		s->addVertex(part, i);
-/*		Vertex v = add_vertex(*s->g);
-		put(vertex_part, v, part);
-		put(vertex_id, v, i);
-		s->partNodes[part].push_back(v);*/
 		
 		if (DEBUG_LEVEL > 3)
 			cout << "Added vertex " << i << " to partition " << part << "." << endl;
@@ -320,7 +304,6 @@ Solution* Solution::fromPcpStream(istream& in) {
 			cout << "Added edge (" << source << "|" << target << ")." << endl;
 		}
 		s->addEdge(source, target);
-		//add_edge(source, target, *s->g);
 	}
 	
 	if (DEBUG_LEVEL > 3)
@@ -366,19 +349,10 @@ Solution* Solution::fromColStream(istream& in) {
 		return NULL;
 	}
 	
-	/// Initialize the property maps for partition and vertexID
-	VertexID_Map vertex_id = get(vertex_index2_t(), *s->g);
-	VertexPart_Map vertex_part = get(vertex_index1_t(), *s->g);
-	
 	s->partNodes = new vector<Vertex>[vertices];
 	
 	int i;
 	for (i = 0; i < vertices; i++) {
-/*		Vertex v = add_vertex(*s->g);
-		put(vertex_part, v, i); 
-		put(vertex_id, v + 1, i);
-	s->partNodes[i].push_back(v);*/
-		
 		s->addVertex(i, i);
 	}
 
@@ -500,8 +474,8 @@ void Solution::print(ostream& out) {
  	out << "}" << endl;
 }
 
-std::string Solution::toString() {
-	std::stringstream ss;
+string Solution::toString() {
+	stringstream ss;
 	
 	ss << "{ \"representatives\": [ " << this->representatives[0];
 	
