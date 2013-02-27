@@ -127,9 +127,10 @@ void Solution::replaceVertex(Vertex toR, Vertex rep, Solution& full) {
 	ubigraph_set_vertex_attribute(rep, "label", to_string(rep).c_str());
 	ubigraph_set_vertex_attribute(rep, "color", hexColors[getPartitionColor(toR) % hexColors.size()].c_str());
 	
-	int part = full.getPartition(rep);	
+	int part = full.getPartition(rep);
 	if (part < 9)
 		ubigraph_change_vertex_style(rep, part);
+	usleep(50000);
 	#endif
 	
 	setOriginalId(toR, rep);
@@ -139,7 +140,7 @@ void Solution::replaceVertex(Vertex toR, Vertex rep, Solution& full) {
 	for (tie(a, aEnd) = adjacent_vertices(rep, *full.g); a != aEnd;
 		  a++) {
 		
-		if (full.getPartition(*a) != getPartition(toR) &&	*a == 
+		if (full.getPartition(*a) != getPartition(toR) && *a ==
 			 getOriginalId(representatives[full.getPartition(*a)])) {
 			
 			// add edge
@@ -155,7 +156,7 @@ void Solution::replaceVertex(Vertex toR, Vertex rep, Solution& full) {
 				v2 = temp;
 			}
 			ubigraph_new_edge_w_id(((v1 << 16) | v2), v1, v2);
-			usleep(10000);
+			usleep(80000);
 			#endif
 		}
 	}
@@ -170,7 +171,6 @@ void Solution::redraw() {
 		ubigraph_new_vertex_w_id(getOriginalId(*v));
 		ubigraph_set_vertex_attribute(getOriginalId(*v), "label", to_string(getOriginalId(*v)).c_str());
 		ubigraph_set_vertex_attribute(getOriginalId(*v), "color", hexColors[getPartitionColor(*v) % hexColors.size()].c_str());
-		usleep(500);
 	}
 	
 	EdgeIter e, eEnd;
@@ -185,6 +185,7 @@ void Solution::redraw() {
 		}
 		ubigraph_new_edge_w_id(((v1 << 16) | v2), v1, v2);
 	}
+	usleep(500000);
 }
 #endif
 
@@ -193,14 +194,14 @@ void Solution::requestDeepCopy() {
 	g = new Graph(*g);
 	this->partitionMap = get(vertex_index1_t(), *g);
 	this->idMap = get(vertex_index2_t(), *g);
-	
+
 	int *rep = representatives;
 	representatives = new int[numParts];
 	for (int i = 0; i < numParts; i++) {
 		representatives[i] = rep[i];
 	}
 
-	*copyCounter -= 1;	
+	*copyCounter -= 1;
 	if (*copyCounter <= 0) {
 		delete copyCounter;
 		delete cp;
@@ -348,7 +349,7 @@ Solution* Solution::fromColStream(istream& in) {
 		cerr << "Malformed p-line detected (not terminated by newline)!" << endl;
 		return NULL;
 	}
-	
+
 	s->partNodes = new vector<Vertex>[vertices];
 	
 	int i;
