@@ -135,6 +135,7 @@ namespace pcp {
 			
 			#ifdef ubigraph
 			void redraw();
+			void redraw(int shift);
 			void prepareUbigraph();
 			#endif
 		private:

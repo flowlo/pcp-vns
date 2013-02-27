@@ -165,12 +165,37 @@ void Solution::replaceVertex(Vertex toR, Vertex rep, Solution& full) {
 #ifdef ubigraph
 void Solution::redraw() {
 	prepareUbigraph();
-	
+
 	VertexIter v, vEnd;
 	for (tie(v, vEnd) = vertices(*g); v != vEnd; v++) {
 		ubigraph_new_vertex_w_id(getOriginalId(*v));
 		ubigraph_set_vertex_attribute(getOriginalId(*v), "label", to_string(getOriginalId(*v)).c_str());
 		ubigraph_set_vertex_attribute(getOriginalId(*v), "color", hexColors[getPartitionColor(*v) % hexColors.size()].c_str());
+	}
+
+	EdgeIter e, eEnd;
+	for(tie(e, eEnd) = edges(*g); e != eEnd; e++) {
+		Vertex v1, v2;
+		v1 = getOriginalId(source(*e, *g));
+		v2 = getOriginalId(target(*e, *g));
+		if (v1 > v2) {
+			Vertex temp = v1;
+			v1 = v2;
+			v2 = temp;
+		}
+		ubigraph_new_edge_w_id(((v1 << 16) | v2), v1, v2);
+	}
+	usleep(500000);
+}
+#endif
+
+#ifdef ubigraph
+void Solution::redraw(int shift) {
+	VertexIter v, vEnd;
+	for (tie(v, vEnd) = vertices(*g); v != vEnd; v++) {
+		ubigraph_new_vertex_w_id(getOriginalId(*v) + shift);
+		ubigraph_set_vertex_attribute(getOriginalId(*v) + shift, "label", to_string(getOriginalId(*v)).c_str());
+		ubigraph_set_vertex_attribute(getOriginalId(*v) + shift, "color", hexColors[getPartitionColor(*v) % hexColors.size()].c_str());
 	}
 	
 	EdgeIter e, eEnd;
@@ -183,7 +208,7 @@ void Solution::redraw() {
 			v1 = v2;
 			v2 = temp;
 		}
-		ubigraph_new_edge_w_id(((v1 << 16) | v2), v1, v2);
+		ubigraph_new_edge_w_id(((v1 << 16) | v2) + shift, v1 + shift, v2 + shift);
 	}
 	usleep(500000);
 }
@@ -337,11 +362,11 @@ Solution* Solution::fromColStream(istream& in) {
 	s->partition = new int[vertices];
 	s->representatives = new int[vertices];
 	s->colorsUsed = vertices;
-	
+
 	#ifdef ubigraph
 	s->prepareUbigraph();
 	#endif
-	
+
 	if (DEBUG_LEVEL > 3)
 		cout << "Reading " << edges << " edges ..." << endl;
 		

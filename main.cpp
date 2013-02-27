@@ -101,6 +101,10 @@ int main(int argc, char* argv[]) {
 	if (DEBUG_LEVEL > 2)
 		cout << "Initial solution uses " << onestep->colorsUsed << " colors." << endl;
 	
+	#ifdef ubigraph
+	Solution *onecopy = new Solution(onestep);
+	#endif
+	
 	Solution *best = vnsRun(*onestep, *fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), vm.count("checkFinal"));
 	
 	if (best == NULL)
@@ -121,6 +125,13 @@ int main(int argc, char* argv[]) {
 			cout << "Printing to '" << vm["print"].as<string>() << "' done!" << endl;
 	}
 	
+	#ifdef ubigraph
+	int offset = num_vertices(*fullG->g);
+	fullG->redraw(offset);
+	onecopy->redraw(offset * 2);
+	delete onecopy;
+	#endif
+
 	delete best;
 	delete fullG;
 
