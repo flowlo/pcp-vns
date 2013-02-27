@@ -16,13 +16,11 @@ Solution::Solution() {
 
 Solution::Solution(Solution *toCopy) {
 	this->partNodes = NULL;
-//	this->g = new Graph(*toCopy->g);
 	this->g = toCopy->g;
 	this->copyCounter = toCopy->copyCounter;
 	*this->copyCounter += 1;
 	this->numParts = toCopy->numParts;
 	this->partition = new int[this->numParts];
-//	this->representatives = new int[this->numParts];
 	this->representatives = toCopy->representatives;
 	this->colorsUsed = toCopy->colorsUsed;
 	this->partitionMap = get(vertex_index1_t(), *this->g);
