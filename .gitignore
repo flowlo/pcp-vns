@@ -3,6 +3,7 @@
 *.a
 *.?ch
 *.out
+*.pyc
 pcp
 
 # input
@@ -26,3 +27,4 @@ pcp
 
 # files used for testing
 *tests*
+*instances*
