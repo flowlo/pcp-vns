@@ -109,30 +109,6 @@ Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
 		if (vIndex[ret->representatives[part]] != replacement) {
 			ret->replaceVertex(v, replacement, full);
 			ret->setPartitionColor(v, ret->minPossibleColor(v));
-			/*
-			clear_vertex(v, *ret->g);
-			vIndex[v] = replacement;
-			
-			
-			/// Search matching edges for replacement vertex
-			for (ai = adjacent_vertices(replacement, *full.g); 
-				  ai.first != ai.second; ai.first++) {
-				  
-				if (vIndex[ret->representatives[vPartsOrig[*ai.first]]] == 
-					 *ai.first && vPartsOrig[*ai.first] != part) {
-					
-					add_edge(v, ret->representatives[vPartsOrig[*ai.first]], *ret->g);
-					colors[ret->partition[vPartsOrig[*ai.first]]] = 1;
-				}
-			}
-			fill(colors, colors + ret->numParts, 0);
-
-			for (i = 0; i < ret->numParts; i++) {
-				if (colors[i] == 0) {
-					ret->partition[part] = i;
-					break;
-				}
-			}*/
 		}
 	}
 	
