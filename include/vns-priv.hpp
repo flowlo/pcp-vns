@@ -50,6 +50,16 @@ namespace pcp {
 			static const char getStaticAbbreviation();
 	};
 	
+	class changeAll : public VNS_Unit {
+		public:
+			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
+			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);								  
+			
+			virtual const std::string getName();
+			virtual const char getAbbreviation();
+			static const char getStaticAbbreviation();
+	};
+	
 	/// Implement a dummy tabu search, see VNS_Unit
 	/*class tabuSearch : public VNS_Unit {
 		public:
