@@ -56,7 +56,7 @@ void Solution::setOriginalId(Vertex v, int id) {
 	put(this->idMap, v, id);
 	
 	#ifdef ubigraph
-	ubigraph_set_vertex_attribute(getOriginalId(v), "label", to_string(getOriginalId(v)).c_str());
+	ubigraph_set_vertex_attribute(getOriginalId(v), "label", (to_string(getOriginalId(v)) + " [" + to_string(getPartition(v)) + "]").c_str());
 	#endif
 }
 
@@ -85,7 +85,7 @@ void Solution::addVertex(int part, Vertex id) {
 	
 	#ifdef ubigraph
 	ubigraph_new_vertex_w_id(getOriginalId(v));
-	ubigraph_set_vertex_attribute(getOriginalId(v), "label", to_string(getOriginalId(v)).c_str());
+	ubigraph_set_vertex_attribute(getOriginalId(v), "label", (to_string(getOriginalId(v)) + " [" + to_string(getPartition(v)) + "]").c_str());
 	
 	if (part < 9 && this->numParts < 9)
 		ubigraph_change_vertex_style(getOriginalId(v), part);
@@ -124,7 +124,7 @@ void Solution::replaceVertex(Vertex toR, Vertex rep, Solution& full) {
 	#ifdef ubigraph
 	ubigraph_remove_vertex(getOriginalId(toR));
 	ubigraph_new_vertex_w_id(rep);
-	ubigraph_set_vertex_attribute(rep, "label", to_string(rep).c_str());
+	ubigraph_set_vertex_attribute(rep, "label", (to_string(getOriginalId(rep)) + " [" + to_string(getPartition(rep)) + "]").c_str());
 	ubigraph_set_vertex_attribute(rep, "color", hexColors[getPartitionColor(toR) % hexColors.size()].c_str());
 	
 	int part = full.getPartition(rep);
@@ -169,7 +169,7 @@ void Solution::redraw() {
 	VertexIter v, vEnd;
 	for (tie(v, vEnd) = vertices(*g); v != vEnd; v++) {
 		ubigraph_new_vertex_w_id(getOriginalId(*v));
-		ubigraph_set_vertex_attribute(getOriginalId(*v), "label", to_string(getOriginalId(*v)).c_str());
+		ubigraph_set_vertex_attribute(getOriginalId(*v), "label", (to_string(getOriginalId(*v)) + " [" + to_string(getPartition(*v)) + "]").c_str());
 		ubigraph_set_vertex_attribute(getOriginalId(*v), "color", hexColors[getPartitionColor(*v) % hexColors.size()].c_str());
 	}
 
@@ -194,7 +194,7 @@ void Solution::redraw(int shift) {
 	VertexIter v, vEnd;
 	for (tie(v, vEnd) = vertices(*g); v != vEnd; v++) {
 		ubigraph_new_vertex_w_id(getOriginalId(*v) + shift);
-		ubigraph_set_vertex_attribute(getOriginalId(*v) + shift, "label", to_string(getOriginalId(*v)).c_str());
+		ubigraph_set_vertex_attribute(getOriginalId(*v) + shift, "label", (to_string(getOriginalId(*v)) + " [" + to_string(getPartition(*v)) + "]").c_str());
 		ubigraph_set_vertex_attribute(getOriginalId(*v) + shift, "color", hexColors[getPartitionColor(*v) % hexColors.size()].c_str());
 	}
 	
