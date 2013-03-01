@@ -6,7 +6,7 @@ ifeq ($(CXX),clang++)
 else ifeq ($(CXX),g++)
 	PCH=.gch
 endif
-CFLAGS=-Wall -std=c++0x -g -c
+CFLAGS=-Wall -std=c++0x -c
 LDFLAGS=-lboost_program_options
 OBJECTS=main.o oneStepCd.o Solution.o vns.o StoredSolution.o unit.a
 HEADERS=include/vns.hpp$(PCH) include/oneStepCd.hpp$(PCH) include/main.hpp$(PCH) include/Solution.hpp$(PCH)
