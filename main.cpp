@@ -29,6 +29,10 @@ int main(int argc, char* argv[]) {
 		("checkFinal,c", value<bool>()->default_value(true)->implicit_value(false)->zero_tokens() , "disable final check after VNS has finished")
 		("checkIntermediate,m", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "enable check after each improvement/shake")
 		("seed,r", value<int>(&rSeed)->default_value(time(NULL)), "set seed for random number generator")
+		#ifdef ubigraph
+		("delay", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "enable check after each improvement/shake")
+		("full", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "enable check after each improvement/shake")
+		#endif
 	;
 	
 	options_description all("Allowed options");
@@ -92,6 +96,11 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
+	#ifdef ubigraph
+	if (vm.count("delay"))
+		usleep(3000000);
+	#endif
+
 	if (DEBUG_LEVEL > 3) {
 		cout << "Constructing initial solution ..." << endl;
 	}
@@ -100,9 +109,12 @@ int main(int argc, char* argv[]) {
 	
 	if (DEBUG_LEVEL > 2)
 		cout << "Initial solution uses " << onestep->colorsUsed << " colors." << endl;
-	
+
 	#ifdef ubigraph
 	Solution *onecopy = new Solution(onestep);
+
+	if (vm.count("delay"))
+		usleep(3000000);
 	#endif
 	
 	Solution *best = vnsRun(*onestep, *fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), vm.count("checkFinal"));
@@ -127,8 +139,9 @@ int main(int argc, char* argv[]) {
 	
 	#ifdef ubigraph
 	int offset = num_vertices(*fullG->g);
-	fullG->redraw(offset);
-	onecopy->redraw(offset * 2);
+	onecopy->redraw(offset);
+	if (vm.count("full"))
+		fullG->redraw(offset * 2);
 	delete onecopy;
 	#endif
 
