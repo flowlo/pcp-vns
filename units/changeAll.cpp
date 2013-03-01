@@ -37,13 +37,42 @@ Solution *changeAll::findLocalMin(Solution& best, Solution& full) {
 					if (*r != s->getOriginalId(n)) {
 						s->replaceVertex(n, *r, full);
 						
-						// Check for improvement
-						int color = s->minPossibleColor(n);
-						if (color < maxColor) {
-							s->setPartitionColor(n, color);
-							break;
+						int i;
+						for (i = 0; i < maxColor - 1; i++) {
+							s->setPartitionColor(n, i);
+							
+							bool allColored = true;
+							AdjIter a, aEnd;
+							for (tie(a, aEnd) = adjacent_vertices(n, *s->g); a != aEnd;
+								  a++) {
+								
+								if (i == s->getPartitionColor(*a)) {
+									int rec = s->minPossibleColor(*a);
+									
+									// Not a better solution
+									if (rec >= maxColor) {
+										allColored = false;
+										break;
+									}
+									
+									// Better solution for this vertex
+									else 
+										s->setPartitionColor(*a, rec);
+								}
+							}
+							// Better solution found
+							if (allColored) 
+								break;
 						}
 						
+						// No colors left to try, definitly not a better solution
+						if (i == maxColor - 1) {
+							s->colorsUsed = s->numParts;
+							#ifdef ubigraph
+							s->redraw();
+							#endif
+							return s;
+						}
 					}
 				}
 				// No candidates left to try...
