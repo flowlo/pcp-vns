@@ -30,8 +30,8 @@ int main(int argc, char* argv[]) {
 		("checkIntermediate,m", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "enable check after each improvement/shake")
 		("seed,r", value<int>(&rSeed)->default_value(time(NULL)), "set seed for random number generator")
 		#ifdef ubigraph
-		("delay", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "enable check after each improvement/shake")
-		("full", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "enable check after each improvement/shake")
+		("delay", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "delay execution after loading the graph and finishing onestepCD")
+		("full", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "render the full graph after the VNS terminates")
 		#endif
 	;
 	
