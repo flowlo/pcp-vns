@@ -9,5 +9,6 @@
 #include <boost/program_options.hpp>
 #include "pcp.hpp"
 #include "oneStepCd.hpp"
+#include "pilot.hpp"
 #include "vns.hpp"
 #endif

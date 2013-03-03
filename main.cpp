@@ -29,6 +29,7 @@ int main(int argc, char* argv[]) {
 		("checkFinal,c", value<bool>()->default_value(true)->implicit_value(false)->zero_tokens() , "disable final check after VNS has finished")
 		("checkIntermediate,m", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "enable check after each improvement/shake")
 		("seed,r", value<int>(&rSeed)->default_value(time(NULL)), "set seed for random number generator")
+		("pilot", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "use PILOT construction heuristic")
 		#ifdef ubigraph
 		("delay", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "enable check after each improvement/shake")
 		("full", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "enable check after each improvement/shake")
@@ -105,7 +106,7 @@ int main(int argc, char* argv[]) {
 		cout << "Constructing initial solution ..." << endl;
 	}
 	
-	Solution *onestep = onestepCD(*fullG);
+	Solution *onestep = vm.count("pilot") ? pilot(*fullG) : onestepCD(*fullG);
 	
 	if (DEBUG_LEVEL > 2)
 		cout << "Initial solution uses " << onestep->colorsUsed << " colors." << endl;
