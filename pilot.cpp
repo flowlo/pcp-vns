@@ -22,17 +22,14 @@ namespace pcp {
 	
 		Solution *sol = pilot(*clean, 0);
 		
-		cout << "Finished internal PILOT" << endl;
-	/*
+		cout << "Finished internal PILOT." << endl;
+		
 		/// Fill in the representatives
 		pair<VertexIter, VertexIter> vp;
 		for (vp = vertices(*sol->g); vp.first != vp.second; vp.first++)
 			sol->representatives[sol->getPartition(*vp.first)] = *vp.first;
 		
-		cout << "Reps done" << endl;
-		*/
-		
-		cout << "Returning" << endl;
+		cout << "Filled in representatives." << endl;
 		
 		return sol;
 	}
@@ -41,7 +38,7 @@ namespace pcp {
 		// cout << "Pilot level " << fixed << " called (of " << s.numParts << ")" << endl;
 
 		if (fixed == s.numParts) {
-			cout << "Pilot finished!" << endl;
+			cout << "Pilot reached depth " << fixed << ", returning." << endl;
 
 			int colors = -1;
 			for (int i = 0; i < s.numParts; i++)
@@ -56,25 +53,25 @@ namespace pcp {
 		/// Initialize the heuristics' parameters
 		int minDegree[s.numParts];
 		int maxDegree = -1, cd = 0;
-		pair<VertexIter, VertexIter> vp;
+		VertexIter i, end;
 		
 		/// List to store the candidates for recursion
-		list<Vertex> targets;
+		vector<Vertex> targets;
 	
 		/// Reset the minimal color degree to maximum each iteration
 		fill(minDegree, minDegree + s.numParts, s.numParts + 1);
 
 		/// For each vertex in the graph
-	 	for (vp = vertices(*s.g); vp.first != vp.second; ++vp.first) {
+	 	for (tie(i, end)= vertices(*s.g); i != end; i++) {
 	 		/// Compute the color degree for the vertex
-			cd = s.getColorDegree(*vp.first);
+			cd = s.getColorDegree(*i);
 			
 			/// If the color degree of the selected vertex is less than that of
 			/// previous vertices in the same partition, and the partition is 
 			/// uncolored
-			if (cd < minDegree[s.getPartition(*vp.first)] && !s.isPartitionColored(*vp.first)) {
+			if (cd < minDegree[s.getPartition(*i)] && !s.isPartitionColored(*i)) {
 				/// Set the minimal color degree for the vertex' partition to cd
-				minDegree[s.getPartition(*vp.first)] = cd;
+				minDegree[s.getPartition(*i)] = cd;
 				
 				/// If the vertex' color degree is more then the current maximum
 				/// degree, select the current node as the new target
@@ -82,10 +79,10 @@ namespace pcp {
 					targets.clear();
 						
 					maxDegree = cd;
-					targets.push_back(*vp.first);
+					targets.push_back(*i);
 				}
 				else if (cd == maxDegree) {
-					targets.push_back(*vp.first);
+					targets.push_back(*i);
 				}
 			}
 		}
@@ -93,7 +90,7 @@ namespace pcp {
 		int minColors = s.numParts;
 		Solution *best, *sol;
 		
-		for (list<Vertex>::iterator i = targets.begin(); i != targets.end(); i++) {
+		for (vector<Vertex>::iterator i = targets.begin(); i != targets.end(); i++) {
 			sol = new Solution(&s);
 			sol->requestDeepCopy();
 
@@ -102,17 +99,15 @@ namespace pcp {
 						
 			sol = pilot(*sol, fixed + 1);
 			
-			// cout << "Got " << sol->colorsUsed << endl;
+			cout << "Got " << sol->colorsUsed << endl;
 			
 			if (sol->colorsUsed < minColors) {
 				cout << "New minimum: " << sol->colorsUsed << endl;
-				return sol;
-				//best = new Solution(sol);
-				//best->requestDeepCopy();
+				best = new Solution(sol);
+				best->requestDeepCopy();
 			}
 		}
 
-		//cout << "Ret best (" << fixed << ")" << endl;		
 		return &s;
 	}
 }
