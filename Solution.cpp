@@ -64,7 +64,10 @@ int Solution::getPartitionColor(Vertex v) {
 
 void Solution::setPartitionColor(Vertex v, int color) {
 	partition[getPartition(v)] = color;
-	
+
+	if (color >= colorsUsed)
+		colorsUsed = color + 1;
+
 	#ifdef ubigraph
 	ubigraph_set_vertex_attribute(getOriginalId(v), "color", hexColors[color % hexColors.size()].c_str());
 	usleep(500);
