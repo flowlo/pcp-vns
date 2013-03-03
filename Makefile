@@ -8,8 +8,8 @@ else ifeq ($(CXX),g++)
 endif
 CFLAGS=-Wall -std=c++0x -c
 LDFLAGS=-lboost_program_options
-OBJECTS=main.o oneStepCd.o Solution.o vns.o StoredSolution.o unit.a
-HEADERS=include/vns.hpp$(PCH) include/oneStepCd.hpp$(PCH) include/main.hpp$(PCH) include/Solution.hpp$(PCH)
+OBJECTS=main.o oneStepCd.o pilot.o Solution.o vns.o StoredSolution.o unit.a
+HEADERS=include/vns.hpp$(PCH) include/oneStepCd.hpp$(PCH) include/pilot.hpp$(PCH) include/main.hpp$(PCH) include/Solution.hpp$(PCH)
 PROG=pcp
 BRANCH=`git rev-parse --abbrev-ref HEAD`
 
@@ -25,6 +25,10 @@ oneStepCd.o: oneStepCd.cpp include/oneStepCd.hpp$(PCH)
 	@echo $(CXX)": Compiling "$@
 	@$(CXX) $(CFLAGS) -include include/oneStepCd.hpp -o oneStepCd.o oneStepCd.cpp
 	
+pilot.o: pilot.cpp include/pilot.hpp$(PCH)
+	@echo $(CXX)": Compiling "$@
+	@$(CXX) $(CFLAGS) -include include/pilot.hpp -o pilot.o pilot.cpp
+
 Solution.o: Solution.cpp include/Solution.hpp$(PCH)
 	@echo $(CXX)": Compiling "$@
 	@$(CXX) $(CFLAGS) -include include/Solution.hpp -o Solution.o Solution.cpp
@@ -59,6 +63,10 @@ include/main.hpp$(PCH): include/main.hpp include/pcp.hpp include/oneStepCd.hpp i
 include/oneStepCd.hpp$(PCH): include/oneStepCd.hpp include/pcp.hpp
 	@echo $(CXX)": Precompiling "$@
 	@$(CXX) $(CFLAGS) -x c++-header include/oneStepCd.hpp -o include/oneStepCd.hpp$(PCH)
+
+include/pilot.hpp$(PCH): include/pilot.hpp include/pcp.hpp
+	@echo $(CXX)": Precompiling "$@
+	@$(CXX) $(CFLAGS) -x c++-header include/pilot.hpp -o include/pilot.hpp$(PCH)
 
 include/Solution.hpp$(PCH): include/Solution.hpp include/pcp.hpp
 	@echo $(CXX)": Precompiling "$@
