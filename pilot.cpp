@@ -10,36 +10,28 @@ namespace pcp {
 	
 	Solution *pilot(Solution& s) {
 		/// Copy the old solution
-		Solution *clean = new Solution(&s);
-		clean->requestDeepCopy();
+		Solution *sol = new Solution(&s);
+		sol->requestDeepCopy();
 	
 		/// Remove all edges between nodes of the same partition, as they are of
 		/// no use
-		removePartEdges(*clean);
+		removePartEdges(*sol);
 		
 		/// Set the partitions color to "not set"
-		fill(clean->partition, clean->partition + clean->numParts, -1);
+		fill(sol->partition, sol->partition + sol->numParts, -1);
 	
-		Solution *sol = pilot(*clean, 0);
-		
-		cout << "Finished internal PILOT." << endl;
-		
+		sol = pilot(*sol, 0);
+
 		/// Fill in the representatives
 		pair<VertexIter, VertexIter> vp;
 		for (vp = vertices(*sol->g); vp.first != vp.second; vp.first++)
 			sol->representatives[sol->getPartition(*vp.first)] = *vp.first;
 		
-		cout << "Filled in representatives." << endl;
-		
 		return sol;
 	}
 
 	Solution *pilot(Solution& s, int fixed) {
-		// cout << "Pilot level " << fixed << " called (of " << s.numParts << ")" << endl;
-
 		if (fixed == s.numParts) {
-			cout << "Pilot reached depth " << fixed << ", returning." << endl;
-
 			int colors = -1;
 			for (int i = 0; i < s.numParts; i++)
 				if (s.partition[i] > colors)
@@ -98,16 +90,14 @@ namespace pcp {
 			removeOthers(*i, *sol);
 						
 			sol = pilot(*sol, fixed + 1);
-			
-			cout << "Got " << sol->colorsUsed << endl;
-			
+
 			if (sol->colorsUsed < minColors) {
-				cout << "New minimum: " << sol->colorsUsed << endl;
 				best = new Solution(sol);
 				best->requestDeepCopy();
 			}
+			delete sol;
 		}
 
-		return &s;
+		return best;
 	}
 }
