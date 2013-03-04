@@ -80,7 +80,7 @@ namespace pcp {
 		}
 		
 		int minColors = s.numParts;
-		Solution *best, *sol;
+		Solution *best = NULL, *sol;
 		
 		for (vector<Vertex>::iterator i = targets.begin(); i != targets.end(); i++) {
 			sol = new Solution(&s);
@@ -92,9 +92,13 @@ namespace pcp {
 			sol = pilot(*sol, fixed + 1);
 
 			if (sol->colorsUsed < minColors) {
+				if (best != NULL)
+					delete best;
+
 				best = new Solution(sol);
-				best->requestDeepCopy();
+				minColors = sol->colorsUsed;
 			}
+
 			delete sol;
 		}
 
