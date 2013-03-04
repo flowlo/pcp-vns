@@ -23,9 +23,9 @@ namespace pcp {
 		sol = pilot(*sol, 0);
 
 		/// Fill in the representatives
-		pair<VertexIter, VertexIter> vp;
-		for (vp = vertices(*sol->g); vp.first != vp.second; vp.first++)
-			sol->representatives[sol->getPartition(*vp.first)] = *vp.first;
+		VertexIter i, end;
+		for (tie(i, end) = vertices(*sol->g); i != end; i++)
+			sol->representatives[sol->getPartition(*i)] = *i;
 		
 		return sol;
 	}
@@ -54,7 +54,7 @@ namespace pcp {
 		fill(minDegree, minDegree + s.numParts, s.numParts + 1);
 
 		/// For each vertex in the graph
-	 	for (tie(i, end)= vertices(*s.g); i != end; i++) {
+	 	for (tie(i, end) = vertices(*s.g); i != end; i++) {
 	 		/// Compute the color degree for the vertex
 			cd = s.getColorDegree(*i);
 			
@@ -67,29 +67,58 @@ namespace pcp {
 				
 				/// If the vertex' color degree is more then the current maximum
 				/// degree, select the current node as the new target
-				if (cd > maxDegree) {
-					targets.clear();
-						
-					maxDegree = cd;
-					targets.push_back(*i);
-				}
-				else if (cd == maxDegree) {
-					targets.push_back(*i);
+				if (cd >= maxDegree) {
+					if (cd > maxDegree) {
+						targets.clear();
+						maxDegree = cd;
+					}
+					if (targets.size() < s.numParts / 2)
+						targets.push_back(*i);
 				}
 			}
 		}
 		
-		int minColors = s.numParts;
+		int minColors = s.numParts, target = -1;
 		Solution *best = NULL, *sol;
 		
-		for (vector<Vertex>::iterator i = targets.begin(); i != targets.end(); i++) {
+		for (vector<Vertex>::iterator j = targets.begin(); j != targets.end(); j++) {
 			sol = new Solution(&s);
 			sol->requestDeepCopy();
+			sol->setPartitionColor(*j, sol->minPossibleColor(*j));
+			removeOthers(*j, *sol);
 
-			sol->setPartitionColor(*i, sol->minPossibleColor(*i));
-			removeOthers(*i, *sol);
-						
-			sol = pilot(*sol, fixed + 1);
+			/// Repeat until there are no uncolored partitions
+			for (int done = fixed; done < s.numParts; done++) {	
+			
+				/// Reset the minimal color degree to maximum each iteration
+				fill(minDegree, minDegree + s.numParts, s.numParts + 1);
+			
+				/// Reset the maximum degree
+				maxDegree = -1;
+
+				/// For each vertex in the graph
+			 	for (tie(i, end) = vertices(*sol->g); i != end; i++) {
+			 		/// Compute the color degree for the vertex
+					cd = sol->getColorDegree(*i);
+				
+					/// If the color degree of the selected vertex is less than that of
+					/// previous vertices in the same partition, and the partition is 
+					/// uncolored
+					if (cd < minDegree[sol->getPartition(*i)] && !sol->isPartitionColored(*i)) {
+						/// Set the minimal color degree for the vertex' partition to cd
+						minDegree[sol->getPartition(*i)] = cd;
+					
+						/// If the vertex' color degree is more then the current maximum
+						/// degree, select the current node as the new target
+						if (cd > maxDegree) {			
+							maxDegree = cd;
+							target = *i;
+						}
+					}
+				}
+				
+				removeOthers(target, *sol);
+			}
 
 			if (sol->colorsUsed < minColors) {
 				if (best != NULL)
@@ -101,7 +130,7 @@ namespace pcp {
 
 			delete sol;
 		}
-
-		return best;
+		
+		return pilot(*best, fixed + 1);
 	}
 }

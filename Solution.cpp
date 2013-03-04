@@ -7,7 +7,7 @@ using namespace boost::assign;
 
 Solution::Solution() {
 	this->g = new Graph(0);
-	this->colorsUsed = 0;
+	this->colorsUsed = -1;
 	this->copyCounter = new int;
 	*this->copyCounter = 1;
 	this->partitionMap = get(vertex_index1_t(), *this->g);
@@ -64,6 +64,9 @@ int Solution::getPartitionColor(Vertex v) {
 
 void Solution::setPartitionColor(Vertex v, int color) {
 	partition[getPartition(v)] = color;
+	
+	if (color >= colorsUsed)
+		colorsUsed = color + 1;
 	
 	#ifdef ubigraph
 	ubigraph_set_vertex_attribute(getOriginalId(v), "color", hexColors[color % hexColors.size()].c_str());
@@ -301,7 +304,6 @@ Solution* Solution::fromPcpStream(istream& in) {
 	s->representatives = new int[partitions];
 	s->partNodes = new vector<Vertex>[partitions];
 	s->numParts = partitions;
-	s->colorsUsed = partitions;
 	
 	#ifdef ubigraph
 	s->prepareUbigraph();
@@ -359,7 +361,6 @@ Solution* Solution::fromColStream(istream& in) {
 	s->numParts = vertices;
 	s->partition = new int[vertices];
 	s->representatives = new int[vertices];
-	s->colorsUsed = vertices;
 
 	#ifdef ubigraph
 	s->prepareUbigraph();
@@ -412,7 +413,6 @@ Solution* Solution::fromColStream(istream& in) {
 	s->partition = new int[vertices];
 	s->representatives = new int[vertices];
 	s->numParts = vertices;
-	s->colorsUsed = vertices;
 
 	return s;
 }
