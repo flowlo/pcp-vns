@@ -26,12 +26,12 @@ int main(int argc, char* argv[]) {
 		("shakeIncrement,i", value<int>(&shakeIncrement)->default_value(10), "set shake increment")
 		("unsuccessfulShake,u", value<int>(&unsuccessfulShake)->default_value(10), "set unsuccessful shake threshold")
 		("maxTime,t", value<int>(&maxTime)->default_value(10), "set VNS running time (seconds)")
-		("checkFinal,c", value<bool>()->default_value(true)->implicit_value(false)->zero_tokens() , "disable final check after VNS has finished")
-		("checkIntermediate,m", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "enable check after each improvement/shake")
+		("checkFinal,c", value<bool>()->zero_tokens() , "disable final check after VNS has finished")
+		("checkIntermediate,m", value<bool>()->zero_tokens(), "enable check after each improvement/shake")
 		("seed,r", value<int>(&rSeed)->default_value(time(NULL)), "set seed for random number generator")
 		#ifdef ubigraph
-		("delay", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "delay execution after loading the graph and finishing onestepCD")
-		("full", value<bool>()->default_value(false)->implicit_value(true)->zero_tokens(), "render the full graph after the VNS terminates")
+		("delay", value<bool>()->zero_tokens(), "delay execution after loading the graph and finishing onestepCD")
+		("full", value<bool>()->zero_tokens(), "render the full graph after the VNS terminates")
 		#endif
 	;
 	
@@ -116,8 +116,8 @@ int main(int argc, char* argv[]) {
 	if (vm.count("delay"))
 		usleep(3000000);
 	#endif
-	
-	Solution *best = vnsRun(*onestep, *fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), vm.count("checkFinal"));
+
+	Solution *best = vnsRun(*onestep, *fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), !vm.count("checkFinal"));
 	
 	if (best == NULL)
 		return -1;
