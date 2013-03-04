@@ -24,6 +24,13 @@ Solution *changeAll::findLocalMin(Solution& best, Solution& full) {
 	VertexIter i, iEnd;
 	vector<Vertex> *candidates;
 	
+	if (maxColor < 3) {
+		if (DEBUG_LEVEL > 2) {
+			cout<<"To few colors for changeAll"<<endl;
+		}
+		return s;
+	}
+	
 	// Search all vertices for minimal colors
 	for (tie(i, iEnd) = vertices(*s->g); i != iEnd; i++) {
 		if (s->getPartitionColor(*i) == maxColor) {
@@ -34,6 +41,9 @@ Solution *changeAll::findLocalMin(Solution& best, Solution& full) {
 			if (candidates->size() > 1) {
 				vector<Vertex>::iterator r;
 				for (r = candidates->begin(); r != candidates->end(); r++) {
+					if (DEBUG_LEVEL > 2) {
+						cout<<"Vertex "<<*r<<" will replace Vertex "<<n<<endl;
+					}
 					if (*r != s->getOriginalId(n)) {
 						s->replaceVertex(n, *r, full);
 						
