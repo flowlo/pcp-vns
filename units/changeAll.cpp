@@ -83,6 +83,10 @@ Solution *changeAll::findLocalMin(Solution& best, Solution& full) {
 							#endif
 							return s;
 						}
+						// Better Solution found
+						else {
+							break;
+						}
 					}
 				}
 				// No candidates left to try...
