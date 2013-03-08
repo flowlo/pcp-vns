@@ -4,19 +4,19 @@ using namespace std;
 using namespace boost;
 using namespace pcp;
 
-const string changeNode::getName() {
-	return "changeNode";
+const string changeAll::getName() {
+	return "changeAll";
 }
 
-const char changeNode::getAbbreviation() {
+const char changeAll::getAbbreviation() {
 	return getStaticAbbreviation();
 }
 
-const char changeNode::getStaticAbbreviation() {
-	return 'n';
+const char changeAll::getStaticAbbreviation() {
+	return 'a';
 }
 
-Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
+Solution *changeAll::findLocalMin(Solution& best, Solution& full) {
 	Solution* s = &best;
 	int maxColor = best.colorsUsed - 1;
 	s->requestDeepCopy();
@@ -24,23 +24,67 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 	VertexIter i, iEnd;
 	vector<Vertex> *candidates;
 	
+	if (maxColor < 3) {
+		if (DEBUG_LEVEL > 2) {
+			cout<<"To few colors for changeAll"<<endl;
+		}
+		return s;
+	}
+	
 	// Search all vertices for minimal colors
 	for (tie(i, iEnd) = vertices(*s->g); i != iEnd; i++) {
 		if (s->getPartitionColor(*i) == maxColor) {
 			Vertex n = *i;
 			
-			// Only execute changeNode if there are nodes to replace
+			// Only execute changeAll if there are nodes to replace
 			candidates = &(full.partNodes[s->getPartition(n)]);
 			if (candidates->size() > 1) {
 				vector<Vertex>::iterator r;
 				for (r = candidates->begin(); r != candidates->end(); r++) {
+					if (DEBUG_LEVEL > 2) {
+						cout<<"Vertex "<<*r<<" will replace Vertex "<<n<<endl;
+					}
 					if (*r != s->getOriginalId(n)) {
 						s->replaceVertex(n, *r, full);
 						
-						// Check for improvement
-						int color = s->minPossibleColor(n);
-						if (color < maxColor) {
-							s->setPartitionColor(n, color);
+						int i;
+						for (i = 0; i < maxColor - 1; i++) {
+							s->setPartitionColor(n, i);
+							
+							bool allColored = true;
+							AdjIter a, aEnd;
+							for (tie(a, aEnd) = adjacent_vertices(n, *s->g); a != aEnd;
+								  a++) {
+								
+								if (i == s->getPartitionColor(*a)) {
+									int rec = s->minPossibleColor(*a);
+									
+									// Not a better solution
+									if (rec >= maxColor) {
+										allColored = false;
+										break;
+									}
+									
+									// Better solution for this vertex
+									else 
+										s->setPartitionColor(*a, rec);
+								}
+							}
+							// Better solution found
+							if (allColored) 
+								break;
+						}
+						
+						// No colors left to try, definitly not a better solution
+						if (i == maxColor - 1) {
+							s->colorsUsed = s->numParts;
+							#ifdef ubigraph
+							s->redraw();
+							#endif
+							return s;
+						}
+						// Better Solution found
+						else {
 							break;
 						}
 					}
@@ -59,6 +103,7 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 		}
 	}
 	
+	// calculate colorsUsed
 	maxColor = 0;
 	for (int i = 0; i < s->numParts; i++) {
 		
@@ -69,9 +114,11 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 	s->colorsUsed = maxColor + 1;
 	
 	if (DEBUG_LEVEL > 1) {
-		cout<<"changeNode uses "<<s->colorsUsed<<" colors"<<endl; 
+		cout<<"changeAll uses "<<s->colorsUsed<<" colors"<<endl; 
 	}
 	
+	
+	// clean up duty
 	Solution *temp = new Solution(s);
 	temp = this->findLocalMin(*temp, full);
 	if (temp->colorsUsed < s->colorsUsed) {
@@ -87,7 +134,7 @@ Solution *changeNode::findLocalMin(Solution& best, Solution& full) {
 	return s;
 }
 
-Solution *changeNode::shuffleSolution(Solution& cur, Solution& full,
+Solution *changeAll::shuffleSolution(Solution& cur, Solution& full,
 				 							  	  int numSteps) {
 	Solution* ret = &cur;
 	ret->requestDeepCopy();
