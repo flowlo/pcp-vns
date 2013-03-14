@@ -31,6 +31,7 @@ namespace pcp {
 			static const char getStaticAbbreviation();
 	};
 	
+	// Definition of changeColor neighborhood
 	class changeColor : public VNS_Unit {
 		public:
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
@@ -41,6 +42,7 @@ namespace pcp {
 			static const char getStaticAbbreviation();
 	};
 	
+	// Definition of changeNode neighborhood
 	class changeNode : public VNS_Unit {
 		public:
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
@@ -51,6 +53,7 @@ namespace pcp {
 			static const char getStaticAbbreviation();
 	};
 	
+	// Definition of changeAll neighborhood
 	class changeAll : public VNS_Unit {
 		public:
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
@@ -61,6 +64,7 @@ namespace pcp {
 			static const char getStaticAbbreviation();
 	};
 	
+	// Definition of DSATUR neighborhood
 	class dsatur : public VNS_Unit {
 		public:
 			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
