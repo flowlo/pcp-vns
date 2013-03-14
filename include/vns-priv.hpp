@@ -1,3 +1,4 @@
+/// Contains all definitions of units for different neighborhoods of the VNS
 #ifndef VNS_PRIV_H
 #define VNS_PRIV_H
 #include "pcp.hpp"
@@ -59,20 +60,6 @@ namespace pcp {
 			virtual const char getAbbreviation();
 			static const char getStaticAbbreviation();
 	};
-	
-	/// Implement a dummy tabu search, see VNS_Unit
-	/*class tabuSearch : public VNS_Unit {
-		public:
-			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
-			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
-			
-			virtual const std::string getName();
-			virtual const char getAbbreviation();
-			static const char getStaticAbbreviation();
-			
-		private:
-			int conflicts(Solution& s);
-	};*/
 	
 	class dsatur : public VNS_Unit {
 		public:
