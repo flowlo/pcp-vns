@@ -84,12 +84,17 @@ namespace pcp {
 		return sol;
 	}
 
+	// Remove all other nodes of a partition for which a representative has 
+	// already been selected
+	// node is the chosen representative
+	// s the solution to which removeOthers should be applied
 	void removeOthers(Vertex node, Solution& s) {
 		pair<VertexIter, VertexIter> vp;
 		Vertex origNode = s.getOriginalId(node);
 		int part = s.getPartition(node);
 		list<Vertex> deletion;
 		
+		// Add all nodes of a partition to the list (except the representative)
 		for (vp = vertices(*s.g); vp.first != vp.second; vp.first++) {
 	 		if (origNode != s.getOriginalId(*vp.first) && 
 	 			 s.getPartition(*vp.first) == part) {
@@ -101,11 +106,11 @@ namespace pcp {
 	 		}
 	 	}
 	 	
+	 	// Remove all vertices from the list, in reverse order, so they
+	 	// do not interfere with indices
 	 	while (deletion.size() != 0) {
 	 		Vertex n = deletion.back();
 	 		s.removeVertex(n);
-/*	 		clear_vertex(n, *s.g);
-	 		remove_vertex(n, *s.g);*/
 	 		deletion.pop_back();
 	 	}
 	 	
@@ -113,7 +118,9 @@ namespace pcp {
 	 		cout << "removeOthers complete!" << endl;
 	 	}
 	}
-
+	
+	// Remove edges within the same parition
+	// s is the solution to which removeEdges should be applied
 	void removePartEdges(Solution& s) {
 		graph_traits<Graph>::edge_iterator i, end;
 		for (tie(i, end) = edges(*s.g); i != end; i++) {

@@ -1,9 +1,12 @@
+// This file contains all the necessary definitions and declarations to store
+// a compressed solution in a hash map
 #include "include/StoredSolution.hpp"
 
 using namespace boost;
 using namespace std;
 using namespace pcp;
 
+// Construct a StoredSolution from a normal Solution
 StoredSolution::StoredSolution(Solution& toStore) {
 	this->n = toStore.numParts;
 	this->colors = new int[n];
@@ -15,11 +18,13 @@ StoredSolution::StoredSolution(Solution& toStore) {
 	}
 }
 
+// Destructor for a stored solution
 StoredSolution::~StoredSolution() {
 	delete[] colors;
 	delete[] representatives;
 }
 
+// Produce a string out of a stored solution for easy humanly driven comparison
 string StoredSolution::toString() {
 	stringstream ss;
 	
@@ -36,6 +41,7 @@ string StoredSolution::toString() {
 	return ss.str();
 }
 
+// calculate a hash by adding the hash values of the two defining array
 size_t StoredHash::operator()(StoredSolution const& sol) const
 {
 	size_t seed = 0;
@@ -44,6 +50,7 @@ size_t StoredHash::operator()(StoredSolution const& sol) const
 	return seed;
 }
 
+// Compare StoredSolution s1 to StoredSolution s2 and return their equality
 bool StoredEqual::operator()(StoredSolution const& s1, 
 									  StoredSolution const& s2) const
 {

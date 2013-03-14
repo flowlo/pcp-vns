@@ -131,13 +131,20 @@ namespace pcp {
 			void addVertex(int part, Vertex id);
 			void removeVertex(Vertex id);
 			void addEdge(Vertex v1, Vertex v2);
+			
+			// Replace node toR in the solution graph with node rep in the 
+			// original graph
 			void replaceVertex(Vertex toR, Vertex rep, Solution& full);
 			
+			// if compiled for visualization with ubigraph, these methods are 
+			// necessary
 			#ifdef ubigraph
 			void redraw();
 			void redraw(int shift);
 			void prepareUbigraph();
 			#endif
+			
+			// The maps used to describe properties of the graph
 		private:
 			boost::property_map<Graph, boost::vertex_index1_t>::type partitionMap;
 			boost::property_map<Graph, boost::vertex_index2_t>::type idMap;

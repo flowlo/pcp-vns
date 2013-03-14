@@ -5,19 +5,24 @@ using namespace pcp;
 using namespace boost;
 using namespace boost::assign;
 
+// Create a new (empty solution)
 Solution::Solution() {
 	this->g = new Graph(0);
 	this->colorsUsed = 0;
-	this->copyCounter = new int;
-	*this->copyCounter = 1;
 	this->partitionMap = get(vertex_index1_t(), *this->g);
 	this->idMap = get(vertex_index2_t(), *this->g);
+	// Fun with pointers!
+	this->copyCounter = new int;
+	*this->copyCounter = 1;
 }
 
+// Copy an existing solution, this will use the same graph object as the 
+// original, to cut these ties, use requestDeepCopy()
 Solution::Solution(Solution *toCopy) {
 	this->partNodes = NULL;
 	this->g = toCopy->g;
 	this->copyCounter = toCopy->copyCounter;
+	// increment copycounter, to keep track of referencing solution
 	*this->copyCounter += 1;
 	this->numParts = toCopy->numParts;
 	this->partition = new int[this->numParts];
@@ -31,7 +36,10 @@ Solution::Solution(Solution *toCopy) {
 	}
 }
 
+// Destructor
 Solution::~Solution() {
+	// Decrement copyCounter, if <= 0 delete all information about the referenced
+	// graph and corresponding arrays
 	*copyCounter -= 1;
 	if (*copyCounter <= 0) {
 		delete g;
@@ -42,48 +50,59 @@ Solution::~Solution() {
 	delete[] partNodes;
 }
 
+// Return the PartitionId of a Vertex v
 int Solution::getPartition(Vertex v) {
 	return get(this->partitionMap, v);
 }
 
+// Return the OriginalId of a Vertex v
 unsigned int Solution::getOriginalId(Vertex v) {
 	return get(this->idMap, v);
 }
 
+// Set the OriginalId of Vertex v to id 
 void Solution::setOriginalId(Vertex v, int id) {
 	put(this->idMap, v, id);
 	
+	// Update ubigraph if necessary
 	#ifdef ubigraph
 	ubigraph_set_vertex_attribute(getOriginalId(v), "label", (to_string(getOriginalId(v)) + " [" + to_string(getPartition(v)) + "]").c_str());
 	#endif
 }
 
+// Get the color of a specific Vertex v, or rather of the corresponding partition
+// of the Vertex
 int Solution::getPartitionColor(Vertex v) {
 	return partition[getPartition(v)];
 }
 
+// Set the color of Vertex v, and update colorsUsed if appropriate
 void Solution::setPartitionColor(Vertex v, int color) {
 	partition[getPartition(v)] = color;
 
 	if (color >= colorsUsed)
 		colorsUsed = color + 1;
 
+	// Update ubigraph if necessary
 	#ifdef ubigraph
 	ubigraph_set_vertex_attribute(getOriginalId(v), "color", hexColors[color % hexColors.size()].c_str());
 	usleep(500);
 	#endif
 }
 
+// Returns true if a Vertex has already been colored
 bool Solution::isPartitionColored(Vertex v) {
 	return getPartitionColor(v) != -1;
 }
 
+// Add a Vertex with partitionID part und id to the solution
 void Solution::addVertex(int part, Vertex id) {
 	Vertex v = add_vertex(*this->g);
 	partitionMap[v] = part;
 	idMap[v] = id;
 	partNodes[part].push_back(v);
 	
+	// update ubigraph if necessary
 	#ifdef ubigraph
 	ubigraph_new_vertex_w_id(getOriginalId(v));
 	ubigraph_set_vertex_attribute(getOriginalId(v), "label", (to_string(getOriginalId(v)) + " [" + to_string(getPartition(v)) + "]").c_str());
@@ -93,6 +112,7 @@ void Solution::addVertex(int part, Vertex id) {
 	#endif
 }
 
+// Remove a Vertex id from the graph
 void Solution::removeVertex(Vertex id) {
 	#ifdef ubigraph
 	ubigraph_remove_vertex(getOriginalId(id));
@@ -103,9 +123,11 @@ void Solution::removeVertex(Vertex id) {
 	remove_vertex(id, *g);
 }
 
+// Add an edge between v1 and v2 to the graph
 void Solution::addEdge(Vertex v1, Vertex v2) {
 	add_edge(v1, v2, *g);
 	
+	// update ubigraph
 	#ifdef ubigraph
 	v1 = getOriginalId(v1);
 	v2 = getOriginalId(v2);
@@ -119,9 +141,15 @@ void Solution::addEdge(Vertex v1, Vertex v2) {
 	#endif
 }
 
+// Replace an existing vertex toR with Vertex rep in the original graph
+// toR, the Vertex to be replaced
+// rep, the Vertex toR will be replaced with
+// full, the ful Solution graph
 void Solution::replaceVertex(Vertex toR, Vertex rep, Solution& full) {
+	// Clear the vertex toR of all edges
 	clear_vertex(toR, *g);
 	
+	// update ubigraph
 	#ifdef ubigraph
 	ubigraph_remove_vertex(getOriginalId(toR));
 	ubigraph_new_vertex_w_id(rep);
@@ -134,6 +162,7 @@ void Solution::replaceVertex(Vertex toR, Vertex rep, Solution& full) {
 	usleep(50000);
 	#endif
 	
+	// Set the originalId of toR to rep
 	setOriginalId(toR, rep);
 	
 	// Check which edges should be added
@@ -147,6 +176,7 @@ void Solution::replaceVertex(Vertex toR, Vertex rep, Solution& full) {
 			// add edge
 			add_edge(toR, representatives[full.getPartition(*a)], *g);
 			
+			// update ubigraph
 			#ifdef ubigraph
 			Vertex v1, v2;
 			v1 = full.getOriginalId(rep);
@@ -163,10 +193,13 @@ void Solution::replaceVertex(Vertex toR, Vertex rep, Solution& full) {
 	}
 }
 
+// Redraw method only for ubigraph
 #ifdef ubigraph
 void Solution::redraw() {
+	// Set prerequisites
 	prepareUbigraph();
 
+	// Add all vertices
 	VertexIter v, vEnd;
 	for (tie(v, vEnd) = vertices(*g); v != vEnd; v++) {
 		ubigraph_new_vertex_w_id(getOriginalId(*v));
@@ -174,6 +207,7 @@ void Solution::redraw() {
 		ubigraph_set_vertex_attribute(getOriginalId(*v), "color", hexColors[getPartitionColor(*v) % hexColors.size()].c_str());
 	}
 
+	// Add all edges
 	EdgeIter e, eEnd;
 	for(tie(e, eEnd) = edges(*g); e != eEnd; e++) {
 		Vertex v1, v2;
@@ -190,6 +224,7 @@ void Solution::redraw() {
 }
 #endif
 
+// Redraw with a shift of the id, as to not colide with existing one
 #ifdef ubigraph
 void Solution::redraw(int shift) {
 	VertexIter v, vEnd;
@@ -215,18 +250,23 @@ void Solution::redraw(int shift) {
 }
 #endif
 
+// Cut ties between a copy and the underlying graph by making a copy of the graph
 void Solution::requestDeepCopy() {
+	// Copy graph
 	Graph *cp = g;
 	g = new Graph(*g);
+	// Reset property maps
 	this->partitionMap = get(vertex_index1_t(), *g);
 	this->idMap = get(vertex_index2_t(), *g);
 
+	// Copy representatives array
 	int *rep = representatives;
 	representatives = new int[numParts];
 	for (int i = 0; i < numParts; i++) {
 		representatives[i] = rep[i];
 	}
 
+	// delete the old copy if counter reached zero
 	*copyCounter -= 1;
 	if (*copyCounter <= 0) {
 		delete copyCounter;
@@ -237,10 +277,12 @@ void Solution::requestDeepCopy() {
 	*copyCounter = 1;
 }
 
+// Get the colorDegree (i.e. the number of colored neighbors) of Vertex node
 int Solution::getColorDegree(Vertex node) {
 	int colored = 0;
 	AdjIter i, end;
 
+	// check all adjacent vertices for color
 	for (tie(i, end) = adjacent_vertices(node, *this->g); i != end; i++)
 		if (this->isPartitionColored(*i))
 			colored++;
@@ -248,15 +290,18 @@ int Solution::getColorDegree(Vertex node) {
 	return colored;
 }
 
+// Returns the minimal possible color for a Vertex node
 int Solution::minPossibleColor(Vertex node) {
 	bool* colors = new bool[this->numParts];
 	fill(colors, colors + this->numParts, false);
 	AdjIter i, end;
-
+	
+	// Mark all colors which are used by neighbors of node
 	for (tie(i, end) = adjacent_vertices(node, *this->g); i != end; i++)
 		if (this->isPartitionColored(*i))
 			colors[this->partition[this->getPartition(*i)]] = true;
 
+	// find the first unused color
 	for (int i = 0; i < this->numParts; i++) {
 		if (!colors[i]) {
 			delete[] colors;
@@ -264,9 +309,11 @@ int Solution::minPossibleColor(Vertex node) {
 		}
 	}
 
+	// This cant happen, but maybe it will...
 	return -1;
 }
 
+// Set the prerequisites for ubigraph
 #ifdef ubigraph
 void Solution::prepareUbigraph() {
 	ubigraph_clear();
@@ -288,6 +335,7 @@ void Solution::prepareUbigraph() {
 }
 #endif
 
+// Read a solution from an input stream in pcp format
 Solution* Solution::fromPcpStream(istream& in) {
 	Solution *s = new Solution();
 	
@@ -339,6 +387,7 @@ Solution* Solution::fromPcpStream(istream& in) {
 	return s;
 }
 
+// Read a solution from an input col stream
 Solution* Solution::fromColStream(istream& in) {
 	Solution *s = new Solution;
 
@@ -420,6 +469,7 @@ Solution* Solution::fromColStream(istream& in) {
 	return s;
 }
 
+// Read a solution from an input colB stream
 Solution* Solution::fromColBStream(istream& in) {
 	Solution *s = new Solution;
 	char buffer[PARSE_BUFFERSIZE];

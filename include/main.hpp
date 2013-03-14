@@ -1,3 +1,4 @@
+// Contains all necessary includes for the main method of the pcp-program
 #ifndef MAIN_H
 #define MAIN_H
 
