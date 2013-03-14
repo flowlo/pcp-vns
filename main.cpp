@@ -8,10 +8,13 @@ using namespace boost::algorithm;
 
 int DEBUG_LEVEL = 2;
 
+
+// main method, starting point of the program
 int main(int argc, char* argv[]) {
 	string units, printFile, inputFile;
 	int unsuccessfulShake, shakeStart, shakeIncrement, maxTime, rSeed;
 	
+	// Add program options to be parsed using boost:program_options
 	options_description options("General options");
 	options.add_options()
 		("help,h", "produce help message")
@@ -35,6 +38,7 @@ int main(int argc, char* argv[]) {
 		#endif
 	;
 	
+	// Parse the options here
 	options_description all("Allowed options");
 	all.add(options).add(vnsOptions);
 	
@@ -53,6 +57,8 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 	
+	// Set random number generator's seed here, normally time related, unless
+	// specified otherwise
 	srand(rSeed);
 	
 	if (DEBUG_LEVEL > 4) {
@@ -66,8 +72,10 @@ int main(int argc, char* argv[]) {
 		DEBUG_LEVEL = 0;
 	}
 
+	// New solution for the full graph
 	Solution* fullG;
 
+	// Decide which format the input is in, and parse accordingly
 	if (isdigit(cin.peek())) {
 		string buffer = "";
 		getline(cin, buffer);
@@ -96,6 +104,7 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
+	// In case of ubigraph visualization stop the program for 3 secs
 	#ifdef ubigraph
 	if (vm.count("delay"))
 		usleep(3000000);
@@ -105,11 +114,13 @@ int main(int argc, char* argv[]) {
 		cout << "Constructing initial solution ..." << endl;
 	}
 	
+	// Calcutalte initial solution using oneStepCd
 	Solution *onestep = onestepCD(*fullG);
 	
 	if (DEBUG_LEVEL > 2)
 		cout << "Initial solution uses " << onestep->colorsUsed << " colors." << endl;
 
+	// In case of ubigraph visualization stop here for 3 secs
 	#ifdef ubigraph
 	Solution *onecopy = new Solution(onestep);
 
@@ -117,11 +128,13 @@ int main(int argc, char* argv[]) {
 		usleep(3000000);
 	#endif
 
+	// Start Vns
 	Solution *best = vnsRun(*onestep, *fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), !vm.count("checkFinal"));
 	
 	if (best == NULL)
 		return -1;
 	
+	// print output if option is set
 	if (vm.count("print")) {
 		ofstream out(vm["print"].as<string>());
 		
@@ -137,6 +150,7 @@ int main(int argc, char* argv[]) {
 			cout << "Printing to '" << vm["print"].as<string>() << "' done!" << endl;
 	}
 	
+	// Visualize the existing onesteo solution along side the new best solution
 	#ifdef ubigraph
 	int offset = num_vertices(*fullG->g);
 	onecopy->redraw(offset);
@@ -144,7 +158,8 @@ int main(int argc, char* argv[]) {
 		fullG->redraw(offset * 2);
 	delete onecopy;
 	#endif
-
+	
+	// Clean up duty
 	delete best;
 	delete fullG;
 
