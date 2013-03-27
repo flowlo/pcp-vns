@@ -1,0 +1,294 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Zwischenpräsentation</title>
+		<meta name="author" content="Lorenz Leutgeb, Moritz Wanzenböck">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/cold.css" id="theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+<!-- lorenz -->
+				<section data-state="unblur"></section>
+				<section data-state="firstslide">
+					<h2 style="line-height: 1.5">Variable Neighborhood Search<br /><span class="small">für das</span><br />Partition Graph Coloring Problem</h2>
+					<br />
+					<p>Lorenz Leutgeb <span class="small">und</span> Moritz Wanzenböck</p>
+					<p class="small">betreut durch</p>
+					<p>Dipl.-Ing. Dr.techn. Martin Gruber</p>
+				</section>
+
+				<section>
+				<section>
+					<img src="../img/tu.png" class="standalone noshadow" style="float:left"/>
+				</section>
+				<section>
+					<h2>Kooperation</h2>
+					
+					<ul>
+						<li>Impuls</li>
+						<li>Regelmäßiger Austausch</li>
+						<li>ComputeGrid</li>
+					</ul>
+				</section>
+				</section>
+				
+				<section>
+					<h2>Wissenschaftlicher Hintergrund</h2>
+					<ul>
+						<li><i>Li, Simha</i>: The Partition Coloring Problem and its Application to Wavelength</li>
+						<li><i>Noronha, Ribeiro</i>: Routing and wavelength assignment by partition colouring</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Problem</h2>
+					
+					<p>Zuweisen von Wellenlängen in Glasfasernetzen</p>
+				</section>
+<!-- /lorenz -->
+<!-- moritz
+	wir schützen die umwelt!
+-->
+				<section>
+					<h2>Anwendungsgebiet</h2>
+					
+					<p>Design und Optimierung von Glasfasernetzwerken</p>
+				</section>
+<!-- /moritz -->
+<!-- moritz+lorenz -->
+				<section>
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="translation" version="1.1" width="100%" height="100%" xml:space="preserve" viewBox="0 0 720 260">
+	  					<g>
+	  						<image width="1330" height="688" transform="scale(0.36, 0.36)" style="opacity: .9" xlink:href="../img/at-transparent.png" />
+	  						<g transform="matrix(1,0,0,-1,0,255)">
+	  							<!-- Edges -->
+								<path d="m 434,180 -122,8" class="yellow edge" id="path2999" />
+								<path d="M 380,79 311.6,187" class="blue edge" id="path3001" />
+								<path d="M 310,31 230.15,138.81" class="purple edge" id="path3003" />
+								<path d="M 305,188 232.66,143.68" class="mediumblue edge" id="path3005" />
+								<path d="M 374,76 308.86,38.384" class="orange edge" id="path3007" />
+								<path d="M 226,148 25.612,121.89"  class="blue edge" id="path3009" />
+								<path d="M 432,176 378.45,78.283" class="orange edge" id="path3011" />
+								<path d="m 435,186 -121.54,8.54" class="mediumblue edge" id="path3013" />
+								<path d="M 437,174 383.5,75.477" class="mediumblue edge" id="path3019" />
+								<path d="M 378,72 313.18,34.371" class="purple edge" id="path3037" />
+								<path d="M 311,40 234.16,143.63" class="yellow edge" id="path3039" />
+								<path d="M 309,184 236.39,139.41" class="yellow edge" id="path3041" />
+								<path d="M 225,142 24.378,115.94" class="mediumblue edge" id="ax1" />
+								<path d="M 528,183 569.86,71.974" class="darkgray edge" id="path3125" />
+								<path d="m 621,185 79.34,0" class="lightgray edge" id="path3127" />
+								<path d="M 530,185 655,70" class="lightgray edge" id="path3131" />
+								<path d="M 616,185 655,70" class="lightgray edge" id="path3133" />
+								<path d="M 703,185 655,70" class="darkgray edge" id="path3135" />
+								<path d="M 532,185 611,185" class="lightgray edge" id="path3163" />
+								<path d="M 302,193 230,149" class="blue edge" id="path3065" />
+								<path d="M 226,136 25,111" class="purple edge" id="path3085" />
+								<path d="M 616,184 573,70" class="darkgray edge" id="path3149" />
+								<path d="m 688,195 c 0,8.12 -37.83,16.25 -75.66,16.25 -37.82,0 -75.65,-9.95 -75.65,-19.89" class="lightgray edge" id="path3129" />
+							</g>
+							<g id="map">
+								<g id="map-nodes">
+									<circle id="map-node-a" r="10" cx="20" cy="140" class="darkblue" />
+									<circle id="map-node-b" r="10" cx="381" cy="177" class="darkblue" />
+									<circle id="map-node-d" r="10" cx="310" cy="215" class="fullred" />
+									<circle id="map-node-c" r="10" cx="435" cy="75" class="fullred" />
+									<circle id="map-node-x" r="10" cx="310" cy="65" class="darkgray" />
+									<circle id="map-node-y" r="10" cx="230" cy="110" class="darkgray" />
+								</g>
+							</g>
+							<g id="graph">
+								<g id="graph-label">
+									<g id="graph-label-top">
+										<text class="description" x="500" y="20">3 Routen von &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nach</text>
+										<circle r="10" cx="626" cy="14" class="darkblue" />
+										<circle r="10" cx="695" cy="14" class="darkblue" />
+									</g>
+									<g id="graph-label-bottom">
+										<circle r="10" cx="626" cy="229" class="fullred" />
+										<circle r="10" cx="695" cy="229" class="fullred" />
+										<text class="description" x="501" y="235">2 Routen von &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nach</text>
+									</g>
+									<g id="graph-nodes">
+										<circle r="10" cx="655" cy="183" class="yellow" />
+										<circle r="15" cx="572" cy="183" class="orange" />
+										<circle r="10" cx="530" cy="71" class="mediumblue" />
+										<circle r="10" cx="616" cy="71" class="purple" />
+										<circle r="15" cx="699" cy="71" class="blue" />
+									</g>
+								</g>
+							</g>
+							<!-- Beschriftung Konfliktgraph -->
+							<text class="node" x="620" y="19" id="tspan3231">A</text>
+							<text class="node" x="690" y="19" id="tspan3215">B</text>
+							<text class="node" x="620" y="235" id="tspan3267">C</text>
+							<text class="node" x="690" y="235" id="tspan3251">D</text>
+							<!-- Beschriftung Karte -->
+							<text class="node" x="14" y="145" id="tspan3103">A</text>
+							<text class="node" x="376" y="183" id="tspan3063">B</text>
+							<text class="node" x="429" y="81" id="tspan3035">C</text>
+							<text class="node" x="303.5" y="221">D</text>
+						</g>
+					</svg>
+				</section>
+<!-- /moritz+lorenz -->
+<!-- moritz -->
+				<section>
+					<h2>Funktionsweise</h2>
+					
+					<ul>
+						<li>Berechnen einer Initiallösung mit <span class="mono">onestepCD</span>
+						<li>Variable Neighborhood Search</li>
+						<li>Variable Neighborhood Descent</li>
+						<li>Lokale Optimierung</li>
+						<li>Shaking</li>
+					</ul>
+				</section>
+<!-- /moritz -->
+<!-- lorenz -->
+				<section>
+				<section>
+					<h2>Nachbarschaften</h2>
+					
+					<img src="../img/vns.jpg" />
+				</section>
+<!-- /lorenz -->
+<!-- moritz -->
+				<section>
+					<h2 class="mono">ChangeColor</h2>
+					
+					<ul>
+						<li>Einfach & Schnell</li>
+						<li>Färbe Knoten mit maximaler Farbe um</li>
+						<li>Versuche neue Lösung zu finden</li>
+					</ul>
+				</section>
+				<section>
+					<h2>ChangeNode</h2>
+					
+					<ul>
+						<li>Wie ChangeColor</li>
+						<li>Tausche Knoten mit maximaler Farbe aus</li>
+						<li>Versuche neue Lösung zu finden</li>
+					</ul>
+				</section>
+<!-- /moritz -->
+<!-- lorenz -->
+				<section>
+					<h2>DSATUR</h2>
+					
+					<ul>
+						<li>Greedy</li>
+						<li>Maximale Saturation</li>
+						<li>Maximale Zahl an nicht eingefärbten Nachbarn</li>
+					</ul>
+				</section>
+				</section>
+<!-- /lorenz -->
+<!-- moritz -->
+				<section>
+					<h2>Was ist unser Ziel?</h2>
+					
+					<ul>
+						<li>Bessere Ergebnisse</li>
+						<li>Standardisierte Probleminstanzen</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Verwendete Software</h2>
+					
+					<img src="../img/boost.png" /><br /><br /><span class="ubigraph-logo">UBIGRAPH</span>
+				</section>
+<!-- /moritz -->
+<!-- lorenz -->
+				<section>
+					<section>
+					<h2>Projektverlauf</h2>
+					</section>
+					<section>
+						<img src="../img/code-frequency.png" />
+					</section>
+					<section>
+						<img src="../img/punchcard.png" />
+					</section>
+					<section>
+						<img src="../img/commits.png" />
+					</section>
+					<section>
+						<canvas id="piechart" width="400" height="400"></canvas>
+						<br />
+						
+						<p class="small">87.5 &mdash; 6.7 &mdash; 5.8</p>
+					</section>
+					<section>
+						<h2>GitStats</h2>
+						
+						<table width="100%">
+							<tr>
+								<td>Alter</td>
+								<td>108 Tage</td>
+							</tr>
+							<tr>
+								<td>Aktivität</td>
+								<td>37 Tage (34.26%)</td>
+							</tr>
+							<tr>
+								<td>Dateien</td>
+								<td>37</td>
+							</tr>
+							<tr>
+								<td>Lines of Code</td>
+								<td>3189 (<span style="color: #6cc644; text-shadow: 0px 0px 2px #6cc644">6565</span> <span style="color: #bd2c00; text-shadow: 0px 0px 2px #bd2c00">2276</span>)</td>
+							</tr>
+							<tr>
+								<td>Commits</td>
+								<td>257 (aktiv Ø 6.9, gesamt Ø 2.4)</td>
+							</tr>
+						</table>
+					</section>
+				</section>
+				
+				<section>
+					<h2>Down the Road</h2>
+					
+					<ul>
+						<li>PILOT Heuristik</li>
+						<li>Weitere Nachbarschaften</li>
+					</ul>
+				</section>
+<!-- /lorenz -->
+			</div>
+		</div>
+		<a href="https://github.com/flowlo/pcp-vns"><img class="forkme" src="../img/forkme.png" alt="Fork me on GitHub"></a>
+		<script src="js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+		<script src="js/piechart.js"></script>
+		<script>
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				theme: Reveal.getQueryHash().theme || 'cold',
+				transition: Reveal.getQueryHash().transition || 'concave'
+			});
+			Reveal.addEventListener('slidechanged', function(event) {
+				document.getElementById('pagenumber').innerHTML = event.indexh + '<br />' + event.indexv;
+			});
+			window.onload = function() {
+				new PieChart( "piechart", {
+					includeLabels: true, 
+					data: [0.875 * 360, 0.067 * 360, 0.058 * 360],
+					labels: ['C++', 'Python', 'Shell'],
+					colors: [
+						["#f34b7d", "#FFDAB9"],
+						["#3581ba", "#E6E6FA"],
+						["#5861ce", "#E0FFFF"]
+					]
+				}).draw();
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,52 @@
+\documentclass[paper=a4,fontsize=12pt]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[babel, german=quotes]{csquotes}
+%\usepackage{hyperref}
+\usepackage[style=authoryear, natbib, backend=biber]{biblatex}
+\usepackage[top=3cm,bottom=3cm,left=2cm,right=2cm]{geometry}
+\usepackage{graphicx, fancyhdr, array, wrapfig, colortbl, algorithm, algpseudocode, subcaption}
+\floatname{algorithm}{Algorithmus}
+\renewcommand{\listalgorithmname}{Algorithmenverzeichnis}
+\renewcommand{\algorithmicend}{\textbf{Ende}}
+\renewcommand{\algorithmicif}{\textbf{Falls}}
+\renewcommand{\algorithmicthen}{\textbf{dann}}
+\renewcommand{\algorithmicelse}{\textbf{Sonst}}
+\renewcommand{\algorithmicdo}{\textbf{}}
+\renewcommand{\algorithmicwhile}{\textbf{Solange}}
+\renewcommand{\algorithmicreturn}{\textbf{Returniere}}
+%\renewcommand\familydefault{\sfdefault}
+\linespread{1.3}
+\setlength{\parindent}{4mm}
+\setlength{\parskip}{2mm}
+\pagestyle{fancy}
+\fancyhf{}
+\clubpenalty = 10000
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
+\fancyfoot{}
+\rfoot{{\footnotesize \textnormal{\thepage}}}
+\chead{{\footnotesize \textnormal{Variable Nachbarschaftssuche für das Partition Graph Coloring Problem}}}
+\cfoot{{\footnotesize \textnormal{Lorenz Leutgeb, Moritz Wanzenböck}}}
+\lhead{{\footnotesize \textnormal{}}}
+\lfoot{{\footnotesize \textnormal{\the\year}}}
+\addbibresource{pcp.bib}
+\let\origappendix\appendix
+\renewcommand\appendix{\clearpage\pagenumbering{roman}\origappendix}
+% Graphiken in ../img/
+% \cite{Lu2010, Palladino2011, Noronha2006, Li2000, Frota2010, Demange, pcp-instance-page}
+
+\title{Variable Nachbarschaftssuche für das Partition Graph Coloring Problem}
+\author{Lorenz Leutgeb, Moritz Wanzenböck}
+\begin{document}
+	% TODO: title page
+	\maketitle
+	\newpage
+	\tableofcontents
+	\newpage
+	\input{problemstellung.tex}
+	\input{projektmanagement.tex}
+	
+	\newpage
+	\listoffigures
+\end{document}

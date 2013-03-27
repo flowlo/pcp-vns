@@ -1,0 +1,115 @@
+\section{Problemstellung}
+In der heutigen Zeit, in der das weltweite Kommunikationsbedürfnis in ungeahnte Höhen steigt, und, bis auf weiteres, kein Ende des Anstiegs in Sicht ist, werden
+Computer-Netzwerke, besonders jene, welche ganze Kontinente umspannen, immer stärker beansprucht. Dieser Anstieg ist vor allem mit dem gesteigerten, und sich
+grundlegend ändernden Konsumverhalten der Menschen in der heutigen Zeit zurückzuführen. Immer mehr Informationen in Netzwerken werden nicht in Form von Texten
+sondern, aufwendig aufbereitet, als Bild und Ton zum Endkunden übertragen. Dieses Bild- und Tonmaterial erzeugt natürlich eine höhere Auslastung von Datenleitungen,
+was, im Zusammenspiel mit der gestiegenen Anzahl an Informationsbedürftigen insgesamt, zu einer Verknappung der Ressourcen in Computer-Netzen führt.
+
+Um diesen neuen Gegebenheiten gerecht zu werden, gibt es zwei Möglichkeiten: Entweder ein Ausbau, und Neubau von Netzen, oder eine bessere Ausnutzung von bestehenden
+Netzen. Ausbau und Neubau bringen allerdings neue Probleme mit sich. Erstens ist Netzwerkinfrastruktur teuer, besonders wenn sie über mehrere Jahrzehnte hinweg
+halten und ihren Dienst verrichten soll, ohne eine ständige Wartung mit sich zu ziehen. Zweitens ist es manchmal aus verschiedenen Gründen gar nicht möglich, 
+ein Netz weiter auszubauen. Sollte sich eine bestehende Infrastruktur bereits in ihrer letzen Ausbaustufe befinden, ist es überhaupt notwendig ein gänzlich
+neues Netz aufzubauen, was wiederum mit noch höheren Kosten verbunden ist.
+
+Die zweite Möglichkeit, die bessere Ausnutzung von bestehenden Netzen, kann zwar die letztendliche Notwendigkeit von neuen Netzen nicht verhindern, den Zeitpunkt
+ihres notwendigwerdens aber hinauszögern. Durch eine optimierte Nutzung können bereits vorhandene Netze über einen längeren Zeitraum genutzt werden, ohne einen
+Engpass zu bilden. Wie diese Optimierungen im konkreten Fall aussehen hängt unter anderem von der Größe und der Art des Netzes, aber auch von der Art des
+Kommunikationsbedürfnisses ab. In dieser Arbeit konzentrieren wir uns auf rein optische Netze mit einer ganz genau definierten Art des Kommunikationsbedürfnisses.
+
+In rein optischen Netzen, als Netzwerken, in denen Information rein über optische Leiter wie Glasfaser übertragen wird, kann \textit{Wavelength Division Multiplexing}
+(WDM) zur parallelen Übertragung mehrer Datenströme über ein und die selbe Leitung betrieben werden. Die Idee hinter WDM ist es, für zwei verschiedene Datenströme 
+unterschiedliche Farben von Licht zu verwenden. Der englische Name Wavelength Division (deutsch: Wellenlängen Unterteilung) kommt von der Tatsache, dass 
+verschiedene Farben von Licht verschiedene, eindeutige Wellenlängen haben. Da sich die unterschiedliche Farben des Lichtes nicht gegenseitig beeinflussen, können
+viele Farben gleichzeitig durch ein und den selben Lichtwellenleiter geschickt werden, und am anderen Ende des Leiters wieder problemlos auseinander gehalten werden.
+Dies funktioniert sogar so gut, dass Lichtwellen, welche sich nur um wenige Nanometer an Wellenlänge unterscheiden, immer noch eindeutig zuordenbar sind.
+
+Des Weiteren wird oft angestrebt, einem einzelnen Datenstrom auf seinem gesamten Weg durch das Netzwerk ein und die selbe Farbe zu geben. Dies bietet Vorteil vor
+Allem im Bereich der Einfachheit der Implementierung, da optische Switche innerhalb des Netzwerkes keine Umwandlung von einer Farbe in eine andere vornehmen müssen.
+Hinzu kommt ein geringerer Stromverbrauch im Netzwerk, da ein Umwandlung von einer Wellenlänge in eine andere auch ein gewisses Maß an zusätzlichem Strom benötigen
+würde.
+
+Zu guter Letzt ist noch die spezielle Art des Kommunikationsbedürnisses zu beachten. Anders als zum Beispiel im Internet, wo die Kommunikation für einen Netzbetreiber
+unberechen- und vor Allem unverhersehbar abläuft, gehen wir hier von einem Fall aus, in dem alle Kommunikationswünsche bereits von vorn herein bekannt sind. Vorstellbar
+wäre solch ein Fall zum Beispiel bei einer gemieteten Standleitung eines Unternehmens zu ihrer Zweigstelle am anderen Ende des Landes. Auch wenn dies nun nach einer
+starken Einschränkung des Einsatzgebietes aussieht, ist der Nutzen dennoch nicht zu unterschätzen. Wenn zum Beispiel der Aufwand für den Betrieb solcher Standleitungen
+minimiert werden kann, könnten mehr Ressourcen auf die Erfüllung der vorhin erwähnten unvorhersehbaren Kommunikationsbedürfnisse investiert werden.
+
+\subsection{Partition Graph Coloring Problem}
+Mit Hilfe des Partition Graph Coloring Problem (PCP) wird versucht, diesen sehr spezifischen Anwendungsfall mathematisch zu beschreiben. Um das Problem zu lösen wird
+ein Graph aufgebaut, mit dessen Hilfe dann eine optimierte Lösung für das Problem berechnet werden kann. Ein Graph ist ein mathemaitsches Konstrukt, dass aus Knoten
+besteht, die durch Kanten verbunden werden. Ein Knoten A kann mit Knoten B durch so eine Kante verbunden werden, Knoten A muss aber zum Beispiel keine Verbindung mit
+Knoten C besitzen. Wie gezeigt wurde, handelt es sich bei dem PCP um ein NP-hartes Problem, das heißt es kann nicht in polynomieller Laufzeit auf einem Computer
+wie man ihn heute kennt eine Lösung gefunden werden, welche mit 100\%-iger Sicherheit die optimale Lösung für das konkrete Problem darstellt. Polynomielle Laufzeit
+wird im Normalfall als Grenze zwischen Problemen angesehen, welche in vertretbarar Laufzeit noch zu berechnen sind, und Problemen für die der Lösungsaufwand in
+keinem Verhältnis zum Ergebnis steht.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{\textwidth}
+		\includegraphics{img/bsp1}
+		\caption{Repräsentatives Beispiel für ein rein optisches Netzwerk innerhalb 
+		Österreichs. Es gibt 2 Kommunikationswünsche, zwischen A und B sowie zwischen C und D.}
+		\label{fig:example:a}
+	\end{subfigure}
+	\begin{subfigure}{\textwidth}
+		\includegraphics{img/bsp2}
+		\caption{Beispiel für verschiedene Routen zwischen insgesamt 4 Kommunikationspartnern.
+		Verschiedene Möglichkeiten der Wegfindung zwischen A und B werden in Hell- und Dunkelblau sowie Violett dargestellt. Die alternativen Routen zwischen C und D sind
+		Gelb und Orange eingefärbt.}
+		\label{fig:example:b}
+	\end{subfigure}
+	\caption{Ein Beispiel für eine Probleminstanz des Partition Graph Coloring Problems}
+	\label{fix:example}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[t]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{img/bsp3}
+		\caption{Der aus Abbildung \ref{fig:example:b} generierte Problemgraph. Jede Route wird als Knoten repräsentiert. Die verwendete Farbe stimmt mit den
+		für die Routen verwendeten Farben überein. Die Partitionierung wird durch das angedeutete Oval im Hintergrund der Knoten angedeutet.}
+		\label{fig:example:c}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{img/bsp4}
+		\caption{Der Problemgraph wird um die Beziehungen der Knoten untereinander erweitert. Jede Route, welche eine Teilstrecke mit einer anderen Route
+		gemeinsam hat, wird mit dieser Route verbunden. Die Kanten zwischen den Knoten stellen diese Beziehung dar.}
+		\label{fig:example:d}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{img/bsp5}
+		\caption{Eine mögliche Lösung des PCP. Von jeder Partition muss nur ein Knoten ausgewählt werden, alle anderen werden ausgeblendet. Die Auswahl
+		für die Strecke zwischen A und B hat kein gemeinsames Teilstück mit der für die Strecke C-D getroffene Auswahl. Daher kann ein und die selbe Farbe
+		für beide Übertragungen verwendet werden.}
+		\label{fig:example:e}
+	\end{subfigure}
+	
+	\caption{Aufbau und Lösung eines Problem-Graphen des Partition Graph Coloring Problems}
+\end{figure}
+
+Um das Problem besser lösen zu können, wird ein einheitliches Ziel, und eine einheitliche Eingabe benötigt.
+Dazu wird die Problemstellung nun in einem ersten Schritt auf folgende Punkte fixiert:
+\begin{itemize}
+	\item Alle Kommunikationsbedürfnisse, welche aus einem Start- und einem Endpunkt bestehen, sind bekannt.
+	\item Für jedes Kommunikationsbedürfnis gibt es einen oderer mehrere Wege, sprich Routen, zwischen Start- und Endpunkt.
+	\item Sollte eine Route einen Teil des Weges auf der selben Strecke zurücklegen wie eine andere Route, müssen sie unterschiedliche Farben verwenden.
+	\item Jede Route verwendet genau eine Farbe, und zwar für die gesamte Strecke.
+	\item Die Lösung besteht aus genau einer Route für jedes Kommunikationspaar, und genau einer dazugehörigen Farbe.
+\end{itemize}
+
+Aus diesen Bedingungen kann ein Graph abgeleitet werden, der genau jene Bedürfnisse erfüllt, um eine einfaches lösen des Problems zu ermöglichen. Dern Ausgangsgraph
+aus dem dann die Lösung berechnet wird, besteht aus Partitionen, welche eine Menge von Knoten abbilden und Kanten, welche die einzelnen Knoten verbinden.
+Ein Kommunikationsbedürfnis zwischen zwei Partnern wird als eine Menge von Knoten gesehen. Die Knoten repräsentieren je eine Route zwischen den beiden Partnern. Ist also nur eine Route zur Auswahl
+zwischen zwei Kommunikationsendpunkten, gibt es nur einen Knoten in dieser Menge. Diese Menge an Knoten wird Partition genannt, und ist damit namensgebend für das PCP.
+
+Die Kanten bilden nun die Beziehungen zwischen verschiedenen Routen ab. Teilen sich zwei Routen das selbe Teilstück im optischen Netzwerk, werden sie mit einer Kante verbunden.
+Zu beachten ist, dass dies nicht nur für Knoten in der selben Partition gilt, sondern auch für Knoten aus unterschiedlichen Partitionen. Verwendet also Route 1 der
+Kommunikation $(AB)$ ein Stück der Strecke, das auch von der Route 2 der Kommunikation $(CD)$ verwendet wird, werden diese beiden Routen, welche ja jeweils als Knoten
+repräsentiert werden, im Ausgangsgraphen mit Hilfe einer Kante verbunden. Außerdem ist noch zu beachten, dass für jedes in dieser Art verbundene Routenpaar nur eine Kante
+verwendet wird. Teilen sich Routen 1 und 2 mehr als ein Teilstück, so werden sie trotzdem nur einmal per Kante verbunden.
+
+Nachdem der Ausgangsgraph generiert wurde, kann eine Lösung für das PCP berechnet werden. Dazu muss für jede Partition genau ein Knoten ausgewählt werden, und diese
+Knoten dann so eingefärbt werden, dass sich keine 2 mit einer Kante verbunden Knoten die gleiche Farbe teilen. Der letztere Teil, also das einfärben von Knoten in
+Abhängigkeit der Farben der Nachbarknoten ist als klassisches Graph Coloring bekannt. Es kommt zum Beispiel bei der Einfärbung von politischen Landkarten zum Einsatz, 
+wo benachbarte Länder nicht die selbe Farbe haben dürfen. Was das PCP unterscheidet, ist die Möglichkeit, nur einen Knoten aus einer Partition als Repräsentanten
+auszuwählen, und die anderen quasi auszublenden. 
