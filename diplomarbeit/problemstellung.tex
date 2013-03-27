@@ -16,7 +16,8 @@ ihres notwendigwerdens aber hinauszögern. Durch eine optimierte Nutzung können
 Engpass zu bilden. Wie diese Optimierungen im konkreten Fall aussehen hängt unter anderem von der Größe und der Art des Netzes, aber auch von der Art des
 Kommunikationsbedürfnisses ab. In dieser Arbeit konzentrieren wir uns auf rein optische Netze mit einer ganz genau definierten Art des Kommunikationsbedürfnisses.
 
-In rein optischen Netzen, als Netzwerken, in denen Information rein über optische Leiter wie Glasfaser übertragen wird, kann \textit{Wavelength Division Multiplexing}
+In rein optischen Netzen, also Netzwerken, in denen Information rein über optische Leiter wie Glasfaser übertragen wird und das Signal auf der ganzen Strecke zu 
+keinem Zeitpunkt in ein elektrisches Signal zurückgewandelt wird, kann \textit{Wavelength Division Multiplexing}
 (WDM) zur parallelen Übertragung mehrer Datenströme über ein und die selbe Leitung betrieben werden. Die Idee hinter WDM ist es, für zwei verschiedene Datenströme 
 unterschiedliche Farben von Licht zu verwenden. Der englische Name Wavelength Division (deutsch: Wellenlängen Unterteilung) kommt von der Tatsache, dass 
 verschiedene Farben von Licht verschiedene, eindeutige Wellenlängen haben. Da sich die unterschiedliche Farben des Lichtes nicht gegenseitig beeinflussen, können
@@ -97,19 +98,44 @@ Dazu wird die Problemstellung nun in einem ersten Schritt auf folgende Punkte fi
 	\item Die Lösung besteht aus genau einer Route für jedes Kommunikationspaar, und genau einer dazugehörigen Farbe.
 \end{itemize}
 
-Aus diesen Bedingungen kann ein Graph abgeleitet werden, der genau jene Bedürfnisse erfüllt, um eine einfaches lösen des Problems zu ermöglichen. Dern Ausgangsgraph
+Aus diesen Bedingungen kann ein Graph abgeleitet werden, der genau jene Bedürfnisse erfüllt, um eine einfaches lösen des Problems zu ermöglichen. Der Problemgraph
 aus dem dann die Lösung berechnet wird, besteht aus Partitionen, welche eine Menge von Knoten abbilden und Kanten, welche die einzelnen Knoten verbinden.
 Ein Kommunikationsbedürfnis zwischen zwei Partnern wird als eine Menge von Knoten gesehen. Die Knoten repräsentieren je eine Route zwischen den beiden Partnern. Ist also nur eine Route zur Auswahl
-zwischen zwei Kommunikationsendpunkten, gibt es nur einen Knoten in dieser Menge. Diese Menge an Knoten wird Partition genannt, und ist damit namensgebend für das PCP.
+zwischen zwei Kommunikationsendpunkten, gibt es nur einen Knoten in dieser Menge. Diese Menge an Knoten wird Partition genannt, und ist damit namensgebend für das PCP. Dieser
+Schritt wird in Abbildung \ref{fig:example:c} veranschaulicht.
 
 Die Kanten bilden nun die Beziehungen zwischen verschiedenen Routen ab. Teilen sich zwei Routen das selbe Teilstück im optischen Netzwerk, werden sie mit einer Kante verbunden.
 Zu beachten ist, dass dies nicht nur für Knoten in der selben Partition gilt, sondern auch für Knoten aus unterschiedlichen Partitionen. Verwendet also Route 1 der
 Kommunikation $(AB)$ ein Stück der Strecke, das auch von der Route 2 der Kommunikation $(CD)$ verwendet wird, werden diese beiden Routen, welche ja jeweils als Knoten
 repräsentiert werden, im Ausgangsgraphen mit Hilfe einer Kante verbunden. Außerdem ist noch zu beachten, dass für jedes in dieser Art verbundene Routenpaar nur eine Kante
-verwendet wird. Teilen sich Routen 1 und 2 mehr als ein Teilstück, so werden sie trotzdem nur einmal per Kante verbunden.
+verwendet wird. Teilen sich Routen 1 und 2 mehr als ein Teilstück, so werden sie trotzdem nur einmal per Kante verbunden. Die Vervollständigung des Problemgraphen
+wird in Abbildung \ref{fig:example:d} dargestellt.
 
 Nachdem der Ausgangsgraph generiert wurde, kann eine Lösung für das PCP berechnet werden. Dazu muss für jede Partition genau ein Knoten ausgewählt werden, und diese
 Knoten dann so eingefärbt werden, dass sich keine 2 mit einer Kante verbunden Knoten die gleiche Farbe teilen. Der letztere Teil, also das einfärben von Knoten in
 Abhängigkeit der Farben der Nachbarknoten ist als klassisches Graph Coloring bekannt. Es kommt zum Beispiel bei der Einfärbung von politischen Landkarten zum Einsatz, 
 wo benachbarte Länder nicht die selbe Farbe haben dürfen. Was das PCP unterscheidet, ist die Möglichkeit, nur einen Knoten aus einer Partition als Repräsentanten
-auszuwählen, und die anderen quasi auszublenden. 
+auszuwählen, und die anderen quasi auszublenden. Ein Beispiel einer solchen Lösung des Problems ist in Abbildung \ref{fig:example:e} zu finden.
+
+Die Schwierigkeit des Problems liegt in dem Zusammenspiel von verschiedenen Möglichkeiten, ein und den selben Graphen einzufärben, und andererseits mit einer anderen 
+Auswahl an Knoten gleich den gesamten Lösungsgraphen zu verändern. Das Kriterium für die Güte einer Lösung ist die Anzahl der verwendeten Farben. Um sich nur auf diese 
+Anzahl konzentrieren zu können, wird angenommen, dass jede Route zwischen zwei Kommunikationspartner gleich gut ist. Eventuelle Umwege die durch eine längere Route als nötig 
+entstehen werden also im PCP ignoriert. 
+
+Außerdem geht man bei der Lösung des PCP von einem homogenen Netzwerk aus, in dem jede Leitung jede Wellenlänge unterstützt. In der Realität kann es durchaus vorkommen, dass ein
+Lichtwellenleiter, welcher aus einem chemisch minimal anders zusammengesetzten Stoff besteht als seine Gegenstücke in anderen Teilen des Netzwerkes, für bestimmte Wellenlängen
+ungünstige Eigenschaften hat. 
+
+\subsection{Ausgangsmaterial}
+Das Partition Graph Coloring Problem beschränkt sich nur auf den Weg vom Problemgraphen zum Lösungsgraphen. Für die Findung alternativer Routen durch ein Netzwerk gibt es 
+bereits ausgiebig beschriebene und getestete Algorithmen, welche auch auf einem optischen Netzwerk anwendbar sind. Mit Hilfe dieser Algorithmen können die für den
+Problemgraphen benötigten Knoten für jedes Kommunikationspaar gefunden werden. Wichtig hierbei ist es, dass es wenn möglich mehrere Alternativen für eine Übertragung geben sollte,
+da es sich sonst um ein normales Graph Coloring Problem handeln würde. Die Findung der Kanten, welche Knoten verbinden, die die selbe Teilstrecke verwenden, ist auch ein
+gelöstes Problem, welches das PCP nicht beschäftigt.
+
+Das PCP generiert eine Lösung aus dem Problemgraphen, welche eindeutig für jeden Kommunikationswunsch eine Route und eine Farbe zuordnet. Je dichter der Problemgraph, dass heißt
+je mehr Kanten die verschiedenen Knoten verbinden, desto schwieriger ist es eine geringe Anzahl an Farben für die optimierte Lösung zu finden. Dabei legt ein Algorithmus, der das
+PCP löst, nicht strikt die zu verwendenden Wellenlängen fest, sondern weißt gleichen Wellenlängen nur die gleiche Zahl zu. Gleiches gilt für die Auswahl einer Route. Anstelle
+einer fixen Beschreibung, welchen Weg die ausgewählte Route durch das Netzwerk nimmt, zeigt ein Algorithmus für das PCP lediglich auf, welcher Knoten verwendet wurde. 
+Die Zuordnung von Knoten zur Route muss daher, wie auch schon bei den Wellenlängen, später erfolgen.
+
