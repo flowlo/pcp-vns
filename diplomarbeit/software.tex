@@ -60,6 +60,24 @@ des Programmes zu verifizieren.
 
 \subsection{Compiler}
 \label{sec:compiler}
+Der Compiler, oder Übersetzer, ist dafür verantwortlich, ein Programm von einer Quellsprache, in eine Zielsprache zu übersetzen. Im Falle dieser Arbeit war die Quellsprache C++, und die
+Zielsprache die Maschinensprache des Prozessors, also ein x86-Assembly. Übersetzer sind außerordentlich komplexe Stücke an Software, welche nicht einfach die Befehle eines Programmierers eins zu
+eins übernehmen, sondern auch noch Optimierungen vornehmen, um eine beschleunigte Programmausführung zu ermöglichen. Da dieser Vorgang sehr zeitaufwendig sein kann, ist es wichtig, Werkzeuge wie
+das in Abschnitt \ref{sec:make} besprochene make einzusetzen, um eine vollständige Neuübersetzung bei nur marginalen Änderungen im Quellcode zu verhindern. 
+
+Da C++ eine besonders komplexe Sprache, mit vielen verschiedenen, aufwendigen Funktionen und Sprachbesonderheiten ist, ist die Übersetzung eines C++-Quellcodes besonders aufwendig. Selbst kleinere
+C++-Programme können schon mehrere Minuten zum vollständigen Übersetzen brauchen. Dies gilt insbesondere für Quellcode, welche die C++-Funktion der so genannten \textit{Templates} benützt. \textit{Templates}
+erlauben es, neben anderen Dingen, eine allgemeine Datenstruktur für viele verschiedene Datentypen zu programmieren, ohne eine konkrete Implementation für einen bestimmten Datentyp notwendig zu machen.
+Da auch mehrere \textit{Templates} geschachtelt werden können, und dies alles zum Zeitpunkt der Übersetzung expandiert werden muss, um schließlich übersetzt werden zu können, kann bei starker Verwendung
+von solchen Funktionen die Geschwindigkeit der Übersetzung stark beeinträchtigt werden.
+
+Um diese Probleme mit \textit{Templates} elegant zu umgehen, gibt es \textit{Precompiled Headers}. Normalerweise werden Header-Dateien, welche allgemeine Deklarationen von Klassen, verwendeten Datentypen
+und ähnliches enthalten, zum Übersetzungszeitpunkt in den C++-Quellcode, welcher übersetzt werden soll, komplett kopiert, und diese Gesamteinheit als eine Über\-setzungs\-einheit angesehen. Dadurch muss, sollte
+sich ein Teil der Definitionen innerhalb des C++-Codes ändern, auch die Definition neu übersetzt werden. Mit \textit{Precompiled Headers} wird dieses Problem gelöst, in dem schon der Header als zu übersetzende
+Einheit angesehen wird, und als vom eigentlichen Quelltext abgetrennte Einheit angesehen wird. Der Header, welcher ja unter anderem auch die Deklarationen für \textit{Templates} enthält, muss nur noch
+übersetzt werden, wenn sich in seinem eigenen Code etwas ändert. Dadurch können die eigentlichen Programmabschnitte, welche in normalen C++-Quelldateien zu finden sind, wesentlich schneller
+compiliert werden, ohne auf die Vorteile von \textit{Templates} zu verzichten.
+
 
 \subsubsection{GCC}
 
