@@ -115,6 +115,23 @@ des fertig übersetzten Programmes, da unter anderem GCC einige Optimierungsmög
 vernachläßigbar gering.
 
 \subsection{DDD}
+DDD steht für Data Display Debugger, und ist ein weiteres Werkzeug zur Softwareentwicklung von GNU. DDD stellt Werkzeuge zum Debuggen, also der Fehlersuche in Software, zur Verfügung. Um produktiv eingesetzt
+werden zu können muss eine spezielle Option während der Übersetzung mit GCC gesetzt werden, damit DDD einzelnen Programmschritten den richtigen Quellcodezeilen zuordnen kann. DDD ist eine sehr vielseitige
+Anwendung mit graphischer Benutzeroberfläche, welche sehr intuitiv und einfach zu bedienen ist, und trotzdem viele Optionen bietet.
+
+Eines der wichtigesten Werkzeuge zur Fehlersuche innerhalb eines laufenden Programmes sind Unterbrechungspunkte, also eine bestimmte Stelle innerhalb des Quellcodes, an dem die Ausführung angehalten werden 
+soll, um den genauen Zustand des Programmes zu untersuchen. DDD stellt sowohl normale Unterbrechungspunkte, als auch spezielle Punkte, welche nur unter vom Benutzer definierten Bedingungen auslösen, bereit.
+Sobald ein solcher Unterbrechungspunkt erreicht ist, kann DDD die Belegung sämtlicher Variablen anzeigen und vergleichen. Dies kann besonders nützlich sein, um ungeplantes Verhalten innerhalb des
+Progammablaufes zu untersuchen, und zu beheben. 
+
+Außerdem bietet DDD die Möglichkeit, im Falle eines Programmabsturzes die auslösende Zeile des Quellcodes zu ermitteln, und von dort aus auf die Ursachen des Absturzes zu schließen. Dies ist besonders
+praktisch, da eine genaue Eingrenzung der Absturzursache ansonsten äußerst schwierig ist. Sollte ein Programm schadhaftes, oder fehlerhaftes Verhalten an den Tag legen, zum Beispiel unberechtigen Speicherzugriff
+wird normalerweise das Programm sofort vom Betriebssystem beendet. DDD protokolliert aber jede aufgerufenen Zeile Code mit, und kann daher genaue Auskunft geben, in welchem Programmabschnitt der
+Fehler aufgetreten ist.
+
+Ein weiteres praktisches Werkzeug von DDD ist die Möglichkeit, Pointer, welche auf vom Programm reservierte Speicherbereiche zeigen, genauenstens zu verfolgen. Durch eine übersichtliche graphische Darstellung
+ist es einfach, zu vergleichen welche Pointer auf ein und den selben Speicherbereich zeigen, was unter Umständen gewollt sein kann, oder aber auch einen fehlerhaften Programmablauf hervorruft.
+
 
 \subsection{Boost}
 
