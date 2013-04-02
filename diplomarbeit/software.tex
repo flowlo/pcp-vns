@@ -36,10 +36,30 @@ wie Quicksort, Binarysearch. Hinzu kommen vereinheitlichte Ein- und Ausgabemögl
 Möglichkeit der parallelen Ausführung von Software mit Hilfe von Threads.
 
 \subsection{Python}
+% TODO: LOLO!
 
 \subsection{Make}
+Bei GNU make handelt es sich um ein Standardwerkzeug der Linux-Software-Entwicklung. Mit Hilfe von make kann die Übersetzung des Quellcodes in den Programmcode automatisiert werden. 
+Dabei stellt make viele verschiedene Konfigurationsmöglichkeiten bereit. Unter anderem können verschiedene Compiler, aber auch verschiedene Übersetzungsmodi eingestellt werden.
+Um ein schnelleres Übersetzen zu ermöglichen, werden außerdem nur jene Quellcode-Dateien neu übersetzt, welche sich seit dem letzten Mal verändert haben. 
+
+In der Konfigurationsdatei für make, dem so genannten Makefile, können unter anderem mehrere \textit{Targets} angegeben werden, also quasi verschiedene Endprogramme, oder verschiedene
+Übersetzerkonfigurationen für das selbe Programm. Zu diesen \textit{Targets} werden dann Ab\-hängig\-keiten definiert, welche bestimmen, in welcher Reihenfolge das Programm übersetzt werden 
+muss. Impliziert wird durch diese Abhängigkeitsdefinition auch, wann ein Programmteil neu übersetzt werden muss. Ist eine der Abhängigkeiten einer bestimmten Enddatei jünger als die 
+Enddatei selber, muss diese neu übersetzt werden. Durch eine geschickte Aufteilung des Quellcodes auf mehrere Dateien kann so eine komplette Neuübersetzung vermieden werden. 
+
+Durch verschiedene Variablen, welche ebenfalls im Makefile spezifiziert sind, kann außerdem, ohne großen Aufwand, der Übersetzer, welcher die eigentliche Hauptaufgabe übernimmt ausgetauscht werden.
+Die für diese Arbeit verwendeten Compiler werden in Abschnitt \ref{sec:compiler} besprochen. Vereinfacht wird dies durch die beinahe gleiche Befehlssyntax, die von beiden Compilern verwendet wird.
+Hinzu kommt die Tatsache, dass die von den beiden Compilern erzeugten Dateiformate miteinander kompatibel sind, so dass auch uneinheitlicher Übersetzung mit immer wieder wechselnden Übersetzern
+keine Fehler entstehen.
+
+Außerdem hilfreich ist, dass make auch Skripte oder kleinere Kommandos automatisch ausführen kann. Häufig verwendet ist etwa die Routine zur Bereinigung des Programmverzeichnisses von bei der
+Übersetzung entstandenen temporären Dateien, die nachher nicht mehr benötigt wurden. Auch nützlich ist etwa die vollständige Entfernung jeder Spur einer Compilierung, um eine gänzlich neue
+Übersetzung einzuleiten. Auch kann mit Hilfe von solchen Skripten das entstandene Programm nach Übersetzung automatisch auf eine Testmaschine geschickt werden, um die korrekte Funktion
+des Programmes zu verifizieren.
 
 \subsection{Compiler}
+\label{sec:compiler}
 
 \subsubsection{GCC}
 
