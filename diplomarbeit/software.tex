@@ -28,6 +28,8 @@ natürlich nicht wirklich plattformunabhängig sein können, wurde in C++ versuc
 nur von einem bestimmten System ausgeführt werden können. Aus diesem Grund sind auch die meisten Code-Bibliotheken für C++ für die meisten
 Plattformen erhältlich. 
 
+\subsubsection{STL}
+\label{sec:stl}
 Zusätzlich zu erwähnen ist die umfangreiche \textit{Standard Template Library (STL)}, welche es inzwischen sogar fast vollständig in den 
 C++-Standard gebracht hat. Bei der STL handelt es sich um eine von den meisten Compilern bereitgestellte Code-Bibliothek für häufig 
 verwendete Datenstrukturen und Hilfsroutinen, welche eine wesentliche Erleichterung für jeden C++-Programmierer darstellen. Unter anderem
@@ -132,12 +134,71 @@ Fehler aufgetreten ist.
 Ein weiteres praktisches Werkzeug von DDD ist die Möglichkeit, Pointer, welche auf vom Programm reservierte Speicherbereiche zeigen, genauenstens zu verfolgen. Durch eine übersichtliche graphische Darstellung
 ist es einfach, zu vergleichen welche Pointer auf ein und den selben Speicherbereich zeigen, was unter Umständen gewollt sein kann, oder aber auch einen fehlerhaften Programmablauf hervorruft.
 
-
 \subsection{Boost}
+Boost, oder auch Boost C++-Libraries, ist eine Codebibliothek, welche versucht, Un\-zu\-läng\-lich\-keiten im Sprachstandard von C++ geschickt zu umgehen, und Benutzern ein einfacheres Programmieren zu ermöglichen.
+Boost besteht aus mehreren unabhängigen Unterbibliotheken, welche zum größten Teil unter der Boost Software Lizenz stehen, welche sowohl eine Open-Source, als auch eine kommerzielle Nutzung zulässt. Alle
+Unterbibliotheken sind portabel designt, um eine Nutzung auf allen Betriebssystemen mit C++-Compiler zu ermöglichen. 
+
+Die Entwicklung von Boost began im Jahr 2000, als Mitglieder des C++\--Standardisierungs\-komitees zusammentraten um Erweiterungen des C++-Standards auf einer breiteren öffentlichen Plattform zu präsentieren.
+Im Laufe der Entwicklung wurden immer wieder auch ehemals kommerzielle Produkte von Firmen in Boost eingegliedert, wie etwa die Graphikbibliothek GIL, welche ursprünglich von Adobe stammt, inzwischen
+aber in den Boost-Stamm aufgenommen wurde.
+
+Boost erweitert den Umfang an vorprogrammierten Datenstrukturen, und auch Algorithmen, und fügt bestehende Strukturen nahtlos ein. Dabei versucht Boost immer eine möglichst einfache und klar verständliche
+Schnittstelle zu bieten, welche transparent mit Datenstrukturen etwa aus der STL umgeht, welche in Abschnitt \ref{sec:stl} besprochen werden. Von Boost geschaffene Datenstrukturen sind sehr ähnlich zu jenen
+aus der STL zu verwenden, und wie jene bieten sie auch einfache Möglichkeiten des Zugriffes auf Datenelemente über Iteratoren. 
+
+Des Weiteren bietet Boost neue Möglichkeiten im Umgang mit Strings, also Zeichenketten, sowie weitere nützliche Hilfsfunktionen, welche von den meisten Programmen häufig gebraucht werden. Außerdem bietet
+Boost Algorithmen und Datenstrukturen für mathematische Berechnungen, die über triviale Aufgaben wie addieren oder subtrahieren von einfachen Zahlen hinausgehen. So bietet Boost eine Unterbibliothek für 
+Statistik, und auch für Graphen, welche in dieser Arbeit zum Einsatz kam.
+
+Außerdem wurden in dieser Arbeit viele Hilfsroutinen, welche von Boost bereitgestellt wurden verwendet, und mehrere Datenstrukturen aus Boost-Unterbibliotheken kamen ebenfalls zum Einsatz.
 
 \subsubsection{graph}
+Da es sich bei dem PCP um ein Optimierungsproblem aus dem Umfeld der Graphentheorie handelt, ist natürlich eine Graphenstruktur innerhalb des Programmes unerlässlich. Boost bietet eine ganze Unterbibliothek, 
+welche rein graphenbezogene Datenstrukturen und Algorithmen bereitstellt. Diese Graphenbibliothek ist gut getestet, vielseitung, stark anpassbar, schnell und einfach einzusetzen und war daher die ideale Wahl
+für die Lösung des PCP.
+
+Boost bietet zwei grundsätzlich Unterschiedliche Implementierungen eines Graphen an. Bei der ersten Variante werden alle Kanten in einer Liste, oder ähnlichen Datenstruktur gespeichert, bei
+der zweiten Variante wird eine Matrix verwendet, um die Beziehunen zwischen zwei Knoten darzustellen. Während die zweite Variante für sehr Dichte Graphen einige Vorteile bietet, ist die gesamte
+Datenstruktur bei weitem nicht so flexibel wie die Variante mit einer Listenstruktur. In der von Boost verwendeten Implementierung dieser Adjazenzmatrix werden viele praktischen Funktionen um einen
+Graphen zu Manipulieren nicht unterstützt. So ist es zum Beispiel nicht möglich einen Knoten nachträglich wieder zu entfernen. 
+
+Daher viel die Wahl auf eine Adjazenzliste, welche den Graphen für diese Arbeit bereitstellte. Auch hier gibt es mehrere verschiedene Konfigurationsmöglichkeiten, etwa die genaue Art der Speicherung von
+Knoten und Kanten. Für die Speicherung der Kanten wurde ein Vektor gewählt, ein zusammenhängender Speicherbereich, welche bei Bedarf vergößert oder verkleinert werden kann. Dies bietet mehrer Vorteile, etwa
+einen direkten Zugriff auf einen Knoten über einen Index, welcher in Form einer einfach ganzen Zahl leicht zu benützen war. Dies bedeutet, das zu jedem Zeitpunkt direkt auf einen bestimmten Knoten zugegriffen
+werden kann. Da die Anzahl der Knoten quasi immer Konstant blieb, mit Ausnahme des erstmaligen Aufbaus des Problemgraphens und dem Errechnen der Initiallösung, werden die Nachteile einer vektorbasierten
+Speicherung der Knoten bei weitem von den Vorteilen aufgewogen. 
+
+Da im Rahmen der Variablen Nachbarschaftssuche mehrere Nachbarschaften immer wieder eine Veränderung der Adjazenzen vornehmen, viel die Wahl der Datenstruktur für die Speicherung der Kanten zunächst auf eine
+Liste. Zu jedem Knoten wird eine Liste der Nachbarknoten gespeichert, woraus dann die Kanten gebildet werden. Da das Löschen aus, und das Einfügen in eine Liste in konstanter Laufzeit möglich ist, wurden
+mit der Listenstruktur die besten Ergebnisse erwartet. Ausgiebige Tests ergaben jedoch, dass auf für die Speicherung der Kanten ein Vektor besser geeignet war. Da beim Löschen zumeist gleich alle
+Kanten gelöscht werden, reduzierte sich der Vorteil einer Listenstruktur, und Einfügen ist auch in einen Vektor in zumeist konstanter Zeit möglich. 
+
+Eine weitere Konfigurationemöglichkeit betrifft das Verhalten des Graphen beim Hinzufügen von Kanten. Es gibt gerichtete und ungerichtete Graphen, wobei gerichtete Graphen Kanten besitzen, welche quasi
+als Einbahn fungieren, sie haben einen Anfangsknoten und einen Zielknoten, und stellen keine Verbindung vom Zielknoten zum Anfangsknoten her. Im Gegensatz dazu stehen die ungerichtete Graphen, bei denen
+eine Kante automatisch eine Beziehung in beide Richtungen darstellt. Auf Grund der Eigenschaften des PCP fiel die Wahl auf einen ungerichteten Graphen, da kein Bedarf an gerichteten Kanten bestand.
+
+Eine weitere von Boost bereitgestellte Funktion des Graphen ist die Speicherung von Eigenschaften im direkten Zusammenhang mit Kanten und Knoten. Da jeder Knoten im PCP zu einer Partition zugeteilt wird, kann
+über diesen Mechanismum einfach und schnell von einem Knoten auf die Partition geschlossen werden. Diese Eigenschaften können außerdem dazu eingesetzt werden, den originalen Index eines Knotens zu speichern.
+Da Boost bei der Entfernung eines Knotens automatisch den Index der nachfolgenden Knoten um eins dekrementiert, kann normalerweise nicht mehr auf den Index des Ursprungsknotens geschlossen werden. Durch
+die Speicherung des Index in einer seperat von Boost bereitgestellten, mitschrumpfenden Datenstruktur kann immernoch eindeutig auf den Originalknoten geschlossen werden. 
+
+Eine einfache Möglichkeit der Ausgabe wird ebenfalls von Boost gestellt. Boost bietet eine einzelne Funktion, welche einen Boost-Graphen im Graphviz-Format ausgiebt. Dadurch ergibt sich eine schnelle 
+Möglichkeit, die Richtigkeit der Lösung zu kontrollieren. Gerade bei frühen Versuchen der Nachbarschaftssuche wurde viel mit diesem Werkzeug gearbeitet, um die Ergebnisse zu verifizieren. 
 
 \subsubsection{Hilfsroutinen}
+Neben Graphen wurden auch einige von Boosts Hilfsfunktionen benutzt. Um bei der Lösung des PCP möglichst flexibel zu sein wurden eine Vielzahl an Variablen verwendet, um bestimmte Parametern der 
+Nachbarschaftssuche einfacher ändern zu können. Dazu wurde angedacht, die Terminalparameter, als jene Parameter, welche beim Aufruf des Programmes über die Kommandozeile mitgegeben werden, zu verwenden. 
+In einem ersten Versuch wurde ein einfaches Stringparsing betrieben, welches sich aber schnell als fehleranfällig heraustellte, und zusätzlich noch zu unschönem Code führte. 
+
+Genau für den Zweck der Programmargumente bietet Boost eine eigene Unterbibliothek, welche alle Aufgaben aus dem Bereich des Parsings abnimmt, und dies außerdem noch in einer eleganten Art und Weise für
+den Programmierer anbietet. Durch einen Bibliotheksaufruf können einfach neue Befehle angegeben werden, und diesen Befehlen gleich ein bestimmter Datentyp zugeordnet werden. Es besteht nicht nur die 
+Möglichkeit einen bestimmten Datentypen zuzuordnen, sondern ein bestimmtes Argument gleich an eine Variable zu binden, so dass diese Variable automatisch von Boost gesetzt wird. Des Weiteren kann einem
+Argument automatisch ein Standardwert zugewiesen werden, welcher automatisch angenommen wird, sollte der Benutzer bei der Ausführung des Programmes dieses Argument nicht verwenden. 
+
+Um eine möglichst genaue Zeitmessung für die statistische Auswertung der Ergebnisse zu erlangen, wurde die Zeitnehmungsbibliothek von Boost herangezogen. Boost stellt einfache Zeitnehmer bereit, um 
+möglichst genaue Messergebnisse zu bekommen, welche im Millisekundenbereich liegen. Dies ist manchmal garnicht so einfach da etwa die normalen Zeitfunktionen nur auf Sekundenbasis arbeiten, und eine 
+genauere Zeitmessung zumeist über die abgelaufenen CPU-Zyklen erfolgt.
 
 \subsection{Valgrind}
 
