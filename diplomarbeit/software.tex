@@ -28,6 +28,9 @@ natürlich nicht wirklich plattformunabhängig sein können, wurde in C++ versuc
 nur von einem bestimmten System ausgeführt werden können. Aus diesem Grund sind auch die meisten Code-Bibliotheken für C++ für die meisten
 Plattformen erhältlich. 
 
+Obwohl C++ wesentlich mehr Funktionen als C bietet, ist trotzdem noch die Anlehnung an C zu erkennen. Daher ist es auch nicht verwunderlich das C++-Programme meist nur geringfügig langsamer sind, als 
+vergleichbare C-Programme. In manchen Fällen ist C++ sogar schneller als C, da der Compiler andere, und umständen bessere, Optimierungen vornehmen kann. 
+
 \subsubsection{STL}
 \label{sec:stl}
 Zusätzlich zu erwähnen ist die umfangreiche \textit{Standard Template Library (STL)}, welche es inzwischen sogar fast vollständig in den 
@@ -36,6 +39,11 @@ verwendete Datenstrukturen und Hilfsroutinen, welche eine wesentliche Erleichter
 in der STL enthaltene Datenstrukturen sind Listen, Stacks, aber auch Iteratoren für die meisten Datenstrukturen, häufig verwendete Algorithmen
 wie Quicksort, Binarysearch. Hinzu kommen vereinheitlichte Ein- und Ausgabemöglichkeiten für verschiedenste Plattformen, sowie die 
 Möglichkeit der parallelen Ausführung von Software mit Hilfe von Threads.
+
+Die STL wurde inzwischen in den Sprachstandard von C++ aufgenommen, so dass jeder standardkonforme Comipler eine Implementierung der STL inkludiert. Mit der STL hebt sich C++ stark von C ab, für 
+das es keine solche allgemein einsetzbare Codebibliothek gibt. Der Preis für diese Einfachheit ist die Zeit, die ein einzelner Übersetzungsdurchgang benötigt. Da die STL stark auf die namensgebenden
+\textit{Templates} setzt, welche es ermöglichen eine einzelne Datenstruktur für eine Vielzahl an Datentypen verfügbar zu machen, muss der Compiler diese \textit{Templates} zum Übersetzungszeitpunkt
+auflösen, ein Vorgang, welcher einen stark negativen Einfluss auf die Übersetzungszeit hat.
 
 \subsection{Python}
 % TODO: LOLO!
@@ -124,7 +132,7 @@ Anwendung mit graphischer Benutzeroberfläche, welche sehr intuitiv und einfach 
 Eines der wichtigesten Werkzeuge zur Fehlersuche innerhalb eines laufenden Programmes sind Unterbrechungspunkte, also eine bestimmte Stelle innerhalb des Quellcodes, an dem die Ausführung angehalten werden 
 soll, um den genauen Zustand des Programmes zu untersuchen. DDD stellt sowohl normale Unterbrechungspunkte, als auch spezielle Punkte, welche nur unter vom Benutzer definierten Bedingungen auslösen, bereit.
 Sobald ein solcher Unterbrechungspunkt erreicht ist, kann DDD die Belegung sämtlicher Variablen anzeigen und vergleichen. Dies kann besonders nützlich sein, um ungeplantes Verhalten innerhalb des
-Progammablaufes zu untersuchen, und zu beheben. 
+Progamm\-ablaufes zu untersuchen, und zu beheben. 
 
 Außerdem bietet DDD die Möglichkeit, im Falle eines Programmabsturzes die auslösende Zeile des Quellcodes zu ermitteln, und von dort aus auf die Ursachen des Absturzes zu schließen. Dies ist besonders
 praktisch, da eine genaue Eingrenzung der Absturzursache ansonsten äußerst schwierig ist. Sollte ein Programm schadhaftes, oder fehlerhaftes Verhalten an den Tag legen, zum Beispiel unberechtigen Speicherzugriff
@@ -201,6 +209,21 @@ möglichst genaue Messergebnisse zu bekommen, welche im Millisekundenbereich lie
 genauere Zeitmessung zumeist über die abgelaufenen CPU-Zyklen erfolgt.
 
 \subsection{Valgrind}
+Valgrind ist, wie schon DDD ein Werkzeug zur Fehlersuche in laufenden Programmen. Dabei spezialisiert Valgrind sich auf die korrekte Verwendung und Freigabe von Speicher. Mit Hilfe von Valgrind ist es
+möglich Speicherlecks aufzuspüren und zu schließen. Dafür überwacht Valgrind den Programmablauf und gibt nach Beendigung des Programmes einen genaue Aufzählung an vergessenen Speicherbereichen und 
+nicht sauber gelöschten Objekten. 
+
+Zum Zweck der Informationssammlung, und zur besseren Darstellung der Ergebnisse sollte das Programm wieder mit der Debug-Option des Compilers übersetzt werden. Dadurch kann Valgrind unter anderem die Zeile
+anzeigen, in dem das nicht gelöschte Objekt erzeugt wird, und Informationen geben, ab wann ein Speicherbereich verloren gegangen ist. Außerdem ist zu beachten dass durch diese Mitprotokollierung des 
+Programmablaufes die Geschwindigkeit des selben stark beeinflusst wird. Daher ist es notwendig, bei Vorgängen welche innerhalb des Programmes durch eine Ausführungszeit beschränkt werden, diese Zeit anzupassen, 
+um eine korrekte Ausführung des Programmes zu gewährleisten. 
+
+Wenn nun innerhalb des Programmes ein Stück Arbeitsspeicher reserviert wird, merkt sich Valgrind diesen Vorgang und protokolliert mit, wieviele Zeiger auf diesen Speicherbereich zeigen. Sollte nun irgendwann
+kein einziger Zeiger mehr auf den Speicherbereich verweisen, es wurden also quasi alle Variablen, die diese Information enthielten verworfen oder überschrieben, und der Speicherbereich wurde nicht wieder
+freigegeben, so weiß Valgrind, dass dieser Speicher verloren gegangen ist. Sollte sich dieser Vorgang wiederholen entsteht ein immer größer werdender Pool aus nicht freigegebenen Speicherbereichen, welcher
+nicht gelöscht wurde. Nachdem eine Low-Level-Programmiersprache wie C++ keine richtige automatisierte Speicherverwaltung wie andere Sprachen wie Java und C\# hat, muss der Programmierer selbst für die 
+Freigabe von reservierten Speicherbereichen sorgen. Daher ist es essentiell für gute Programmierung, alle erzeugten Objekte nach ihrer Verwendung wieder freizugeben, um so den exzessiven Gebrauch von
+Hauptspeicher zu verhindern.
 
 \subsection{Graphviz}
 
