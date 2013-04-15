@@ -49,6 +49,7 @@ auflösen, ein Vorgang, welcher einen stark negativen Einfluss auf die Übersetz
 % TODO: LOLO!
 
 \subsection{Make}
+\label{sec:make}
 Bei GNU make handelt es sich um ein Standardwerkzeug der Linux-Software-Entwicklung. Mit Hilfe von make kann die Übersetzung des Quellcodes in den Programmcode automatisiert werden. 
 Dabei stellt make viele verschiedene Konfigurationsmöglichkeiten bereit. Unter anderem können verschiedene Compiler, aber auch verschiedene Übersetzungsmodi eingestellt werden.
 Um ein schnelleres Übersetzen zu ermöglichen, werden außerdem nur jene Quellcode-Dateien neu übersetzt, welche sich seit dem letzten Mal verändert haben. 
@@ -225,9 +226,30 @@ nicht gelöscht wurde. Nachdem eine Low-Level-Programmiersprache wie C++ keine r
 Freigabe von reservierten Speicherbereichen sorgen. Daher ist es essentiell für gute Programmierung, alle erzeugten Objekte nach ihrer Verwendung wieder freizugeben, um so den exzessiven Gebrauch von
 Hauptspeicher zu verhindern.
 
+Da die VNS in der Theorie eine endlose Schleife der Verbesserung darstellt, und daher auch das Programm eine prinzipiell unbegrenzte Laufzeit besitzen sollte, ist die Frage der Speicherverwaltung essentiell.
+Selbst kleinste Speicherlecks könnten, über einen langen Zeitraum betrachtet, zum Absturz des Programmes führen. Daher bietet Valgrind eine einfach zu nutzende und übersichtliche Möglichkeit die Korrektheit
+der Speicherverwaltung innerhalb des laufenden Programmes zu testen. 
+
 \subsection{Graphviz}
 
+
+
 \subsection{Ubigraph}
+Bei Ubigraph handelt es sich um eine Plattform zur visuellen Darstellung von Graphen. Die Plattform besteht einerseits aus einem Server, welcher Befehle entgegennimmt und aus diesen Befehlen eine 
+dreidimensionale Darstellung des Graphen ausgibt, und andererseits aus einer Vielzahl an Schnittstellen für alle nur erdenklichen Programmiersprachen. Mit Hilfe von Ubigraph ist es möglich, die
+Vorgänge innerhalb der VNS, und auch beim Aufbau der Initiallösung zeitnah mitzuverfolgen, und gleichzeitig eine ansehnliche dreidimensionale Darstellung des Graphen zu erlangen.
+
+Bei der Serversoftware handelt es sich um ein Stück proprietären Code, welcher per XML-RPCs angesprochen werden kann. Der Server nutzt OpenGL um dei gezeichneten Graphen per Grafikkarte darzustellen. Als
+Schnittstelle dienen \textit{Remote Procedure Calls (RPC)} welche per \textit{Hyper Text Transfer Protocol (HTTP)} an den Server übermittelt werden. Der Name XML-RPC stammt von der Auszeichnungssprache
+\textit{Extensible Markup Languag (XML)}, was soviel heißt wie Erweiterbare Auszeichnungssprache, welche als Anfrage- und Antwortsprache verwendet wird. Die Daten einer solchen Anfrage werden von der
+ausgeführten Software per HTTP-POST-Methode an den Server übermittelt, welcher auch wieder eine XML-Meldung über Erfolg oder Misserfolg der Operation bekannt gibt. 
+
+Da es sich bei XML-RPC um einen textbasierten Standard handelt, ist vor allem die Integration von Ubigraph in Skriptsprachen besonders einfach. Für viele Sprachen werden bereits Schnittstellen angeliefert,
+welche eine noch einfachere Verwendung von Ubigraph ermöglichen. Der Quellcode dieser Schnittstellen ist als Open-Source-Software zur Verfügung gestellt, und kann daher ebenso eingesehen werden wie die
+Spezifikation für die Server-Schnittstelle per RPC. Da für C++ selbst keine eigene Schnittstelle vorhanden war, wurde auf die Schnittstelle für C zurückgegriffen, welche sich wiederum einiger anderen Bibliotheken
+aus dem XML und RPC-Umfeld bedient. Da C++ die Möglichkeit bietet, nahtlos mit C-Code umzugehen war die Integration von Ubigraph keine große Herausforderung. Die Ubigraphschnittstelle für C bietet einige
+einfache Optionen zum Zeichnen von Knoten, Kanten beziehungsweise der Manipulation der Eigenschaften der selben, wie eben Farbe, Form und Beschriftung.
+
 
 % TODO: wtf
 \subsection{rsnyc}
