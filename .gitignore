@@ -24,7 +24,3 @@ pcp
 
 # NetBeans local files
 /nbproject/private/*
-
-# files used for testing
-*tests*
-*instances*
