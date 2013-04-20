@@ -163,6 +163,7 @@ Statistik, und auch für Graphen, welche in dieser Arbeit zum Einsatz kam.
 Außerdem wurden in dieser Arbeit viele Hilfsroutinen, welche von Boost bereitgestellt wurden verwendet, und mehrere Datenstrukturen aus Boost-Unterbibliotheken kamen ebenfalls zum Einsatz.
 
 \subsubsection{graph}
+\label{sec:boost:graph}
 Da es sich bei dem PCP um ein Optimierungsproblem aus dem Umfeld der Graphentheorie handelt, ist natürlich eine Graphenstruktur innerhalb des Programmes unerlässlich. Boost bietet eine ganze Unterbibliothek, 
 welche rein graphenbezogene Datenstrukturen und Algorithmen bereitstellt. Diese Graphenbibliothek ist gut getestet, vielseitung, stark anpassbar, schnell und einfach einzusetzen und war daher die ideale Wahl
 für die Lösung des PCP.
@@ -231,10 +232,17 @@ Selbst kleinste Speicherlecks könnten, über einen langen Zeitraum betrachtet, 
 der Speicherverwaltung innerhalb des laufenden Programmes zu testen. 
 
 \subsection{Graphviz}
+Graphviz ist eine Sammlung an Software-Werkzeugen zur Visualisierung von Graphen. Jedes Werkzeug aus der Softwaresammlung liest dabei eine im sogenannten Graphviz-Format ge\-schriebene Datei ein, und transformiert
+sie auf bestimmte Art und Weise. Die Funktionen umfassen von der Entfernung von doppelten Kanten, bis zur Visuellen Ausgabe in Form einer PDF oder PostScript-Datei viele nützliche Bearbeitungsmethoden für 
+Graphen. 
 
+Da die im Abschnitt \ref{sec:boost:graph} besprochene Implementation eines Graphen-Datentypes durch die Boost-Bibliothek eine automatische Ausgabe eines Graphen in das Graphviz-Dateiformat er\-möglicht, war 
+eine Verwendung dieser Werkzeuge sehr naheliegend. Durch die vielen verschiedenen Programme, welche von Graphviz bereitgestellt werden, war es ein leichtes, eine einfache Möglichkeit der visuellen Kontrolle
+der Arbeitsergebnisse zu implementieren. 
 
 
 \subsection{Ubigraph}
+\label{sec:ubigraph}
 Bei Ubigraph handelt es sich um eine Plattform zur visuellen Darstellung von Graphen. Die Plattform besteht einerseits aus einem Server, welcher Befehle entgegennimmt und aus diesen Befehlen eine 
 dreidimensionale Darstellung des Graphen ausgibt, und andererseits aus einer Vielzahl an Schnittstellen für alle nur erdenklichen Programmiersprachen. Mit Hilfe von Ubigraph ist es möglich, die
 Vorgänge innerhalb der VNS, und auch beim Aufbau der Initiallösung zeitnah mitzuverfolgen, und gleichzeitig eine ansehnliche dreidimensionale Darstellung des Graphen zu erlangen.
