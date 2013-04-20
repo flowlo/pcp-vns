@@ -238,7 +238,12 @@ Graphen.
 
 Da die im Abschnitt \ref{sec:boost:graph} besprochene Implementation eines Graphen-Datentypes durch die Boost-Bibliothek eine automatische Ausgabe eines Graphen in das Graphviz-Dateiformat er\-möglicht, war 
 eine Verwendung dieser Werkzeuge sehr naheliegend. Durch die vielen verschiedenen Programme, welche von Graphviz bereitgestellt werden, war es ein leichtes, eine einfache Möglichkeit der visuellen Kontrolle
-der Arbeitsergebnisse zu implementieren. 
+der Arbeitsergebnisse zu implementieren. Im Gegensatz zur im Abschnitt \ref{sec:ubigraph} eingesetzten Echtzeitdarstellung der Vorgänge während des Ablaufes der Programmes, wurde die Werkezeugsammlung dazu eingesetzt
+die Eingabe mit der Ausgabe zu vergleichen, und zu verifizieren, dass eventuelle Fehler in der internen Prüfungsroutine des Programmes nicht dazu führten, das falsche Lösungen plötzlich zulässig würden. 
+
+Eingeschränkt wurde der Einsatz von Graphviz durch die Tatsache, dass bei großen Probleminstanzen natürlich auch die Lösungsgröße entsprechend anwächst, und daher ein händischer Vergleich nurnoch schwer bis garnicht möglich
+ist. Daher wurde Graphviz vor Allem dazu eingesetzt die Selbsttestung des Programmes zu überprüfen, und mehrere Szenarien zu kreieren, welche zu Problemen im Programmablauf führen könnten. Mit diesen Szenarien
+konnte dann verifiziert werden, dass das Programm in der Lage ist, ungültige Lösungen von selbst auszuschließen.
 
 
 \subsection{Ubigraph}
