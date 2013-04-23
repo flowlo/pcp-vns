@@ -1,5 +1,5 @@
-\section{Implementierung}
-% TODO: everything 
+\section{Entwicklung}
+% TODO: einführung oder so 
 
 \subsection{C++}
 Als primäre Programmiersprache wurde C++ gewählt. Verschiedene Gründe sprachen für C++, unter anderem die an C angelehnte Syntax, aber
@@ -44,6 +44,12 @@ Die STL wurde inzwischen in den Sprachstandard von C++ aufgenommen, so dass jede
 das es keine solche allgemein einsetzbare Codebibliothek gibt. Der Preis für diese Einfachheit ist die Zeit, die ein einzelner Übersetzungsdurchgang benötigt. Da die STL stark auf die namensgebenden
 \textit{Templates} setzt, welche es ermöglichen eine einzelne Datenstruktur für eine Vielzahl an Datentypen verfügbar zu machen, muss der Compiler diese \textit{Templates} zum Übersetzungszeitpunkt
 auflösen, ein Vorgang, welcher einen stark negativen Einfluss auf die Übersetzungszeit hat.
+
+\subsubsection{Einsatz}
+Auf Grund der hohen Performance und der umfangreichen Code-Bibliotheken wurde für die Implementierung des Herzstückes der Arbeit C++ gewählt. Das bedeutet, dass alle Softwareteile, welche zur Lösung einer
+einzelnen Probleminstanz gebraucht werden, als ein einzelnes Programm in C++-Quellcode vorliegt. Viele Hilfsroutinen, welche unter anderem dazu geschrieben wurden, neue Instanzen des PCP zu generieren, 
+mehrere VNS-Instanzen gleichzeitig auszuführen, und auch Auswertungen zu fertig berechneten Instanzen zu bieten, wurden hingegen in anderen Programmiersprachen geschrieben, welche zwar wesentlich langsamer
+in ihrer Ausführung sind, dafür aber schneller entwickelt und an neue Bedürfnisse angepasst werden können.
 
 \subsection{Python}
 % TODO: LOLO!
