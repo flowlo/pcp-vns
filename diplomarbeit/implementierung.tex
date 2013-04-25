@@ -112,9 +112,41 @@ mehr Referenzen auf das selbe Objekt hält. Um dies zu ermöglichen wird von all
 Verweise auf den selben Graphen mitzählt. So lange dieser Zähler über eins ist, wird kein Objekt gelöscht. Wird nun der Destruktor eines Solutionobjektes aufgerufen, überprüft dieser, ob er die letzte
 Referenz auf diese Objekte hält. Wenn ja, löscht er diese und seine eigenen Referenzen, wenn nicht, löscht er wiederum nur seine eigenen Referenzen und vermindert den Zähler um eins.
 
+\subsubsection{StoredSolution}
+Um eine einzelne Lösung von einer anderen zu unterscheiden, sind zwei Informationen notwendig: die Auswahl der Repräsentanten, und die Auswahl 
+an Farben. Mit diesen beiden Informationen, und dem Ausgangsgraphen, aus dem die Lösung berechnet wurde, ist eine Lösung eindeutig rekonstruierbar.
+Umzu verhindern, dass die VNS-Schleife immer wieder auf die selben Lösungen kommt, ohne echte Verbesserungen zu erzielen, werden alle neuen, verbesserten
+Lösungen komprimiert gespeichert. 
+
+Zur komprimierten Speicherung wurde eine eigene Datenstruktur definiert, welche eben nur jene oben erwähnten Informationen abspeichert. 
+Dazu werden zwei Arrays verwendet, welche einerseits die für einzelne Partitionen verwendeten Farben, andererseits aber auch die 
+eindeutige Identifikationsnummern der Repräsentanten abspeichern. Um eine Solution einfach in solch eine StoredSolution umzuwandeln, wurde
+ein Konstruktor definiert, welcher ein klassisches Solutionobjekt übernimmt. 
+
+\singlespacing
+\begin{lstlisting}[caption={Die Signatur von StoredSolution},label={lst:stored}]
+struct StoredSolution {
+   StoredSolution(Solution& toStore);
+   ~StoredSolution();
+   
+   int n;
+   
+   int *colors;
+   int *representatives;
+   
+   std::string toString();
+};
+\end{lstlisting}
+\setstretch{1.5}
+
+Für den schnelle Zuordnung einer neuen Lösung zu den bestehenden Lösungen wird eine Hashmap-Datenstruktur verwendet. Durch die Verwendung einer
+Hashmap ist eine quasi sofortige Zuordnung einer Lösung zu dem entsprechenden Platz in der Hashmap möglich. Sollte eine Lösung schon einmal 
+aufgekommen sein, wird dieser Lösungsstrang verworfen, da er nicht zu neuen Lösungen führen würde. Die Implementation der Hashmap wird von 
+Boost, beschrieben im Abschnitt \ref{sec:boost}, bereitgestellt.
+
 \subsection{Parser}
 \label{sec:parser}
-Um Verbesserungen bla bla bla.
+
 
 \subsection{Konstruktionsheuristik}
 
