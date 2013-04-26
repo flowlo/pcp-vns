@@ -1,0 +1,260 @@
+\section{Implementierung}
+%TODO: sec:ansatz
+Für die Implementierung des in Abschnitt \ref{sec:ansatz} vorgeschlagenen Lösungsansatzes, wurde eine möglichst flexible Struktur des Programmes verwendet. Wie in Abschnitt \ref{sec:c++} begründet, wurde
+als Implementationssprache C++ gewählt. Durch den Einsatz von C++ kann ein einfach erweiterbares Programmgerüst geschrieben werden, welches es erlaubt, schnell und ohne großen Aufwand mehrere Nachbarschaften
+für die VNS zu implementieren. 
+
+Um diese flexible Struktur zu ermöglichen wurde das Programm in vier unabhängige Bereiche aufgeteilt, welche durch eine einzelne Startroutine zusammengehalten werden. Diese Bereiche können grob als Parser, 
+Konstruktionsheuristik, Variable Nachbarschaftssuche, und Nachbarschaften zusammengefasst werden. Hinzu kommt die sogenannte Solution, eine eigene Klasse um eine Lösung sowohl zu speichern, aber auch um Möglichkeiten
+anzubieten, eine bestehende Lösung zu verändern. Diese einzelnen Bereiche sollen im folgenden Abschnitt ausführlich besprochen werden.
+
+\subsection{Solution}
+Bei Solution handelt es sich um die Basisklasse für alle weiteren Operationen. Sie speichert sowohl den Graphen, von dem bei der Lösung ausgegangen wird, als auch die Lösung selbst, mit konkret verteilten Farben
+für einzelne Partitionen. Außerdem stellt Solution Methoden bereit, um Veränderungen an Lösungen vorzunehmen, wie sie etwa von den Nachbarschaften gebraucht werden, um einzelne Knoten umzufärben, oder zu ersetzen.
+Außerdem besitzt Solution mehrere Methoden, einen Problemgraphen aus einer Datei auszulesen, und diesen wiederum in einem Solution-Objekt zu speichern. Diese Methoden zum Einlesen von Dateien werden genauer 
+in Abschnitt \ref{sec:parser} besprochen.
+
+\singlespacing
+\lstset{style=customc}
+\begin{lstlisting}[caption={Signatur der Solutionklasse},label=lst:solution]
+class Solution {
+   public:
+      Solution();
+      Solution(Solution *s);
+      ~Solution();
+      
+      void requestDeepCopy();
+
+      Graph *g;
+      int numParts;
+      int *partition;
+      std::vector<Vertex> *partNodes;
+      int colorsUsed;
+      int *representatives;
+      int *copyCounter;
+      
+      int getPartition(Vertex v);
+      unsigned int getOriginalId(Vertex v);
+      int getPartitionColor(Vertex v);
+      int getColorDegree(Vertex v);
+      
+      int minPossibleColor(Vertex v);
+      boost::tuple<int, int> getColorDegreeAndMinColor(Vertex v);
+      bool isPartitionColored(Vertex v);
+      
+      void setOriginalId(Vertex v, int id);
+      void setPartitionColor(Vertex v, int color);
+      
+      void print(std::ostream& out);
+      std::string toString();
+      
+      static Solution* fromColStream(std::istream& in);
+      static Solution* fromColBStream(std::istream& in);
+      static Solution* fromPcpStream(std::istream& in);
+      
+      void addVertex(int part, Vertex id);
+      void removeVertex(Vertex id);
+      void addEdge(Vertex v1, Vertex v2);
+      void replaceVertex(Vertex toR, Vertex rep, Solution& full);
+      
+      #ifdef ubigraph
+      void redraw();
+      void redraw(int shift);
+      void prepareUbigraph();
+      #endif
+      
+   private:
+      boost::property_map<Graph, boost::vertex_index1_t>::type partitionMap;
+      boost::property_map<Graph, boost::vertex_index2_t>::type idMap;
+};
+\end{lstlisting}
+\setstretch{1.5}
+
+Besonders interessant bei der Solution-Klasse ist die automatisch bereitgestellte Kopiermechanik. Einer der besonderen Eigenschaften von C++ ist es, für jede Klasse automatisch einen sogenannten Kopierkonstruktor
+bereitzustellen, welcher als Parameter ein Objekt des selben Types entgegennimmt, und dieses kopiert. Da im Falle einer Lösung aber nicht immer alle Daten kopiert werden müssen, wurde in dieser Arbeit eine
+eigene Kopiermechanik implementiert. Wie in Listing \ref{lst:copy} zu sehen ist, wird ein Großteil der Referenzdatentypen direkt übernommen, da diese häufig garnicht verändert werden. 
+
+Das Kopieren einer Lösung kommt vor Allem bei den verschieden Nachbarschaften zum Einsatz. Eine bestehende Lösung soll verändert werden, ohne, dass die Information der Ausgangslösung verloren geht. Also wird
+die bestehende Lösung kopiert, und die Veränderungen nur auf der neuen Lösung ausgeführt. Da viele der Nachbarschaften darauf basieren, dass ausschließlich die Lösungsfarben verändert werden, kann zum Beispiel, 
+anstatt den gesamten Graphen zu kopieren, eine Referenz auf den alten Graphen aufrecht erhalten werden. Selbiges gilt natürlich auch für alle direkt mit dem Graph in Verbindung stehenden Datenspeichern. 
+
+\singlespacing
+\begin{lstlisting}[caption={Der Kopierkonstruktor der Solutionklasse},label={lst:copy}]
+Solution::Solution(Solution *toCopy) {
+   this->partNodes = NULL;
+   this->g = toCopy->g;
+   this->representatives = toCopy->representatives;
+   this->partitionMap = get(vertex_index1_t(), *this->g);
+   this->idMap = get(vertex_index2_t(), *this->g); 
+   // Copy reference counter and increment to track references
+   this->copyCounter = toCopy->copyCounter;
+   *this->copyCounter += 1;  
+   
+   this->numParts = toCopy->numParts;
+   this->colorsUsed = toCopy->colorsUsed;
+
+   
+   this->partition = new int[this->numParts];
+   for (int i = 0; i < this->numParts; i++) {
+      this->partition[i] = toCopy->partition[i];
+   }
+}
+\end{lstlisting}
+\setstretch{1.5}
+
+Nun könnten aber Probleme entstehen. Zum einen, wenn eine Nachbarschaft beispielsweise Knoten aus dem zu Grunde liegenden Graphen austauscht, um eine bessere Lösung zu erhalten. Da durch das unechte Kopieren
+der in einem Solutionobjekt referenzierte Graph auch bei anderen Lösungen zum Einsatz kommt, würde eine Veränderung auf einem Graphen, zu Veränderungen und aller Wahrscheinlichkeit nach zu Fehlern in alternativen
+Lösungen führen, welche dann unweigerlich unzulässige Ergebnisse zur Folge hätten. Daher kann mit der Methode \texttt{requestDeepCopy} eine vollständige Kopie des Solutionobjektes angefordert werden. In dieser
+Methode werden dann alle verbleibenden Fremdreferenzen nocheinmal kopiert, und in eigens für das anfragende Solutionobjekt reservierte Speicherbereiche geschrieben.
+
+Ein anderes Problem entsteht beim Aufräumen von Objekten. Sollte durch das Löschen eines Solutionobjektes auch dessen referenzierter Graph verschwinden, würde das zu Speicherfehlern bei anderen Objekten führen, 
+welche auf den selben Graphen zeigen. Daher wurde der Destruktor, welcher zum Aufräumen eines Objektes aufgerufen wird, überschrieben, und löscht nun nur noch referenzierte Objekte, wenn kein anderes Objekt
+mehr Referenzen auf das selbe Objekt hält. Um dies zu ermöglichen wird von allen Solutionobjekten, welche auf den selben Graphen referenzieren ein Counter referenziert, welcher die Anzahl der
+Verweise auf den selben Graphen mitzählt. So lange dieser Zähler über eins ist, wird kein Objekt gelöscht. Wird nun der Destruktor eines Solutionobjektes aufgerufen, überprüft dieser, ob er die letzte
+Referenz auf diese Objekte hält. Wenn ja, löscht er diese und seine eigenen Referenzen, wenn nicht, löscht er wiederum nur seine eigenen Referenzen und vermindert den Zähler um eins.
+
+\subsubsection{StoredSolution}
+Um eine einzelne Lösung von einer anderen zu unterscheiden, sind zwei Informationen notwendig: die Auswahl der Repräsentanten, und die Auswahl 
+an Farben. Mit diesen beiden Informationen, und dem Ausgangsgraphen, aus dem die Lösung berechnet wurde, ist eine Lösung eindeutig rekonstruierbar.
+Umzu verhindern, dass die VNS-Schleife immer wieder auf die selben Lösungen kommt, ohne echte Verbesserungen zu erzielen, werden alle neuen, verbesserten
+Lösungen komprimiert gespeichert. 
+
+Zur komprimierten Speicherung wurde eine eigene Datenstruktur definiert, welche eben nur jene oben erwähnten Informationen abspeichert. 
+Dazu werden zwei Arrays verwendet, welche einerseits die für einzelne Partitionen verwendeten Farben, andererseits aber auch die 
+eindeutige Identifikationsnummern der Repräsentanten abspeichern. Um eine Solution einfach in solch eine StoredSolution umzuwandeln, wurde
+ein Konstruktor definiert, welcher ein klassisches Solutionobjekt übernimmt. 
+
+\singlespacing
+\begin{lstlisting}[caption={Die Signatur von StoredSolution},label={lst:stored}]
+struct StoredSolution {
+   StoredSolution(Solution& toStore);
+   ~StoredSolution();
+   
+   int n;
+   
+   int *colors;
+   int *representatives;
+   
+   std::string toString();
+};
+\end{lstlisting}
+\setstretch{1.5}
+
+Für den schnelle Zuordnung einer neuen Lösung zu den bestehenden Lösungen wird eine Hashmap-Datenstruktur verwendet. Durch die Verwendung einer
+Hashmap ist eine quasi sofortige Zuordnung einer Lösung zu dem entsprechenden Platz in der Hashmap möglich. Sollte eine Lösung schon einmal 
+aufgekommen sein, wird dieser Lösungsstrang verworfen, da er nicht zu neuen Lösungen führen würde. Die Implementation der Hashmap wird von 
+Boost, beschrieben im Abschnitt \ref{sec:boost}, bereitgestellt. Um die Hashmap zu betreiben sind außerdem noch eine Methode zur Hashberechnung,
+sowie eine Methode zum Vergleich zweier gespeicherten Solutions notwendig. Der Hash für ein StoredSolutionobjekt wird aus den gesammelten Werten
+der beiden internen Arrays berechnet, während für die Vergleichsmethode die beiden Arrays Wert für Wert verglichen werden. Die von Boost 
+bereitgestellte Hashmap verwendet bei gleichen Hashwerten aber unterschiedlichen Lösungen eine einfache Liste, um die Ergebnisse zu speichern.
+
+\subsection{Parser}
+\label{sec:parser}
+
+Damit erzielte Ergebnisse mit älteren Programmversionen, aber auch mit anderen Lösungsansätzen für das PCP verglichen werden können, ist es von
+Vorteil, immer wieder die selbe Eingabe zu verwenden. Außerdem bietet sich eine solche Möglichkeit an, wenn, wie in dieser Arbeit ein Zufallsfaktor
+zu einer Verbesserung der Lösung führen kann. Durch immer wieder gleiche Eingaben kann ein direkter Vergleich auch zwischen unterschiedlich
+parametrisierten Programminstanzen angestellt werden.
+
+Es gibt mehrere Dateiformate, mit denen Probleminstanzen des PCP abgespeichert werden können. In dieser Arbeit wurde vor Allem auf jenes
+Format Wert gelegt, in dem auch die meisten Testinstanzen der einschlägigen Literatur vorliegen. Allerdings wurde im Zuge von ausgeweiteten 
+Testungen auch ein zweites Format zum einlesen eines Problemgraphen implementiert. 
+
+Eine \texttt{.pcp}-Datei ist eine einfache Textdatei, welche allerdings nach einer bestimmten Struktur aufgebaut ist. Die aller erste Zeile
+einer solchen Datei besteht aus 3 Zahlen, welche jeweils durch ein Leerzeichen getrennt sind. Diese 3 Zahlen stehen für die Anzahl der Knoten, 
+die Anzahl der Kanten, und die Anzahl der Partition im Problemgraph, genau in jener Reihenfolge. Nun folgen \textit{n} Zeilen an Zahlen, mit 
+genau einer Zahl pro Zeile, wobei \textit{n} die Anzahl an Knoten ist. Diese Zahlen stehen für die Partitionen, denen die Knoten zugeordnet werden.
+Die erste Zeile beinhaltet also die Partition des ersten Knotens, die zweite Zeile die des zweiten Knotens und so weiter. Zu letzt folgen noch
+\textit{m} Zeilen mit jeweils einem Zahlenpaar, welche die Kanten zwischen den Knoten definieren, wobei \textit{m} der Anzahl an Kanten insgesamt
+entspricht.
+
+\singlespacing
+\begin{lstlisting}[caption={Eine einfache \textit{.pcp}-Beispieldatei},label={lst:pcp}]
+4 5 2
+0
+1
+1
+0
+0 1
+0 2
+1 2
+1 3
+2 3
+\end{lstlisting}
+\setstretch{1.5}
+
+Der Parser, welcher eine solche Datei einliest, ist in die Klasse Solution eingearbeitet. Die statische Methode \texttt{fromPcpStream} ließt eine
+Datei von einem Eingabestream ein, und wandelt sie in ein Solutionobjekt mit entsprechendem Problemgraphen um. Dieses Solutiobjekt wird während
+der gesamten Laufzeit des Programmes nicht verändert oder gelöscht, und dient als Ausgangspunkt der Konstruktionsheuristik, aber auch als
+Referenz für Nachbarschaften, welche einzelne Knoten austauschen.
+
+\singlespacing
+\begin{lstlisting}[caption={Die Methode \texttt{fromPcpStream}, welche eine Datei im \texttt{.pcp}-Format einließt und in ein Solutionobjekt umwandelt},label={lst:frompcp}]
+Solution* Solution::fromPcpStream(istream& in) {
+   Solution *s = new Solution();
+   
+   int vertices, edges, partitions;
+   cin >> vertices >> edges >> partitions;
+   
+   if (DEBUG_LEVEL > 3) {
+      cout << "Reading " << vertices << " vertices, " << edges;
+      cout << " edges and " << partitions << " partitons ..." << endl;
+   }
+   
+   // Initialize the solution to the read parameters
+   s->partition = new int[partitions];
+   s->representatives = new int[partitions];
+   s->partNodes = new vector<Vertex>[partitions];
+   s->numParts = partitions;
+   s->colorsUsed = partitions;
+   
+   #ifdef ubigraph
+   s->prepareUbigraph();
+   #endif
+
+   // Read partition info and store it into the property map, do the 
+   // same for the "original" vertexID, so they can be compared on 
+   // all graph
+   int i, part;
+   for (i = 0; i < vertices; i++) {
+      cin >> part;
+      s->addVertex(part, i);
+      
+      if (DEBUG_LEVEL > 3)
+         cout << "Added vertex " << i << " to partition " << part << "." << endl;
+   }
+
+   // Read the input for edges between to vertices and add them to 
+   // the solution graph
+   for (i = 0; i < edges; i++) {
+      int source, target;
+      cin >> source >> target;
+
+      if (DEBUG_LEVEL > 3) {
+         cout << "Added edge (" << source << "|" << target << ")" << endl;
+      }
+      s->addEdge(source, target);
+   }
+   
+   if (DEBUG_LEVEL > 3)
+      cout << "Parsing input finished successfully!" << endl;
+
+   return s;
+}
+\end{lstlisting}
+\setstretch{1.5}
+
+
+\subsection{Konstruktionsheuristik}
+
+\subsection{Variable Nachbarschaftssuche}
+
+\subsection{Nachbarschaften}
+
+\subsubsection{changeColor}
+\subsubsection{changeNode}
+\subsubsection{DSATUR}
+\subsubsection{changeAll}
+
+
+ 
