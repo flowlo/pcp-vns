@@ -2,6 +2,7 @@
 % TODO: einführung oder so 
 
 \subsection{C++}
+\label{sec:cpp}
 Als primäre Programmiersprache wurde C++ gewählt. Verschiedene Gründe sprachen für C++, unter anderem die an C angelehnte Syntax, aber
 auch die gute Performance im Vergleich zu Sprachen, welche in einer Virtuellen Maschine laufen, oder gar interpretiert werden. Zu 
 all diesen Gründen kam noch hinzu, dass für C++ bereits ausgezeichnete Codebibliotheken zur Verfügung stehen, welche ein schnelles
@@ -14,7 +15,7 @@ dessen Möglichkeiten jene von C aber bei weitem übersteigen.
 Wie C handelt es sich bei C++ um eine statisch-typisierte Programmiersprache, das heißt der Compiler kann schon während der Übersetzung die
 syntaktisch korrekte Verwendung von Datentypen sicherstellen. Dadurch können solche Überprüfungen während der Ausführung des Programmes
 entfallen, was zu einer enormen Beschleunigung der Ausführung des Programmes führt. Außerdem ermöglicht es dem Entwickler Fehler mit
-inkorrekt verwendeten Datentypen einfacher zu erkennen, da eine Fehlermeldung des Übersetzers eine genau Zeile angeben kann, in der 
+inkorrekt verwendeten Datentypen einfacher zu erkennen, da eine Fehlermeldung des Übersetzers eine genaue Zeile angeben kann, in der 
 der Fehler verursacht wird. 
 
 Obwohl sich C++ wesentlich von C unterscheidet, ist es immer noch kompatibel mit C. Eine Stück C Code kann immer noch in C++ verwendet und
@@ -52,7 +53,12 @@ mehrere VNS-Instanzen gleichzeitig auszuführen, und auch Auswertungen zu fertig
 in ihrer Ausführung sind, dafür aber schneller entwickelt und an neue Bedürfnisse angepasst werden können.
 
 \subsection{Python}
-% TODO: LOLO!
+\label{sec:python}
+Neben der eigentlichen Applikation mit algorithmischem Kern entstanden im Laufe der Arbeit am Projekt zusätzliche Scripts um repetitive Tätigkeiten zu beschleunigen. Unter Anderem wurde Python zur massenhaften Ausführung des Algorithmus auf Testinstanzen und die anschließende Aufbereitung der Ergebnisse eingesetzt. Außerdem zur Konversion verschiedener Eingabeformate und zur Generierung von Eingabedaten.
+
+Im Kontrast zur statisch typisierten Sprache C++ mit steht Python seinen dynamischen Eigenschaften, das heißt, dass Variablen grundsätzlich keinen statischen Typ aufweisen. Die so erhöhte Lesbarkeit wurde noch bewusst durch Whitespace-Konentionen und leichtgewichtige Syntax für Kontrollstrukturen und Schleifen erhöht. Außerdem ist die Python-Plattofrm (inklusive Interpreter) auf unixbasierten Systemen weit verbreitet, bei vielen Distributionen sogar Teil des Grundsystems. Hohe Popularität, und gute Lesbarkeit als Design Pattern machen Python zu einer hervorragenden Skriptsprache, weshalb sie auch im Rahmen dieses Projektes in dieser Rolle Einsatz findet.
+
+Während bei der Implementierung der Variablen Nachbarschaftssuche besonders die Performance zur Laufzeit berücksichtigt wurde, stand bei Scripts die Lesbarkeit und einfache Wartbartkeit im Vordergrund. Python passt auch hier ins BIld, da die Sprache üblicherweise Interpretiert oder Just-In-Time übersetzt wird, was in der Regel eine höhere Laufzeit mit sich bringt. Dieser Nachteil relativiert sich dadurch, dass Scripts sowieso nicht als laufzeitkritische Teile des Projekts betrachtet werden.
 
 \subsection{Make}
 \label{sec:make}
@@ -94,7 +100,6 @@ sich ein Teil der Definitionen innerhalb des C++-Codes ändern, auch die Definit
 Einheit angesehen wird, und als vom eigentlichen Quelltext abgetrennte Einheit angesehen wird. Der Header, welcher ja unter anderem auch die Deklarationen für \textit{Templates} enthält, muss nur noch
 übersetzt werden, wenn sich in seinem eigenen Code etwas ändert. Dadurch können die eigentlichen Programmabschnitte, welche in normalen C++-Quelldateien zu finden sind, wesentlich schneller
 compiliert werden, ohne auf die Vorteile von \textit{Templates} zu verzichten.
-
 
 \subsubsection{GCC}
 GCC, oder auch GNU Compiler Collection, ist ein Sammlung an Übersetzern welche alle unter der Open-Source-Lizenz GPL veröffentlich wurden. GCC wird häufig als der Standard-Compiler unter Linux angesehen,
@@ -269,6 +274,5 @@ Spezifikation für die Server-Schnittstelle per RPC. Da für C++ selbst keine ei
 aus dem XML und RPC-Umfeld bedient. Da C++ die Möglichkeit bietet, nahtlos mit C-Code umzugehen war die Integration von Ubigraph keine große Herausforderung. Die Ubigraphschnittstelle für C bietet einige
 einfache Optionen zum Zeichnen von Knoten, Kanten beziehungsweise der Manipulation der Eigenschaften der selben, wie eben Farbe, Form und Beschriftung.
 
-
 % TODO: wtf
-\subsection{rsnyc}
+\subsection{rsync}
