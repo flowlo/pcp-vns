@@ -1,4 +1,4 @@
-\section{Implementierung}
+\chapter{Implementierung}
 %TODO: sec:ansatz
 Für die Implementierung des in Abschnitt \ref{sec:ansatz} vorgeschlagenen Lösungsansatzes, wurde eine möglichst flexible Struktur des Programmes verwendet. Wie in Abschnitt \ref{sec:c++} begründet, wurde
 als Implementationssprache C++ gewählt. Durch den Einsatz von C++ kann ein einfach erweiterbares Programmgerüst geschrieben werden, welches es erlaubt, schnell und ohne großen Aufwand mehrere Nachbarschaften
@@ -8,7 +8,7 @@ Um diese flexible Struktur zu ermöglichen wurde das Programm in vier unabhängi
 Konstruktionsheuristik, Variable Nachbarschaftssuche, und Nachbarschaften zusammengefasst werden. Hinzu kommt die sogenannte Solution, eine eigene Klasse um eine Lösung sowohl zu speichern, aber auch um Möglichkeiten
 anzubieten, eine bestehende Lösung zu verändern. Diese einzelnen Bereiche sollen im folgenden Abschnitt ausführlich besprochen werden.
 
-\subsection{Solution}
+\section{Solution}
 Bei Solution handelt es sich um die Basisklasse für alle weiteren Operationen. Sie speichert sowohl den Graphen, von dem bei der Lösung ausgegangen wird, als auch die Lösung selbst, mit konkret verteilten Farben
 für einzelne Partitionen. Außerdem stellt Solution Methoden bereit, um Veränderungen an Lösungen vorzunehmen, wie sie etwa von den Nachbarschaften gebraucht werden, um einzelne Knoten umzufärben, oder zu ersetzen.
 Außerdem besitzt Solution mehrere Methoden, einen Problemgraphen aus einer Datei auszulesen, und diesen wiederum in einem Solution-Objekt zu speichern. Diese Methoden zum Einlesen von Dateien werden genauer 
@@ -18,6 +18,13 @@ in Abschnitt \ref{sec:parser} besprochen.
 \singlespacing
 \begin{lstlisting}[caption={Ein Ausschnitt aus der Signatur der Solutionklasse},label=lst:solution]
 class Solution {
+   public:
+      Solution();
+      Solution(Solution *s);
+      ~Solution();
+      
+      void requestDeepCopy();
+
       Graph *g;
       int numParts;
       int *partition;
@@ -25,6 +32,40 @@ class Solution {
       int colorsUsed;
       int *representatives;
       int *copyCounter;
+      
+      int getPartition(Vertex v);
+      unsigned int getOriginalId(Vertex v);
+      int getPartitionColor(Vertex v);
+      int getColorDegree(Vertex v);
+      
+      int minPossibleColor(Vertex v);
+      boost::tuple<int, int> getColorDegreeAndMinColor(Vertex v);
+      bool isPartitionColored(Vertex v);
+      
+      void setOriginalId(Vertex v, int id);
+      void setPartitionColor(Vertex v, int color);
+      
+      void print(std::ostream& out);
+      std::string toString();
+      
+      static Solution* fromColStream(std::istream& in);
+      static Solution* fromColBStream(std::istream& in);
+      static Solution* fromPcpStream(std::istream& in);
+      
+      void addVertex(int part, Vertex id);
+      void removeVertex(Vertex id);
+      void addEdge(Vertex v1, Vertex v2);
+      void replaceVertex(Vertex toR, Vertex rep, Solution& full);
+      
+      #ifdef ubigraph
+      void redraw();
+      void redraw(int shift);
+      void prepareUbigraph();
+      #endif
+      
+   private:
+      boost::property_map<Graph, boost::vertex_index1_t>::type partitionMap;
+      boost::property_map<Graph, boost::vertex_index2_t>::type idMap;
 };
 \end{lstlisting}
 \setstretch{1.5}
@@ -135,7 +176,7 @@ Solution::~Solution() {
 }
 \end{lstlisting}
 
-\subsubsection{StoredSolution}
+\subsection{StoredSolution}
 Um eine einzelne Lösung von einer anderen zu unterscheiden, sind zwei Informationen notwendig: die Auswahl der Repräsentanten, und die Auswahl 
 an Farben. Mit diesen beiden Informationen, und dem Ausgangsgraphen, aus dem die Lösung berechnet wurde, ist eine Lösung eindeutig rekonstruierbar.
 Umzu verhindern, dass die VNS-Schleife immer wieder auf die selben Lösungen kommt, ohne echte Verbesserungen zu erzielen, werden alle neuen, verbesserten
@@ -170,7 +211,7 @@ sowie eine Methode zum Vergleich zweier gespeicherten Solutions notwendig. Der H
 der beiden internen Arrays berechnet, während für die Vergleichsmethode die beiden Arrays Wert für Wert verglichen werden. Die von Boost 
 bereitgestellte Hashmap verwendet bei gleichen Hashwerten aber unterschiedlichen Lösungen eine einfache Liste, um die Ergebnisse zu speichern.
 
-\subsection{Parser}
+\section{Parser}
 \label{sec:parser}
 
 Damit erzielte Ergebnisse mit älteren Programmversionen, aber auch mit anderen Lösungsansätzen für das PCP verglichen werden können, ist es von
@@ -269,59 +310,18 @@ Solution* Solution::fromPcpStream(istream& in) {
 \end{comment}
 
 
-
-\subsection{Konstruktionsheuristik}
+\section{Konstruktionsheuristik}
 Als Konstruktionsheuristik wurde der in Abschnitt \ref{sec:onestep} Algorithmus OneStep-CD gewählt. Die verwendete Implementierung des Algorithmus
 erzeugt ein neues Solutionobjekt, als einziger Übergabeparameter ist das aus der Datei eingelesen Solutionobjekt, welches ja den vollständigen Problemgraphen
 enthält. Dieses Solutionobjekt bildet dann die Ausgangsbasis für die Verbesserung in der Variablen Nachbarschaftssuche. 
 
-%TODO: PILOT?!
+%TODO: pilot
+\section{Nachbarschaften}
 
-\subsection{Variable Nachbarschaftssuche}
-
-\begin{algorithm}
-\begin{algorithmic}[1]
-\State Berechne Initiallösung mit \emph{onestepCD}
-\While{Terminationsbedingung \textbf{nicht} erfüllt}
-\State Führe Variable Neighborhood Descent mit Best Improvement Strategie durch:
-\State Nachbarschaft $l \leftarrow 1$
-\While{$l \leq 3$ \textbf{und} Zeitlimit nicht erreicht}
-\State Führe Nachbarschaft $n_l$ aus
-\If {Lösung verbessert \textbf{und} $l\neq 1$} 
-\State  $l\leftarrow 1$  
-\Else
-\State  $l\leftarrow l + 1$
-\EndIf
-\EndWhile
-\If{Beste Lösung verbessert \textbf{oder} $k \geq k_{\mathrm max}$}
-\State $k \leftarrow k_{\mathrm start}$ 
-\Else
-\State $k \leftarrow k + 1$
-\EndIf
-\State Wähle zufällig Nachbarschaft aus und ``schüttle" Lösung mit $k$ zufälligen Zügen
-\EndWhile
-\State\Return Beste gefundene Lösung
-\end{algorithmic}
-\caption{Pseudocode der Variablen Nachbarschaftssuche}
-\end{algorithm}
-
-
-\subsection{Nachbarschaften}
-Um nun Kapital aus der Variablen Nachbarschaftssuche zu schlagen, müssen natürlich auch verschiedene Nachbarschaften verwendet werden. Diese 
-Heuristiken versuchen, in kleinen Schritten, eine Lösung zu verbessern, oder zumindest zu verändern. Ziel war es, möglichst schnelle Nachbarschaften
-zu verwenden, welche erst in Verbindung miteinander ihre Stärken auspielen. 
-
-\subsubsection{changeColor}
-\begin{algorithm}
-\begin{algorithmic}
-\State nothing
-\end{algorithmic}
-\caption{Pseudocode der changeColor-Nachbarschaft}
-\label{psy:changeColor}
-\end{algorithm}
-\subsubsection{changeNode}
-\subsubsection{DSATUR}
-\subsubsection{changeAll}
+\subsection{changeColor}
+\subsection{changeNode}
+\subsection{DSATUR}
+\subsection{changeAll}
 
 
  

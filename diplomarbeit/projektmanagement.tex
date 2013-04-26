@@ -1,10 +1,10 @@
-\section{Projektmanagement}
+\chapter{Projektmanagement}
 
 Im folgenden soll erläutert werden, wie diese Arbeit als Projekt funktioniert hat. Dabei soll ein Überblick über die Projektstruktur, sowie den Ablauf der einzelnen Arbeitsschritte gegeben, und im speziellen auf die Implementierung der beschriebenen Lösungsansätze und Algorithmen eingegangen werden, da genau dieser Aspekt wohl klar die meiste Arbeitszeit in Anspruch nahm.
 
 Es folgt eine verbale Beschreibung der Abreitsphasen und -schritte. Eine quantitive Übersicht findet sich in \ref{sec:arbeitspakete}.
 
-\subsection{Projektstruktur}
+\section{Projektstruktur}
 
 Um das Management während dem Projektverlauf zu erleichtern, wurde das Projekt in vier Teilbereiche, welche wiederum aus Arbeitspaketen bestehen, gegliedert, die in Gesamtheit alle Aufgaben, die im Rahmen des Projekts erledigt wurden, abdecken.
 
@@ -15,7 +15,7 @@ Um das Management während dem Projektverlauf zu erleichtern, wurde das Projekt 
 \label{fig:psp}
 \end{figure}
 
-\subsubsection{Recherche}
+\subsection{Recherche}
 
 Um nicht bereits zu Projektbeginn die Fehler anderer erneut zu begehen, erschien eine ausgedehnte Recherchephase sinnvoll. Rückblickend zeigte sich diese Phase als besonders hilfreich, um mit der komplexen Materie vertraut zu werden.
 
@@ -25,7 +25,7 @@ Um nicht bereits zu Projektbeginn die Fehler anderer erneut zu begehen, erschien
 
 \paragraph{Ideenfindung für Nachbarschaften}{Zum Abschluss der Recherchephase entwickelte sich bereits ein Gespür für die Struktur des Problems, sodass Ideen für eigene Nachbarschaften aufkamen.} %TODO
 
-\subsubsection{Design}
+\subsection{Design}
 
 Nach einer Umfangreichen Recherche und Auseinandersetzung mit der Problemstellung ging das Projekt in die Designphase über. Hier galt es sicherzustellen wie die Implementierung der Nachbarschaften erfolgen soll und außerdem Schnittstellen des Programms zur Außenwelt klar zu definieren.
 
@@ -35,20 +35,20 @@ Nach einer Umfangreichen Recherche und Auseinandersetzung mit der Problemstellun
 \paragraph{Wahl von Codebibliotheken, Compiler, etc.}{Bevor die Entwicklung des Programms tatsächlich beginnen konnte, wurde eine Codebibliothek}
 \paragraph{Implementierung einer Visualisierung}{Um die Arbeitsweise des Programms möglichst anschaulich darstellen zu können, wurde eine Visualisierung mit Ubigraph implementiert. Dies ermöglicht eine Überwachung der Abreitsschritte einzelner Nachbarschaften, sodass auch Dritte Einsicht in den Ablauf gewinnen.}
 
-\subsubsection{Implementierung von Nachbarschaften}
+\subsection{Implementierung von Nachbarschaften}
 
 \paragraph{Implementierung von TabuSearch}{Als erstes wurde die Tabu-Suche implementiert, da eine ausführliche Beschreibung des Verfahrens vor lag.} %TOFO referenz tabusuche
 \paragraph{Implementierung von ChangeColor}{} %TODO moritz?
 \paragraph{Implementierung von ChangeNode}{} %TODO moritz?
 \paragraph{Implementierung von DSATUR}{}
 
-\subsubsection{Testen und Evaluierung}
+\subsection{Testen und Evaluierung}
 
 \paragraph{Implementieren einer Plausibilitätsprüfung}{Um sicher zu gehen, dass die von den Heuristiken berechneten Lösungen plausibel sind, also keine Konflikte oder unerwünschte Verbindungen enthalten, müssen diese überprüft werden. Da dies mit steigender Instanzgröße nicht von Hand möglich ist, wurde ein simpler Plausibilitätscheck implementiert.}
 \paragraph{Berechnung der Lösungen für Testinstanzen}{Um die Ergebnisse des in dieser Arbeit beschriebenen Ansatzes vergleichen zu können, wurden Testinstanzen herangezogen, welche als Richtwert dienen können.}
 \paragraph{Diskutieren von Verbesserungsvorschlägen}{Nach Abschluss des Projekts ist davon auszugehen, dass eine weitere Verbesserung der Ergebnisse möglich ist. In einer abschließenden Diskussion ging es darum, wie dieser Weg weiter verfolgt werden könnte.}
 
-\subsection{Arbeitspakete}
+\section{Arbeitspakete}
 \label{sec:arbeitspakete}
 
 \begin{tabular}{cccc}
@@ -58,7 +58,7 @@ Nach einer Umfangreichen Recherche und Auseinandersetzung mit der Problemstellun
 	\hline\hline
 \end{tabular}
 
-\subsection{Versionskontrolle}
+\section{Versionskontrolle}
 Eine der ersten Entscheidungen im Laufe der Arbeit am Projekt, wahrscheinlich sogar schon vor der Wahl des Arbeitstitels, war die Auswahl eines geeigneten Versionskontrollsystems. Wie es die Teammmitglieder für kleinere Projekte gewohnt war, begann die Entwicklung in einem von einem Cloud Service bereitgestellten, synchronisierten Ordner. Doch schon nach wenigen Tagen war klar, dass eine für das Projektteam derart wichtige Arbeit ein voll ausgebautes und dezidiertes Versionskontrollsystem benötigt. Schnell fiel die Entscheidung auf \textit{Git}\footnote{\url{https://git-scm.org/}}, ein System, dass mitunter von den Entwicklern der größten Projekte der \textit{Free and/or Open Source Software} eingesetzt wird.
 
 Dabei beeindruckt Git vorallem durch den geringen Mehraufwand um die Versionskontrolle zu pflegen. Weiters wurde es so möglich komplett unabhängig an Dateien zu arbeiten und Änderungen im Nachhinein einfach zusammenzuführen.

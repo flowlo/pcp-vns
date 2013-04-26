@@ -1,7 +1,7 @@
-\section{Entwicklung}
+\chapter{Entwicklung}
 % TODO: einführung oder so 
 
-\subsection{C++}
+\section{C++}
 \label{sec:cpp}
 Als primäre Programmiersprache wurde C++ gewählt. Verschiedene Gründe sprachen für C++, unter anderem die an C angelehnte Syntax, aber
 auch die gute Performance im Vergleich zu Sprachen, welche in einer Virtuellen Maschine laufen, oder gar interpretiert werden. Zu 
@@ -32,7 +32,7 @@ Plattformen erhältlich.
 Obwohl C++ wesentlich mehr Funktionen als C bietet, ist trotzdem noch die Anlehnung an C zu erkennen. Daher ist es auch nicht verwunderlich das C++-Programme meist nur geringfügig langsamer sind, als 
 vergleichbare C-Programme. In manchen Fällen ist C++ sogar schneller als C, da der Compiler andere, und umständen bessere, Optimierungen vornehmen kann. 
 
-\subsubsection{STL}
+\subsection{STL}
 \label{sec:stl}
 Zusätzlich zu erwähnen ist die umfangreiche \textit{Standard Template Library (STL)}, welche es inzwischen sogar fast vollständig in den 
 C++-Standard gebracht hat. Bei der STL handelt es sich um eine von den meisten Compilern bereitgestellte Code-Bibliothek für häufig 
@@ -46,13 +46,13 @@ das es keine solche allgemein einsetzbare Codebibliothek gibt. Der Preis für di
 \textit{Templates} setzt, welche es ermöglichen eine einzelne Datenstruktur für eine Vielzahl an Datentypen verfügbar zu machen, muss der Compiler diese \textit{Templates} zum Übersetzungszeitpunkt
 auflösen, ein Vorgang, welcher einen stark negativen Einfluss auf die Übersetzungszeit hat.
 
-\subsubsection{Einsatz}
+\subsection{Einsatz}
 Auf Grund der hohen Performance und der umfangreichen Code-Bibliotheken wurde für die Implementierung des Herzstückes der Arbeit C++ gewählt. Das bedeutet, dass alle Softwareteile, welche zur Lösung einer
 einzelnen Probleminstanz gebraucht werden, als ein einzelnes Programm in C++-Quellcode vorliegt. Viele Hilfsroutinen, welche unter anderem dazu geschrieben wurden, neue Instanzen des PCP zu generieren, 
 mehrere VNS-Instanzen gleichzeitig auszuführen, und auch Auswertungen zu fertig berechneten Instanzen zu bieten, wurden hingegen in anderen Programmiersprachen geschrieben, welche zwar wesentlich langsamer
 in ihrer Ausführung sind, dafür aber schneller entwickelt und an neue Bedürfnisse angepasst werden können.
 
-\subsection{Python}
+\section{Python}
 \label{sec:python}
 Neben der eigentlichen Applikation mit algorithmischem Kern entstanden im Laufe der Arbeit am Projekt zusätzliche Scripts um repetitive Tätigkeiten zu beschleunigen. Unter Anderem wurde Python zur massenhaften Ausführung des Algorithmus auf Testinstanzen und die anschließende Aufbereitung der Ergebnisse eingesetzt. Außerdem zur Konversion verschiedener Eingabeformate und zur Generierung von Eingabedaten.
 
@@ -60,7 +60,7 @@ Im Kontrast zur statisch typisierten Sprache C++ mit steht Python seinen dynamis
 
 Während bei der Implementierung der Variablen Nachbarschaftssuche besonders die Performance zur Laufzeit berücksichtigt wurde, stand bei Scripts die Lesbarkeit und einfache Wartbartkeit im Vordergrund. Python passt auch hier ins BIld, da die Sprache üblicherweise Interpretiert oder Just-In-Time übersetzt wird, was in der Regel eine höhere Laufzeit mit sich bringt. Dieser Nachteil relativiert sich dadurch, dass Scripts sowieso nicht als laufzeitkritische Teile des Projekts betrachtet werden.
 
-\subsection{Make}
+\section{Make}
 \label{sec:make}
 Bei GNU make handelt es sich um ein Standardwerkzeug der Linux-Software-Entwicklung. Mit Hilfe von make kann die Übersetzung des Quellcodes in den Programmcode automatisiert werden. 
 Dabei stellt make viele verschiedene Konfigurationsmöglichkeiten bereit. Unter anderem können verschiedene Compiler, aber auch verschiedene Übersetzungsmodi eingestellt werden.
@@ -81,7 +81,7 @@ Außerdem hilfreich ist, dass make auch Skripte oder kleinere Kommandos automati
 Übersetzung einzuleiten. Auch kann mit Hilfe von solchen Skripten das entstandene Programm nach Übersetzung automatisch auf eine Testmaschine geschickt werden, um die korrekte Funktion
 des Programmes zu verifizieren.
 
-\subsection{Compiler}
+\section{Compiler}
 \label{sec:compiler}
 Der Compiler, oder Übersetzer, ist dafür verantwortlich, ein Programm von einer Quellsprache, in eine Zielsprache zu übersetzen. Im Falle dieser Arbeit war die Quellsprache C++, und die
 Zielsprache die Maschinensprache des Prozessors, also ein x86-Assembly. Übersetzer sind außerordentlich komplexe Stücke an Software, welche nicht einfach die Befehle eines Programmierers eins zu
@@ -102,7 +102,7 @@ Einheit angesehen wird, und als vom eigentlichen Quelltext abgetrennte Einheit a
 compiliert werden, ohne auf die Vorteile von \textit{Templates} zu verzichten.
 
 
-\subsubsection{GCC}
+\subsection{GCC}
 GCC, oder auch GNU Compiler Collection, ist ein Sammlung an Übersetzern welche alle unter der Open-Source-Lizenz GPL veröffentlich wurden. GCC wird häufig als der Standard-Compiler unter Linux angesehen,
 und erfreut sich immer noch großer Beliebtheit. Die Sammlung unterstützt viele verschiedene Sprachen, unter ihnen auch C++, sowie mehrere verschiedene Standards einzelner Sprachen. Auf Grund seiner
 ausgiebigen Testung und Erprobung im alltäglichen Einsatz, und nicht zuletzt seiner freien Verfügbarkeit, bleibt GCC immer noch einer beliebtesten Compiler weltweit. Dabei ist die Sammlung verschiedener
@@ -120,7 +120,7 @@ späteren Einbindung eines Headers in den Quellcode nach einer gleichnamigen Dat
 obwohl die Übersetzung des Headers selber einige Zeit in Anspruch nimmt. Die für diese Arbeit verwendeten \textit{Precompiled Headers} bewegeten sich in der Größenordnung von knapp über 100 Megabyte, 
 eine erstaunliche Datenmenge für eine einzige Übersetzungseinheit. Diese Datenmengen sind vor allem den \textit{Templates} geschuldet, welche während ihrer Expansion wesentlich an Speicherbedarf zunehmen.
 
-\subsubsection{clang}
+\subsection{clang}
 Bei clang handelt es sich um einen neuen Konkurrenten für GCC am Markt der Open-Source-Compiler. Wie bei GCC handelt es sich bei clang nicht um einen einzelnen Übersetzer für eine einzelne Programmiersprache,
 sondern viel mehr um eine Sammlung an Übersetzern für vor allem mit C verwandten Sprachen wie C++ und Objective-C. Anders als GCC ist clang aber nicht über mehrere Jahrzehnte angewachsen, das Projekt
 startete erst vor wenigen Jahren. Auch baut clang nicht von Grund auf einen neuen Compiler, sondern benützt das Rahmenwerk der LLVM, der \textit{Low Level Virtual Machine}. LLVM ist ein Projekt, welches
@@ -137,7 +137,7 @@ sind um durchschnittlich 30\% kleiner. Dieser Vorteil ist wohl der neueren Progr
 des fertig übersetzten Programmes, da unter anderem GCC einige Optimierungsmöglichkeiten nutzt, welche LLVM noch unbekannt sind. Im Allgemeinen sind die Unterschiede zwischen den beiden Compilern aber
 vernachläßigbar gering.
 
-\subsection{DDD}
+\section{DDD}
 DDD steht für Data Display Debugger, und ist ein weiteres Werkzeug zur Softwareentwicklung von GNU. DDD stellt Werkzeuge zum Debuggen, also der Fehlersuche in Software, zur Verfügung. Um produktiv eingesetzt
 werden zu können muss eine spezielle Option während der Übersetzung mit GCC gesetzt werden, damit DDD einzelnen Programmschritten den richtigen Quellcodezeilen zuordnen kann. DDD ist eine sehr vielseitige
 Anwendung mit graphischer Benutzeroberfläche, welche sehr intuitiv und einfach zu bedienen ist, und trotzdem viele Optionen bietet.
@@ -155,7 +155,7 @@ Fehler aufgetreten ist.
 Ein weiteres praktisches Werkzeug von DDD ist die Möglichkeit, Pointer, welche auf vom Programm reservierte Speicherbereiche zeigen, genauenstens zu verfolgen. Durch eine übersichtliche graphische Darstellung
 ist es einfach, zu vergleichen welche Pointer auf ein und den selben Speicherbereich zeigen, was unter Umständen gewollt sein kann, oder aber auch einen fehlerhaften Programmablauf hervorruft.
 
-\subsection{Boost}
+\section{Boost}
 Boost, oder auch Boost C++-Libraries, ist eine Codebibliothek, welche versucht, Un\-zu\-läng\-lich\-keiten im Sprachstandard von C++ geschickt zu umgehen, und Benutzern ein einfacheres Programmieren zu ermöglichen.
 Boost besteht aus mehreren unabhängigen Unterbibliotheken, welche zum größten Teil unter der Boost Software Lizenz stehen, welche sowohl eine Open-Source, als auch eine kommerzielle Nutzung zulässt. Alle
 Unterbibliotheken sind portabel designt, um eine Nutzung auf allen Betriebssystemen mit C++-Compiler zu ermöglichen. 
@@ -174,7 +174,7 @@ Statistik, und auch für Graphen, welche in dieser Arbeit zum Einsatz kam.
 
 Außerdem wurden in dieser Arbeit viele Hilfsroutinen, welche von Boost bereitgestellt wurden verwendet, und mehrere Datenstrukturen aus Boost-Unterbibliotheken kamen ebenfalls zum Einsatz.
 
-\subsubsection{graph}
+\subsection{graph}
 \label{sec:boost:graph}
 Da es sich bei dem PCP um ein Optimierungsproblem aus dem Umfeld der Graphentheorie handelt, ist natürlich eine Graphenstruktur innerhalb des Programmes unerlässlich. Boost bietet eine ganze Unterbibliothek, 
 welche rein graphenbezogene Datenstrukturen und Algorithmen bereitstellt. Diese Graphenbibliothek ist gut getestet, vielseitung, stark anpassbar, schnell und einfach einzusetzen und war daher die ideale Wahl
@@ -208,7 +208,7 @@ die Speicherung des Index in einer seperat von Boost bereitgestellten, mitschrum
 Eine einfache Möglichkeit der Ausgabe wird ebenfalls von Boost gestellt. Boost bietet eine einzelne Funktion, welche einen Boost-Graphen im Graphviz-Format ausgiebt. Dadurch ergibt sich eine schnelle 
 Möglichkeit, die Richtigkeit der Lösung zu kontrollieren. Gerade bei frühen Versuchen der Nachbarschaftssuche wurde viel mit diesem Werkzeug gearbeitet, um die Ergebnisse zu verifizieren. 
 
-\subsubsection{Hilfsroutinen}
+\subsection{Hilfsroutinen}
 Neben Graphen wurden auch einige von Boosts Hilfsfunktionen benutzt. Um bei der Lösung des PCP möglichst flexibel zu sein wurden eine Vielzahl an Variablen verwendet, um bestimmte Parametern der 
 Nachbarschaftssuche einfacher ändern zu können. Dazu wurde angedacht, die Terminalparameter, als jene Parameter, welche beim Aufruf des Programmes über die Kommandozeile mitgegeben werden, zu verwenden. 
 In einem ersten Versuch wurde ein einfaches Stringparsing betrieben, welches sich aber schnell als fehleranfällig heraustellte, und zusätzlich noch zu unschönem Code führte. 
@@ -222,7 +222,7 @@ Um eine möglichst genaue Zeitmessung für die statistische Auswertung der Ergeb
 möglichst genaue Messergebnisse zu bekommen, welche im Millisekundenbereich liegen. Dies ist manchmal garnicht so einfach da etwa die normalen Zeitfunktionen nur auf Sekundenbasis arbeiten, und eine 
 genauere Zeitmessung zumeist über die abgelaufenen CPU-Zyklen erfolgt.
 
-\subsection{Valgrind}
+\section{Valgrind}
 Valgrind ist, wie schon DDD ein Werkzeug zur Fehlersuche in laufenden Programmen. Dabei spezialisiert Valgrind sich auf die korrekte Verwendung und Freigabe von Speicher. Mit Hilfe von Valgrind ist es
 möglich Speicherlecks aufzuspüren und zu schließen. Dafür überwacht Valgrind den Programmablauf und gibt nach Beendigung des Programmes einen genaue Aufzählung an vergessenen Speicherbereichen und 
 nicht sauber gelöschten Objekten. 
@@ -243,7 +243,7 @@ Da die VNS in der Theorie eine endlose Schleife der Verbesserung darstellt, und 
 Selbst kleinste Speicherlecks könnten, über einen langen Zeitraum betrachtet, zum Absturz des Programmes führen. Daher bietet Valgrind eine einfach zu nutzende und übersichtliche Möglichkeit die Korrektheit
 der Speicherverwaltung innerhalb des laufenden Programmes zu testen. 
 
-\subsection{Graphviz}
+\section{Graphviz}
 Graphviz ist eine Sammlung an Software-Werkzeugen zur Visualisierung von Graphen. Jedes Werkzeug aus der Softwaresammlung liest dabei eine im sogenannten Graphviz-Format ge\-schriebene Datei ein, und transformiert
 sie auf bestimmte Art und Weise. Die Funktionen umfassen von der Entfernung von doppelten Kanten, bis zur Visuellen Ausgabe in Form einer PDF oder PostScript-Datei viele nützliche Bearbeitungsmethoden für 
 Graphen. 
@@ -258,7 +258,7 @@ ist. Daher wurde Graphviz vor Allem dazu eingesetzt die Selbsttestung des Progra
 konnte dann verifiziert werden, dass das Programm in der Lage ist, ungültige Lösungen von selbst auszuschließen.
 
 
-\subsection{Ubigraph}
+\section{Ubigraph}
 \label{sec:ubigraph}
 Bei Ubigraph handelt es sich um eine Plattform zur visuellen Darstellung von Graphen. Die Plattform besteht einerseits aus einem Server, welcher Befehle entgegennimmt und aus diesen Befehlen eine 
 dreidimensionale Darstellung des Graphen ausgibt, und andererseits aus einer Vielzahl an Schnittstellen für alle nur erdenklichen Programmiersprachen. Mit Hilfe von Ubigraph ist es möglich, die
@@ -277,4 +277,4 @@ einfache Optionen zum Zeichnen von Knoten, Kanten beziehungsweise der Manipulati
 
 
 % TODO: wtf
-\subsection{rsync}
+\section{rsync}
