@@ -6,7 +6,7 @@
 \usepackage[style=authoryear, natbib, backend=biber]{biblatex}
 \usepackage[top=3cm,bottom=3cm,left=2cm,right=2cm]{geometry}
 \usepackage{listings}
-\usepackage{graphicx, fancyhdr, array, wrapfig, colortbl, algorithm, algpseudocode, subcaption, setspace}
+\usepackage{graphicx, fancyhdr, array, wrapfig, colortbl, algorithm, algpseudocode, subcaption, setspace, comment}
 \usepackage[usenames,dvipsnames]{xcolor}
 \floatname{algorithm}{Algorithmus}
 \renewcommand{\listalgorithmname}{Algorithmenverzeichnis}
@@ -32,6 +32,8 @@
   stringstyle=\color{orange},
   frame=single
 }
+
+\lstset{style=customc}
 %\renewcommand\familydefault{\sfdefault}
 \linespread{1.5}
 \setlength{\parindent}{4mm}

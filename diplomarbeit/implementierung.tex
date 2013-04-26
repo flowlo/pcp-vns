@@ -14,17 +14,10 @@ für einzelne Partitionen. Außerdem stellt Solution Methoden bereit, um Veränd
 Außerdem besitzt Solution mehrere Methoden, einen Problemgraphen aus einer Datei auszulesen, und diesen wiederum in einem Solution-Objekt zu speichern. Diese Methoden zum Einlesen von Dateien werden genauer 
 in Abschnitt \ref{sec:parser} besprochen.
 
+%\begin{comment}
 \singlespacing
-\lstset{style=customc}
-\begin{lstlisting}[caption={Signatur der Solutionklasse},label=lst:solution]
+\begin{lstlisting}[caption={Ein Ausschnitt aus der Signatur der Solutionklasse},label=lst:solution]
 class Solution {
-   public:
-      Solution();
-      Solution(Solution *s);
-      ~Solution();
-      
-      void requestDeepCopy();
-
       Graph *g;
       int numParts;
       int *partition;
@@ -32,43 +25,24 @@ class Solution {
       int colorsUsed;
       int *representatives;
       int *copyCounter;
-      
-      int getPartition(Vertex v);
-      unsigned int getOriginalId(Vertex v);
-      int getPartitionColor(Vertex v);
-      int getColorDegree(Vertex v);
-      
-      int minPossibleColor(Vertex v);
-      boost::tuple<int, int> getColorDegreeAndMinColor(Vertex v);
-      bool isPartitionColored(Vertex v);
-      
-      void setOriginalId(Vertex v, int id);
-      void setPartitionColor(Vertex v, int color);
-      
-      void print(std::ostream& out);
-      std::string toString();
-      
-      static Solution* fromColStream(std::istream& in);
-      static Solution* fromColBStream(std::istream& in);
-      static Solution* fromPcpStream(std::istream& in);
-      
-      void addVertex(int part, Vertex id);
-      void removeVertex(Vertex id);
-      void addEdge(Vertex v1, Vertex v2);
-      void replaceVertex(Vertex toR, Vertex rep, Solution& full);
-      
-      #ifdef ubigraph
-      void redraw();
-      void redraw(int shift);
-      void prepareUbigraph();
-      #endif
-      
-   private:
-      boost::property_map<Graph, boost::vertex_index1_t>::type partitionMap;
-      boost::property_map<Graph, boost::vertex_index2_t>::type idMap;
 };
 \end{lstlisting}
 \setstretch{1.5}
+%\end{comment}
+
+Gespeichert wird eine Referenz auf den Lösungsgraphen. Dieser Graph enthält ausschließlich jene Knoten, welche als Repräsentanten für ihre Partition
+ausgewählt wurden. Der Graph muss daher verändert werden, wenn eine Partition ihren Repräsentanten wechselt. Des weiteren wird die Anzahl an Partitionen
+gespeichert, so wie die Anzahl an verwendeten Farben für eine bestimmte Lösung. 
+
+Im \texttt{partition}-Array werden für jede Partition genau eine ausgewählte Farbe gespeichert, wobei sich diese Farben natürlich von Lösung zu Lösung 
+unterscheiden können, als Index dient die Partitions-ID. Das Array \texttt{representatives} bietet eine Zuordnung von Partition zu Knoten. Ein Wert 
+an der Position $n$ zeigt auf jenen Knoten, der die Partition $n$ vertritt.
+
+Einen Sonderfall stellt das Vector-Array \texttt{partNodes} dar. Es wird ausschließlich bei der eingelesenen Probleminstanz eingesetzt, und speichert
+dort für jede Partition alle zugeordneten Knoten ab. Dies dient der schnellen Findung von alternativen Knoten für eine bestimmte Partition, und findet
+in mehreren Nachbarschaften verwendung. 
+
+\subsubsection{Kopierkonstruktor}
 
 Besonders interessant bei der Solution-Klasse ist die automatisch bereitgestellte Kopiermechanik. Einer der besonderen Eigenschaften von C++ ist es, für jede Klasse automatisch einen sogenannten Kopierkonstruktor
 bereitzustellen, welcher als Parameter ein Objekt des selben Types entgegennimmt, und dieses kopiert. Da im Falle einer Lösung aber nicht immer alle Daten kopiert werden müssen, wurde in dieser Arbeit eine
@@ -80,21 +54,21 @@ anstatt den gesamten Graphen zu kopieren, eine Referenz auf den alten Graphen au
 
 \singlespacing
 \begin{lstlisting}[caption={Der Kopierkonstruktor der Solutionklasse},label={lst:copy}]
+// Copy an existing solution, this will use the same graph object as the 
+// original, to cut these ties, use requestDeepCopy()
 Solution::Solution(Solution *toCopy) {
    this->partNodes = NULL;
    this->g = toCopy->g;
-   this->representatives = toCopy->representatives;
-   this->partitionMap = get(vertex_index1_t(), *this->g);
-   this->idMap = get(vertex_index2_t(), *this->g); 
-   // Copy reference counter and increment to track references
    this->copyCounter = toCopy->copyCounter;
-   *this->copyCounter += 1;  
-   
+   // increment copycounter, to keep track of referencing solution
+   *this->copyCounter += 1;
    this->numParts = toCopy->numParts;
-   this->colorsUsed = toCopy->colorsUsed;
-
-   
    this->partition = new int[this->numParts];
+   this->representatives = toCopy->representatives;
+   this->colorsUsed = toCopy->colorsUsed;
+   this->partitionMap = get(vertex_index1_t(), *this->g);
+   this->idMap = get(vertex_index2_t(), *this->g);
+   
    for (int i = 0; i < this->numParts; i++) {
       this->partition[i] = toCopy->partition[i];
    }
@@ -107,11 +81,59 @@ der in einem Solutionobjekt referenzierte Graph auch bei anderen Lösungen zum E
 Lösungen führen, welche dann unweigerlich unzulässige Ergebnisse zur Folge hätten. Daher kann mit der Methode \texttt{requestDeepCopy} eine vollständige Kopie des Solutionobjektes angefordert werden. In dieser
 Methode werden dann alle verbleibenden Fremdreferenzen nocheinmal kopiert, und in eigens für das anfragende Solutionobjekt reservierte Speicherbereiche geschrieben.
 
+\singlespacing
+\begin{lstlisting}[caption={Die Methode \texttt{requestDeepCopy} of the Solution class},label={lst:deepcopy}]
+// Cut ties between a copy and the underlying graph by 
+// making a copy of the graph
+void Solution::requestDeepCopy() {
+   // Copy graph
+   Graph *cp = g;
+   g = new Graph(*g);
+   // Reset property maps
+   this->partitionMap = get(vertex_index1_t(), *g);
+   this->idMap = get(vertex_index2_t(), *g);
+
+   // Copy representatives array
+   int *rep = representatives;
+   representatives = new int[numParts];
+   for (int i = 0; i < numParts; i++) {
+      representatives[i] = rep[i];
+   }
+
+   // delete the old copy if counter reached zero
+   *copyCounter -= 1;
+   if (*copyCounter <= 0) {
+      delete copyCounter;
+      delete cp;
+      delete[] rep;
+   }
+   copyCounter = new int;
+   *copyCounter = 1;
+}
+\end{lstlisting}
+\setstretch{1.5}
+
 Ein anderes Problem entsteht beim Aufräumen von Objekten. Sollte durch das Löschen eines Solutionobjektes auch dessen referenzierter Graph verschwinden, würde das zu Speicherfehlern bei anderen Objekten führen, 
 welche auf den selben Graphen zeigen. Daher wurde der Destruktor, welcher zum Aufräumen eines Objektes aufgerufen wird, überschrieben, und löscht nun nur noch referenzierte Objekte, wenn kein anderes Objekt
 mehr Referenzen auf das selbe Objekt hält. Um dies zu ermöglichen wird von allen Solutionobjekten, welche auf den selben Graphen referenzieren ein Counter referenziert, welcher die Anzahl der
 Verweise auf den selben Graphen mitzählt. So lange dieser Zähler über eins ist, wird kein Objekt gelöscht. Wird nun der Destruktor eines Solutionobjektes aufgerufen, überprüft dieser, ob er die letzte
 Referenz auf diese Objekte hält. Wenn ja, löscht er diese und seine eigenen Referenzen, wenn nicht, löscht er wiederum nur seine eigenen Referenzen und vermindert den Zähler um eins.
+
+\begin{lstlisting}[caption={Der Destruktor der Solutionklasse mit Rücksichtnahme auf eventuelle verbleibende Referenzen},label={lst:destruct}]
+// Destructor
+Solution::~Solution() {
+   // Decrement copyCounter, if <= 0 delete all information about the referenced
+   // graph and corresponding arrays
+   *copyCounter -= 1;
+   if (*copyCounter <= 0) {
+      delete g;
+      delete copyCounter;
+      delete[] representatives;
+   }
+   delete[] partition;
+   delete[] partNodes;
+}
+\end{lstlisting}
 
 \subsubsection{StoredSolution}
 Um eine einzelne Lösung von einer anderen zu unterscheiden, sind zwei Informationen notwendig: die Auswahl der Repräsentanten, und die Auswahl 
@@ -188,6 +210,7 @@ Datei von einem Eingabestream ein, und wandelt sie in ein Solutionobjekt mit ent
 der gesamten Laufzeit des Programmes nicht verändert oder gelöscht, und dient als Ausgangspunkt der Konstruktionsheuristik, aber auch als
 Referenz für Nachbarschaften, welche einzelne Knoten austauschen.
 
+\begin{comment}
 \singlespacing
 \begin{lstlisting}[caption={Die Methode \texttt{fromPcpStream}, welche eine Datei im \texttt{.pcp}-Format einließt und in ein Solutionobjekt umwandelt},label={lst:frompcp}]
 Solution* Solution::fromPcpStream(istream& in) {
@@ -243,7 +266,7 @@ Solution* Solution::fromPcpStream(istream& in) {
 }
 \end{lstlisting}
 \setstretch{1.5}
-
+\end{comment}
 
 \subsection{Konstruktionsheuristik}
 
