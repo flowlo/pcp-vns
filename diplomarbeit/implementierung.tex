@@ -1,4 +1,4 @@
-\section{Implementierung}
+\chapter{Implementierung}
 %TODO: sec:ansatz
 Für die Implementierung des in Abschnitt \ref{sec:ansatz} vorgeschlagenen Lösungsansatzes, wurde eine möglichst flexible Struktur des Programmes verwendet. Wie in Abschnitt \ref{sec:c++} begründet, wurde
 als Implementationssprache C++ gewählt. Durch den Einsatz von C++ kann ein einfach erweiterbares Programmgerüst geschrieben werden, welches es erlaubt, schnell und ohne großen Aufwand mehrere Nachbarschaften
@@ -8,7 +8,7 @@ Um diese flexible Struktur zu ermöglichen wurde das Programm in vier unabhängi
 Konstruktionsheuristik, Variable Nachbarschaftssuche, und Nachbarschaften zusammengefasst werden. Hinzu kommt die sogenannte Solution, eine eigene Klasse um eine Lösung sowohl zu speichern, aber auch um Möglichkeiten
 anzubieten, eine bestehende Lösung zu verändern. Diese einzelnen Bereiche sollen im folgenden Abschnitt ausführlich besprochen werden.
 
-\subsection{Solution}
+\section{Solution}
 Bei Solution handelt es sich um die Basisklasse für alle weiteren Operationen. Sie speichert sowohl den Graphen, von dem bei der Lösung ausgegangen wird, als auch die Lösung selbst, mit konkret verteilten Farben
 für einzelne Partitionen. Außerdem stellt Solution Methoden bereit, um Veränderungen an Lösungen vorzunehmen, wie sie etwa von den Nachbarschaften gebraucht werden, um einzelne Knoten umzufärben, oder zu ersetzen.
 Außerdem besitzt Solution mehrere Methoden, einen Problemgraphen aus einer Datei auszulesen, und diesen wiederum in einem Solution-Objekt zu speichern. Diese Methoden zum Einlesen von Dateien werden genauer 
@@ -113,7 +113,7 @@ mehr Referenzen auf das selbe Objekt hält. Um dies zu ermöglichen wird von all
 Verweise auf den selben Graphen mitzählt. So lange dieser Zähler über eins ist, wird kein Objekt gelöscht. Wird nun der Destruktor eines Solutionobjektes aufgerufen, überprüft dieser, ob er die letzte
 Referenz auf diese Objekte hält. Wenn ja, löscht er diese und seine eigenen Referenzen, wenn nicht, löscht er wiederum nur seine eigenen Referenzen und vermindert den Zähler um eins.
 
-\subsubsection{StoredSolution}
+\subsection{StoredSolution}
 Um eine einzelne Lösung von einer anderen zu unterscheiden, sind zwei Informationen notwendig: die Auswahl der Repräsentanten, und die Auswahl 
 an Farben. Mit diesen beiden Informationen, und dem Ausgangsgraphen, aus dem die Lösung berechnet wurde, ist eine Lösung eindeutig rekonstruierbar.
 Umzu verhindern, dass die VNS-Schleife immer wieder auf die selben Lösungen kommt, ohne echte Verbesserungen zu erzielen, werden alle neuen, verbesserten
@@ -148,7 +148,7 @@ sowie eine Methode zum Vergleich zweier gespeicherten Solutions notwendig. Der H
 der beiden internen Arrays berechnet, während für die Vergleichsmethode die beiden Arrays Wert für Wert verglichen werden. Die von Boost 
 bereitgestellte Hashmap verwendet bei gleichen Hashwerten aber unterschiedlichen Lösungen eine einfache Liste, um die Ergebnisse zu speichern.
 
-\subsection{Parser}
+\section{Parser}
 \label{sec:parser}
 
 Damit erzielte Ergebnisse mit älteren Programmversionen, aber auch mit anderen Lösungsansätzen für das PCP verglichen werden können, ist es von
@@ -245,16 +245,16 @@ Solution* Solution::fromPcpStream(istream& in) {
 \setstretch{1.5}
 
 
-\subsection{Konstruktionsheuristik}
+\section{Konstruktionsheuristik}
 
-\subsection{Variable Nachbarschaftssuche}
+\section{Variable Nachbarschaftssuche}
 
-\subsection{Nachbarschaften}
+\section{Nachbarschaften}
 
-\subsubsection{changeColor}
-\subsubsection{changeNode}
-\subsubsection{DSATUR}
-\subsubsection{changeAll}
+\subsection{changeColor}
+\subsection{changeNode}
+\subsection{DSATUR}
+\subsection{changeAll}
 
 
  
