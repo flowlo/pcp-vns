@@ -268,13 +268,57 @@ Solution* Solution::fromPcpStream(istream& in) {
 \setstretch{1.5}
 \end{comment}
 
+
+
 \subsection{Konstruktionsheuristik}
+Als Konstruktionsheuristik wurde der in Abschnitt \ref{sec:onestep} Algorithmus OneStep-CD gewählt. Die verwendete Implementierung des Algorithmus
+erzeugt ein neues Solutionobjekt, als einziger Übergabeparameter ist das aus der Datei eingelesen Solutionobjekt, welches ja den vollständigen Problemgraphen
+enthält. Dieses Solutionobjekt bildet dann die Ausgangsbasis für die Verbesserung in der Variablen Nachbarschaftssuche. 
+
+%TODO: PILOT?!
 
 \subsection{Variable Nachbarschaftssuche}
 
+\begin{algorithm}
+\begin{algorithmic}[1]
+\State Berechne Initiallösung mit \emph{onestepCD}
+\While{Terminationsbedingung \textbf{nicht} erfüllt}
+\State Führe Variable Neighborhood Descent mit Best Improvement Strategie durch:
+\State Nachbarschaft $l \leftarrow 1$
+\While{$l \leq 3$ \textbf{und} Zeitlimit nicht erreicht}
+\State Führe Nachbarschaft $n_l$ aus
+\If {Lösung verbessert \textbf{und} $l\neq 1$} 
+\State  $l\leftarrow 1$  
+\Else
+\State  $l\leftarrow l + 1$
+\EndIf
+\EndWhile
+\If{Beste Lösung verbessert \textbf{oder} $k \geq k_{\mathrm max}$}
+\State $k \leftarrow k_{\mathrm start}$ 
+\Else
+\State $k \leftarrow k + 1$
+\EndIf
+\State Wähle zufällig Nachbarschaft aus und ``schüttle" Lösung mit $k$ zufälligen Zügen
+\EndWhile
+\State\Return Beste gefundene Lösung
+\end{algorithmic}
+\caption{Pseudocode der Variablen Nachbarschaftssuche}
+\end{algorithm}
+
+
 \subsection{Nachbarschaften}
+Um nun Kapital aus der Variablen Nachbarschaftssuche zu schlagen, müssen natürlich auch verschiedene Nachbarschaften verwendet werden. Diese 
+Heuristiken versuchen, in kleinen Schritten, eine Lösung zu verbessern, oder zumindest zu verändern. Ziel war es, möglichst schnelle Nachbarschaften
+zu verwenden, welche erst in Verbindung miteinander ihre Stärken auspielen. 
 
 \subsubsection{changeColor}
+\begin{algorithm}
+\begin{algorithmic}
+\State nothing
+\end{algorithmic}
+\caption{Pseudocode der changeColor-Nachbarschaft}
+\label{psy:changeColor}
+\end{algorithm}
 \subsubsection{changeNode}
 \subsubsection{DSATUR}
 \subsubsection{changeAll}
