@@ -127,6 +127,12 @@ Lichtwellenleiter, welcher aus einem chemisch minimal anders zusammengesetzten S
 ungünstige Eigenschaften hat. Dieser Aspekt wird beim Lösen des PCP nicht beachtet, jede Strecke beziehungsweise jede Route unterstützt alle Wellenlänge. Außerdem wird angenommen, 
 dass jeder Leiter eine unbegrenzte Anzahl an Wellenlängen unterstützt. Reale Leiter können nur eine begrenzte Anzahl an Wellenlängen unterstützen, bis ihr Spektrum ausgeschöpft ist.
 
+\subsection{Formale Definition}
+
+Gegeben sei ein ungerichteter Graph $G = (V,\ E)$, wobei $V$ die Menge der Knoten des Graphes $G$ und $E$ die Menge der Kanten, die $V$ in $G$ verbinden, darstellen. Außerdem seien $V_1,\ V_2,\ V_3,\ \ldots,\ V_k$ disjunkte Teilmengen von $V$ $V_i \cap V_j = \emptyset \ \forall i,\ j = 1,\ \ldots,\ k$ mit $i \not = j$, wobei $\bigcup_{i = 1}^k V_i = V$ welche folgend \textit{Partition} oder auch \textit{Komponente} genannt werden.
+
+Das \textit{Partition Graph Coloring Problem} (PCP) besteht nun darin, eine Menge $V'$ zu finden, sodass $|V' \cap V_i| = 1,\ \forall\ i = 1,\ \ldots,\ k$ gilt ($V'$ also genau einen Knoten für jede Parition enthält) und weiter die Färbung des durch die Menge $V'$ mit $E$ konstruierbaren Graphen minimal ist.
+
 \section{Ausgangsmaterial}
 Das Partition Graph Coloring Problem beschränkt sich nur auf den Weg vom Problemgraphen zum Lösungsgraphen. Für die Findung alternativer Routen durch ein Netzwerk gibt es 
 bereits ausgiebig beschriebene und getestete Algorithmen, welche auch auf einem optischen Netzwerk anwendbar sind. Mit Hilfe dieser Algorithmen können die für den
