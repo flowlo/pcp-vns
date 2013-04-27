@@ -1,7 +1,7 @@
 \chapter{Implementierung}
 %TODO: sec:ansatz
 Für die Implementierung des in Abschnitt \ref{sec:ansatz} vorgeschlagenen Lösungsansatzes, wurde eine möglichst flexible Struktur des Programmes verwendet. Wie in Abschnitt \ref{sec:cpp} begründet, wurde
-als Implementationssprache C++ gewählt. Durch den Einsatz von C++ kann ein einfach erweiterbares Programmgerüst geschrieben werden, welches es erlaubt, schnell und ohne großen Aufwand mehrere Nachbarschaften
+als Implementierungssprache C++ gewählt. Durch den Einsatz von C++ kann ein einfach erweiterbares Programmgerüst geschrieben werden, welches es erlaubt, schnell und ohne großen Aufwand mehrere Nachbarschaften
 für die VNS zu implementieren. 
 
 Um diese flexible Struktur zu ermöglichen wurde das Programm in vier unabhängige Bereiche aufgeteilt, welche durch eine einzelne Startroutine zusammengehalten werden. Diese Bereiche können grob als Parser, 
@@ -191,11 +191,29 @@ struct StoredSolution {
 
 Für den schnelle Zuordnung einer neuen Lösung zu den bestehenden Lösungen wird eine Hashtable-Datenstruktur verwendet. Durch die Verwendung einer
 Hashtable ist eine quasi sofortige Zuordnung einer Lösung zu dem entsprechenden Platz in der Hashtable möglich. Sollte eine Lösung schon einmal 
-aufgekommen sein, wird dieser Lösungsstrang verworfen, da er nicht zu neuen Lösungen führen würde. Die Implementation der Hashtable wird von 
+aufgekommen sein, wird dieser Lösungsstrang verworfen, da er nicht zu neuen Lösungen führen würde. Die Implementierung der Hashtable wird von 
 Boost, beschrieben im Abschnitt \ref{sec:boost}, bereitgestellt. Um die Hashtable zu betreiben sind außerdem noch eine Methode zur Hashberechnung,
 sowie eine Methode zum Vergleich zweier gespeicherten Solutions notwendig. Der Hash für ein StoredSolutionobjekt wird aus den gesammelten Werten
 der beiden internen Arrays berechnet, während für die Vergleichsmethode die beiden Arrays Wert für Wert verglichen werden. Die von Boost 
 bereitgestellte Hashtable verwendet bei gleichen Hashwerten aber unterschiedlichen Lösungen eine einfache Liste, um die Ergebnisse zu speichern.
+
+\subsection{Plausibilitätsprüfung}
+
+Um eine manuelle Überprüfung der Korrektheit einer Lösung zu umgehen, wird innerhalb der VNS, siehe Abschnitt~\ref{sec:impl:vns}, eine Plausibilitätsprüfung durchgeführt. Diese Überprüfung stellt an Hand 
+der innerhalb einer Solution gespeicherten Eigenschaften, und an Hand des ursprünglichen Problemgraphen fest, ob es sich um eine valide Lösung handelt oder nicht. Diese Überprüfung erfolgt standardmäßig
+am Ende der VNS, und überprüft das beste erzielte Ergebnis, welches dann auch als Endergebnis präsentiert wird. Mit Hilfe eines Programmparameters, welcher zu Ausführungsstart angegeben werden muss, ist es
+auch möglich eine solche Überprüfung für jede Lösung einzuschalten, welche eine Verbesserung zur vorherigen darstellt. 
+
+Innerhalb dieses Checks werden verschiedenste Dinge überprüft. Zum einen wird getestet, ob zwei verbundenen Knoten die selbe Farbe zugeteilt wurde. Dann wird überprüft, ob die gespeicherte Anzahl an Farben
+mit der tatsächlich verwendeten Farben übereinstimmt. Dies ist besonders wichtig, da ja die Anzahl an Farben das Hauptkriterium für eine bessere Lösung darstellt. Dann wird überprüft, ob alle Partition
+vertreten sind, und ob die jeweiligen Repräsentanten richtig abgespeichert wurden. 
+
+Zu letzt wird noch überprüft, ob der Lösungsgraph mit dem Ursprungsgraphen übereinstimmt. Dazu werden verschiedene Fakten überprüft. Zum einen werden fehlende oder überschüssige Kanten in der Lösung gesucht, 
+zum anderen wird überprüft, ob die ausgewählten Repräsentanten einer Partition wirklich zu dieser Partition zugehörig sind. 
+
+Sollte keine dieser Überprüfungen auf Fehler stoßen, wird angenommen, es handle sich um eine valide Lösung für das PCP. Durch diese Überprüfung konnten auch schon Fehler innerhalb einzelne Nachbarschaften 
+nachgewiesen und schließlich behoben werden.
+
 
 \section{Parser}
 \label{sec:parser}
@@ -238,65 +256,6 @@ der gesamten Laufzeit des Programmes nicht verändert oder gelöscht, und dient 
 Referenz für Nachbarschaften, welche einzelne Knoten austauschen. Außerdem speichert diese Solutionobjekt als einziges eine direkte Zuordnung von einer Partitions-ID
 zu den verfügbaren Knoten in der Partition ab. 
 
-\begin{comment}
-\singlespacing
-\begin{lstlisting}[caption={Die Methode \texttt{fromPcpStream}, welche eine Datei im \texttt{.pcp}-Format einließt und in ein Solutionobjekt umwandelt},label={lst:frompcp}]
-Solution* Solution::fromPcpStream(istream& in) {
-   Solution *s = new Solution();
-   
-   int vertices, edges, partitions;
-   cin >> vertices >> edges >> partitions;
-   
-   if (DEBUG_LEVEL > 3) {
-      cout << "Reading " << vertices << " vertices, " << edges;
-      cout << " edges and " << partitions << " partitons ..." << endl;
-   }
-   
-   // Initialize the solution to the read parameters
-   s->partition = new int[partitions];
-   s->representatives = new int[partitions];
-   s->partNodes = new vector<Vertex>[partitions];
-   s->numParts = partitions;
-   s->colorsUsed = partitions;
-   
-   #ifdef ubigraph
-   s->prepareUbigraph();
-   #endif
-
-   // Read partition info and store it into the property map, do the 
-   // same for the "original" vertexID, so they can be compared on 
-   // all graph
-   int i, part;
-   for (i = 0; i < vertices; i++) {
-      cin >> part;
-      s->addVertex(part, i);
-      
-      if (DEBUG_LEVEL > 3)
-         cout << "Added vertex " << i << " to partition " << part << "." << endl;
-   }
-
-   // Read the input for edges between to vertices and add them to 
-   // the solution graph
-   for (i = 0; i < edges; i++) {
-      int source, target;
-      cin >> source >> target;
-
-      if (DEBUG_LEVEL > 3) {
-         cout << "Added edge (" << source << "|" << target << ")" << endl;
-      }
-      s->addEdge(source, target);
-   }
-   
-   if (DEBUG_LEVEL > 3)
-      cout << "Parsing input finished successfully!" << endl;
-
-   return s;
-}
-\end{lstlisting}
-\setstretch{1.5}
-\end{comment}
-
-
 \section{Konstruktionsheuristik}
 Als Konstruktionsheuristik wurde der in Abschnitt \ref{sec:onestep} Algorithmus OneStep-CD gewählt. Die verwendete Implementierung des Algorithmus
 erzeugt ein neues Solutionobjekt, als einziger Übergabeparameter ist das aus der Datei eingelesen Solutionobjekt, welches ja den vollständigen Problemgraphen
@@ -306,11 +265,47 @@ ausgewählten Repräsentanten der jeweiligen Partition darstellt.
 
 \subsection{Pilot}
 
-%TODO: pilot
+%TODO: pilot, HERBERT TRINK DAS!
 
 \section{Nachbarschaftssuche}
+\label{sec:impl:vns}
+
+\begin{algorithm}
+\begin{algorithmic}[1]
+\State Berechne Initiallösung mit \emph{onestepCD}
+\While{Terminationsbedingung \textbf{nicht} erfüllt}
+\State Führe Variable Neighborhood Descent mit Best Improvement Strategie durch:
+\State Nachbarschaft $l \leftarrow 1$
+\While{$l \leq 3$ \textbf{und} Zeitlimit nicht erreicht}
+\State Führe Nachbarschaft $n_l$ aus
+\If {Lösung verbessert \textbf{und} $l\neq 1$} 
+\State  $l\leftarrow 1$  
+\Else
+\State  $l\leftarrow l + 1$
+\EndIf
+\EndWhile
+\If{Beste Lösung verbessert \textbf{oder} $k \geq k_{\mathrm max}$}
+\State $k \leftarrow k_{\mathrm start}$ 
+\Else
+\State $k \leftarrow k + 1$
+\EndIf
+\State Wähle zufällig Nachbarschaft aus und ``schüttle" Lösung mit $k$ zufälligen Zügen
+\EndWhile
+\State\Return Beste gefundene Lösung
+\end{algorithmic}
+\caption{Pseudocode der Variablen Nachbarschaftssuche}
+\end{algorithm}
 
 \section{Nachbarschaften}
+Die Nachbarschaften bilden das Herzstück der VNS. Eine einzelne Nachbarschaft versucht kleine Veränderungen vorzunehmen, welche die Lösung verbessern, und gibt diese Verbesserungen dann an weitere Nachbarschaften weiter.
+Jede Nachbarschaft verfolgt ihren eigenen Ansatz zur Verbesserung, und muss nicht immer bessere Ergebnisse liefern. 
+
+Bei der Implementierung der Nachbarschaften wurde versucht, ein möglichst einfach erweiterbares Gerüst zu schaffen, um schnell und einfach neue Ideen für Nachbarschaften ausprobieren zu können. Jede Nachbarschaft
+wurde daher als eigene Klasse implementiert, welche aber alle von einer einzelnen Basisklasse erben. Diese Basisklasse definiert ein Grundgerüst, welches von jeder Nachbarschaft ausgefüllt werden muss. 
+
+Zu diesem Grundgerüst zählt nicht nur die Implementierung der eigentlichen Nachbarschaft, sondern auch eine Funktion um den Namen der Nachbarschaft auszugeben, ein Funktion um ein Kurzzeichen für die Nachbarschaft
+zu definieren, und eine Funktion um eine bestehende Lösung zu schütteln, wie in Abschnitt~\ref{sec:vns} beschrieben. Jede dieser Funktionen muss für eine Nachbarschaft implementiert werden, und jede Nachbarschaft
+sollte nur gültige Lösungen zurückliefern, oder zumindet einen Indikator liefern, dass die zurückgelieferte Lösung ein unbrauchbares Ergebnis darstellt.
 
 \subsection{changeColor}
 \subsection{changeNode}
