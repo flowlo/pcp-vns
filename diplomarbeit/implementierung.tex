@@ -1,6 +1,6 @@
 \chapter{Implementierung}
 %TODO: sec:ansatz
-Für die Implementierung des in Abschnitt \ref{sec:ansatz} vorgeschlagenen Lösungsansatzes, wurde eine möglichst flexible Struktur des Programmes verwendet. Wie in Abschnitt \ref{sec:c++} begründet, wurde
+Für die Implementierung des in Abschnitt \ref{sec:ansatz} vorgeschlagenen Lösungsansatzes, wurde eine möglichst flexible Struktur des Programmes verwendet. Wie in Abschnitt \ref{sec:cpp} begründet, wurde
 als Implementationssprache C++ gewählt. Durch den Einsatz von C++ kann ein einfach erweiterbares Programmgerüst geschrieben werden, welches es erlaubt, schnell und ohne großen Aufwand mehrere Nachbarschaften
 für die VNS zu implementieren. 
 
@@ -21,8 +21,7 @@ class Solution {
    public:
       Solution();
       Solution(Solution *s);
-      ~Solution();
-      
+      ~Solution(); 
       void requestDeepCopy();
 
       Graph *g;
@@ -32,40 +31,6 @@ class Solution {
       int colorsUsed;
       int *representatives;
       int *copyCounter;
-      
-      int getPartition(Vertex v);
-      unsigned int getOriginalId(Vertex v);
-      int getPartitionColor(Vertex v);
-      int getColorDegree(Vertex v);
-      
-      int minPossibleColor(Vertex v);
-      boost::tuple<int, int> getColorDegreeAndMinColor(Vertex v);
-      bool isPartitionColored(Vertex v);
-      
-      void setOriginalId(Vertex v, int id);
-      void setPartitionColor(Vertex v, int color);
-      
-      void print(std::ostream& out);
-      std::string toString();
-      
-      static Solution* fromColStream(std::istream& in);
-      static Solution* fromColBStream(std::istream& in);
-      static Solution* fromPcpStream(std::istream& in);
-      
-      void addVertex(int part, Vertex id);
-      void removeVertex(Vertex id);
-      void addEdge(Vertex v1, Vertex v2);
-      void replaceVertex(Vertex toR, Vertex rep, Solution& full);
-      
-      #ifdef ubigraph
-      void redraw();
-      void redraw(int shift);
-      void prepareUbigraph();
-      #endif
-      
-   private:
-      boost::property_map<Graph, boost::vertex_index1_t>::type partitionMap;
-      boost::property_map<Graph, boost::vertex_index2_t>::type idMap;
 };
 \end{lstlisting}
 \setstretch{1.5}
@@ -83,7 +48,28 @@ Einen Sonderfall stellt das Vector-Array \texttt{partNodes} dar. Es wird ausschl
 dort für jede Partition alle zugeordneten Knoten ab. Dies dient der schnellen Findung von alternativen Knoten für eine bestimmte Partition, und findet
 in mehreren Nachbarschaften verwendung. 
 
-\subsubsection{Kopierkonstruktor}
+\subsection{Graph-Datenstruktur}
+Für die Speicherung von sowohl Lösungs als auch Problemgraphen dient die \texttt{adjacency\_list}-Datenstruktur, welche von Boost bereitgestellt wird. Der Einsatz von Boost wird in Abschnitt \ref{sec:boost} 
+beschrieben. Es wurde bewusst eine Liste als Grundlage der Speicherung verwendet, um ein schnelles Iterieren über Knoten und Kanten zu ermöglichen. Die ebenfalls von Boost bereitgestellte 
+\texttt{adjacency\_matrix} hatte sich in einem Test als ungeeignet erwiesen, da nicht alle Operationen, wie das hinzufügen und löschen von Knoten unterstützt werden. Des Weiteren wurde die Option für 
+ungerichtete Grapehn gesetzt, da das PCP keine gerichteten Beziehungen zwischen Knoten vorsieht. Dies führt dazu, dass, sobald eine Kante vom Knoten \textit{A} zu Knoten \textit{B} führt, automatisch auch
+eine Beziehung von Knoten \textit{B} zu Knoten \textit{A} führt.
+
+Boost bietet außerdem die Wahl zwischen verschiedenen Datenstrukturen für die Speicherung des Graphobjektes. Selbst wenn die Auswahl auf eine Liste gefallen ist, gibt es noch mehrere Möglichkeiten die Datenstruktur
+zu beeinflussen. Zum einen kann bei der Speicherung der Knoten sowohl eine normale Liste, als auch ein Vector, ausgwählt werden. Die selbe Möglichkeit präsentiert sich dann auch für die Speicherung der Kanten.
+Ein Vector ist eine Datenstruktur ähnlich einem Array, bei dem alle Datenelemente im Speicher hintereinander angeordnet sind, welche aber vergrößert oder verkleinert werden kann.
+
+Für die Speicherung der Knoten wurde ein Vector herangezogen, zum einen, da nun ein Knoten direkt über einen zahlenbasierten Index ansprechbar ist, zum Anderen, weil während der Laufzeit des Programmes nur
+zwei Mal Knoten hinzugefügt oder entfernt werden. Einmal beim Einlesen der Probleminstanz aus einer Datei, und einmal bei der Berechnung der Ausgangslösung. Bei allen anderen Veränderungen der Lösung erfolgt
+der Austausch von Knoten direkt an der Stelle des zu ersetzenden Knoten. Es ist daher anzunehmen das während der Laufzeit des Programmes keine größeren Reallokationsoperationen vorgenommen werden müssen.
+
+Schwieriger ist die Wahl schon bei der Frage, ob für die Speicherung der Kanten eine Liste nicht besser geeignet wäre. Da in verschiedenen, weiter unten beschriebenen, Nachbarschaften Knoten ausgetauscht werden,
+ein Vorgang der darauf basiert, die alten Adjazenzen eines Knotens zu kappen, und an deren Stelle neue Adjazenzen zu schaffen, welche dem ausgetauschten Knoten entsprechen, handelt es sich bei der Kantenspeicherung
+um eine Datenstruktur die häufigen Änderungen unterliegt. Da die meisten Knoten aber eine ähnliche Anzahl an Adjazenzen haben, würde auch hier ein Vektor keine allzu häufigen Reallokationen durchführen müssen.
+In einem Test ergab sich unter Verwendung eines Vectors als Speicherstruktur für die Adjazenzinformationen ein bis zu 20\% höhere Geschwindigkeit im Vergleich zur Verwendung einer Liste. Dies ist wohl vor allem
+auf die höhere Datenlokalität zurückzuführen, durch die der Prozessor bereits ganze Speicherbereiche in den Cache laden kann, wenn über die Adjazenzen iteriert wird.
+
+\subsection{Kopierkonstruktor}
 
 Besonders interessant bei der Solution-Klasse ist die automatisch bereitgestellte Kopiermechanik. Einer der besonderen Eigenschaften von C++ ist es, für jede Klasse automatisch einen sogenannten Kopierkonstruktor
 bereitzustellen, welcher als Parameter ein Objekt des selben Types entgegennimmt, und dieses kopiert. Da im Falle einer Lösung aber nicht immer alle Daten kopiert werden müssen, wurde in dieser Arbeit eine
@@ -203,18 +189,18 @@ struct StoredSolution {
 \end{lstlisting}
 \setstretch{1.5}
 
-Für den schnelle Zuordnung einer neuen Lösung zu den bestehenden Lösungen wird eine Hashmap-Datenstruktur verwendet. Durch die Verwendung einer
-Hashmap ist eine quasi sofortige Zuordnung einer Lösung zu dem entsprechenden Platz in der Hashmap möglich. Sollte eine Lösung schon einmal 
-aufgekommen sein, wird dieser Lösungsstrang verworfen, da er nicht zu neuen Lösungen führen würde. Die Implementation der Hashmap wird von 
-Boost, beschrieben im Abschnitt \ref{sec:boost}, bereitgestellt. Um die Hashmap zu betreiben sind außerdem noch eine Methode zur Hashberechnung,
+Für den schnelle Zuordnung einer neuen Lösung zu den bestehenden Lösungen wird eine Hashtable-Datenstruktur verwendet. Durch die Verwendung einer
+Hashtable ist eine quasi sofortige Zuordnung einer Lösung zu dem entsprechenden Platz in der Hashtable möglich. Sollte eine Lösung schon einmal 
+aufgekommen sein, wird dieser Lösungsstrang verworfen, da er nicht zu neuen Lösungen führen würde. Die Implementation der Hashtable wird von 
+Boost, beschrieben im Abschnitt \ref{sec:boost}, bereitgestellt. Um die Hashtable zu betreiben sind außerdem noch eine Methode zur Hashberechnung,
 sowie eine Methode zum Vergleich zweier gespeicherten Solutions notwendig. Der Hash für ein StoredSolutionobjekt wird aus den gesammelten Werten
 der beiden internen Arrays berechnet, während für die Vergleichsmethode die beiden Arrays Wert für Wert verglichen werden. Die von Boost 
-bereitgestellte Hashmap verwendet bei gleichen Hashwerten aber unterschiedlichen Lösungen eine einfache Liste, um die Ergebnisse zu speichern.
+bereitgestellte Hashtable verwendet bei gleichen Hashwerten aber unterschiedlichen Lösungen eine einfache Liste, um die Ergebnisse zu speichern.
 
 \section{Parser}
 \label{sec:parser}
 
-Damit erzielte Ergebnisse mit älteren Programmversionen, aber auch mit anderen Lösungsansätzen für das PCP verglichen werden können, ist es von
+Damit erzielte Ergebnisse mit älteren Programmversionen, aber auch mit anderen Lösungs\-ansätzen für das PCP verglichen werden können, ist es von
 Vorteil, immer wieder die selbe Eingabe zu verwenden. Außerdem bietet sich eine solche Möglichkeit an, wenn, wie in dieser Arbeit ein Zufallsfaktor
 zu einer Verbesserung der Lösung führen kann. Durch immer wieder gleiche Eingaben kann ein direkter Vergleich auch zwischen unterschiedlich
 parametrisierten Programminstanzen angestellt werden.
@@ -249,7 +235,8 @@ entspricht.
 Der Parser, welcher eine solche Datei einliest, ist in die Klasse Solution eingearbeitet. Die statische Methode \texttt{fromPcpStream} ließt eine
 Datei von einem Eingabestream ein, und wandelt sie in ein Solutionobjekt mit entsprechendem Problemgraphen um. Dieses Solutiobjekt wird während
 der gesamten Laufzeit des Programmes nicht verändert oder gelöscht, und dient als Ausgangspunkt der Konstruktionsheuristik, aber auch als
-Referenz für Nachbarschaften, welche einzelne Knoten austauschen.
+Referenz für Nachbarschaften, welche einzelne Knoten austauschen. Außerdem speichert diese Solutionobjekt als einziges eine direkte Zuordnung von einer Partitions-ID
+zu den verfügbaren Knoten in der Partition ab. 
 
 \begin{comment}
 \singlespacing
@@ -313,9 +300,16 @@ Solution* Solution::fromPcpStream(istream& in) {
 \section{Konstruktionsheuristik}
 Als Konstruktionsheuristik wurde der in Abschnitt \ref{sec:onestep} Algorithmus OneStep-CD gewählt. Die verwendete Implementierung des Algorithmus
 erzeugt ein neues Solutionobjekt, als einziger Übergabeparameter ist das aus der Datei eingelesen Solutionobjekt, welches ja den vollständigen Problemgraphen
-enthält. Dieses Solutionobjekt bildet dann die Ausgangsbasis für die Verbesserung in der Variablen Nachbarschaftssuche. 
+enthält. Dieses Solutionobjekt bildet dann die Ausgangsbasis für die Verbesserung in der Variablen Nachbarschaftssuche. Der Graph, welcher in dem erzeugten Solutionobjekt
+referenziert wird, ist ein anderer Graph als in der Gesamtlösung verwendet wird. In dem referenzierten Graphen befinden sich nur mehr ein Knoten per Partition, welcher auch den
+ausgewählten Repräsentanten der jeweiligen Partition darstellt. 
+
+\subsection{Pilot}
 
 %TODO: pilot
+
+\section{Nachbarschaftssuche}
+
 \section{Nachbarschaften}
 
 \subsection{changeColor}
