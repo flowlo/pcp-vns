@@ -1,7 +1,7 @@
 \chapter{Implementierung}
 %TODO: sec:ansatz
 Für die Implementierung des in Abschnitt \ref{sec:ansatz} vorgeschlagenen Lösungsansatzes, wurde eine möglichst flexible Struktur des Programmes verwendet. Wie in Abschnitt \ref{sec:cpp} begründet, wurde
-als Implementationssprache C++ gewählt. Durch den Einsatz von C++ kann ein einfach erweiterbares Programmgerüst geschrieben werden, welches es erlaubt, schnell und ohne großen Aufwand mehrere Nachbarschaften
+als Implementierungssprache C++ gewählt. Durch den Einsatz von C++ kann ein einfach erweiterbares Programmgerüst geschrieben werden, welches es erlaubt, schnell und ohne großen Aufwand mehrere Nachbarschaften
 für die VNS zu implementieren. 
 
 Um diese flexible Struktur zu ermöglichen wurde das Programm in vier unabhängige Bereiche aufgeteilt, welche durch eine einzelne Startroutine zusammengehalten werden. Diese Bereiche können grob als Parser, 
@@ -15,14 +15,12 @@ Außerdem besitzt Solution mehrere Methoden, einen Problemgraphen aus einer Date
 in Abschnitt \ref{sec:parser} besprochen.
 
 \singlespacing
-\lstset{style=customc}
-\begin{lstlisting}[caption={Signatur der Solutionklasse},label=lst:solution]
+\begin{lstlisting}[caption={Ein Ausschnitt aus der Signatur der Solutionklasse},label=lst:solution]
 class Solution {
    public:
       Solution();
       Solution(Solution *s);
-      ~Solution();
-      
+      ~Solution(); 
       void requestDeepCopy();
 
       Graph *g;
@@ -32,43 +30,45 @@ class Solution {
       int colorsUsed;
       int *representatives;
       int *copyCounter;
-      
-      int getPartition(Vertex v);
-      unsigned int getOriginalId(Vertex v);
-      int getPartitionColor(Vertex v);
-      int getColorDegree(Vertex v);
-      
-      int minPossibleColor(Vertex v);
-      boost::tuple<int, int> getColorDegreeAndMinColor(Vertex v);
-      bool isPartitionColored(Vertex v);
-      
-      void setOriginalId(Vertex v, int id);
-      void setPartitionColor(Vertex v, int color);
-      
-      void print(std::ostream& out);
-      std::string toString();
-      
-      static Solution* fromColStream(std::istream& in);
-      static Solution* fromColBStream(std::istream& in);
-      static Solution* fromPcpStream(std::istream& in);
-      
-      void addVertex(int part, Vertex id);
-      void removeVertex(Vertex id);
-      void addEdge(Vertex v1, Vertex v2);
-      void replaceVertex(Vertex toR, Vertex rep, Solution& full);
-      
-      #ifdef ubigraph
-      void redraw();
-      void redraw(int shift);
-      void prepareUbigraph();
-      #endif
-      
-   private:
-      boost::property_map<Graph, boost::vertex_index1_t>::type partitionMap;
-      boost::property_map<Graph, boost::vertex_index2_t>::type idMap;
 };
 \end{lstlisting}
 \setstretch{1.5}
+
+Gespeichert wird eine Referenz auf den Lösungsgraphen. Dieser Graph enthält ausschließlich jene Knoten, welche als Repräsentanten für ihre Partition
+ausgewählt wurden. Der Graph muss daher verändert werden, wenn eine Partition ihren Repräsentanten wechselt. Des weiteren wird die Anzahl an Partitionen
+gespeichert, so wie die Anzahl an verwendeten Farben für eine bestimmte Lösung. 
+
+Im \texttt{partition}-Array werden für jede Partition genau eine ausgewählte Farbe gespeichert, wobei sich diese Farben natürlich von Lösung zu Lösung 
+unterscheiden können, als Index dient die Partitions-ID. Das Array \texttt{representatives} bietet eine Zuordnung von Partition zu Knoten. Ein Wert 
+an der Position $n$ zeigt auf jenen Knoten, der die Partition $n$ vertritt.
+
+Einen Sonderfall stellt das Vector-Array \texttt{partNodes} dar. Es wird ausschließlich bei der eingelesenen Probleminstanz eingesetzt, und speichert
+dort für jede Partition alle zugeordneten Knoten ab. Dies dient der schnellen Findung von alternativen Knoten für eine bestimmte Partition, und findet
+in mehreren Nachbarschaften verwendung. 
+
+\subsection{Graph-Datenstruktur}
+Für die Speicherung von sowohl Lösungs als auch Problemgraphen dient die \texttt{adjacency\_list}-Datenstruktur, welche von Boost bereitgestellt wird. Der Einsatz von Boost wird in Abschnitt \ref{sec:boost} 
+beschrieben. Es wurde bewusst eine Liste als Grundlage der Speicherung verwendet, um ein schnelles Iterieren über Knoten und Kanten zu ermöglichen. Die ebenfalls von Boost bereitgestellte 
+\texttt{adjacency\_matrix} hatte sich in einem Test als ungeeignet erwiesen, da nicht alle Operationen, wie das hinzufügen und löschen von Knoten unterstützt werden. Des Weiteren wurde die Option für 
+ungerichtete Grapehn gesetzt, da das PCP keine gerichteten Beziehungen zwischen Knoten vorsieht. Dies führt dazu, dass, sobald eine Kante vom Knoten \textit{A} zu Knoten \textit{B} führt, automatisch auch
+eine Beziehung von Knoten \textit{B} zu Knoten \textit{A} führt.
+
+Boost bietet außerdem die Wahl zwischen verschiedenen Datenstrukturen für die Speicherung des Graphobjektes. Selbst wenn die Auswahl auf eine Liste gefallen ist, gibt es noch mehrere Möglichkeiten die Datenstruktur
+zu beeinflussen. Zum einen kann bei der Speicherung der Knoten sowohl eine normale Liste, als auch ein Vector, ausgwählt werden. Die selbe Möglichkeit präsentiert sich dann auch für die Speicherung der Kanten.
+Ein Vector ist eine Datenstruktur ähnlich einem Array, bei dem alle Datenelemente im Speicher hintereinander angeordnet sind, welche aber vergrößert oder verkleinert werden kann.
+
+Für die Speicherung der Knoten wurde ein Vector herangezogen, zum einen, da nun ein Knoten direkt über einen zahlenbasierten Index ansprechbar ist, zum Anderen, weil während der Laufzeit des Programmes nur
+zwei Mal Knoten hinzugefügt oder entfernt werden. Einmal beim Einlesen der Probleminstanz aus einer Datei, und einmal bei der Berechnung der Ausgangslösung. Bei allen anderen Veränderungen der Lösung erfolgt
+der Austausch von Knoten direkt an der Stelle des zu ersetzenden Knoten. Es ist daher anzunehmen das während der Laufzeit des Programmes keine größeren Reallokationsoperationen vorgenommen werden müssen.
+
+Schwieriger ist die Wahl schon bei der Frage, ob für die Speicherung der Kanten eine Liste nicht besser geeignet wäre. Da in verschiedenen, weiter unten beschriebenen, Nachbarschaften Knoten ausgetauscht werden,
+ein Vorgang der darauf basiert, die alten Adjazenzen eines Knotens zu kappen, und an deren Stelle neue Adjazenzen zu schaffen, welche dem ausgetauschten Knoten entsprechen, handelt es sich bei der Kantenspeicherung
+um eine Datenstruktur die häufigen Änderungen unterliegt. Da die meisten Knoten aber eine ähnliche Anzahl an Adjazenzen haben, würde auch hier ein Vektor keine allzu häufigen Reallokationen durchführen müssen.
+In einem Test ergab sich unter Verwendung eines Vectors als Speicherstruktur für die Adjazenzinformationen ein bis zu 20\% höhere Geschwindigkeit im Vergleich zur Verwendung einer Liste. Dies ist wohl vor allem
+auf die höhere Datenlokalität zurückzuführen, durch die der Prozessor bereits ganze Speicherbereiche in den Cache laden kann, wenn über die Adjazenzen iteriert wird.
+
+\subsection{Kopierkonstruktor}
+\label{sec:copy}
 
 Besonders interessant bei der Solution-Klasse ist die automatisch bereitgestellte Kopiermechanik. Einer der besonderen Eigenschaften von C++ ist es, für jede Klasse automatisch einen sogenannten Kopierkonstruktor
 bereitzustellen, welcher als Parameter ein Objekt des selben Types entgegennimmt, und dieses kopiert. Da im Falle einer Lösung aber nicht immer alle Daten kopiert werden müssen, wurde in dieser Arbeit eine
@@ -80,21 +80,21 @@ anstatt den gesamten Graphen zu kopieren, eine Referenz auf den alten Graphen au
 
 \singlespacing
 \begin{lstlisting}[caption={Der Kopierkonstruktor der Solutionklasse},label={lst:copy}]
+// Copy an existing solution, this will use the same graph object as the 
+// original, to cut these ties, use requestDeepCopy()
 Solution::Solution(Solution *toCopy) {
    this->partNodes = NULL;
    this->g = toCopy->g;
-   this->representatives = toCopy->representatives;
-   this->partitionMap = get(vertex_index1_t(), *this->g);
-   this->idMap = get(vertex_index2_t(), *this->g); 
-   // Copy reference counter and increment to track references
    this->copyCounter = toCopy->copyCounter;
-   *this->copyCounter += 1;  
-   
+   // increment copycounter, to keep track of referencing solution
+   *this->copyCounter += 1;
    this->numParts = toCopy->numParts;
-   this->colorsUsed = toCopy->colorsUsed;
-
-   
    this->partition = new int[this->numParts];
+   this->representatives = toCopy->representatives;
+   this->colorsUsed = toCopy->colorsUsed;
+   this->partitionMap = get(vertex_index1_t(), *this->g);
+   this->idMap = get(vertex_index2_t(), *this->g);
+   
    for (int i = 0; i < this->numParts; i++) {
       this->partition[i] = toCopy->partition[i];
    }
@@ -107,11 +107,61 @@ der in einem Solutionobjekt referenzierte Graph auch bei anderen Lösungen zum E
 Lösungen führen, welche dann unweigerlich unzulässige Ergebnisse zur Folge hätten. Daher kann mit der Methode \texttt{requestDeepCopy} eine vollständige Kopie des Solutionobjektes angefordert werden. In dieser
 Methode werden dann alle verbleibenden Fremdreferenzen nocheinmal kopiert, und in eigens für das anfragende Solutionobjekt reservierte Speicherbereiche geschrieben.
 
+\singlespacing
+\begin{lstlisting}[caption={Die Methode \texttt{requestDeepCopy} of the Solution class},label={lst:deepcopy}]
+// Cut ties between a copy and the underlying graph by 
+// making a copy of the graph
+void Solution::requestDeepCopy() {
+   // Copy graph
+   Graph *cp = g;
+   g = new Graph(*g);
+   // Reset property maps
+   this->partitionMap = get(vertex_index1_t(), *g);
+   this->idMap = get(vertex_index2_t(), *g);
+
+   // Copy representatives array
+   int *rep = representatives;
+   representatives = new int[numParts];
+   for (int i = 0; i < numParts; i++) {
+      representatives[i] = rep[i];
+   }
+
+   // delete the old copy if counter reached zero
+   *copyCounter -= 1;
+   if (*copyCounter <= 0) {
+      delete copyCounter;
+      delete cp;
+      delete[] rep;
+   }
+   copyCounter = new int;
+   *copyCounter = 1;
+}
+\end{lstlisting}
+\setstretch{1.5}
+
 Ein anderes Problem entsteht beim Aufräumen von Objekten. Sollte durch das Löschen eines Solutionobjektes auch dessen referenzierter Graph verschwinden, würde das zu Speicherfehlern bei anderen Objekten führen, 
 welche auf den selben Graphen zeigen. Daher wurde der Destruktor, welcher zum Aufräumen eines Objektes aufgerufen wird, überschrieben, und löscht nun nur noch referenzierte Objekte, wenn kein anderes Objekt
 mehr Referenzen auf das selbe Objekt hält. Um dies zu ermöglichen wird von allen Solutionobjekten, welche auf den selben Graphen referenzieren ein Counter referenziert, welcher die Anzahl der
 Verweise auf den selben Graphen mitzählt. So lange dieser Zähler über eins ist, wird kein Objekt gelöscht. Wird nun der Destruktor eines Solutionobjektes aufgerufen, überprüft dieser, ob er die letzte
 Referenz auf diese Objekte hält. Wenn ja, löscht er diese und seine eigenen Referenzen, wenn nicht, löscht er wiederum nur seine eigenen Referenzen und vermindert den Zähler um eins.
+
+\singlespacing
+\begin{lstlisting}[caption={Der Destruktor der Solutionklasse mit Rücksichtnahme auf eventuelle verbleibende Referenzen},label={lst:destruct}]
+// Destructor
+Solution::~Solution() {
+   // Decrement copyCounter, if <= 0 delete all information about the 
+   // referenced graph and corresponding arrays
+   *copyCounter -= 1;
+   if (*copyCounter <= 0) {
+      delete g;
+      delete copyCounter;
+      delete[] representatives;
+   }
+   delete[] partition;
+   delete[] partNodes;
+}
+\end{lstlisting}
+\setstretch{1.5}
 
 \subsection{StoredSolution}
 Um eine einzelne Lösung von einer anderen zu unterscheiden, sind zwei Informationen notwendig: die Auswahl der Repräsentanten, und die Auswahl 
@@ -140,18 +190,36 @@ struct StoredSolution {
 \end{lstlisting}
 \setstretch{1.5}
 
-Für den schnelle Zuordnung einer neuen Lösung zu den bestehenden Lösungen wird eine Hashmap-Datenstruktur verwendet. Durch die Verwendung einer
-Hashmap ist eine quasi sofortige Zuordnung einer Lösung zu dem entsprechenden Platz in der Hashmap möglich. Sollte eine Lösung schon einmal 
-aufgekommen sein, wird dieser Lösungsstrang verworfen, da er nicht zu neuen Lösungen führen würde. Die Implementation der Hashmap wird von 
-Boost, beschrieben im Abschnitt \ref{sec:boost}, bereitgestellt. Um die Hashmap zu betreiben sind außerdem noch eine Methode zur Hashberechnung,
+Für den schnelle Zuordnung einer neuen Lösung zu den bestehenden Lösungen wird eine Hashtable-Datenstruktur verwendet. Durch die Verwendung einer
+Hashtable ist eine quasi sofortige Zuordnung einer Lösung zu dem entsprechenden Platz in der Hashtable möglich. Sollte eine Lösung schon einmal 
+aufgekommen sein, wird dieser Lösungsstrang verworfen, da er nicht zu neuen Lösungen führen würde. Die Implementierung der Hashtable wird von 
+Boost, beschrieben im Abschnitt \ref{sec:boost}, bereitgestellt. Um die Hashtable zu betreiben sind außerdem noch eine Methode zur Hashberechnung,
 sowie eine Methode zum Vergleich zweier gespeicherten Solutions notwendig. Der Hash für ein StoredSolutionobjekt wird aus den gesammelten Werten
 der beiden internen Arrays berechnet, während für die Vergleichsmethode die beiden Arrays Wert für Wert verglichen werden. Die von Boost 
-bereitgestellte Hashmap verwendet bei gleichen Hashwerten aber unterschiedlichen Lösungen eine einfache Liste, um die Ergebnisse zu speichern.
+bereitgestellte Hashtable verwendet bei gleichen Hashwerten aber unterschiedlichen Lösungen eine einfache Liste, um die Ergebnisse zu speichern.
+
+\subsection{Plausibilitätsprüfung}
+
+Um eine manuelle Überprüfung der Korrektheit einer Lösung zu umgehen, wird innerhalb der VNS, siehe Abschnitt~\ref{sec:impl:vns}, eine Plausibilitätsprüfung durchgeführt. Diese Überprüfung stellt an Hand 
+der innerhalb einer Solution gespeicherten Eigenschaften, und an Hand des ursprünglichen Problemgraphen fest, ob es sich um eine valide Lösung handelt oder nicht. Diese Überprüfung erfolgt standardmäßig
+am Ende der VNS, und überprüft das beste erzielte Ergebnis, welches dann auch als Endergebnis präsentiert wird. Mit Hilfe eines Programmparameters, welcher zu Ausführungsstart angegeben werden muss, ist es
+auch möglich eine solche Überprüfung für jede Lösung einzuschalten, welche eine Verbesserung zur vorherigen darstellt. 
+
+Innerhalb dieses Checks werden verschiedenste Dinge überprüft. Zum einen wird getestet, ob zwei verbundenen Knoten die selbe Farbe zugeteilt wurde. Dann wird überprüft, ob die gespeicherte Anzahl an Farben
+mit der tatsächlich verwendeten Farben übereinstimmt. Dies ist besonders wichtig, da ja die Anzahl an Farben das Hauptkriterium für eine bessere Lösung darstellt. Dann wird überprüft, ob alle Partition
+vertreten sind, und ob die jeweiligen Repräsentanten richtig abgespeichert wurden. 
+
+Zu letzt wird noch überprüft, ob der Lösungsgraph mit dem Ursprungsgraphen übereinstimmt. Dazu werden verschiedene Fakten überprüft. Zum einen werden fehlende oder überschüssige Kanten in der Lösung gesucht, 
+zum anderen wird überprüft, ob die ausgewählten Repräsentanten einer Partition wirklich zu dieser Partition zugehörig sind. 
+
+Sollte keine dieser Überprüfungen auf Fehler stoßen, wird angenommen, es handle sich um eine valide Lösung für das PCP. Durch diese Überprüfung konnten auch schon Fehler innerhalb einzelne Nachbarschaften 
+nachgewiesen und schließlich behoben werden.
+
 
 \section{Parser}
 \label{sec:parser}
 
-Damit erzielte Ergebnisse mit älteren Programmversionen, aber auch mit anderen Lösungsansätzen für das PCP verglichen werden können, ist es von
+Damit erzielte Ergebnisse mit älteren Programmversionen, aber auch mit anderen Lösungs\-ansätzen für das PCP verglichen werden können, ist es von
 Vorteil, immer wieder die selbe Eingabe zu verwenden. Außerdem bietet sich eine solche Möglichkeit an, wenn, wie in dieser Arbeit ein Zufallsfaktor
 zu einer Verbesserung der Lösung führen kann. Durch immer wieder gleiche Eingaben kann ein direkter Vergleich auch zwischen unterschiedlich
 parametrisierten Programminstanzen angestellt werden.
@@ -186,75 +254,169 @@ entspricht.
 Der Parser, welcher eine solche Datei einliest, ist in die Klasse Solution eingearbeitet. Die statische Methode \texttt{fromPcpStream} ließt eine
 Datei von einem Eingabestream ein, und wandelt sie in ein Solutionobjekt mit entsprechendem Problemgraphen um. Dieses Solutiobjekt wird während
 der gesamten Laufzeit des Programmes nicht verändert oder gelöscht, und dient als Ausgangspunkt der Konstruktionsheuristik, aber auch als
-Referenz für Nachbarschaften, welche einzelne Knoten austauschen.
+Referenz für Nachbarschaften, welche einzelne Knoten austauschen. Außerdem speichert diese Solutionobjekt als einziges eine direkte Zuordnung von einer Partitions-ID
+zu den verfügbaren Knoten in der Partition ab. 
+
+\section{Konstruktionsheuristik}
+Als Konstruktionsheuristik wurde der in Abschnitt \ref{sec:onestep} Algorithmus OneStep-CD gewählt. Die verwendete Implementierung des Algorithmus
+erzeugt ein neues Solutionobjekt, als einziger Übergabeparameter ist das aus der Datei eingelesen Solutionobjekt, welches ja den vollständigen Problemgraphen
+enthält. Dieses Solutionobjekt bildet dann die Ausgangsbasis für die Verbesserung in der Variablen Nachbarschaftssuche. Der Graph, welcher in dem erzeugten Solutionobjekt
+referenziert wird, ist ein anderer Graph als in der Gesamtlösung verwendet wird. In dem referenzierten Graphen befinden sich nur mehr ein Knoten per Partition, welcher auch den
+ausgewählten Repräsentanten der jeweiligen Partition darstellt. 
+
+\subsection{Pilot}
+
+%TODO: pilot, HERBERT TRINK DAS!
+
+\section{Nachbarschaftssuche}
+\label{sec:impl:vns}
+
+
+\section{Nachbarschaften}
+Die Nachbarschaften bilden das Herzstück der VNS. Eine einzelne Nachbarschaft versucht kleine Veränderungen vorzunehmen, welche die Lösung verbessern, und gibt diese Verbesserungen dann an weitere Nachbarschaften weiter.
+Jede Nachbarschaft verfolgt ihren eigenen Ansatz zur Verbesserung, und muss nicht immer bessere Ergebnisse liefern. 
+
+Bei der Implementierung der Nachbarschaften wurde versucht, ein möglichst einfach erweiterbares Gerüst zu schaffen, um schnell und einfach neue Ideen für Nachbarschaften ausprobieren zu können. Jede Nachbarschaft
+wurde daher als eigene Klasse implementiert, welche aber alle von einer einzelnen Basisklasse erben. Diese Basisklasse definiert ein Grundgerüst, welches von jeder Nachbarschaft ausgefüllt werden muss. 
+
+Zu diesem Grundgerüst zählt nicht nur die Implementierung der eigentlichen Nachbarschaft, sondern auch eine Funktion um den Namen der Nachbarschaft auszugeben, ein Funktion um ein Kurzzeichen für die Nachbarschaft
+zu definieren, und eine Funktion um eine bestehende Lösung zu schütteln, wie in Abschnitt~\ref{sec:vns} beschrieben. Jede dieser Funktionen muss für eine Nachbarschaft implementiert werden, und jede Nachbarschaft
+sollte nur gültige Lösungen zurückliefern, oder zumindet einen Indikator liefern, dass die zurückgelieferte Lösung ein unbrauchbares Ergebnis darstellt.
+
+Die Basisklasse, von der jede Nachbarschaft erbt, heißt \texttt{VNS\_Unit}. Alle Nachbarschaften müssen alle definierten Methoden und Prozeduren implementieren. Jeder Nachbarschaft wird dabei beim Aufrufen der
+Verbesserungsmethode die zu verbessernde Lösung, und auch jenes Solutionobjekt, welches die unveränderte Aufgabenstellung beeinhaltet, übergeben. Das selbe gilt für Methode zum schütteln der Lösung, mit dem
+zusätzlichen Parameter der Stärke des Schüttelns. Somit kann von der VNS bestimmt werden, wie stark die Lösungen randomisiert werden. 
 
 \singlespacing
-\begin{lstlisting}[caption={Die Methode \texttt{fromPcpStream}, welche eine Datei im \texttt{.pcp}-Format einließt und in ein Solutionobjekt umwandelt},label={lst:frompcp}]
-Solution* Solution::fromPcpStream(istream& in) {
-   Solution *s = new Solution();
-   
-   int vertices, edges, partitions;
-   cin >> vertices >> edges >> partitions;
-   
-   if (DEBUG_LEVEL > 3) {
-      cout << "Reading " << vertices << " vertices, " << edges;
-      cout << " edges and " << partitions << " partitons ..." << endl;
-   }
-   
-   // Initialize the solution to the read parameters
-   s->partition = new int[partitions];
-   s->representatives = new int[partitions];
-   s->partNodes = new vector<Vertex>[partitions];
-   s->numParts = partitions;
-   s->colorsUsed = partitions;
-   
-   #ifdef ubigraph
-   s->prepareUbigraph();
-   #endif
+\begin{lstlisting}[caption={Signatur der Basisklasse \texttt{VNS\_Unit}, von welcher alle Nachbarschaften erben},label={lst:vnsunit}]
+class VNS_Unit {
+   public:
+      /// Compute the new improved solution of this neighborhood
+      virtual Solution *findLocalMin(Solution& curBest, Solution& full);
 
-   // Read partition info and store it into the property map, do the 
-   // same for the "original" vertexID, so they can be compared on 
-   // all graph
-   int i, part;
-   for (i = 0; i < vertices; i++) {
-      cin >> part;
-      s->addVertex(part, i);
+      /// Shuffle a solution using the neighborhood as a base
+      virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
+   
+      virtual ~VNS_Unit();
       
-      if (DEBUG_LEVEL > 3)
-         cout << "Added vertex " << i << " to partition " << part << "." << endl;
-   }
+      /// Returns a given name for the neighborhood
+      virtual const std::string getName();
 
-   // Read the input for edges between to vertices and add them to 
-   // the solution graph
-   for (i = 0; i < edges; i++) {
-      int source, target;
-      cin >> source >> target;
-
-      if (DEBUG_LEVEL > 3) {
-         cout << "Added edge (" << source << "|" << target << ")" << endl;
-      }
-      s->addEdge(source, target);
-   }
-   
-   if (DEBUG_LEVEL > 3)
-      cout << "Parsing input finished successfully!" << endl;
-
-   return s;
-}
+      /// Returns a given (unique) character used to quickly reference
+      /// an unit via command line argument.
+      virtual const char getAbbreviation();
+      
+      static const char getStaticAbbreviation();
+};
 \end{lstlisting}
 \setstretch{1.5}
 
+\subsection{ChangeColor}
+Bei dieser Nachbarschaft wurde versucht den in Abschnitt \ref{sec:ChangeColor} vorgeschlagene Ansatz in eine konkrete Nachbarschaft zu übersetzen. Da sich bei Tests herrausstellte, dass der beschriebene Ansatz
+mit zufälliger Auswahl an Farbe, und zufälliger Bestimmung eines in konfliktstehenden Knotens bei großen Instanzen zu schlechten Ergebnissen führte, wurde ein etwas modifizierter Ansatz gewählt.
 
-\section{Konstruktionsheuristik}
+Die veränderte Heuristik ist unter Algorihtmus~\ref{psy:ChangeColor} zu finden. Jeder Knoten, welcher die höchste Farbe besitzt, wird umgefärbt. Es werden alle Farben ausprobiert, welche kleiner als
+die ursprünglich höchste Farbe sind. Dann wird versucht, die adjazenten Knoten umzufärben, und zwar so, dass auch hier nicht mehr die höchste Farbe verwendet wird. Wenn keine der ausprobierten Farben eine
+Verbesserung bringt, wird die Nachbarschaft abgebrochen. Konnten für alle Knoten, welche ursprünglich die höchste Farbe besaßen, eine Ersatzfarbe gefunden werden, wird das neue Solutionobjekt zurückgegeben, 
+welches eine Verbesserung zum Eingabeobjekt darstellt.
 
-\section{Variable Nachbarschaftssuche}
 
-\section{Nachbarschaften}
+\begin{algorithm}
+\begin{algorithmic}[1]
+\Require Solution $s$, Solution $full$
+\Ensure Solution $l$
+\State $l \leftarrow$ Kopie von $s$
+\State $c \leftarrow maximaleFarbe(l)$
+\ForAll{Knoten $v \in l.graph$ für die gilt $v.farbe = c$}
+\For{Farbe $i = 0 \to c - 1$}
+\State $v.farbe \leftarrow i$
+\State Färbe alle adjazenten Knoten mit gleicher Farbe neu ein
+\If{$maxFarbe(v.adjazenzen) < c$}
+\State Beende innere Schleife  
+\EndIf
+\EndFor
+\If{$maxFarbe(v.adjazenzen) \ge c$}
+\State Stoppe Nachbarschaft ohne bessere Lösung
+\EndIf
+\EndFor
+\State retourniere $l$
+\end{algorithmic}
+\caption{Pseudocode der ChangeColor-Nachbarschaft}
+\label{psy:ChangeColor}
+\end{algorithm}
 
-\subsection{changeColor}
-\subsection{changeNode}
+
+\subsection{ChangeNode}
+Ähnlich wie bei ChangeColor erwies sich der in Abschnitt~\ref{sec:changenode} beschriebene Ansatz in der Realität bei großen Instanzen als nicht verlässlich. Häufig lieferte die Nachbarschaft keine gültigen
+Ergebnisse, da die Anzahl der Konflike zu stark angestiegen war. Daher wurde auch hier ein modifizierter Ansatz gewählt, welcher in Einzelfällen zwar schlechtere Ergebnisse liefert, dafür aber regelmäßig
+bessere Lösung erzeugt.
+
+Die Nachbarschaft ist unter Algorithmus~\ref{psy:ChangeNode} zu finden. Ähnlich wie bei ChangeColor wird versucht, alle Knoten mit der maximalen Farbe umzufärben. Bei ChangeNode wird dies versucht, in dem
+ein Knoten mit maximaler Farbe gegen einen anderen Knoten ausgetauscht wird. Dieser Austauschknoten muss natürlich auch Vertreter der selben Partition sein. Dieser Knoten wird dann versucht ganz normal 
+neu einzufärben. Sollte die Neueinfärbung mit einer Farbe niedriger als der maximalen Farbe erfolgen, wird nach weiteren Knoten maximaler Farbe gesucht. Sollte der Algorithmus nicht in der Lage sein, ein 
+passenden Ersatzknoten zu finden, welcher die Anzahl an verwendeten Farben verringert, bricht die Nachbarschaft ohne Verbesserung ab.
+
+\begin{algorithm}
+\begin{algorithmic}[1]
+\Require Solution $s$, Solution $full$
+\Ensure Solution $l$
+\State $l \leftarrow$ Kopie von $s$
+\State $c \leftarrow maximaleFarbe(l)$
+\ForAll{Knoten $v \in l.graph$ für die gilt $v.farbe = c$}
+\ForAll{Knoten $a \in full.graph$ für die gilt $a.partition = v.partition \wedge a \neq v$}
+\State Tausche Knoten $v$ mit Knoten $a$ in Solution $l$
+\State Färbe Knoten $a$ mit minimaler Farbe ein
+\If{$a.farbe < c$}
+\State Beende innere Schleife  
+\EndIf
+\EndFor
+\If{$maxFarbe(a.adjazenzen) \ge c$}
+\State Stoppe Nachbarschaft ohne bessere Lösung
+\EndIf
+\EndFor
+\State retourniere $l$
+\end{algorithmic}
+\caption{Pseudocode der ChangeNode-Nachbarschaft}
+\label{psy:ChangeNode}
+\end{algorithm}
+
+
 \subsection{DSATUR}
-\subsection{changeAll}
+\subsection{ChangeAll}
+Bei der Nachbarschaft ChangeAll handelt es sich um eine Kombination aus den beiden Nachbarschaften ChangeColor und ChangeNode. Beide Ansätz werden kombiniert, um ihre einzelnen Stärken gemeinsam auspielen
+zu können. In Test bei großen und kleinen Probleminstanzen zeigte sich, das ChangeAll zu Verbesserungen führt, welche weder von ChangeNode noch von ChangeColor vorgenommen wurden. 
 
+Der Pseudocode ist unter Algorithmus~\ref{psy:ChangeAll} zu finden. Zuerst wird die bei ChangeNode nach einem neuen Knoten gesucht, welcher einen anderen Knoten mit höchster Farbe ersetzen soll. Dann wird
+allerdings wie bei ChangeColor dieser neue Knoten in verschiedenen Einfärbungen ausprobiert. Sollte eine dieser Kombinationen aus Knotenauswahl und Farben eine Verbesserung darstellen werden weitere Knoten
+mit maximaler Farbe gesucht. Sollte keine Verbesserung gefunden werden, bricht die Nachbarschaft ohne Ergebnis ab.
 
+\begin{algorithm}
+\begin{algorithmic}[1]
+\Require Solution $s$, Solution $full$
+\Ensure Solution $l$
+\State $l \leftarrow$ Kopie von $s$
+\State $c \leftarrow maximaleFarbe(l)$
+\ForAll{Knoten $v \in l.graph$ für die gilt $v.farbe = c$}
+\ForAll{Knoten $a \in full.graph$ für die gilt $a.partition = v.partition \wedge a \neq v$}
+\State Tausche Knoten $v$ mit Knoten $a$ in Solution $l$
+\For{Farbe $i = 0 \to c - 1$}
+\State $a.farbe \leftarrow i$
+\State Färbe alle adjazenten Knoten mit gleicher Farbe neu ein
+\If{$maxFarbe(a.adjazenzen) < c$}
+\State Beende innerste Schleife  
+\EndIf
+\EndFor
+\If{$maxFarbe(a.adjazenzen) < c$}
+\State Beende mittlere Schleife  
+\EndIf
+\EndFor
+\If{$maxFarbe(a.adjazenzen) \ge c$}
+\State Stoppe Nachbarschaft ohne bessere Lösung
+\EndIf
+\EndFor
+\State retourniere $l$
+\end{algorithmic}
+\caption{Pseudocode der ChangeAll-Nachbarschaft}
+\label{psy:ChangeAll}
+\end{algorithm}
  
