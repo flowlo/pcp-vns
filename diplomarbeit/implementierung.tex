@@ -70,6 +70,7 @@ In einem Test ergab sich unter Verwendung eines Vectors als Speicherstruktur fü
 auf die höhere Datenlokalität zurückzuführen, durch die der Prozessor bereits ganze Speicherbereiche in den Cache laden kann, wenn über die Adjazenzen iteriert wird.
 
 \subsection{Kopierkonstruktor}
+\label{sec:copy}
 
 Besonders interessant bei der Solution-Klasse ist die automatisch bereitgestellte Kopiermechanik. Einer der besonderen Eigenschaften von C++ ist es, für jede Klasse automatisch einen sogenannten Kopierkonstruktor
 bereitzustellen, welcher als Parameter ein Objekt des selben Types entgegennimmt, und dieses kopiert. Da im Falle einer Lösung aber nicht immer alle Daten kopiert werden müssen, wurde in dieser Arbeit eine
