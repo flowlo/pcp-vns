@@ -82,9 +82,47 @@ Dieser Vorgang wird solange wiederholt bis alle Konflikte gelöst wurden oder zu
 Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das normale Graph Coloring Problem ohne Clusterung der Knoten, indem die aktuell gewählten Repräsentanten fixiert werden und dieses so vereinfachte Problem (das allerdings immer noch NP-hart ist) wird nun mit folgendem Greedy Ansatz näherungsweise gelöst:
 
 \begin{enumerate}
-    \item Finde den (noch nicht eingefärbten) Repräsentanten mit der größten Anzahl an eingefärbten Nachbarn (engl.\ Degree SATURation).
+    \item Finde den (noch nicht eingefärbten) Repräsentanten mit der größten Anzahl an eingefärbten Nachbaren (engl.\ \textit{Degree Saturation}).
     \item Bei Gleichstand: Wähle den Knoten mit der größten Anzahl an nicht eingefärbten Nachbarn.
     \item Bei Gleichstand wähle den ersten Knoten in lexikographischer Abfolge.
     \item Weise dem gewählten Knoten die kleinste mögliche Farbe zu.
     \item Wiederhole, bis die Repräsentanten aller Cluster eingefärbt wurden.
 \end{enumerate}
+
+\begin{algorithm}
+\begin{algorithmic}[1]
+\State Lösche die aktuelle Färbung
+\State Sei $t$ der ausgewählte Knoten
+\State Sei $D$ die maximale Stauration
+\State Sei $B$ die maximale Anzahl an nicht eingefärbten Nachbaren
+\State Sei $C$ die beste Färbung
+\For{$i$ = 0,\ \ldots,\ k}
+\State $D \leftarrow -1$
+\State $B \leftarrow -1$
+\State $C \leftarrow -1$
+\State $t \leftarrow $ undefiniert
+\For{alle $v \in V$}
+\If{Partition von $v$ ist eingefärbt}
+\State Überspringe diesen Knoten
+\Else
+\State $c\leftarrow$ kleinstmögliche Färbung von $v$
+\State $d\leftarrow$ Anzahl an eingefärbten Nachbaren von $v$ (\textit{Degree Saturation})
+\If{$d < D$}
+\State Überspringe diesen Knoten
+\EndIf
+\State $b\leftarrow$ Anzahl an nicht eingefärbten Nachbaren von $v$ ($deg(v) - d$)
+\If{$d = D \wedge b \leq B$}
+\State Überspringe diesen Knoten
+\EndIf
+\State Wähle $v$ als besten Kandidaten:
+\State $D \leftarrow d$
+\State $B \leftarrow b$
+\State $C \leftarrow c$
+\State $t \leftarrow v$
+\EndIf
+\EndFor
+\State Färbe $t$ mit $C$.
+\EndFor
+\end{algorithmic}
+\caption{Pseudocode der Nachbarschaft DSATUR}
+\end{algorithm}
