@@ -131,7 +131,9 @@ dass jeder Leiter eine unbegrenzte Anzahl an Wellenlängen unterstützt. Reale L
 
 Gegeben sei ein ungerichteter Graph $G = (V,\ E)$, wobei $V$ die Menge der Knoten des Graphes $G$ und $E$ die Menge der Kanten, die $V$ in $G$ verbinden, darstellen. Außerdem seien $V_1,\ V_2,\ V_3,\ \ldots,\ V_k$ disjunkte Teilmengen von $V$ $V_i \cap V_j = \emptyset \ \forall i,\ j = 1,\ \ldots,\ k$ mit $i \not = j$, wobei $\bigcup_{i = 1}^k V_i = V$ welche folgend \textit{Partition} oder auch \textit{Komponente} genannt werden.
 
-Das \textit{Partition Graph Coloring Problem} (PCP) besteht nun darin, eine Menge $V'$ zu finden, sodass $|V' \cap V_i| = 1,\ \forall\ i = 1,\ \ldots,\ k$ gilt ($V'$ also genau einen Knoten für jede Parition enthält) und weiter die Färbung des durch die Menge $V'$ mit $E$ konstruierbaren Graphen minimal ist.
+Das \textit{Partition Graph Coloring Problem} (PCP) besteht nun darin, eine Menge $V'$ zu finden, sodass $|V' \cap V_i| = 1,\ \forall\ i = 1,\ \ldots,\ k$ gilt ($V'$ also genau einen Knoten für jede Parition enthält) und weiter die Färbung $S$ des durch die Menge $V'$ mit $E$ konstruierbaren Graphen minimal ist.
+
+Als Lösung des Problems kann die Menge der \textit{Repräsentanten} in $V'$ gemeinsam mit deren Färbung $S$ angesehen werden.
 
 \section{Ausgangsmaterial}
 Das Partition Graph Coloring Problem beschränkt sich nur auf den Weg vom Problemgraphen zum Lösungsgraphen. Für die Findung alternativer Routen durch ein Netzwerk gibt es 
