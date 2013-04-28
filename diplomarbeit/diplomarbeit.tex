@@ -1,73 +1,17 @@
-\documentclass[paper=a4,fontsize=12pt]{book}
-\usepackage[utf8]{inputenc}
-\usepackage[ngerman]{babel}
-\usepackage[babel, german=quotes]{csquotes}
-%\usepackage{hyperref}
-\usepackage[style=authoryear, natbib, backend=biber]{biblatex}
-\usepackage[top=3cm,bottom=3cm,left=2cm,right=2cm]{geometry}
-\usepackage{listings}
-\usepackage{graphicx, fancyhdr, array, wrapfig, colortbl, algorithm, algpseudocode, subcaption, setspace}
-\usepackage[usenames,dvipsnames]{xcolor}
-\floatname{algorithm}{Algorithmus}
-\renewcommand{\listalgorithmname}{Algorithmenverzeichnis}
-\renewcommand{\algorithmicend}{\textbf{Ende}}
-\renewcommand{\algorithmicif}{\textbf{Falls}}
-\renewcommand{\algorithmicthen}{\textbf{dann}}
-\renewcommand{\algorithmicelse}{\textbf{Sonst}}
-\renewcommand{\algorithmicdo}{\textbf{}}
-\renewcommand{\algorithmicwhile}{\textbf{Solange}}
-\renewcommand{\algorithmicreturn}{\textbf{Returniere}}
-
-\lstdefinestyle{customc}{
-  belowcaptionskip=1\baselineskip,
-  breaklines=true,
-  xleftmargin=\parindent,
-  numbers=left,
-  language=C++,
-  showstringspaces=false,
-  basicstyle=\footnotesize\ttfamily,
-  keywordstyle=\bfseries\color{OliveGreen},
-  commentstyle=\itshape\color{purple},
-  identifierstyle=\color{blue},
-  stringstyle=\color{orange},
-  frame=single
-}
-%\renewcommand\familydefault{\sfdefault}
-\linespread{1.5}
-\setlength{\parindent}{4mm}
-\setlength{\parskip}{2mm}
-\pagestyle{fancy}
-\fancyhf{}
-\clubpenalty = 300
-\widowpenalty = 300
-\displaywidowpenalty = 300
-\fancyfoot{}
-\renewcommand{\footrulewidth}{0.4pt}
-\rfoot{{\footnotesize \textnormal{\thepage}}}
-\chead{{\footnotesize \textnormal{Variable Nachbarschaftssuche für das Partition Graph Coloring Problem}}}
-\cfoot{{\footnotesize \textnormal{Lorenz Leutgeb, Moritz Wanzenböck}}}
-\lhead{{\footnotesize \textnormal{}}}
-\lfoot{{\footnotesize \textnormal{\the\year}}}
-\addbibresource{pcp.bib}
-\let\origappendix\appendix
-\renewcommand\appendix{\clearpage\pagenumbering{roman}\origappendix}
-% Graphiken in ../img/
-% \cite{Lu2010, Palladino2011, Noronha2006, Li2000, Frota2010, Demange, pcp-instance-page}
-
-\title{Variable Nachbarschaftssuche für das Partition Graph Coloring Problem}
-\author{Lorenz Leutgeb, Moritz Wanzenböck}
+\documentclass[a4paper,12pt]{scrbook}
+\input{preamble.tex}
 \begin{document}
-	% TODO: title page
-	\maketitle
-	\newpage
-	\tableofcontents
-	\newpage
-	\input{problemstellung.tex}
-	\input{implementierung.tex}
-	\input{software.tex}
-	\input{projektmanagement.tex}
-	
-	\newpage
-	\listoffigures
-	\lstlistoflistings
+\include{titlepage}
+\include{eigenstaendigkeitserklaerung}
+\include{abstract}
+\tableofcontents
+\newpage
+\include{problemstellung}
+\include{ansatz}
+\include{implementierung}
+\include{software}
+\include{projektmanagement}
+\newpage
+\listoffigures
+\lstlistoflistings
 \end{document}
