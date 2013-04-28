@@ -14,7 +14,6 @@ für einzelne Partitionen. Außerdem stellt Solution Methoden bereit, um Veränd
 Außerdem besitzt Solution mehrere Methoden, einen Problemgraphen aus einer Datei auszulesen, und diesen wiederum in einem Solution-Objekt zu speichern. Diese Methoden zum Einlesen von Dateien werden genauer 
 in Abschnitt \ref{sec:parser} besprochen.
 
-%\begin{comment}
 \singlespacing
 \begin{lstlisting}[caption={Ein Ausschnitt aus der Signatur der Solutionklasse},label=lst:solution]
 class Solution {
@@ -34,7 +33,6 @@ class Solution {
 };
 \end{lstlisting}
 \setstretch{1.5}
-%\end{comment}
 
 Gespeichert wird eine Referenz auf den Lösungsgraphen. Dieser Graph enthält ausschließlich jene Knoten, welche als Repräsentanten für ihre Partition
 ausgewählt wurden. Der Graph muss daher verändert werden, wenn eine Partition ihren Repräsentanten wechselt. Des weiteren wird die Anzahl an Partitionen
