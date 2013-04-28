@@ -2,7 +2,9 @@
 \input{preamble.tex}
 \begin{document}
 \include{titlepage}
+\addcontentsline{toc}{chapter}{Eigenständigkeitserklräung}
 \include{eigenstaendigkeitserklaerung}
+\addcontentsline{toc}{chapter}{Abstract}
 \include{abstract}
 \tableofcontents
 \newpage
@@ -12,6 +14,16 @@
 \include{software}
 \include{projektmanagement}
 \newpage
+\addcontentsline{toc}{chapter}{Verzeichnisse}
+\printbibliography[title=Literaturverzeichnis]
+\addcontentsline{toc}{section}{Literaturverzeichnis}
 \listoffigures
+\addcontentsline{toc}{section}{Abbildungsverzeichnis}
+\listoftables
+\addcontentsline{toc}{section}{Tabellenverzeichnis}
+\listofalgorithms
+\addcontentsline{toc}{section}{Algorithmenverzeichnis}
 \lstlistoflistings
+\addcontentsline{toc}{section}{Codeverzeichnis}
+\include{anhang}
 \end{document}
