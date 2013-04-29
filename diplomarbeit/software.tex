@@ -200,7 +200,7 @@ Liste. Zu jedem Knoten wird eine Liste der Nachbarknoten gespeichert, woraus dan
 mit der Listenstruktur die besten Ergebnisse erwartet. Ausgiebige Tests ergaben jedoch, dass auf für die Speicherung der Kanten ein Vektor besser geeignet war. Da beim Löschen zumeist gleich alle
 Kanten gelöscht werden, reduzierte sich der Vorteil einer Listenstruktur, und Einfügen ist auch in einen Vektor in zumeist konstanter Zeit möglich. 
 
-Eine weitere Konfigurationsmöglichkeiten betrifft das Verhalten des Graphen beim Hinzufügen von Kanten. Es gibt gerichtete und ungerichtete Graphen, wobei gerichtete Graphen Kanten besitzen, welche quasi
+Eine weitere Konfigurationsmöglichkeit betrifft das Verhalten des Graphen beim Hinzufügen von Kanten. Es gibt gerichtete und ungerichtete Graphen, wobei gerichtete Graphen Kanten besitzen, welche quasi
 als Einbahn fungieren, sie haben einen Anfangsknoten und einen Zielknoten, und stellen keine Verbindung vom Zielknoten zum Anfangsknoten her. Im Gegensatz dazu stehen die ungerichtete Graphen, bei denen
 eine Kante automatisch eine Beziehung in beide Richtungen darstellt. Auf Grund der Eigenschaften des PCP fiel die Wahl auf einen ungerichteten Graphen, da kein Bedarf an gerichteten Kanten bestand.
 
