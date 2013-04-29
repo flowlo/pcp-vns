@@ -17,8 +17,8 @@ ausgelegt wurde. Über mehrere Entwicklungsschritte entwickelte sich eine Sprach
 dessen Möglichkeiten jene von C aber bei weitem übersteigen. 
 
 Wie C handelt es sich bei C++ um eine statisch-typisierte Programmiersprache, das heißt der Compiler kann schon während der Übersetzung die
-syntaktisch korrekte Verwendung von Datentypen sicherstellen. Dadurch können solche Überprüfungen während der Ausführung des Programmes
-entfallen, was zu einer enormen Beschleunigung der Ausführung des Programmes führt. Außerdem ermöglicht es dem Entwickler Fehler mit
+syntaktisch korrekte Verwendung von Datentypen sicherstellen. Dadurch können solche Überprüfungen während der Ausführung des Programms
+entfallen, was zu einer enormen Beschleunigung der Ausführung des Programms führt. Außerdem ermöglicht es dem Entwickler Fehler mit
 inkorrekt verwendeten Datentypen einfacher zu erkennen, da eine Fehlermeldung des Übersetzers eine genaue Zeile angeben kann, in der 
 der Fehler verursacht wird. 
 
@@ -34,7 +34,7 @@ nur von einem bestimmten System ausgeführt werden können. Aus diesem Grund sin
 Plattformen erhältlich. 
 
 Obwohl C++ wesentlich mehr Funktionen als C bietet, ist trotzdem noch die Anlehnung an C zu erkennen. Daher ist es auch nicht verwunderlich das C++-Programme meist nur geringfügig langsamer sind, als 
-vergleichbare C-Programme. In manchen Fällen ist C++ sogar schneller als C, da der Compiler andere, und umständen bessere, Optimierungen vornehmen kann. 
+vergleichbare C-Programme. In manchen Fällen ist C++ sogar schneller als C, da der Compiler andere, unter Umständen bessere, Optimierungen vornehmen kann. 
 
 \subsection{STL}
 \label{sec:stl}
@@ -45,8 +45,7 @@ in der STL enthaltene Datenstrukturen sind Listen, Stacks, aber auch Iteratoren 
 wie Quicksort, Binarysearch. Hinzu kommen vereinheitlichte Ein- und Ausgabemöglichkeiten für verschiedenste Plattformen, sowie die 
 Möglichkeit der parallelen Ausführung von Software mit Hilfe von Threads.
 
-Die STL wurde inzwischen in den Sprachstandard von C++ aufgenommen, so dass jeder standardkonforme Comipler eine Implementierung der STL inkludiert. Mit der STL hebt sich C++ stark von C ab, für 
-das es keine solche allgemein einsetzbare Codebibliothek gibt. Der Preis für diese Einfachheit ist die Zeit, die ein einzelner Übersetzungsdurchgang benötigt. Da die STL stark auf die namensgebenden
+Die STL wurde inzwischen in den Sprachstandard von C++ aufgenommen, so dass jeder standardkonforme Compiler eine Implementierung der STL inkludiert. Mit der STL hebt sich C++ stark von C ab, für welches es keine solche allgemein einsetzbare Codebibliothek gibt. Der Preis für diese Einfachheit ist die Zeit, die ein einzelner Übersetzungsdurchgang benötigt. Da die STL stark auf die namensgebenden
 \textit{Templates} setzt, welche es ermöglichen eine einzelne Datenstruktur für eine Vielzahl an Datentypen verfügbar zu machen, muss der Compiler diese \textit{Templates} zum Übersetzungszeitpunkt
 auflösen, ein Vorgang, welcher einen stark negativen Einfluss auf die Übersetzungszeit hat.
 
@@ -60,9 +59,9 @@ in ihrer Ausführung sind, dafür aber schneller entwickelt und an neue Bedürfn
 \label{sec:python}
 Neben der eigentlichen Applikation mit algorithmischem Kern entstanden im Laufe der Arbeit am Projekt zusätzliche Scripts um repetitive Tätigkeiten zu beschleunigen. Unter Anderem wurde Python zur massenhaften Ausführung des Algorithmus auf Testinstanzen und die anschließende Aufbereitung der Ergebnisse eingesetzt. Außerdem zur Konversion verschiedener Eingabeformate und zur Generierung von Eingabedaten.
 
-Im Kontrast zur statisch typisierten Sprache C++ mit steht Python seinen dynamischen Eigenschaften, das heißt, dass Variablen grundsätzlich keinen statischen Typ aufweisen. Die so erhöhte Lesbarkeit wurde noch bewusst durch Whitespace-Konentionen und leichtgewichtige Syntax für Kontrollstrukturen und Schleifen erhöht. Außerdem ist die Python-Plattofrm (inklusive Interpreter) auf unixbasierten Systemen weit verbreitet, bei vielen Distributionen sogar Teil des Grundsystems. Hohe Popularität, und gute Lesbarkeit als Design Pattern machen Python zu einer hervorragenden Skriptsprache, weshalb sie auch im Rahmen dieses Projektes in dieser Rolle Einsatz findet.
+Im Kontrast zur statisch typisierten Sprache C++ mit steht Python seinen dynamischen Eigenschaften, das heißt, dass Variablen grundsätzlich keinen statischen Typ aufweisen. Die so erhöhte Lesbarkeit wurde noch bewusst durch Whitespace-Konventionen und leichtgewichtige Syntax für Kontrollstrukturen und Schleifen erhöht. Außerdem ist die Python-Plattform (inklusive Interpreter) auf unixbasierten Systemen weit verbreitet, bei vielen Distributionen sogar Teil des Grundsystems. Hohe Popularität, und gute Lesbarkeit als Design Pattern machen Python zu einer hervorragenden Skriptsprache, weshalb sie auch im Rahmen dieses Projektes in dieser Rolle Einsatz findet.
 
-Während bei der Implementierung der Variablen Nachbarschaftssuche besonders die Performance zur Laufzeit berücksichtigt wurde, stand bei Scripts die Lesbarkeit und einfache Wartbartkeit im Vordergrund. Python passt auch hier ins BIld, da die Sprache üblicherweise Interpretiert oder Just-In-Time übersetzt wird, was in der Regel eine höhere Laufzeit mit sich bringt. Dieser Nachteil relativiert sich dadurch, dass Scripts sowieso nicht als laufzeitkritische Teile des Projekts betrachtet werden.
+Während bei der Implementierung der Variablen Nachbarschaftssuche besonders die Performance zur Laufzeit berücksichtigt wurde, stand bei Scripts die Lesbarkeit und einfache Wartbartkeit im Vordergrund. Python passt auch hier ins Bild, da die Sprache üblicherweise Interpretiert oder Just-In-Time übersetzt wird, was in der Regel eine höhere Laufzeit mit sich bringt. Dieser Nachteil relativiert sich dadurch, dass Scripts sowieso nicht als laufzeitkritische Teile des Projekts betrachtet werden.
 
 \section{Make}
 \label{sec:make}
@@ -81,7 +80,7 @@ Hinzu kommt die Tatsache, dass die von den beiden Compilern erzeugten Dateiforma
 keine Fehler entstehen.
 
 Außerdem hilfreich ist, dass make auch Skripte oder kleinere Kommandos automatisch aus\-füh\-ren kann. Häufig verwendet ist etwa die Routine zur Bereinigung des Programmverzeichnisses von bei der
-Übersetzung entstandenen temporären Dateien, die nachher nicht mehr benötigt wurden. Auch nützlich ist etwa die vollständige Entfernung jeder Spur einer Compilierung, um eine gänzlich neue
+Übersetzung entstandenen temporären Dateien, die nachher nicht mehr benötigt wurden. Auch nützlich ist etwa die vollständige Entfernung jeder Spur einer Kompilierung, um eine gänzlich neue
 Übersetzung einzuleiten. Auch kann mit Hilfe von solchen Skripten das entstandene Programm nach Übersetzung automatisch auf eine Testmaschine geschickt werden, um die korrekte Funktion
 des Programmes zu verifizieren.
 
@@ -107,21 +106,21 @@ compiliert werden, ohne auf die Vorteile von \textit{Templates} zu verzichten.
 
 
 \subsection{GCC}
-GCC, oder auch GNU Compiler Collection, ist ein Sammlung an Übersetzern welche alle unter der Open-Source-Lizenz GPL veröffentlich wurden. GCC wird häufig als der Standard-Compiler unter Linux angesehen,
+GCC, oder auch GNU Compiler Collection, ist ein Sammlung an Übersetzern welche alle unter der Open-Source-Lizenz GPL veröffentlicht wurden. GCC wird häufig als der Standard-Compiler unter Linux angesehen,
 und erfreut sich immer noch großer Beliebtheit. Die Sammlung unterstützt viele verschiedene Sprachen, unter ihnen auch C++, sowie mehrere verschiedene Standards einzelner Sprachen. Auf Grund seiner
 ausgiebigen Testung und Erprobung im alltäglichen Einsatz, und nicht zuletzt seiner freien Verfügbarkeit, bleibt GCC immer noch einer beliebtesten Compiler weltweit. Dabei ist die Sammlung verschiedener
 Compiler vor allem im Umfeld der Softwareentwicklung für Linux beliebt, er kann aber auch für die Entwicklung auf Windows oder anderen Betriebssystemen eingesetzt werden.
 
 Ein wichtiges Merkmal von \textit{g++}, dem C++-Compiler in der Sammlung von GCC, ist sein evolutionäres Wachstum seit seiner Entstehung. Da C++ mit den Jahren immer wieder leicht angepasst und um Funktionen
 erweitert wurde, musste sich auch GCC anpassen, um mit diesen Änderungen Schritt zu halten. Daher wurden im Laufe der Jahre immer wieder Teile von \textit{g++} neu geschrieben, umgebaut, oder gänzlich
-neue Funktionen hinzuprogrammiert. Daraus ergeben sich aber Konsequenzen, welche unter anderem die Code-Qualität negativ beeinträchtigen. Zwar Implementiert GCC auch den neuesten Standard von C++, allerdings
+neue Funktionen ergänzt. Daraus ergeben sich aber Konsequenzen, welche unter anderem die Code-Qualität negativ beeinträchtigen. Zwar Implementiert GCC auch den neuesten Standard von C++, allerdings
 ist die Qualität der Implementierung sehr stark abhängig von dem Alter des entsprechenden Standards. Während ältere Standards bereits ausgiebig getestet wurden, ist bei neuen Standards eine korrekte 
 Implementierung nicht immer gegeben. 
 
-Auf Grund dieser gewachsenen Struktur von GCC ist der \textit{g++}-Compiler nicht der schnelleste Vertreter seiner Art. Vor allem die Übersetzung von Headern nimmt mit der GCC mehr Zeit in Anspruch als
-bei der Konkurrenz. Wie viele andere Compiler unterstützt auch \textit{g++} die übersetzung von Header-Dateien in \textit{Precompiled Headers}. Dazu wird ein GCC-eigene Format verwendet, und \textit{g++} sucht bei einer
+Auf Grund dieser gewachsenen Struktur von GCC ist der \textit{g++}-Compiler nicht der schnellste Vertreter seiner Art. Vor allem die Übersetzung von Headern nimmt mit der GCC mehr Zeit in Anspruch als
+bei der Konkurrenz. Wie viele andere Compiler unterstützt auch \textit{g++} die Übersetzung von Header-Dateien in \textit{Precompiled Headers}. Dazu wird ein GCC-eigene Format verwendet, und \textit{g++} sucht bei einer
 späteren Einbindung eines Headers in den Quellcode nach einer gleichnamigen Datei mit der Endung ``.gch''. Die Verwendung von solchen \textit{Precompiled Headers} beschleunigt die Übersetzung ungemein, 
-obwohl die Übersetzung des Headers selber einige Zeit in Anspruch nimmt. Die für diese Arbeit verwendeten \textit{Precompiled Headers} bewegeten sich in der Größenordnung von knapp über 100 Megabyte, 
+obwohl die Übersetzung des Headers selber einige Zeit in Anspruch nimmt. Die für diese Arbeit verwendeten \textit{Precompiled Headers} bewegten sich in der Größenordnung von knapp über 100 Megabyte, 
 eine erstaunliche Datenmenge für eine einzige Übersetzungseinheit. Diese Datenmengen sind vor allem den \textit{Templates} geschuldet, welche während ihrer Expansion wesentlich an Speicherbedarf zunehmen.
 
 \subsection{clang}
@@ -134,12 +133,12 @@ eben jener Zwischensprache zur Zielsprache zu bilden.
 
 Clang wurde nun mit dem Ziel geschaffen, einen sauber programmierten, standard-konformen Compiler für den produktiven Einsatz zu schaffen. Dazu wurde zunächst vor allem auf die Entwicklung eines C-Frontends
 Wert gelegt. Als das C-Frontend einen arbeitsfähigen Zustand erreichte, beschloss man, auch C++ als Quellsprache mit einzuschließen. Da C++ eine sehr umfangreiche Sprache mit vielen verschiedenen Spracheigenschaften 
-ist, schreitet die C++-Implementierung wesentlich langsamer voran als jene des C-Zweiges. Entzwischen hat aber auch dieser Entwicklungszweig einen produktiven Zustand erreicht. 
+ist, schreitet die C++-Implementierung wesentlich langsamer voran als jene des C-Zweiges. Inzwischen hat aber auch dieser Entwicklungszweig einen produktiven Zustand erreicht. 
 
 Im Vergleich mit GCC bietet clang vor allem den Vorteil der Geschwindigkeit. Ein einzelner Übersetzerlauf dieser Arbeit ist um durchschnittlich 20\% schneller als mit GCC, und die erzeugten Object-Dateien
 sind um durchschnittlich 30\% kleiner. Dieser Vorteil ist wohl der neueren Programmierung, ohne Mitnahme von Altlasten geschuldet. Der Preis für diesen Vorteil ist eine etwas langsamere Programmausführung
 des fertig übersetzten Programmes, da unter anderem GCC einige Optimierungsmöglichkeiten nutzt, welche LLVM noch unbekannt sind. Im Allgemeinen sind die Unterschiede zwischen den beiden Compilern aber
-vernachläßigbar gering.
+vernachlässigbar gering.
 
 \section{DDD}
 DDD steht für Data Display Debugger, und ist ein weiteres Werkzeug zur Softwareentwicklung von GNU. DDD stellt Werkzeuge zum Debuggen, also der Fehlersuche in Software, zur Verfügung. Um produktiv eingesetzt
@@ -186,12 +185,12 @@ welche rein graphenbezogene Datenstrukturen und Algorithmen bereitstellt. Diese 
 für die Lösung des PCP.
 
 Boost bietet zwei grundsätzlich Unterschiedliche Implementierungen eines Graphen an. Bei der ersten Variante werden alle Kanten in einer Liste, oder ähnlichen Datenstruktur gespeichert, bei
-der zweiten Variante wird eine Matrix verwendet, um die Beziehunen zwischen zwei Knoten darzustellen. Während die zweite Variante für sehr Dichte Graphen einige Vorteile bietet, ist die gesamte
+der zweiten Variante wird eine Matrix verwendet, um die Beziehungen zwischen zwei Knoten darzustellen. Während die zweite Variante für sehr Dichte Graphen einige Vorteile bietet, ist die gesamte
 Datenstruktur bei weitem nicht so flexibel wie die Variante mit einer Listenstruktur. In der von Boost verwendeten Implementierung dieser Adjazenzmatrix werden viele praktischen Funktionen um einen
 Graphen zu Manipulieren nicht unterstützt. So ist es zum Beispiel nicht möglich einen Knoten nachträglich wieder zu entfernen. 
 
 Daher viel die Wahl auf eine Adjazenzliste, welche den Graphen für diese Arbeit bereitstellte. Auch hier gibt es mehrere verschiedene Konfigurationsmöglichkeiten, etwa die genaue Art der Speicherung von
-Knoten und Kanten. Für die Speicherung der Kanten wurde ein Vektor gewählt, ein zusammenhängender Speicherbereich, welche bei Bedarf vergößert oder verkleinert werden kann. Dies bietet mehrer Vorteile, etwa
+Knoten und Kanten. Für die Speicherung der Kanten wurde ein Vektor gewählt, ein zusammenhängender Speicherbereich, welche bei Bedarf vergößert oder verkleinert werden kann. Dies bietet mehrere Vorteile, etwa
 einen direkten Zugriff auf einen Knoten über einen Index, welcher in Form einer einfach ganzen Zahl leicht zu benützen war. Dies bedeutet, das zu jedem Zeitpunkt direkt auf einen bestimmten Knoten zugegriffen
 werden kann. Da die Anzahl der Knoten quasi immer Konstant blieb, mit Ausnahme des erstmaligen Aufbaus des Problemgraphens und dem Errechnen der Initiallösung, werden die Nachteile einer vektorbasierten
 Speicherung der Knoten bei weitem von den Vorteilen aufgewogen. 
@@ -201,22 +200,22 @@ Liste. Zu jedem Knoten wird eine Liste der Nachbarknoten gespeichert, woraus dan
 mit der Listenstruktur die besten Ergebnisse erwartet. Ausgiebige Tests ergaben jedoch, dass auf für die Speicherung der Kanten ein Vektor besser geeignet war. Da beim Löschen zumeist gleich alle
 Kanten gelöscht werden, reduzierte sich der Vorteil einer Listenstruktur, und Einfügen ist auch in einen Vektor in zumeist konstanter Zeit möglich. 
 
-Eine weitere Konfigurationemöglichkeit betrifft das Verhalten des Graphen beim Hinzufügen von Kanten. Es gibt gerichtete und ungerichtete Graphen, wobei gerichtete Graphen Kanten besitzen, welche quasi
+Eine weitere Konfigurationsmöglichkeiten betrifft das Verhalten des Graphen beim Hinzufügen von Kanten. Es gibt gerichtete und ungerichtete Graphen, wobei gerichtete Graphen Kanten besitzen, welche quasi
 als Einbahn fungieren, sie haben einen Anfangsknoten und einen Zielknoten, und stellen keine Verbindung vom Zielknoten zum Anfangsknoten her. Im Gegensatz dazu stehen die ungerichtete Graphen, bei denen
 eine Kante automatisch eine Beziehung in beide Richtungen darstellt. Auf Grund der Eigenschaften des PCP fiel die Wahl auf einen ungerichteten Graphen, da kein Bedarf an gerichteten Kanten bestand.
 
 Eine weitere von Boost bereitgestellte Funktion des Graphen ist die Speicherung von Eigenschaften im direkten Zusammenhang mit Kanten und Knoten. Da jeder Knoten im PCP zu einer Partition zugeteilt wird, kann
-über diesen Mechanismum einfach und schnell von einem Knoten auf die Partition geschlossen werden. Diese Eigenschaften können außerdem dazu eingesetzt werden, den originalen Index eines Knotens zu speichern.
+über diesen Mechanismus einfach und schnell von einem Knoten auf die Partition geschlossen werden. Diese Eigenschaften können außerdem dazu eingesetzt werden, den originalen Index eines Knotens zu speichern.
 Da Boost bei der Entfernung eines Knotens automatisch den Index der nachfolgenden Knoten um eins dekrementiert, kann normalerweise nicht mehr auf den Index des Ursprungsknotens geschlossen werden. Durch
-die Speicherung des Index in einer seperat von Boost bereitgestellten, mitschrumpfenden Datenstruktur kann immernoch eindeutig auf den Originalknoten geschlossen werden. 
+die Speicherung des Index in einer separat von Boost bereitgestellten, mitschrumpfenden Datenstruktur kann immer-noch eindeutig auf den Originalknoten geschlossen werden. 
 
-Eine einfache Möglichkeit der Ausgabe wird ebenfalls von Boost gestellt. Boost bietet eine einzelne Funktion, welche einen Boost-Graphen im Graphviz-Format ausgiebt. Dadurch ergibt sich eine schnelle 
+Eine einfache Möglichkeit der Ausgabe wird ebenfalls von Boost gestellt. Boost bietet eine einzelne Funktion, welche einen Boost-Graphen im Graphviz-Format ausgibt. Dadurch ergibt sich eine schnelle 
 Möglichkeit, die Richtigkeit der Lösung zu kontrollieren. Gerade bei frühen Versuchen der Nachbarschaftssuche wurde viel mit diesem Werkzeug gearbeitet, um die Ergebnisse zu verifizieren. 
 
 \subsection{Hilfsroutinen}
 Neben Graphen wurden auch einige von Boosts Hilfsfunktionen benutzt. Um bei der Lösung des PCP möglichst flexibel zu sein wurden eine Vielzahl an Variablen verwendet, um bestimmte Parametern der 
 Nachbarschaftssuche einfacher ändern zu können. Dazu wurde angedacht, die Terminalparameter, als jene Parameter, welche beim Aufruf des Programmes über die Kommandozeile mitgegeben werden, zu verwenden. 
-In einem ersten Versuch wurde ein einfaches Stringparsing betrieben, welches sich aber schnell als fehleranfällig heraustellte, und zusätzlich noch zu unschönem Code führte. 
+In einem ersten Versuch wurde ein einfaches Stringparsing betrieben, welches sich aber schnell als fehleranfällig herausstellte, und zusätzlich noch zu unschönem Code führte. 
 
 Genau für den Zweck der Programmargumente bietet Boost eine eigene Unterbibliothek, welche alle Aufgaben aus dem Bereich des Parsings abnimmt, und dies außerdem noch in einer eleganten Art und Weise für
 den Programmierer anbietet. Durch einen Bibliotheksaufruf können einfach neue Befehle angegeben werden, und diesen Befehlen gleich ein bestimmter Datentyp zugeordnet werden. Es besteht nicht nur die 
@@ -224,7 +223,7 @@ Möglichkeit einen bestimmten Datentypen zuzuordnen, sondern ein bestimmtes Argu
 Argument automatisch ein Standardwert zugewiesen werden, welcher automatisch angenommen wird, sollte der Benutzer bei der Ausführung des Programmes dieses Argument nicht verwenden. 
 
 Um eine möglichst genaue Zeitmessung für die statistische Auswertung der Ergebnisse zu erlangen, wurde die Zeitnehmungsbibliothek von Boost herangezogen. Boost stellt einfache Zeitnehmer bereit, um 
-möglichst genaue Messergebnisse zu bekommen, welche im Millisekundenbereich liegen. Dies ist manchmal garnicht so einfach da etwa die normalen Zeitfunktionen nur auf Sekundenbasis arbeiten, und eine 
+möglichst genaue Messergebnisse zu bekommen, welche im Millisekundenbereich liegen. Dies ist manchmal gar nicht so einfach da etwa die normalen Zeitfunktionen nur auf Sekundenbasis arbeiten, und eine 
 genauere Zeitmessung zumeist über die abgelaufenen CPU-Zyklen erfolgt.
 
 \section{Valgrind}
@@ -255,21 +254,21 @@ Graphen.
 
 Da die im Abschnitt \ref{sec:boost:graph} besprochene Implementation eines Graphen-Datentypes durch die Boost-Bibliothek eine automatische Ausgabe eines Graphen in das Graphviz-Dateiformat er\-möglicht, war 
 eine Verwendung dieser Werkzeuge sehr naheliegend. Durch die vielen verschiedenen Programme, welche von Graphviz bereitgestellt werden, war es ein leichtes, eine einfache Möglichkeit der visuellen Kontrolle
-der Arbeitsergebnisse zu implementieren. Im Gegensatz zur im Abschnitt \ref{sec:ubigraph} eingesetzten Echtzeitdarstellung der Vorgänge während des Ablaufes der Programmes, wurde die Werkezeugsammlung dazu eingesetzt
+der Arbeitsergebnisse zu implementieren. Im Gegensatz zur im Abschnitt \ref{sec:ubigraph} eingesetzten Echtzeitdarstellung der Vorgänge während des Ablaufes der Programmes, wurde die Werkzeugsammlung dazu eingesetzt
 die Eingabe mit der Ausgabe zu vergleichen, und zu verifizieren, dass eventuelle Fehler in der internen Prüfungsroutine des Programmes nicht dazu führten, das falsche Lösungen plötzlich zulässig würden. 
 
-Eingeschränkt wurde der Einsatz von Graphviz durch die Tatsache, dass bei großen Probleminstanzen natürlich auch die Lösungsgröße entsprechend anwächst, und daher ein händischer Vergleich nurnoch schwer bis garnicht möglich
+Eingeschränkt wurde der Einsatz von Graphviz durch die Tatsache, dass bei großen Probleminstanzen natürlich auch die Lösungsgröße entsprechend anwächst, und daher ein händischer Vergleich nur noch schwer bis gar nicht möglich
 ist. Daher wurde Graphviz vor Allem dazu eingesetzt die Selbsttestung des Programmes zu überprüfen, und mehrere Szenarien zu kreieren, welche zu Problemen im Programmablauf führen könnten. Mit diesen Szenarien
 konnte dann verifiziert werden, dass das Programm in der Lage ist, ungültige Lösungen von selbst auszuschließen.
 
 
 \section{Ubigraph}
 \label{sec:ubigraph}
-Bei Ubigraph handelt es sich um eine Plattform zur visuellen Darstellung von Graphen. Die Plattform besteht einerseits aus einem Server, welcher Befehle entgegennimmt und aus diesen Befehlen eine 
+Bei Ubigraph handelt es sich um eine Plattform zur visuellen Darstellung von Graphen. Die Plattform besteht einerseits aus einem Server, welcher Befehle entgegen nimmt und aus diesen Befehlen eine 
 dreidimensionale Darstellung des Graphen ausgibt, und andererseits aus einer Vielzahl an Schnittstellen für alle nur erdenklichen Programmiersprachen. Mit Hilfe von Ubigraph ist es möglich, die
 Vorgänge innerhalb der VNS, und auch beim Aufbau der Initiallösung zeitnah mitzuverfolgen, und gleichzeitig eine ansehnliche dreidimensionale Darstellung des Graphen zu erlangen.
 
-Bei der Serversoftware handelt es sich um ein Stück proprietären Code, welcher per XML-RPCs angesprochen werden kann. Der Server nutzt OpenGL um dei gezeichneten Graphen per Grafikkarte darzustellen. Als
+Bei der Serversoftware handelt es sich um ein Stück proprietären Code, welcher per XML-RPCs angesprochen werden kann. Der Server nutzt OpenGL um die gezeichneten Graphen per Grafikkarte darzustellen. Als
 Schnittstelle dienen \textit{Remote Procedure Calls (RPC)} welche per \textit{Hyper Text Transfer Protocol (HTTP)} an den Server übermittelt werden. Der Name XML-RPC stammt von der Auszeichnungssprache
 \textit{Extensible Markup Languag (XML)}, was soviel heißt wie Erweiterbare Auszeichnungssprache, welche als Anfrage- und Antwortsprache verwendet wird. Die Daten einer solchen Anfrage werden von der
 ausgeführten Software per HTTP-POST-Methode an den Server übermittelt, welcher auch wieder eine XML-Meldung über Erfolg oder Misserfolg der Operation bekannt gibt. 

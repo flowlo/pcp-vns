@@ -8,7 +8,7 @@ was, im Zusammenspiel mit der gestiegenen Anzahl an Informationsbedürftigen ins
 Um diesen neuen Gegebenheiten gerecht zu werden, gibt es zwei Möglichkeiten: Entweder ein Ausbau, und Neubau von Netzen, oder eine bessere Ausnutzung von bestehenden
 Netzen. Ausbau und Neubau bringen allerdings neue Probleme mit sich. Erstens ist Netzwerkinfrastruktur teuer, besonders wenn sie über mehrere Jahrzehnte hinweg
 halten und ihren Dienst verrichten soll, ohne eine ständige Wartung mit sich zu ziehen. Zweitens ist es manchmal aus verschiedenen Gründen gar nicht möglich, 
-ein Netz weiter auszubauen. Sollte sich eine bestehende Infrastruktur bereits in ihrer letzen Ausbaustufe befinden, ist es überhaupt notwendig ein gänzlich
+ein Netz weiter auszubauen. Sollte sich eine bestehende Infrastruktur bereits in ihrer letzten Ausbaustufe befinden, ist es überhaupt notwendig ein gänzlich
 neues Netz aufzubauen, was wiederum mit noch höheren Kosten verbunden ist.
 
 Die zweite Möglichkeit, die bessere Ausnutzung von bestehenden Netzen, kann zwar die letztendliche Notwendigkeit von neuen Netzen nicht verhindern, den Zeitpunkt
@@ -17,15 +17,15 @@ Engpass zu bilden. Wie diese Optimierungen im konkreten Fall aussehen hängt unt
 Kommunikationsbedürfnisses ab. In dieser Arbeit konzentrieren wir uns auf rein optische Netze mit einer ganz genau definierten Art des Kommunikationsbedürfnisses.
 
 In rein optischen Netzen, also Netzwerken, in denen Information rein über optische Leiter wie Glasfaser übertragen wird und das Signal auf der ganzen Strecke zu 
-keinem Zeitpunkt in ein elektrisches Signal zurückgewandelt wird, kann \textit{Wavelength Division Multiplexing}
-(WDM) zur parallelen Übertragung mehrer Datenströme über ein und die selbe Leitung betrieben werden. Die Idee hinter WDM ist es, für zwei verschiedene Datenströme 
+keinem Zeitpunkt in ein elektrisches Signal zurück gewandelt wird, kann \textit{Wavelength Division Multiplexing}
+(WDM) zur parallelen Übertragung mehrerer Datenströme über ein und die selbe Leitung betrieben werden. Die Idee hinter WDM ist es, für zwei verschiedene Datenströme 
 unterschiedliche Farben von Licht zu verwenden. Der englische Name Wavelength Division (deutsch: Wellenlängen Unterteilung) kommt von der Tatsache, dass 
 verschiedene Farben von Licht verschiedene, eindeutige Wellenlängen haben. Da sich die unterschiedliche Farben des Lichtes nicht gegenseitig beeinflussen, können
 viele Farben gleichzeitig durch ein und den selben Lichtwellenleiter geschickt werden, und am anderen Ende des Leiters wieder problemlos auseinander gehalten werden.
 Dies funktioniert sogar so gut, dass Lichtwellen, welche sich nur um wenige Nanometer an Wellenlänge unterscheiden, immer noch eindeutig zuordenbar sind.
 
 Des Weiteren wird oft angestrebt, einem einzelnen Datenstrom auf seinem gesamten Weg durch das Netzwerk ein und die selbe Farbe zu geben. Dies bietet Vorteil vor
-Allem im Bereich der Einfachheit der Implementierung, da optische Switche innerhalb des Netzwerkes keine Umwandlung von einer Farbe in eine andere vornehmen müssen.
+Allem im Bereich der Einfachheit der Implementierung, da optische Switches innerhalb des Netzwerkes keine Umwandlung von einer Farbe in eine andere vornehmen müssen.
 Hinzu kommt ein geringerer Stromverbrauch im Netzwerk, da ein Umwandlung von einer Wellenlänge in eine andere auch ein gewisses Maß an zusätzlichem Strom benötigen
 würde.
 
@@ -37,11 +37,11 @@ minimiert werden kann, könnten mehr Ressourcen auf die Erfüllung der vorhin er
 
 \section{Partition Graph Coloring Problem}
 Mit Hilfe des Partition Graph Coloring Problem (PCP) wird versucht, diesen sehr spezifischen Anwendungsfall mathematisch zu beschreiben. Um das Problem zu lösen wird
-ein Graph aufgebaut, mit dessen Hilfe dann eine optimierte Lösung für das Problem berechnet werden kann. Ein Graph ist ein mathemaitsches Konstrukt, dass aus Knoten
+ein Graph aufgebaut, mit dessen Hilfe dann eine optimierte Lösung für das Problem berechnet werden kann. Ein Graph ist ein mathematisches Konstrukt, dass aus Knoten
 besteht, die durch Kanten verbunden werden. Ein Knoten A kann mit Knoten B durch so eine Kante verbunden werden, Knoten A muss aber zum Beispiel keine Verbindung mit
 Knoten C besitzen. Wie gezeigt wurde, handelt es sich bei dem PCP um ein NP-hartes Problem, das heißt es kann nicht in polynomieller Laufzeit auf einem Computer
 wie man ihn heute kennt eine Lösung gefunden werden, welche mit 100\%-iger Sicherheit die optimale Lösung für das konkrete Problem darstellt. Polynomielle Laufzeit
-wird im Normalfall als Grenze zwischen Problemen angesehen, welche in vertretbarar Laufzeit noch zu berechnen sind, und Problemen für die der Lösungsaufwand in
+wird im Normalfall als Grenze zwischen Problemen angesehen, welche in vertretbarer Laufzeit noch zu berechnen sind, und Problemen für die der Lösungsaufwand in
 keinem Verhältnis zum Ergebnis steht.
 
 \begin{figure}
@@ -92,7 +92,7 @@ Um das Problem besser lösen zu können, wird ein einheitliches Ziel, und eine e
 Dazu wird die Problemstellung nun in einem ersten Schritt auf folgende Punkte fixiert:
 \begin{itemize}
 	\item Alle Kommunikationsbedürfnisse, welche aus einem Start- und einem Endpunkt bestehen, sind bekannt.
-	\item Für jedes Kommunikationsbedürfnis gibt es einen oderer mehrere Wege, sprich Routen, zwischen Start- und Endpunkt.
+	\item Für jedes Kommunikationsbedürfnis gibt es einen oder mehrere Wege, sprich Routen, zwischen Start- und Endpunkt.
 	\item Sollte eine Route einen Teil des Weges auf der selben Strecke zurücklegen wie eine andere Route, müssen sie unterschiedliche Farben verwenden.
 	\item Jede Route verwendet genau eine Farbe, und zwar für die gesamte Strecke.
 	\item Die Lösung besteht aus genau einer Route für jedes Kommunikationspaar, und genau einer dazugehörigen Farbe.
@@ -129,9 +129,9 @@ dass jeder Leiter eine unbegrenzte Anzahl an Wellenlängen unterstützt. Reale L
 
 \subsection{Formale Definition}
 
-Gegeben sei ein ungerichteter Graph $G = (V,\ E)$, wobei $V$ die Menge der Knoten des Graphes $G$ und $E$ die Menge der Kanten, die $V$ in $G$ verbinden, darstellen. Außerdem seien $V_1,\ V_2,\ V_3,\ \ldots,\ V_k$ disjunkte Teilmengen von $V$ $V_i \cap V_j = \emptyset \ \forall i,\ j = 1,\ \ldots,\ k$ mit $i \not = j$, wobei $\bigcup_{i = 1}^k V_i = V$ welche folgend \textit{Partition} oder auch \textit{Komponente} genannt werden.
+Gegeben sei ein ungerichteter Graph $G = (V,\ E)$, wobei $V$ die Menge der Knoten des Graphen $G$ und $E$ die Menge der Kanten, die $V$ in $G$ verbinden, darstellen. Außerdem seien $V_1,\ V_2,\ V_3,\ \ldots,\ V_k$ disjunkte Teilmengen von $V$ $V_i \cap V_j = \emptyset \ \forall i,\ j = 1,\ \ldots,\ k$ mit $i \not = j$, wobei $\bigcup_{i = 1}^k V_i = V$ welche folgend \textit{Partition} oder auch \textit{Komponente} genannt werden.
 
-Das \textit{Partition Graph Coloring Problem} (PCP) besteht nun darin, eine Menge $V'$ zu finden, sodass $|V' \cap V_i| = 1,\ \forall\ i = 1,\ \ldots,\ k$ gilt ($V'$ also genau einen Knoten für jede Parition enthält) und weiter die Färbung $S$ des durch die Menge $V'$ mit $E$ konstruierbaren Graphen minimal ist.
+Das \textit{Partition Graph Coloring Problem} (PCP) besteht nun darin, eine Menge $V'$ zu finden, sodass $|V' \cap V_i| = 1,\ \forall\ i = 1,\ \ldots,\ k$ gilt ($V'$ also genau einen Knoten für jede Partition enthält) und weiter die Färbung $S$ des durch die Menge $V'$ mit $E$ konstruierbaren Graphen minimal ist.
 
 Als Lösung des Problems kann die Menge der \textit{Repräsentanten} in $V'$ gemeinsam mit deren Färbung $S$ angesehen werden.
 

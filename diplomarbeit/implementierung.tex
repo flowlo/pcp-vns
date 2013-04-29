@@ -1,5 +1,5 @@
 \chapter{Implementierung}
-Für die Implementierung des in Abschnitt \ref{sec:ansatz} vorgeschlagenen Lösungsansatzes, wurde eine möglichst flexible Struktur des Programmes verwendet. Wie in Abschnitt \ref{sec:cpp} begründet, wurde
+Für die Implementierung des in Abschnitt \ref{sec:ansatz} vorgeschlagenen Lösungsansatzes, wurde eine möglichst flexible Struktur des Programms verwendet. Wie in Abschnitt \ref{sec:cpp} begründet, wurde
 als Implementierungssprache C++ gewählt. Durch den Einsatz von C++ kann ein einfach erweiterbares Programmgerüst geschrieben werden, welches es erlaubt, schnell und ohne großen Aufwand mehrere Nachbarschaften
 für die VNS zu implementieren. 
 
@@ -43,22 +43,22 @@ an der Position $n$ zeigt auf jenen Knoten, der die Partition $n$ vertritt.
 
 Einen Sonderfall stellt das Vector-Array \texttt{partNodes} dar. Es wird ausschließlich bei der eingelesenen Probleminstanz eingesetzt, und speichert
 dort für jede Partition alle zugeordneten Knoten ab. Dies dient der schnellen Findung von alternativen Knoten für eine bestimmte Partition, und findet
-in mehreren Nachbarschaften verwendung. 
+in mehreren Nachbarschaften Verwendung. 
 
 \subsection{Graph-Datenstruktur}
-Für die Speicherung von sowohl Lösungs als auch Problemgraphen dient die \texttt{adjacency\_list}-Datenstruktur, welche von Boost bereitgestellt wird. Der Einsatz von Boost wird in Abschnitt \ref{sec:boost} 
+Für die Speicherung von sowohl Lösungs- als auch Problemgraphen dient die \texttt{adjacency\_list}-Datenstruktur, welche von Boost bereitgestellt wird. Der Einsatz von Boost wird in Abschnitt \ref{sec:boost} 
 beschrieben. Es wurde bewusst eine Liste als Grundlage der Speicherung verwendet, um ein schnelles Iterieren über Knoten und Kanten zu ermöglichen. Die ebenfalls von Boost bereitgestellte 
 \texttt{adjacency\_matrix} hatte sich in einem Test als ungeeignet erwiesen, da nicht alle Operationen, wie das hinzufügen und löschen von Knoten unterstützt werden. Des Weiteren wurde die Option für 
-ungerichtete Grapehn gesetzt, da das PCP keine gerichteten Beziehungen zwischen Knoten vorsieht. Dies führt dazu, dass, sobald eine Kante vom Knoten \textit{A} zu Knoten \textit{B} führt, automatisch auch
+ungerichtete Graphen gesetzt, da das PCP keine gerichteten Beziehungen zwischen Knoten vorsieht. Dies führt dazu, dass, sobald eine Kante vom Knoten \textit{A} zu Knoten \textit{B} führt, automatisch auch
 eine Beziehung von Knoten \textit{B} zu Knoten \textit{A} führt.
 
 Boost bietet außerdem die Wahl zwischen verschiedenen Datenstrukturen für die Speicherung des Graphobjektes. Selbst wenn die Auswahl auf eine Liste gefallen ist, gibt es noch mehrere Möglichkeiten die Datenstruktur
-zu beeinflussen. Zum einen kann bei der Speicherung der Knoten sowohl eine normale Liste, als auch ein Vector, ausgwählt werden. Die selbe Möglichkeit präsentiert sich dann auch für die Speicherung der Kanten.
+zu beeinflussen. Zum einen kann bei der Speicherung der Knoten sowohl eine normale Liste, als auch ein Vector, ausgewählt werden. Die selbe Möglichkeit präsentiert sich dann auch für die Speicherung der Kanten.
 Ein Vector ist eine Datenstruktur ähnlich einem Array, bei dem alle Datenelemente im Speicher hintereinander angeordnet sind, welche aber vergrößert oder verkleinert werden kann.
 
-Für die Speicherung der Knoten wurde ein Vector herangezogen, zum einen, da nun ein Knoten direkt über einen zahlenbasierten Index ansprechbar ist, zum Anderen, weil während der Laufzeit des Programmes nur
+Für die Speicherung der Knoten wurde ein Vector herangezogen, zum einen, da nun ein Knoten direkt über einen zahlenbasierten Index ansprechbar ist, zum Anderen, weil während der Laufzeit des Programms nur
 zwei Mal Knoten hinzugefügt oder entfernt werden. Einmal beim Einlesen der Probleminstanz aus einer Datei, und einmal bei der Berechnung der Ausgangslösung. Bei allen anderen Veränderungen der Lösung erfolgt
-der Austausch von Knoten direkt an der Stelle des zu ersetzenden Knoten. Es ist daher anzunehmen das während der Laufzeit des Programmes keine größeren Reallokationsoperationen vorgenommen werden müssen.
+der Austausch von Knoten direkt an der Stelle des zu ersetzenden Knoten. Es ist daher anzunehmen das während der Laufzeit des Programms keine größeren Reallokationsoperationen vorgenommen werden müssen.
 
 Schwieriger ist die Wahl schon bei der Frage, ob für die Speicherung der Kanten eine Liste nicht besser geeignet wäre. Da in verschiedenen, weiter unten beschriebenen, Nachbarschaften Knoten ausgetauscht werden,
 ein Vorgang der darauf basiert, die alten Adjazenzen eines Knotens zu kappen, und an deren Stelle neue Adjazenzen zu schaffen, welche dem ausgetauschten Knoten entsprechen, handelt es sich bei der Kantenspeicherung
@@ -70,12 +70,12 @@ auf die höhere Datenlokalität zurückzuführen, durch die der Prozessor bereit
 \label{sec:copy}
 
 Besonders interessant bei der Solution-Klasse ist die automatisch bereitgestellte Kopiermechanik. Einer der besonderen Eigenschaften von C++ ist es, für jede Klasse automatisch einen sogenannten Kopierkonstruktor
-bereitzustellen, welcher als Parameter ein Objekt des selben Types entgegennimmt, und dieses kopiert. Da im Falle einer Lösung aber nicht immer alle Daten kopiert werden müssen, wurde in dieser Arbeit eine
-eigene Kopiermechanik implementiert. Wie in Listing \ref{lst:copy} zu sehen ist, wird ein Großteil der Referenzdatentypen direkt übernommen, da diese häufig garnicht verändert werden. 
+bereitzustellen, welcher als Parameter ein Objekt des selben Types entgegen nimmt, und dieses kopiert. Da im Falle einer Lösung aber nicht immer alle Daten kopiert werden müssen, wurde in dieser Arbeit eine
+eigene Kopiermechanik implementiert. Wie in Listing \ref{lst:copy} zu sehen ist, wird ein Großteil der Referenzdatentypen direkt übernommen, da diese häufig gar nicht verändert werden. 
 
 Das Kopieren einer Lösung kommt vor Allem bei den verschieden Nachbarschaften zum Einsatz. Eine bestehende Lösung soll verändert werden, ohne, dass die Information der Ausgangslösung verloren geht. Also wird
 die bestehende Lösung kopiert, und die Veränderungen nur auf der neuen Lösung ausgeführt. Da viele der Nachbarschaften darauf basieren, dass ausschließlich die Lösungsfarben verändert werden, kann zum Beispiel, 
-anstatt den gesamten Graphen zu kopieren, eine Referenz auf den alten Graphen aufrecht erhalten werden. Selbiges gilt natürlich auch für alle direkt mit dem Graph in Verbindung stehenden Datenspeichern. 
+anstatt den gesamten Graphen zu kopieren, eine Referenz auf den alten Graphen aufrecht erhalten werden. Selbiges gilt natürlich auch für alle direkt mit dem Graph in Verbindung stehenden Daten speichern. 
 
 \singlespacing
 \begin{lstlisting}[caption={Der Kopierkonstruktor der Solutionklasse},label={lst:copy}]
@@ -104,7 +104,7 @@ Solution::Solution(Solution *toCopy) {
 Nun könnten aber Probleme entstehen. Zum einen, wenn eine Nachbarschaft beispielsweise Knoten aus dem zu Grunde liegenden Graphen austauscht, um eine bessere Lösung zu erhalten. Da durch das unechte Kopieren
 der in einem Solutionobjekt referenzierte Graph auch bei anderen Lösungen zum Einsatz kommt, würde eine Veränderung auf einem Graphen, zu Veränderungen und aller Wahrscheinlichkeit nach zu Fehlern in alternativen
 Lösungen führen, welche dann unweigerlich unzulässige Ergebnisse zur Folge hätten. Daher kann mit der Methode \texttt{requestDeepCopy} eine vollständige Kopie des Solutionobjektes angefordert werden. In dieser
-Methode werden dann alle verbleibenden Fremdreferenzen nocheinmal kopiert, und in eigens für das anfragende Solutionobjekt reservierte Speicherbereiche geschrieben.
+Methode werden dann alle verbleibenden Fremdreferenzen noch einmal kopiert, und in eigens für das anfragende Solutionobjekt reservierte Speicherbereiche geschrieben.
 
 \singlespacing
 \begin{lstlisting}[caption={Die Methode \texttt{requestDeepCopy} of the Solution class},label={lst:deepcopy}]
@@ -165,7 +165,7 @@ Solution::~Solution() {
 \subsection{StoredSolution}
 Um eine einzelne Lösung von einer anderen zu unterscheiden, sind zwei Informationen notwendig: die Auswahl der Repräsentanten, und die Auswahl 
 an Farben. Mit diesen beiden Informationen, und dem Ausgangsgraphen, aus dem die Lösung berechnet wurde, ist eine Lösung eindeutig rekonstruierbar.
-Umzu verhindern, dass die VNS-Schleife immer wieder auf die selben Lösungen kommt, ohne echte Verbesserungen zu erzielen, werden alle neuen, verbesserten
+Um zu verhindern, dass die VNS-Schleife immer wieder auf die selben Lösungen kommt, ohne echte Verbesserungen zu erzielen, werden alle neuen, verbesserten
 Lösungen komprimiert gespeichert. 
 
 Zur komprimierten Speicherung wurde eine eigene Datenstruktur definiert, welche eben nur jene oben erwähnten Informationen abspeichert. 
@@ -208,7 +208,7 @@ Innerhalb dieses Checks werden verschiedenste Dinge überprüft. Zum einen wird 
 mit der tatsächlich verwendeten Farben übereinstimmt. Dies ist besonders wichtig, da ja die Anzahl an Farben das Hauptkriterium für eine bessere Lösung darstellt. Dann wird überprüft, ob alle Partition
 vertreten sind, und ob die jeweiligen Repräsentanten richtig abgespeichert wurden. 
 
-Zu letzt wird noch überprüft, ob der Lösungsgraph mit dem Ursprungsgraphen übereinstimmt. Dazu werden verschiedene Fakten überprüft. Zum einen werden fehlende oder überschüssige Kanten in der Lösung gesucht, 
+Zuletzt wird noch überprüft, ob der Lösungsgraph mit dem Ursprungsgraphen übereinstimmt. Dazu werden verschiedene Fakten überprüft. Zum einen werden fehlende oder überschüssige Kanten in der Lösung gesucht, 
 zum anderen wird überprüft, ob die ausgewählten Repräsentanten einer Partition wirklich zu dieser Partition zugehörig sind. 
 
 Sollte keine dieser Überprüfungen auf Fehler stoßen, wird angenommen, es handle sich um eine valide Lösung für das PCP. Durch diese Überprüfung konnten auch schon Fehler innerhalb einzelne Nachbarschaften 
@@ -231,7 +231,7 @@ Eine \texttt{.pcp}-Datei ist eine einfache Textdatei, welche allerdings nach ein
 einer solchen Datei besteht aus 3 Zahlen, welche jeweils durch ein Leerzeichen getrennt sind. Diese 3 Zahlen stehen für die Anzahl der Knoten, 
 die Anzahl der Kanten, und die Anzahl der Partition im Problemgraph, genau in jener Reihenfolge. Nun folgen \textit{n} Zeilen an Zahlen, mit 
 genau einer Zahl pro Zeile, wobei \textit{n} die Anzahl an Knoten ist. Diese Zahlen stehen für die Partitionen, denen die Knoten zugeordnet werden.
-Die erste Zeile beinhaltet also die Partition des ersten Knotens, die zweite Zeile die des zweiten Knotens und so weiter. Zu letzt folgen noch
+Die erste Zeile beinhaltet also die Partition des ersten Knotens, die zweite Zeile die des zweiten Knotens und so weiter. Zuletzt folgen noch
 \textit{m} Zeilen mit jeweils einem Zahlenpaar, welche die Kanten zwischen den Knoten definieren, wobei \textit{m} der Anzahl an Kanten insgesamt
 entspricht.
 

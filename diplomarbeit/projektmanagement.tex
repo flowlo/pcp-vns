@@ -2,7 +2,7 @@
 
 Im folgenden soll erläutert werden, wie diese Arbeit als Projekt funktioniert hat. Dabei soll ein Überblick über die Projektstruktur, sowie den Ablauf der einzelnen Arbeitsschritte gegeben, und im speziellen auf die Implementierung der beschriebenen Lösungsansätze und Algorithmen eingegangen werden, da genau dieser Aspekt wohl klar die meiste Arbeitszeit in Anspruch nahm.
 
-Es folgt eine verbale Beschreibung der Abreitsphasen und -schritte. Eine quantitive Übersicht findet sich in \ref{sec:arbeitspakete}.
+Es folgt eine verbale Beschreibung der Arbeitsphasen und -schritte. Eine quantitative Übersicht findet sich in \ref{sec:arbeitspakete}.
 
 \section{Projektstruktur}
 
@@ -19,9 +19,9 @@ Um das Management während dem Projektverlauf zu erleichtern, wurde das Projekt 
 
 Um nicht bereits zu Projektbeginn die Fehler anderer erneut zu begehen, erschien eine ausgedehnte Recherchephase sinnvoll. Rückblickend zeigte sich diese Phase als besonders hilfreich, um mit der komplexen Materie vertraut zu werden.
 
-\paragraph{Beschaffung der wissenschaftlichen Arbeiten zum Tehema}{Die wissenschaftliche Komponente des Projekts erforderte die umfangreiche Auseinandersetzung mit bereits abgeschlossenen Arbeiten zu ähnlichen Lösungsansätzen der gleichen Problemstellung. Am wichtigsten hierbei ist das Identifizieren von wichtigen Erkenntnisse, die sich vorteilhaft für die eigene Arbeit nutzen lassen. So konnten wir beispielsweise schnell die Konstruktionsheuristik onestepCD anderen Varianten vorziehen, da diese in früheren Evaluierungen die besten Ergebnisse berechnete.} %TODO referenz auf onestep
+\paragraph{Beschaffung der wissenschaftlichen Arbeiten zum Thema}{Die wissenschaftliche Komponente des Projekts erforderte die umfangreiche Auseinandersetzung mit bereits abgeschlossenen Arbeiten zu ähnlichen Lösungsansätzen der gleichen Problemstellung. Am wichtigsten hierbei ist das Identifizieren von wichtigen Erkenntnisse, die sich vorteilhaft für die eigene Arbeit nutzen lassen. So konnten wir beispielsweise schnell die Konstruktionsheuristik onestepCD anderen Varianten vorziehen, da diese in früheren Evaluierungen die besten Ergebnisse berechnete.} %TODO referenz auf onestep
 
-\paragraph{Besprechung der bisherigen Ansätze und Ergebnisse}{Abgesehen von der Wahl von onestepCD aufgrund der offensichtlichen Vorteile, wurde vorallem die Tabu-Suche von genauer analysiert, um daraus eventuell Schlüsse für leistungsfähige Nachbarschaften ziehen zu können. In der Tat führte dies zur Implementierung der Tabu-Suche als Nachbarschaft zu Testzwecken.} %TODO referenz auf onestep, referenz auf tabusearch paper
+\paragraph{Besprechung der bisherigen Ansätze und Ergebnisse}{Abgesehen von der Wahl von onestepCD aufgrund der offensichtlichen Vorteile, wurde vor allem die Tabu-Suche von genauer analysiert, um daraus eventuell Schlüsse für leistungsfähige Nachbarschaften ziehen zu können. In der Tat führte dies zur Implementierung der Tabu-Suche als Nachbarschaft zu Testzwecken.} %TODO referenz auf onestep, referenz auf tabusearch paper
 
 \paragraph{Ideenfindung für Nachbarschaften}{Zum Abschluss der Recherchephase entwickelte sich bereits ein Gespür für die Struktur des Problems, sodass Ideen für eigene Nachbarschaften aufkamen.} %TODO
 
@@ -33,7 +33,7 @@ Nach einer Umfangreichen Recherche und Auseinandersetzung mit der Problemstellun
 \paragraph{Analyse des Eingabeformats}{Eine wichtige Eingabeschnittstelle des Programms ist das Einlesen von Probleminstanzen über die Standardeingabe. Hier wurde das Parsing zweier verschiedener Quellformate implementiert. Einerseits das \texttt{.pcp}-Format, in welchem ein Großteil der Instanzen vorlagen, andererseits, das \texttt{.col}-Format.}
 \paragraph{Festlegung des Ausgabeformats}{Um die Ergebnisse der Berechnungen leicht auswerten zu können, wurde die Ausgabe aller Daten im JSON-Format beschlossen. }
 \paragraph{Wahl von Codebibliotheken, Compiler, etc.}{Bevor die Entwicklung des Programms tatsächlich beginnen konnte, wurde eine Codebibliothek gewählt, welche zusätzlich Zeit sparen und Fehlerquellen eindämmen würde. Weitere Details siehe \ref{sec:boost}}
-\paragraph{Implementierung einer Visualisierung}{Um die Arbeitsweise des Programms möglichst anschaulich darstellen zu können, wurde eine Visualisierung mit Ubigraph implementiert. Dies ermöglicht eine Überwachung der Abreitsschritte einzelner Nachbarschaften, sodass auch Dritte Einsicht in den Ablauf gewinnen.}
+\paragraph{Implementierung einer Visualisierung}{Um die Arbeitsweise des Programms möglichst anschaulich darstellen zu können, wurde eine Visualisierung mit Ubigraph implementiert. Dies ermöglicht eine Überwachung der Arbeitsschritte einzelner Nachbarschaften, sodass auch Dritte Einsicht in den Ablauf gewinnen.}
 
 \subsection{Implementierung von Nachbarschaften}
 
@@ -78,11 +78,11 @@ Wie in Tabelle \ref{tab:risk} ersichtlich ging von dem befürchteten Weltunterga
 Das Absichern gegen weitere Risikoszenarien konnte aufgrund der weit höheren Priorität im Laufe der Vorbereitungen auf den Untergang der Welt nicht gewährleistet werden.
 
 \section{Versionskontrolle}
-Eine der ersten Entscheidungen im Laufe der Arbeit am Projekt, wahrscheinlich sogar schon vor der Wahl des Arbeitstitels, war die Auswahl eines geeigneten Versionskontrollsystems. Wie es die Teammmitglieder für kleinere Projekte gewohnt war, begann die Entwicklung in einem von einem Cloud Service bereitgestellten, synchronisierten Ordner. Doch schon nach wenigen Tagen war klar, dass eine für das Projektteam derart wichtige Arbeit ein voll ausgebautes und dezidiertes Versionskontrollsystem benötigt. Schnell fiel die Entscheidung auf \textit{Git}\footnote{\url{https://git-scm.org/}}, ein System, dass mitunter von den Entwicklern der größten Projekte der \textit{Free and/or Open Source Software} eingesetzt wird.
+Eine der ersten Entscheidungen im Laufe der Arbeit am Projekt, wahrscheinlich sogar schon vor der Wahl des Arbeitstitels, war die Auswahl eines geeigneten Versionskontrollsystems. Wie es die Teammitglieder für kleinere Projekte gewohnt war, begann die Entwicklung in einem von einem Cloud Service bereitgestellten, synchronisierten Ordner. Doch schon nach wenigen Tagen war klar, dass eine für das Projektteam derart wichtige Arbeit ein voll ausgebautes und dezidiertes Versionskontrollsystem benötigt. Schnell fiel die Entscheidung auf \textit{Git}\footnote{\url{https://git-scm.org/}}, ein System, dass mitunter von den Entwicklern der größten Projekte der \textit{Free and/or Open Source Software} eingesetzt wird.
 
-Dabei beeindruckt Git vorallem durch den geringen Mehraufwand um die Versionskontrolle zu pflegen. Weiters wurde es so möglich komplett unabhängig an Dateien zu arbeiten und Änderungen im Nachhinein einfach zusammenzuführen.
+Dabei beeindruckt Git vor allem durch den geringen Mehraufwand um die Versionskontrolle zu pflegen. Weiters wurde es so möglich komplett unabhängig an Dateien zu arbeiten und Änderungen im Nachhinein einfach zusammenzuführen.
 
 \section{Continuous Integration}
 Als zusätzliches Feedback-Element wurde in diesem Projekt auf Continuous Integration gesetzt. Das bedeutet, dass sobald Änderungen am Code in der Versionskontrolle eingecheckt und hochgeladen wurden, ein Webservice zur Verfügung stand um die neue Version zu kompilieren und zu testen. Bei fehlschlagen eines solchen Builds wurde das Projektteam instantan informiert um möglichst rasch eine Fehlerbehebung zu beginnen.
 
-Dies ermöglicht insbesondere auch die Überprüfung, ob der Code sich mit GCC genauso wie mit clang kompilieren lässt und bietet außerdem einen guten Richtwert der im Projektlauf aufgetretenen Fehler. 
+Dies ermöglicht insbesondere auch die Überprüfung, ob der Code sich mit GCC genauso wie mit clang kompilieren lässt und bietet außerdem einen guten Richtwert der im Projektverlauf aufgetretenen Fehler. 

@@ -64,7 +64,7 @@ Zunächst werden in einem Vorverarbeitungsschritt alle Kanten aus dem Konfliktgr
 
 \subsection{PILOT}
 
-Bessere Ergebnisse als die einer naiven Konstruktionsheuristik wie \textit{onestepCD} liefern häufig Varianten der gleichen Verfahren nach dem PILOT-Schema. Hier  wird grunsätzlich nach den Entscheidungskriterien von \textit{onestepCD} verfahren um jedoch nicht nur einen, sondern mehrere Knoten auszuwählen. Diese werden dann jeweils fixiert und durch Rekursion vollständige Lösungen berechnet. Von den verschiedenen Lösungen, die auf höherer Rekursionsebene zur Verüfung stehen, kann dann die vielversprechendeste, also jene mit den wenigsten Farben, herangezogen werden.
+Bessere Ergebnisse als die einer naiven Konstruktionsheuristik wie \textit{onestepCD} liefern häufig Varianten der gleichen Verfahren nach dem PILOT-Schema. Hier  wird grundsätzlich nach den Entscheidungskriterien von \textit{onestepCD} verfahren um jedoch nicht nur einen, sondern mehrere Knoten auszuwählen. Diese werden dann jeweils fixiert und durch Rekursion vollständige Lösungen berechnet. Von den verschiedenen Lösungen, die auf höherer Rekursionsebene zur Verfügung stehen, kann dann die vielversprechendste, also jene mit den wenigsten Farben, herangezogen werden.
 
 Es entsteht also eine beschränkte Enumeration der Lösungen, was deutlich zeitintensiver als die einmalige Berechnung von \textit{onestepCD} ist, aber möglicherweise deutlich bessere Ergebnisse liefert.
 
@@ -77,19 +77,19 @@ Es entsteht also eine beschränkte Enumeration der Lösungen, was deutlich zeiti
 
 \section{Nachbarschaften}
 \label{sec:neigh}
-Wie bereits beschrieben handelt es sich bei Nachbarschaften um einzelne Algorithmen die versuchen, eine gültige Lösung in eine andere, bessere Lösung durch eine relativ kleine Änderung umzuwandeln. Wir haben uns zunächst auf die drei Nachbarschaften \emph{changeColor}, \emph{changeNode} und \emph{DSATUR} konzentiert, wobei weitere Nachbarschaften noch zur Diskussion stehen.
+Wie bereits beschrieben handelt es sich bei Nachbarschaften um einzelne Algorithmen die versuchen, eine gültige Lösung in eine andere, bessere Lösung durch eine relativ kleine Änderung umzuwandeln. Wir haben uns zunächst auf die drei Nachbarschaften \emph{changeColor}, \emph{changeNode} und \emph{DSATUR} konzentriert, wobei weitere Nachbarschaften noch zur Diskussion stehen.
 
-Jede Nachbarschaft bietet auch eine Methode an, eine Lösung zu ``schütteln'', welche ähnlich abläuft wie die Methode zur Suche des jeweiligen lokalen Optimums, allerdings ohne die Beschränkung ausschließlich bessere Ergebnisse zurückliefern zu müssen.
+Jede Nachbarschaft bietet auch eine Methode an, eine Lösung zu ``schütteln'', welche ähnlich abläuft wie die Methode zur Suche des jeweiligen lokalen Optimums, allerdings ohne die Beschränkung ausschließlich bessere Ergebnisse zurück liefern zu müssen.
 
 \subsection{ChangeColor}
 \label{sec:changecolor}
 Bei dieser sehr einfachen Nachbarschaft, die von der Tabu-Suche aus \citet*{Noronha2006} inspiriert ist, wird versucht, alle Knoten umzufärben, welche mit der höchsten Farbe markiert wurden. 
 
-Um dieses Ziel zu erreichen, werden alle Knoten, welche diese höchste Farbe besitzen, mit einer neuen zufälligen Farbe markiert. Dies führt natürlich unweigerlich zu Konflikten zwischen verbundenen Knoten im Knfliktgraph, d.h.\ zu benachbarten Knoten mit gleicher Farbe. 
+Um dieses Ziel zu erreichen, werden alle Knoten, welche diese höchste Farbe besitzen, mit einer neuen zufälligen Farbe markiert. Dies führt natürlich unweigerlich zu Konflikten zwischen verbundenen Knoten im Konfliktgraph, d.h.\ zu benachbarten Knoten mit gleicher Farbe. 
 
 Um diese Konflikte zu lösen wird ein zufälliger, im Konflikt stehender Knoten ausgewählt, um ihn mit einer passenden Farbe zu füllen. Zu beachten ist hierbei die Tatsache, das diese passende Farbe kleiner sein muss als die frühere höchste Farbe, da ja eine Verbesserung (eine Reduktion der Farbenanzahl um 1) erzielt werden soll.
 
-Sollte sich keine passende Farbe finden, wird auch dieser im Konflikt stehende Knoten mit einer zufälligen Farbe neu eingefärbt, was im Normalfall zu weitern Konflikten führt. Es wird nun versucht, diesen gesamten Vorgang so lange zu wiederholen bis keine Konflikte mehr bestehen. 
+Sollte sich keine passende Farbe finden, wird auch dieser im Konflikt stehende Knoten mit einer zufälligen Farbe neu eingefärbt, was im Normalfall zu weiteren Konflikten führt. Es wird nun versucht, diesen gesamten Vorgang so lange zu wiederholen bis keine Konflikte mehr bestehen. 
 
 Sollte nach einer gewissen Anzahl an Iterationen keine konfliktfreie Lösung gefunden werden, bricht \emph{ChangeColor} automatisch ab und liefert die letzte valide Lösung zurück.
 
@@ -105,7 +105,7 @@ Dieser Vorgang wird solange wiederholt bis alle Konflikte gelöst wurden oder zu
 Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das normale Graph Coloring Problem ohne Clusterung der Knoten, indem die aktuell gewählten Repräsentanten fixiert werden und dieses so vereinfachte Problem (das allerdings immer noch NP-hart ist) wird nun mit folgendem Greedy Ansatz näherungsweise gelöst:
 
 \begin{enumerate}
-    \item Finde den (noch nicht eingefärbten) Repräsentanten mit der größten Anzahl an eingefärbten Nachbaren (engl.\ \textit{Degree Saturation}).
+    \item Finde den (noch nicht eingefärbten) Repräsentanten mit der größten Anzahl an eingefärbten Nachbarn (engl.\ \textit{Degree Saturation}).
     \item Bei Gleichstand: Wähle den Knoten mit der größten Anzahl an nicht eingefärbten Nachbarn.
     \item Bei Gleichstand wähle den ersten Knoten in lexikographischer Abfolge.
     \item Weise dem gewählten Knoten die kleinste mögliche Farbe zu.
@@ -116,8 +116,8 @@ Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das norma
 \begin{algorithmic}[1]
 \State Lösche die aktuelle Färbung
 \State Sei $t$ der ausgewählte Knoten
-\State Sei $D$ die maximale Stauration
-\State Sei $B$ die maximale Anzahl an nicht eingefärbten Nachbaren
+\State Sei $D$ die maximale Saturation
+\State Sei $B$ die maximale Anzahl an nicht eingefärbten Nachbarn
 \State Sei $C$ die beste Färbung
 \For{$i$ = 0,\ \ldots,\ k}
 \State $D \leftarrow -1$
@@ -129,11 +129,11 @@ Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das norma
 \State Überspringe diesen Knoten
 \Else
 \State $c\leftarrow$ kleinstmögliche Färbung von $v$
-\State $d\leftarrow$ Anzahl an eingefärbten Nachbaren von $v$ (\textit{Degree Saturation})
+\State $d\leftarrow$ Anzahl an eingefärbten Nachbarn von $v$ (\textit{Degree Saturation})
 \If{$d < D$}
 \State Überspringe diesen Knoten
 \EndIf
-\State $b\leftarrow$ Anzahl an nicht eingefärbten Nachbaren von $v$ ($deg(v) - d$)
+\State $b\leftarrow$ Anzahl an nicht eingefärbten Machbaren von $v$ ($deg(v) - d$)
 \If{$d = D \wedge b \leq B$}
 \State Überspringe diesen Knoten
 \EndIf
