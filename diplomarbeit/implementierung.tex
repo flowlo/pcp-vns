@@ -1,5 +1,4 @@
 \chapter{Implementierung}
-%TODO: sec:ansatz
 Für die Implementierung des in Abschnitt \ref{sec:ansatz} vorgeschlagenen Lösungsansatzes, wurde eine möglichst flexible Struktur des Programmes verwendet. Wie in Abschnitt \ref{sec:cpp} begründet, wurde
 als Implementierungssprache C++ gewählt. Durch den Einsatz von C++ kann ein einfach erweiterbares Programmgerüst geschrieben werden, welches es erlaubt, schnell und ohne großen Aufwand mehrere Nachbarschaften
 für die VNS zu implementieren. 
@@ -261,12 +260,12 @@ zu den verfügbaren Knoten in der Partition ab.
 Als Konstruktionsheuristik wurde der in Abschnitt \ref{sec:onestep} Algorithmus OneStep-CD gewählt. Die verwendete Implementierung des Algorithmus
 erzeugt ein neues Solutionobjekt, als einziger Übergabeparameter ist das aus der Datei eingelesen Solutionobjekt, welches ja den vollständigen Problemgraphen
 enthält. Dieses Solutionobjekt bildet dann die Ausgangsbasis für die Verbesserung in der Variablen Nachbarschaftssuche. Der Graph, welcher in dem erzeugten Solutionobjekt
-referenziert wird, ist ein anderer Graph als in der Gesamtlösung verwendet wird. In dem referenzierten Graphen befinden sich nur mehr ein Knoten per Partition, welcher auch den
-ausgewählten Repräsentanten der jeweiligen Partition darstellt. 
+referenziert wird, ist ein anderer Graph als in der Gesamtlösung verwendet wird. In dem referenzierten Graphen befinden sich nur mehr ein Knoten per Partition, welcher auch den ausgewählten Repräsentanten der jeweiligen Partition darstellt.
 
-\subsection{Pilot}
+\subsection{PILOT}
+Alternativ zu \texttt{onestepCD} wurde auch eine PILOT-inspirierte Variante der Heuristik implementiert. Zuerst werden hier wieder Kanten zwischen Knoten der selben Partition entfertn, um dann schrittweise rekursiv eine Lösung zu berechnen. Im Unterschied zu \texttt{onestepCD} werden allerdings Knoten nicht trivial gewählt, sondern eine Menge an Knoten gesucht, für die dann eine Lösung durchberechnet wird. So können auch andere, womöglich bessere Lösungen, gefunden werden.
 
-%TODO: pilot, HERBERT TRINK DAS!
+Wie \texttt{onestepCD} operiert auch \texttt{pilot} auf einem Solutionobjekt, dass dann nahtlos an die VNS weiteregereicht werden kann.
 
 \section{Nachbarschaftssuche}
 \label{sec:impl:vns}
@@ -275,8 +274,7 @@ Die Variable Nachbarschaftssuche, wie sie in Abschnitt~\ref{sec:vns} beschrieben
 möglichst einfach steuern zu können ist eine Vielzahl an Optionen am Programmstart spezifizierbar. Vieler dieser Optionen beeinfluss direkt oder indirekt den Ablauf der VNS. 
 
 Die wichtigsten Parameter der Methode \texttt{vnsRun}, deren Signatur in Listing~\ref{lst:vns} zu sehen ist, sind die Übergabe der derzeit besten Lösung \texttt{best}, welche von der Konstruktionsheuristik erzeugt wurde, und
-die Übergabe der vollständigen, unveränderten Probleminstanz \texttt{orig}. Auch von essentieller Bedeutung ist der String \texttt{units}, welcher eine Zeichenkette enthält, der die Reihenfolge der verwendeten
-Nachbarschaften bestimmt. 
+die Übergabe der vollständigen, unveränderten Probleminstanz \texttt{orig}. Auch von essentieller Bedeutung ist der String \texttt{units}, welcher eine Zeichenkette enthält, der die Reihenfolge der verwendeten Nachbarschaften bestimmt. 
 
 Die nächsten Parameter bestimmen vor allem die Ausführungszeit der VNS. Der übergebene Parameter \texttt{unsuccessfulShake} bestimmt die maximale Anzahl an Schüttelvorgängen welche ohne Verbesserungen ablaufen werden, bevor die VNS beendet wird.
 Der Parameter \texttt{shakeStart} bestimmt die initiale Stärke des ersten Schüttelvorganges, und steht damit direkt im Zusammenhang mit der Stärke der Randomisation welche von diesen Schüttelvorgängen ausgeführt wird.
@@ -349,7 +347,6 @@ die ursprünglich höchste Farbe sind. Dann wird versucht, die adjazenten Knoten
 Verbesserung bringt, wird die Nachbarschaft abgebrochen. Konnten für alle Knoten, welche ursprünglich die höchste Farbe besaßen, eine Ersatzfarbe gefunden werden, wird das neue Solutionobjekt zurückgegeben, 
 welches eine Verbesserung zum Eingabeobjekt darstellt.
 
-
 \begin{algorithm}
 \begin{algorithmic}[1]
 \Require Solution $s$, Solution $full$
@@ -373,7 +370,6 @@ welches eine Verbesserung zum Eingabeobjekt darstellt.
 \caption{Pseudocode der ChangeColor-Nachbarschaft}
 \label{psy:ChangeColor}
 \end{algorithm}
-
 
 \subsection{ChangeNode}
 Ähnlich wie bei ChangeColor erwies sich der in Abschnitt~\ref{sec:changenode} beschriebene Ansatz in der Realität bei großen Instanzen als nicht verlässlich. Häufig lieferte die Nachbarschaft keine gültigen

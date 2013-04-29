@@ -61,7 +61,19 @@ Obwohl die Variable Nachbarschaftssuche in der Theorie immer weiter laufen könn
 \citet*{Li2000} beschreiben mehrere schnelle Greedy Algorithmen zur näherungsweisen Lösung des Problems. Im Vergleich der benötigten Farben schneidet dabei der Algorithmus \emph{onestepCD} am besten ab:
 \subsection{onestepCD}
 Zunächst werden in einem Vorverarbeitungsschritt alle Kanten aus dem Konfliktgraphen entfernt, die Knoten innerhalb eines Clusters miteinander verbinden (da für jede Kommunikation nur genau ein Kommunikationsweg gewählt wird, können sich Knoten eines Clusters nie gegenseitig stören, die entsprechenden Kanten sind daher für die Lösung des Problems irrelevant und können gelöscht werden). Danach wird für jeden Cluster der Knoten mit der geringsten Anzahl an bereits eingefärbten Nachbarknoten bestimmt, der Knoten mit der insgesamt kleinsten Anzahl wird ausgewählt. Gibt es hier mehrere gleichwertige Kandidaten, wird aus diesen der Knoten mit der größten Anzahl an noch nicht eingefärbten Nachbarknoten gewählt bzw. -- falls dies immer noch nicht eindeutig möglich ist -- der erste Knoten aus diesen Kandidaten. Nachdem nun ein Knoten als Repräsentant für seinen Cluster bestimmt und ihm die kleinstmögliche Farbe zugewiesen wurde, werden alle anderen Knoten, die sich im selben Cluster befinden, gelöscht. Der Prozess wird solange fortgeführt, bis die Repräsentanten aller Cluster gewählt und eingefärbt sind.
+
 \subsection{PILOT}
+
+Bessere Ergebnisse als die einer naiven Konstruktionsheuristik wie \textit{onestepCD} liefern häufig Varianten der gleichen Verfahren nach dem PILOT-Schema. Hier  wird grunsätzlich nach den Entscheidungskriterien von \textit{onestepCD} verfahren um jedoch nicht nur einen, sondern mehrere Knoten auszuwählen. Diese werden dann jeweils fixiert und durch Rekursion vollständige Lösungen berechnet. Von den verschiedenen Lösungen, die auf höherer Rekursionsebene zur Verüfung stehen, kann dann die vielversprechendeste, also jene mit den wenigsten Farben, herangezogen werden.
+
+Es entsteht also eine beschränkte Enumeration der Lösungen, was deutlich zeitintensiver als die einmalige Berechnung von \textit{onestepCD} ist, aber möglicherweise deutlich bessere Ergebnisse liefert.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{../img/pilot}
+	\caption{Anschauliche Darstellung des PILOT-Verfahrens}
+	\label{fig:pilot}
+\end{figure}
 
 \section{Nachbarschaften}
 \label{sec:neigh}
