@@ -85,7 +85,9 @@ Jede Nachbarschaft bietet auch eine Methode an, eine Lösung zu ``schütteln'', 
 \label{sec:changecolor}
 Bei dieser sehr einfachen Nachbarschaft, die von der Tabu-Suche aus \citet*{Noronha2006} inspiriert ist, wird versucht, alle Knoten umzufärben, welche mit der höchsten Farbe markiert wurden. 
 
-Um dieses Ziel zu erreichen, werden alle Knoten, welche diese höchste Farbe besitzen, mit einer neuen zufälligen Farbe markiert. Dies führt natürlich unweigerlich zu Konflikten zwischen verbundenen Knoten im Konfliktgraph, d.h.\ zu benachbarten Knoten mit gleicher Farbe. 
+\subsubsection{Erster Ansatz}
+Der erste Ansatz für diese Nachbarschaft arbeitete wie folgt.
+Alle Knoten, welche die höchste Farbe besitzen, werden mit einer neuen zufälligen Farbe markiert. Dies führt natürlich unweigerlich zu Konflikten zwischen verbundenen Knoten im Konfliktgraph, d.h.\ zu benachbarten Knoten mit gleicher Farbe. 
 
 Um diese Konflikte zu lösen wird ein zufälliger, im Konflikt stehender Knoten ausgewählt, um ihn mit einer passenden Farbe zu füllen. Zu beachten ist hierbei die Tatsache, das diese passende Farbe kleiner sein muss als die frühere höchste Farbe, da ja eine Verbesserung (eine Reduktion der Farbenanzahl um 1) erzielt werden soll.
 
@@ -93,13 +95,83 @@ Sollte sich keine passende Farbe finden, wird auch dieser im Konflikt stehende K
 
 Sollte nach einer gewissen Anzahl an Iterationen keine konfliktfreie Lösung gefunden werden, bricht \emph{ChangeColor} automatisch ab und liefert die letzte valide Lösung zurück.
 
+\subsubsection{Zweiter Ansatz}
+Da sich in Tests dieser erste Ansatz nicht bewährte, vor allem da er bei großen Probleminstanzen zu häufig zu keinem brauchbaren Ergebnis kam, wurde der Ansatz überarbeitet. Er basiert weiterhin auf der Umfärbung der
+Knoten mit der höchsten Farbe, diesmal allerdings ohne eine willkürliche Auswahl an in Konflikt stehenden Knoten.
+
+Die veränderte Heuristik ist unter Algorihtmus~\ref{psy:ChangeColor} zu finden. Jeder Knoten, welcher die höchste Farbe besitzt, wird umgefärbt. Es werden alle Farben ausprobiert, welche kleiner als
+die ursprünglich höchste Farbe sind. Dann wird versucht, die adjazenten Knoten umzufärben, und zwar so, dass auch hier nicht mehr die höchste Farbe verwendet wird. Wenn keine der ausprobierten Farben eine
+Verbesserung bringt, wird die Nachbarschaft abgebrochen. Konnten für alle Knoten, welche ursprünglich die höchste Farbe besaßen, eine Ersatzfarbe gefunden werden, wird das neue Solutionobjekt zurückgegeben, 
+welches eine Verbesserung zum Eingabeobjekt darstellt.
+
+\begin{algorithm}
+\begin{algorithmic}[1]
+\Require Solution $s$, Solution $full$
+\Ensure Solution $l$
+\State $l \leftarrow$ Kopie von $s$
+\State $c \leftarrow maximaleFarbe(l)$
+\ForAll{Knoten $v \in l.graph$ für die gilt $v.farbe = c$}
+\For{Farbe $i = 0 \to c - 1$}
+\State $v.farbe \leftarrow i$
+\State Färbe alle adjazenten Knoten mit gleicher Farbe neu ein
+\If{$maxFarbe(v.adjazenzen) < c$}
+\State Beende innere Schleife  
+\EndIf
+\EndFor
+\If{$maxFarbe(v.adjazenzen) \ge c$}
+\State Stoppe Nachbarschaft ohne bessere Lösung
+\EndIf
+\EndFor
+\State retourniere $l$
+\end{algorithmic}
+\caption{Pseudocode der ChangeColor-Nachbarschaft}
+\label{psy:ChangeColor}
+\end{algorithm}
+
 \subsection{ChangeNode}
 \label{sec:changenode}
-Diese Nachbarschaft baut auf der Tatsache auf, dass man aus einem Cluster nur jeweils einen Knoten auswählen muss. Dazu werden wie bei \emph{ChangeColor} alle Knoten höchster Farbe ausgewählt und umgefärbt.
+Diese Nachbarschaft baut auf der Tatsache auf, dass man aus einem Cluster nur jeweils einen Knoten auswählen muss. 
 
+\subsubsection{Erster Ansatz}
+
+In einem ersten Ansatz werden wie bei \emph{ChangeColor} alle Knoten höchster Farbe ausgewählt und umgefärbt.
 Nun wird wieder ein zufälliger Knoten aus den entstandenen Konflikten ausgewählt, welcher dann aber durch einen zufälligen Knoten aus dem selben Cluster ersetzt wird. An diesem Knoten wird dann ein neuer Einfärbeversuch unternommen, wobei die maximal zulässige Farbe natürlich wieder kleiner ist als die ursprünglich höchste Farbe.
 
-Dieser Vorgang wird solange wiederholt bis alle Konflikte gelöst wurden oder zu viele Iterationen abgelaufen sind.
+Dieser Vorgang wird solange wiederholt bis alle Konflikte gelöst wurden oder zu viele Iterationen abgelaufen sind. Wurden alle Konflikte gelöst, wurde eine neue, verbesserte Lösung gefunden, ansonsten wird die Nachbarschaft abgebrochen.
+
+\subsubsection{Zweiter Ansatz}
+
+Bei dem ersten Ansatz dieser Nachbarschaft ergaben sich ähnliche Probleme wie beim ersten Ansatz von ChangeColor. Durch den höheren Aufwand, der durch das Tauschen von Knoten entsteht, erwies sich dieser erste Verusch der Nachbarschaft
+sogar als noch unverlässlicher als ChangeColor. Mit Hilfe dieses zweiten Ansatzes, welcher es auch in die schlussendliche Implementierung schaffte, konnten verlässlicher, und vor allem schneller Ergebnisse erzielt werden.
+
+Die schlussendliche Variante der Nachbarschaft ist unter Algorithmus~\ref{psy:ChangeNode} zu finden. Ähnlich wie bei ChangeColor wird versucht, alle Knoten mit der maximalen Farbe umzufärben. Bei diesem zweiten Ansatz wird dies versucht, in dem
+ein Knoten mit maximaler Farbe gegen einen anderen Knoten ausgetauscht wird. Dieser Austauschknoten muss natürlich auch Vertreter der selben Partition sein. Dieser Knoten wird dann versucht ganz normal
+neu einzufärben. Sollte die Neueinfärbung mit einer Farbe niedriger als der maximalen Farbe erfolgen, wird nach weiteren Knoten maximaler Farbe gesucht. Sollte der Algorithmus nicht in der Lage sein, ein
+passenden Ersatzknoten zu finden, welcher die Anzahl an verwendeten Farben verringert, bricht die Nachbarschaft ohne Verbesserung ab.
+
+\begin{algorithm}
+\begin{algorithmic}[1]
+\Require Solution $s$, Solution $full$
+\Ensure Solution $l$
+\State $l \leftarrow$ Kopie von $s$
+\State $c \leftarrow maximaleFarbe(l)$
+\ForAll{Knoten $v \in l.graph$ für die gilt $v.farbe = c$}
+\ForAll{Knoten $a \in full.graph$ für die gilt $a.partition = v.partition \wedge a \neq v$}
+\State Tausche Knoten $v$ mit Knoten $a$ in Solution $l$
+\State Färbe Knoten $a$ mit minimaler Farbe ein
+\If{$a.farbe < c$}
+\State Beende innere Schleife
+\EndIf
+\EndFor
+\If{$maxFarbe(a.adjazenzen) \ge c$}
+\State Stoppe Nachbarschaft ohne bessere Lösung
+\EndIf
+\EndFor
+\State retourniere $l$
+\end{algorithmic}
+\caption{Pseudocode der ChangeNode-Nachbarschaft}
+\label{psy:ChangeNode}
+\end{algorithm}
 
 \subsection{NewVertexColoring-DSATUR}
 Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das normale Graph Coloring Problem ohne Clusterung der Knoten, indem die aktuell gewählten Repräsentanten fixiert werden und dieses so vereinfachte Problem (das allerdings immer noch NP-hart ist) wird nun mit folgendem Greedy Ansatz näherungsweise gelöst:
