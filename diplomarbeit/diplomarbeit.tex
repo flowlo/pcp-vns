@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt]{scrreprt}
+\documentclass[a4paper,12pt,titlepage,abstract=on,liststotoc]{scrreprt}
 \input{preamble.tex}
 \begin{document}
 \include{titlepage}
@@ -6,8 +6,11 @@
 \include{antrag}
 \addcontentsline{toc}{chapter}{Eigenständigkeitserklräung}
 \include{eigenstaendigkeitserklaerung}
+\clearpage
+\selectlanguage{english}
 \addcontentsline{toc}{chapter}{Abstract}
 \include{abstract}
+\selectlanguage{ngerman}
 \tableofcontents
 \newpage
 \renewcommand{\thesection}{\origthesection}
@@ -17,16 +20,12 @@
 \include{software}
 \include{projektmanagement}
 \newpage
-\addcontentsline{toc}{chapter}{Verzeichnisse}
 \printbibliography[title=Literaturverzeichnis]
-\addcontentsline{toc}{section}{Literaturverzeichnis}
+\addcontentsline{toc}{chapter}{Literaturverzeichnis}
 \listoffigures
-\addcontentsline{toc}{section}{Abbildungsverzeichnis}
 \listoftables
-\addcontentsline{toc}{section}{Tabellenverzeichnis}
 \listofalgorithms
-\addcontentsline{toc}{section}{Algorithmenverzeichnis}
 \lstlistoflistings
-\addcontentsline{toc}{section}{Codeverzeichnis}
+\part*{Appendix}
 \include{anhang}
 \end{document}
