@@ -2,7 +2,7 @@
 
 Im folgenden soll erläutert werden, wie diese Arbeit als Projekt funktioniert hat. Dabei soll ein Überblick über die Projektstruktur, sowie den Ablauf der einzelnen Arbeitsschritte gegeben, und im speziellen auf die Implementierung der beschriebenen Lösungsansätze und Algorithmen eingegangen werden, da genau dieser Aspekt wohl klar die meiste Arbeitszeit in Anspruch nahm.
 
-Es folgt eine verbale Beschreibung der Arbeitsphasen und -schritte. Eine quantitative Übersicht findet sich in \ref{sec:arbeitspakete}.
+Es folgt eine übersichtsartige verbale Beschreibung der Arbeitsphasen und -schritte.
 
 \section{Projektstruktur}
 
@@ -16,47 +16,195 @@ Um das Management während dem Projektverlauf zu erleichtern, wurde das Projekt 
 \end{figure}
 
 \subsection{Recherche}
-
 Um nicht bereits zu Projektbeginn die Fehler anderer erneut zu begehen, erschien eine ausgedehnte Recherchephase sinnvoll. Rückblickend zeigte sich diese Phase als besonders hilfreich, um mit der komplexen Materie vertraut zu werden.
 
-\paragraph{Beschaffung der wissenschaftlichen Arbeiten zum Thema}{Die wissenschaftliche Komponente des Projekts erforderte die umfangreiche Auseinandersetzung mit bereits abgeschlossenen Arbeiten zu ähnlichen Lösungsansätzen der gleichen Problemstellung. Am wichtigsten hierbei ist das Identifizieren von wichtigen Erkenntnisse, die sich vorteilhaft für die eigene Arbeit nutzen lassen. So konnten wir beispielsweise schnell die Konstruktionsheuristik onestepCD anderen Varianten vorziehen, da diese in früheren Evaluierungen die besten Ergebnisse berechnete.} %TODO referenz auf onestep
+\subsubsection{Beschaffung der wissenschaftlichen Arbeiten zum Thema}
 
-\paragraph{Besprechung der bisherigen Ansätze und Ergebnisse}{Abgesehen von der Wahl von onestepCD aufgrund der offensichtlichen Vorteile, wurde vor allem die Tabu-Suche von genauer analysiert, um daraus eventuell Schlüsse für leistungsfähige Nachbarschaften ziehen zu können. In der Tat führte dies zur Implementierung der Tabu-Suche als Nachbarschaft zu Testzwecken.} %TODO referenz auf onestep, referenz auf tabusearch paper
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Lorenz Leutgeb & Moritz Wanzenböck & ja \\
+	Moritz Wanzenböck & & \\
+\end{tabular}
+\end{center}
 
-\paragraph{Ideenfindung für Nachbarschaften}{Zum Abschluss der Recherchephase entwickelte sich bereits ein Gespür für die Struktur des Problems, sodass Ideen für eigene Nachbarschaften aufkamen.} %TODO
+Die wissenschaftliche Komponente des Projekts erforderte die umfangreiche Auseinandersetzung mit bereits abgeschlossenen Arbeiten zu ähnlichen Lösungsansätzen der gleichen Problemstellung. Am wichtigsten hierbei ist das Identifizieren von wichtigen Erkenntnisse, die sich vorteilhaft für die eigene Arbeit nutzen lassen. So konnten wir beispielsweise schnell die Konstruktionsheuristik \textit{onestepCD} (siehe \ref{sec:construct}) anderen Varianten vorziehen, da diese in früheren Evaluierungen die besten Ergebnisse berechnete.
+
+\subsubsection{Besprechung der bisherigen Ansätze und Ergebnisse}
+
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Lorenz Leutgeb & Moritz Wanzenböck & ja \\
+	Moritz Wanzenböck & & \\
+\end{tabular}
+\end{center}
+
+Abgesehen von der Wahl von onestepCD aufgrund der offensichtlichen Vorteile, wurde vor allem die Tabu-Suche von genauer analysiert, um daraus eventuell Schlüsse für leistungsfähige Nachbarschaften ziehen zu können. In der Tat führte dies zur Implementierung der Tabu-Suche als Nachbarschaft zu Testzwecken. %TODO referenz auf onestep, referenz auf tabusearch paper
+
+\subsubsection{Ideenfindung für Nachbarschaften}
+
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Lorenz Leutgeb & Moritz Wanzenböck & ja \\
+	Moritz Wanzenböck & & \\
+\end{tabular}
+\end{center}
+
+Zum Abschluss der Recherchephase entwickelte sich bereits ein Gespür für die Struktur des Problems, sodass Ideen für eigene Nachbarschaften aufkamen. %TODO
 
 \subsection{Design}
-
 Nach einer Umfangreichen Recherche und Auseinandersetzung mit der Problemstellung ging das Projekt in die Designphase über. Hier galt es sicherzustellen wie die Implementierung der Nachbarschaften erfolgen soll und außerdem Schnittstellen des Programms zur Außenwelt klar zu definieren.
 
-\paragraph{Definieren einer Repräsentation für Lösungen}{}
-\paragraph{Analyse des Eingabeformats}{Eine wichtige Eingabeschnittstelle des Programms ist das Einlesen von Probleminstanzen über die Standardeingabe. Hier wurde das Parsing zweier verschiedener Quellformate implementiert. Einerseits das \texttt{.pcp}-Format, in welchem ein Großteil der Instanzen vorlagen, andererseits, das \texttt{.col}-Format.}
-\paragraph{Festlegung des Ausgabeformats}{Um die Ergebnisse der Berechnungen leicht auswerten zu können, wurde die Ausgabe aller Daten im JSON-Format beschlossen. }
-\paragraph{Wahl von Codebibliotheken, Compiler, etc.}{Bevor die Entwicklung des Programms tatsächlich beginnen konnte, wurde eine Codebibliothek gewählt, welche zusätzlich Zeit sparen und Fehlerquellen eindämmen würde. Weitere Details siehe \ref{sec:boost}}
-\paragraph{Implementierung einer Visualisierung}{Um die Arbeitsweise des Programms möglichst anschaulich darstellen zu können, wurde eine Visualisierung mit Ubigraph implementiert. Dies ermöglicht eine Überwachung der Arbeitsschritte einzelner Nachbarschaften, sodass auch Dritte Einsicht in den Ablauf gewinnen.}
+\subsubsection{Definieren einer Repräsentation für Lösungen}
+
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Lorenz Leutgeb & Moritz Wanzenböck & nein \\
+	Moritz Wanzenböck & & \\
+\end{tabular}
+\end{center}
+
+\subsubsection{Analyse des Eingabeformats}
+
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Lorenz Leutgeb & Lorenz Leutgeb & nein \\
+	Moritz Wanzenböck & & \\
+\end{tabular}
+\end{center}
+
+Eine wichtige Eingabeschnittstelle des Programms ist das Einlesen von Probleminstanzen über die Standardeingabe. Hier wurde das Parsing zweier verschiedener Quellformate implementiert. Einerseits das \texttt{.pcp}-Format, in welchem ein Großteil der Instanzen vorlagen, andererseits, das \texttt{.col}-Format.
+
+\subsubsection{Festlegung des Ausgabeformats}
+
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Lorenz Leutgeb & Lorenz Leutgeb & nein \\
+	Moritz Wanzenböck & & \\
+\end{tabular}
+\end{center}
+
+Um die Ergebnisse der Berechnungen leicht auswerten zu können, wurde die Ausgabe aller Daten im JSON-Format beschlossen.
+
+\subsubsection{Wahl von Codebibliotheken, Compiler, etc.}
+
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Lorenz Leutgeb & Moritz Wanzenböck & nein \\
+	Moritz Wanzenböck & & \\
+\end{tabular}
+\end{center}
+
+Bevor die Entwicklung des Programms tatsächlich beginnen konnte, wurde eine Codebibliothek gewählt, welche zusätzlich Zeit sparen und Fehlerquellen eindämmen würde. Weitere Details siehe \ref{sec:boost}
+
+\subsubsection{Implementierung einer Visualisierung}
+
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Lorenz Leutgeb & Lorenz Leutgeb & ja \\
+	Moritz Wanzenböck & & \\
+\end{tabular}
+\end{center}
+
+Um die Arbeitsweise des Programms möglichst anschaulich darstellen zu können, wurde eine Visualisierung mit Ubigraph implementiert. Dies ermöglicht eine Überwachung der Arbeitsschritte einzelner Nachbarschaften, sodass auch Dritte Einsicht in den Ablauf gewinnen.
 
 \subsection{Implementierung von Nachbarschaften}
 
-\paragraph{Implementierung von TabuSearch}{Als erstes wurde die Tabu-Suche implementiert, da eine ausführliche Beschreibung des Verfahrens vor lag.} %TODO referenz tabusuche
-\paragraph{Implementierung von ChangeColor}{} %TODO moritz?
-\paragraph{Implementierung von ChangeNode}{} %TODO moritz?
-\paragraph{Implementierung von DSATUR}{}
+\subsubsection{Implementierung von TabuSearch}
+
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Moritz Wanzenböck & Moritz Wanzenböck & nein \\
+\end{tabular}
+\end{center}
+
+Als erstes wurde die Tabu-Suche implementiert, da eine ausführliche Beschreibung des Verfahrens vor lag. %TODO referenz tabusuche
+
+\subsubsection{Implementierung von ChangeColor} %TODO moritz?
+
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Moritz Wanzenböck & Moritz Wanzenböck & nein \\
+\end{tabular}
+\end{center}
+
+\subsubsection{Implementierung von ChangeNode} %TODO moritz?
+
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Moritz Wanzenböck & Moritz Wanzenböck & nein \\
+\end{tabular}
+\end{center}
+
+\subsubsection{Implementierung von DSATUR}
+
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Lorenz Leutgeb & Lorenz Leutgeb & nein \\
+\end{tabular}
+\end{center}
 
 \subsection{Testen und Evaluierung}
 
-\paragraph{Implementieren einer Plausibilitätsprüfung}{Um sicher zu gehen, dass die von den Heuristiken berechneten Lösungen plausibel sind, also keine Konflikte oder unerwünschte Verbindungen enthalten, müssen diese überprüft werden. Da dies mit steigender Instanzgröße nicht von Hand möglich ist, wurde ein simpler Plausibilitätscheck implementiert.}
-\paragraph{Berechnung der Lösungen für Testinstanzen}{Um die Ergebnisse des in dieser Arbeit beschriebenen Ansatzes vergleichen zu können, wurden Testinstanzen herangezogen, welche als Richtwert dienen können.}
-\paragraph{Diskutieren von Verbesserungsvorschlägen}{Nach Abschluss des Projekts ist davon auszugehen, dass eine weitere Verbesserung der Ergebnisse möglich ist. In einer abschließenden Diskussion ging es darum, wie dieser Weg weiter verfolgt werden könnte.}
+\subsubsection{Implementieren einer Plausibilitätsprüfung}
 
-\section{Arbeitspakete}
-\label{sec:arbeitspakete}
-
-\begin{tabular}{cccc}
-	Name & Teilnehmer & Verantwortlich & Aufwand \\
-	\hline\hline\hline
-	Recherche & & & \\
-	\hline\hline
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Moritz Wanzenböck & Moritz Wanzenböck & nein \\
 \end{tabular}
+\end{center}
+
+Um sicher zu gehen, dass die von den Heuristiken berechneten Lösungen plausibel sind, also keine Konflikte oder unerwünschte Verbindungen enthalten, müssen diese überprüft werden. Da dies mit steigender Instanzgröße nicht von Hand möglich ist, wurde ein simpler Plausibilitätscheck implementiert.
+
+\subsubsection{Berechnung der Lösungen für Testinstanzen}
+
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Lorenz Leutgeb & Lorenz Leutgeb & ja \\
+\end{tabular}
+\end{center}
+
+Um die Ergebnisse des in dieser Arbeit beschriebenen Ansatzes vergleichen zu können, wurden Testinstanzen herangezogen, welche als Richtwert dienen können.
+
+\subsubsection{Diskutieren von Verbesserungsvorschlägen}
+
+\begin{center}
+\begin{tabular}{lll}
+	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
+	\hline
+	Lorenz Leutgeb & Lorenz Leutgeb & ja \\
+	Moritz Wanzenböck & & \\
+\end{tabular}
+\end{center}
+
+Nach Abschluss des Projekts ist davon auszugehen, dass eine weitere Verbesserung der Ergebnisse möglich ist. In einer abschließenden Diskussion ging es darum, wie dieser Weg weiter verfolgt werden könnte.
 
 \section{Risikoanalyse}
 \begin{table}
