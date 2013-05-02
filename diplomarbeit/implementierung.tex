@@ -1,17 +1,17 @@
 \chapter{Implementierung}
-Für die Implementierung des in Abschnitt~\ref{sec:ansatz} vorgeschlagenen Lösungsansatzes, wurde eine möglichst flexible Struktur des Programms verwendet. Wie in Abschnitt~\ref{sec:cpp} begründet, wurde
+Für die Implementierung des in Abschnitt \ref{sec:ansatz} vorgeschlagenen Lösungsansatzes wurde eine möglichst flexible Struktur des Programms verwendet. Wie in Abschnitt \ref{sec:cpp} begründet, wurde
 als Implementierungssprache C++ gewählt. Durch den Einsatz von C++ kann ein einfach erweiterbares Programmgerüst geschrieben werden, welches es erlaubt, schnell und ohne großen Aufwand mehrere Nachbarschaften
 für die VNS zu implementieren. 
 
-Um diese flexible Struktur zu ermöglichen wurde das Programm in vier unabhängige Bereiche aufgeteilt, welche durch eine einzelne Startroutine zusammengehalten werden. Diese Bereiche können grob als Parser, 
-Konstruktionsheuristik, Variable Nachbarschaftssuche, und Nachbarschaften zusammengefasst werden. Hinzu kommt die sogenannte Solution, eine eigene Klasse um eine Lösung sowohl zu speichern, aber auch um Möglichkeiten
-anzubieten, eine bestehende Lösung zu verändern. Diese einzelnen Bereiche sollen im folgenden Abschnitt ausführlich besprochen werden.
+Um diese flexible Struktur zu ermöglichen wurde das Programm in vier unabhängige Be\-rei\-che aufgeteilt, welche durch eine einzelne Startroutine zusammengehalten werden. Diese Be\-rei\-che können grob als Parser, 
+Konstruktionsheuristik, Variable Nachbarschaftssuche und Nachbarschaften zusammengefasst werden. Hinzu kommt die sogenannte Solution, eine eigene Klasse, um eine Lösung sowohl zu speichern, aber auch um Möglichkeiten
+anzubieten, eine bestehende Lösung zu verändern. Diese einzelnen Be\-rei\-che sollen im folgenden Abschnitt ausführlich besprochen werden.
 
 \section{Solution}
-Bei Solution handelt es sich um die Basisklasse für alle weiteren Operationen. Sie speichert sowohl den Graphen, von dem bei der Lösung ausgegangen wird, als auch die Lösung selbst, mit konkret verteilten Farben
-für einzelne Partitionen. Außerdem stellt Solution Methoden bereit, um Veränderungen an Lösungen vorzunehmen, wie sie etwa von den Nachbarschaften gebraucht werden, um einzelne Knoten umzufärben, oder zu ersetzen.
-Außerdem besitzt Solution mehrere Methoden, einen Konfliktgraphen aus einer Datei auszulesen, und diesen wiederum in einem Solution-Objekt zu speichern. Diese Methoden zum Einlesen von Dateien werden genauer 
-in Abschnitt~\ref{sec:parser} besprochen.
+Bei Solution handelt es sich um die Basisklasse für alle weiteren Operationen. Sie speichert sowohl den Graphen, von dem bei der Lösung ausgegangen wird, als auch die Lösung selbst mit den für die Partition gewählten Knoten und den konkret verteilten Farben
+für diese Knoten. Außerdem stellt Solution Methoden bereit, um Veränderungen an Lösungen vorzunehmen, wie sie etwa von den Nachbarschaften gebraucht werden, um einzelne Knoten umzufärben oder innerhalb einer Partition auszutauschen.
+Außerdem besitzt Solution mehrere Methoden, einen Problemgraphen aus einer Datei einzulesen und diesen wiederum in einem Solution-Objekt zu speichern. Diese Methoden zum Einlesen von Dateien werden genauer 
+in Abschnitt \ref{sec:parser} besprochen.
 
 \singlespacing
 \begin{lstlisting}[caption={Ein Ausschnitt aus der Signatur der Solutionklasse},label=lst:solution]
@@ -34,48 +34,48 @@ class Solution {
 \setstretch{1.5}
 
 Gespeichert wird eine Referenz auf den Lösungsgraphen. Dieser Graph enthält ausschließlich jene Knoten, welche als Repräsentanten für ihre Partition
-ausgewählt wurden. Der Graph muss daher verändert werden, wenn eine Partition ihren Repräsentanten wechselt. Des weiteren wird die Anzahl an Partitionen
-gespeichert, so wie die Anzahl an verwendeten Farben für eine bestimmte Lösung. 
+ausgewählt wurden. Der Graph muss daher verändert werden, wenn eine Partition ihren Repräsentanten wechselt. Desweiteren wird die Anzahl an Partitionen
+gespeichert sowie die Anzahl an verwendeten Farben für die konkrete Lösung. 
 
 Im \texttt{partition}-Array werden für jede Partition genau eine ausgewählte Farbe gespeichert, wobei sich diese Farben natürlich von Lösung zu Lösung 
 unterscheiden können, als Index dient die Partitions-ID. Das Array \texttt{representatives} bietet eine Zuordnung von Partition zu Knoten. Ein Wert 
 an der Position $n$ zeigt auf jenen Knoten, der die Partition $n$ vertritt.
 
-Einen Sonderfall stellt das Vector-Array \texttt{partNodes} dar. Es wird ausschließlich bei der eingelesenen Probleminstanz eingesetzt, und speichert
-dort für jede Partition alle zugeordneten Knoten ab. Dies dient der schnellen Findung von alternativen Knoten für eine bestimmte Partition, und findet
+Einen Sonderfall stellt das Vector-Array \texttt{partNodes} dar. Es wird ausschließlich bei der eingelesenen Probleminstanz eingesetzt und speichert
+dort für jede Partition alle zugeordneten Knoten ab. Dies dient der schnellen Findung von alternativen Knoten für eine bestimmte Partition und findet
 in mehreren Nachbarschaften Verwendung. 
 
 \subsection{Graph-Datenstruktur}
-Für die Speicherung von sowohl Lösungs- als auch Konfliktgraphen dient die \texttt{adjacency\_list}-Datenstruktur, welche von Boost bereitgestellt wird. Der Einsatz von Boost wird in Abschnitt~\ref{sec:boost} 
-beschrieben. Es wurde bewusst eine Liste als Grundlage der Speicherung verwendet, um ein schnelles Iterieren über Knoten und Kanten zu ermöglichen. Die ebenfalls von Boost bereitgestellte 
-\texttt{adjacency\_matrix} hatte sich in einem Test als ungeeignet erwiesen, da nicht alle Operationen, wie das hinzufügen und löschen von Knoten unterstützt werden. Des Weiteren wurde die Option für 
+Für die Speicherung von sowohl Lösungs- als auch Problemgraphen dient die \texttt{adjacency\_list}-Datenstruktur, welche von Boost bereitgestellt wird. Der Einsatz von Boost, einer C++ Bibliothek, wird in Abschnitt \ref{sec:boost} 
+beschrieben. Es wurde bewusst eine Liste als Grundlage der Speicherung verwendet, um ein schnelles Iterieren über Knoten und Kanten zu ermöglichen. Die ebenfalls von Boost be\-reit\-ge\-stel\-lte 
+\texttt{adjacency\_matrix} (zwei Knoten sind adjazent, wenn sie über eine Kante miteinander verbunden sind) hatte sich in einem Test als ungeeignet erwiesen, da nicht alle Operationen wie das Hinzufügen und Löschen von Knoten unterstützt werden. Des Weiteren wurde die Option für 
 ungerichtete Graphen gesetzt, da das PCP keine gerichteten Beziehungen zwischen Knoten vorsieht. Dies führt dazu, dass, sobald eine Kante vom Knoten \textit{A} zu Knoten \textit{B} führt, automatisch auch
 eine Beziehung von Knoten \textit{B} zu Knoten \textit{A} führt.
 
-Boost bietet außerdem die Wahl zwischen verschiedenen Datenstrukturen für die Speicherung des Graphobjektes. Selbst wenn die Auswahl auf eine Liste gefallen ist, gibt es noch mehrere Möglichkeiten die Datenstruktur
-zu beeinflussen. Zum einen kann bei der Speicherung der Knoten sowohl eine normale Liste, als auch ein Vector, ausgewählt werden. Die selbe Möglichkeit präsentiert sich dann auch für die Speicherung der Kanten.
+Boost bietet außerdem die Wahl zwischen verschiedenen Datenstrukturen für die Speicherung des Graphobjektes. Selbst wenn die Auswahl auf eine Liste gefallen ist, gibt es noch mehrere Möglichkeiten, die Datenstruktur
+zu beeinflussen. Zum einen kann bei der Speicherung der Knoten sowohl eine normale Liste als auch ein Vector ausgewählt werden. Die selbe Möglichkeit präsentiert sich dann auch für die Speicherung der Kanten.
 Ein Vector ist eine Datenstruktur ähnlich einem Array, bei dem alle Datenelemente im Speicher hintereinander angeordnet sind, welche aber vergrößert oder verkleinert werden kann.
 
 Für die Speicherung der Knoten wurde ein Vector herangezogen, zum einen, da nun ein Knoten direkt über einen zahlenbasierten Index ansprechbar ist, zum Anderen, weil während der Laufzeit des Programms nur
-zwei Mal Knoten hinzugefügt oder entfernt werden. Einmal beim Einlesen der Probleminstanz aus einer Datei, und einmal bei der Berechnung der Ausgangslösung. Bei allen anderen Veränderungen der Lösung erfolgt
-der Austausch von Knoten direkt an der Stelle des zu ersetzenden Knoten. Es ist daher anzunehmen das während der Laufzeit des Programms keine größeren Reallokationsoperationen vorgenommen werden müssen.
+zwei Mal Knoten hinzugefügt oder entfernt werden: Einmal beim Einlesen der Probleminstanz aus einer Datei, und einmal bei der Berechnung der Ausgangslösung. Bei allen anderen Veränderungen der Lösung erfolgt
+der Austausch von Knoten direkt an der Stelle des zu ersetzenden Knoten. Es ist daher anzunehmen, dass während der Laufzeit des Programms keine größeren Reallokationsoperationen vorgenommen werden müssen.
 
-Schwieriger ist die Wahl schon bei der Frage, ob für die Speicherung der Kanten eine Liste nicht besser geeignet wäre. Da in verschiedenen, weiter unten beschriebenen, Nachbarschaften Knoten ausgetauscht werden,
-ein Vorgang der darauf basiert, die alten Adjazenzen eines Knotens zu kappen, und an deren Stelle neue Adjazenzen zu schaffen, welche dem ausgetauschten Knoten entsprechen, handelt es sich bei der Kantenspeicherung
-um eine Datenstruktur die häufigen Änderungen unterliegt. Da die meisten Knoten aber eine ähnliche Anzahl an Adjazenzen haben, würde auch hier ein Vektor keine allzu häufigen Reallokationen durchführen müssen.
-In einem Test ergab sich unter Verwendung eines Vectors als Speicherstruktur für die Adjazenzinformationen ein bis zu 20\% höhere Geschwindigkeit im Vergleich zur Verwendung einer Liste. Dies ist wohl vor allem
+Schwieriger ist die Wahl schon bei der Frage, ob für die Speicherung der Kanten eine Liste nicht besser geeignet wäre. Da in verschiedenen, weiter unten beschriebenen Nachbarschaften Knoten ausgetauscht werden,
+ein Vorgang der darauf basiert, die alten Adjazenzen eines Knotens zu kappen und an deren Stelle neue Adjazenzen zu schaffen, welche dem ausgetauschten Knoten entsprechen, handelt es sich bei der Kantenspeicherung
+um eine Datenstruktur, die häufigen Änderungen unterliegt. Da die meisten Knoten aber eine ähnliche Anzahl an Adjazenzen haben, würde auch hier ein Vektor keine allzu häufigen Reallokationen durchführen müssen.
+In einem Test ergab sich unter Verwendung eines Vectors als Speicherstruktur für die Adjazenzinformationen eine bis zu 20\% höhere Geschwindigkeit im Vergleich zur Verwendung einer Liste. Dies ist wohl vor allem
 auf die höhere Datenlokalität zurückzuführen, durch die der Prozessor bereits ganze Speicherbereiche in den Cache laden kann, wenn über die Adjazenzen iteriert wird.
 
 \subsection{Kopierkonstruktor}
 \label{sec:copy}
 
 Besonders interessant bei der Solution-Klasse ist die automatisch bereitgestellte Kopiermechanik. Einer der besonderen Eigenschaften von C++ ist es, für jede Klasse automatisch einen sogenannten Kopierkonstruktor
-bereitzustellen, welcher als Parameter ein Objekt des selben Types entgegen nimmt, und dieses kopiert. Da im Falle einer Lösung aber nicht immer alle Daten kopiert werden müssen, wurde in dieser Arbeit eine
-eigene Kopiermechanik implementiert. Wie in Listing~\ref{lst:copy} zu sehen ist, wird ein Großteil der Referenzdatentypen direkt übernommen, da diese häufig gar nicht verändert werden. 
+bereitzustellen, welcher als Parameter ein Objekt des selben Typs entgegen nimmt und dieses kopiert. Da im Falle einer Lösung aber nicht immer alle Daten kopiert werden müssen, wurde in dieser Arbeit eine
+eigene Kopiermechanik implementiert. Wie in Listing \ref{lst:copy} zu sehen ist wird ein Großteil der Referenzdatentypen direkt übernommen, da diese häufig gar nicht verändert werden. 
 
-Das Kopieren einer Lösung kommt vor Allem bei den verschieden Nachbarschaften zum Einsatz. Eine bestehende Lösung soll verändert werden, ohne, dass die Information der Ausgangslösung verloren geht. Also wird
+Das Kopieren einer Lösung kommt vor Allem bei den verschieden Nachbarschaften zum Einsatz. Eine bestehende Lösung soll verändert werden, ohne dass die Information der Ausgangslösung verloren geht. Also wird
 die bestehende Lösung kopiert, und die Veränderungen nur auf der neuen Lösung ausgeführt. Da viele der Nachbarschaften darauf basieren, dass ausschließlich die Lösungsfarben verändert werden, kann zum Beispiel, 
-anstatt den gesamten Graphen zu kopieren, eine Referenz auf den alten Graphen aufrecht erhalten werden. Selbiges gilt natürlich auch für alle direkt mit dem Graph in Verbindung stehenden Daten speichern. 
+anstatt den gesamten Graphen zu kopieren, eine Referenz auf den alten Graphen aufrecht erhalten werden. Selbiges gilt natürlich auch für alle direkt mit dem Graph in Verbindung stehenden gespeicherten Daten.
 
 \singlespacing
 \begin{lstlisting}[caption={Der Kopierkonstruktor der Solutionklasse},label={lst:copy}]
@@ -101,13 +101,13 @@ Solution::Solution(Solution *toCopy) {
 \end{lstlisting}
 \setstretch{1.5}
 
-Nun könnten aber Probleme entstehen. Zum einen, wenn eine Nachbarschaft beispielsweise Knoten aus dem zu Grunde liegenden Graphen austauscht, um eine bessere Lösung zu erhalten. Da durch das unechte Kopieren
-der in einem Solutionobjekt referenzierte Graph auch bei anderen Lösungen zum Einsatz kommt, würde eine Veränderung auf einem Graphen, zu Veränderungen und aller Wahrscheinlichkeit nach zu Fehlern in alternativen
+Nun könnten aber Probleme entstehen. Zum einen, wenn eine Nachbarschaft beispielsweise Knoten aus dem zu Grunde liegenden Graphen austauscht um eine bessere Lösung zu erhalten. Da durch das unechte Kopieren
+der in einem Solutionobjekt referenzierte Graph auch bei anderen Lösungen zum Einsatz kommt, würde eine Veränderung auf einem Graphen zu Veränderungen und aller Wahrscheinlichkeit nach zu Fehlern in alternativen
 Lösungen führen, welche dann unweigerlich unzulässige Ergebnisse zur Folge hätten. Daher kann mit der Methode \texttt{requestDeepCopy} eine vollständige Kopie des Solutionobjektes angefordert werden. In dieser
-Methode werden dann alle verbleibenden Fremdreferenzen noch einmal kopiert, und in eigens für das anfragende Solutionobjekt reservierte Speicherbereiche geschrieben.
+Methode werden dann alle verbleibenden Fremdreferenzen noch einmal kopiert und in eigens für das anfragende Solutionobjekt reservierte Speicherbereiche geschrieben.
 
 \singlespacing
-\begin{lstlisting}[caption={Die Methode \texttt{requestDeepCopy} of the Solution class},label={lst:deepcopy}]
+\begin{lstlisting}[caption={Die Methode \texttt{requestDeepCopy} der Solution Klasse},label={lst:deepcopy}]
 // Cut ties between a copy and the underlying graph by 
 // making a copy of the graph
 void Solution::requestDeepCopy() {
@@ -139,9 +139,9 @@ void Solution::requestDeepCopy() {
 \setstretch{1.5}
 
 Ein anderes Problem entsteht beim Aufräumen von Objekten. Sollte durch das Löschen eines Solutionobjektes auch dessen referenzierter Graph verschwinden, würde das zu Speicherfehlern bei anderen Objekten führen, 
-welche auf den selben Graphen zeigen. Daher wurde der Destruktor, welcher zum Aufräumen eines Objektes aufgerufen wird, überschrieben, und löscht nun nur noch referenzierte Objekte, wenn kein anderes Objekt
+welche auf den selben Graphen zeigen. Daher wurde der Destruktor, welcher zum Aufräumen eines Objektes aufgerufen wird, überschrieben und löscht nun nur noch referenzierte Objekte, wenn kein anderes Objekt
 mehr Referenzen auf das selbe Objekt hält. Um dies zu ermöglichen wird von allen Solutionobjekten, welche auf den selben Graphen referenzieren ein Counter referenziert, welcher die Anzahl der
-Verweise auf den selben Graphen mitzählt. So lange dieser Zähler über eins ist, wird kein Objekt gelöscht. Wird nun der Destruktor eines Solutionobjektes aufgerufen, überprüft dieser, ob er die letzte
+Verweise auf den selben Graphen mitzählt. So lange dieser Zähler über eins ist wird kein Objekt gelöscht. Wird nun der Destruktor eines Solutionobjektes aufgerufen, überprüft dieser, ob er die letzte
 Referenz auf diese Objekte hält. Wenn ja, löscht er diese und seine eigenen Referenzen, wenn nicht, löscht er wiederum nur seine eigenen Referenzen und vermindert den Zähler um eins.
 
 \singlespacing
@@ -163,14 +163,14 @@ Solution::~Solution() {
 \setstretch{1.5}
 
 \subsection{StoredSolution}
-Um eine einzelne Lösung von einer anderen zu unterscheiden, sind zwei Informationen notwendig: die Auswahl der Repräsentanten, und die Auswahl 
-an Farben. Mit diesen beiden Informationen, und dem Ausgangsgraphen, aus dem die Lösung berechnet wurde, ist eine Lösung eindeutig rekonstruierbar.
-Um zu verhindern, dass die VNS-Schleife immer wieder auf die selben Lösungen kommt, ohne echte Verbesserungen zu erzielen, werden alle neuen, verbesserten
+Um eine einzelne Lösung von einer anderen zu unterscheiden sind zwei Informationen notwendig: die Auswahl der Repräsentanten und die Auswahl 
+an Farben. Mit diesen beiden Informationen und dem Ausgangsgraphen, aus dem die Lösung berechnet wurde, ist eine Lösung eindeutig rekonstruierbar.
+Um zu verhindern, dass die VNS-Schleife immer wieder auf die selben Lösungen kommt ohne echte Verbesserungen zu erzielen, werden alle neuen, verbesserten
 Lösungen komprimiert gespeichert. 
 
 Zur komprimierten Speicherung wurde eine eigene Datenstruktur definiert, welche eben nur jene oben erwähnten Informationen abspeichert. 
 Dazu werden zwei Arrays verwendet, welche einerseits die für einzelne Partitionen verwendeten Farben, andererseits aber auch die 
-eindeutige Identifikationsnummern der Repräsentanten abspeichern. Um eine Solution einfach in solch eine StoredSolution umzuwandeln, wurde
+eindeutige Identifikationsnummern der Repräsentanten abspeichern. Um eine Solution einfach in solch eine StoredSolution umzuwandeln wurde
 ein Konstruktor definiert, welcher ein klassisches Solutionobjekt übernimmt. 
 
 \singlespacing
@@ -189,29 +189,29 @@ struct StoredSolution {
 \end{lstlisting}
 \setstretch{1.5}
 
-Für den schnelle Zuordnung einer neuen Lösung zu den bestehenden Lösungen wird eine Hashtable-Datenstruktur verwendet. Durch die Verwendung einer
+Für die schnelle Zuordnung einer neuen Lösung zu den bestehenden Lösungen wird eine Hashtable-Datenstruktur verwendet. Durch die Verwendung einer
 Hashtable ist eine quasi sofortige Zuordnung einer Lösung zu dem entsprechenden Platz in der Hashtable möglich. Sollte eine Lösung schon einmal 
-aufgekommen sein, wird dieser Lösungsstrang verworfen, da er nicht zu neuen Lösungen führen würde. Die Implementierung der Hashtable wird von 
-Boost, beschrieben im Abschnitt~\ref{sec:boost}, bereitgestellt. Um die Hashtable zu betreiben sind außerdem noch eine Methode zur Hashberechnung,
+aufgekommen sein, so wird dieser Lösungsstrang verworfen, da er nicht zu neuen Lösungen führen würde. Die Implementierung der Hashtable wird von 
+Boost, beschrieben im Abschnitt \ref{sec:boost}, bereitgestellt. Um die Hashtable zu betreiben sind außerdem noch eine Methode zur Hashberechnung
 sowie eine Methode zum Vergleich zweier gespeicherten Solutions notwendig. Der Hash für ein StoredSolutionobjekt wird aus den gesammelten Werten
-der beiden internen Arrays berechnet, während für die Vergleichsmethode die beiden Arrays Wert für Wert verglichen werden. Die von Boost 
-bereitgestellte Hashtable verwendet bei gleichen Hashwerten aber unterschiedlichen Lösungen eine einfache Liste, um die Ergebnisse zu speichern.
+der beiden internen Arrays (Repräsentanten und Farben) berechnet, während für die Vergleichsmethode die beiden Arrays Wert für Wert verglichen werden. Die von Boost 
+bereitgestellte Hashtable verwendet bei gleichen Hashwerten für unterschiedliche Lösungen eine einfache Liste, um die Ergebnisse zu speichern.
 
-\subsection{Plausibilitätsprüfung}
+\subsection{Plausibilitätsprüfung zu Testzwecken}
 \label{sec:plausibility}
 Um eine manuelle Überprüfung der Korrektheit einer Lösung zu umgehen, wird innerhalb der VNS, siehe Abschnitt~\ref{sec:impl:vns}, eine Plausibilitätsprüfung durchgeführt. Diese Überprüfung stellt an Hand 
-der innerhalb einer Solution gespeicherten Eigenschaften, und an Hand des ursprünglichen Konfliktgraphen fest, ob es sich um eine valide Lösung handelt oder nicht. Diese Überprüfung erfolgt standardmäßig
-am Ende der VNS, und überprüft das beste erzielte Ergebnis, welches dann auch als Endergebnis präsentiert wird. Mit Hilfe eines Programmparameters, welcher zu Ausführungsstart angegeben werden muss, ist es
-auch möglich eine solche Überprüfung für jede Lösung einzuschalten, welche eine Verbesserung zur vorherigen darstellt. 
+der innerhalb einer Solution gespeicherten Eigenschaften und an Hand des ursprünglichen Problemgraphen fest, ob es sich um eine valide Lösung handelt oder nicht. Diese Überprüfung erfolgt standardmäßig
+am Ende der VNS und überprüft das beste erzielte Ergebnis, welches dann auch als Endergebnis präsentiert wird. Mit Hilfe eines Programmparameters, welcher zum Ausführungsstart angegeben werden muss, ist es
+auch möglich, eine solche Überprüfung für jede Lösung einzuschalten, welche eine Verbesserung zur vorherigen darstellt. 
 
 Innerhalb dieses Checks werden verschiedenste Dinge überprüft. Zum einen wird getestet, ob zwei verbundenen Knoten die selbe Farbe zugeteilt wurde. Dann wird überprüft, ob die gespeicherte Anzahl an Farben
-mit der tatsächlich verwendeten Farben übereinstimmt. Dies ist besonders wichtig, da ja die Anzahl an Farben das Hauptkriterium für eine bessere Lösung darstellt. Dann wird überprüft, ob alle Partition
-vertreten sind, und ob die jeweiligen Repräsentanten richtig abgespeichert wurden. 
+mit den tatsächlich verwendeten Farben übereinstimmt. Dies ist besonders wichtig, da ja die Anzahl an Farben das Hauptkriterium für eine bessere Lösung darstellt. Weiters wird überprüft, ob alle Partition
+vertreten sind und ob die jeweiligen Repräsentanten richtig abgespeichert wurden. 
 
 Zuletzt wird noch überprüft, ob der Lösungsgraph mit dem Ursprungsgraphen übereinstimmt. Dazu werden verschiedene Fakten überprüft. Zum einen werden fehlende oder überschüssige Kanten in der Lösung gesucht, 
 zum anderen wird überprüft, ob die ausgewählten Repräsentanten einer Partition wirklich zu dieser Partition zugehörig sind. 
 
-Sollte keine dieser Überprüfungen auf Fehler stoßen, wird angenommen, es handle sich um eine valide Lösung für das PCP\@. Durch diese Überprüfung konnten auch schon Fehler innerhalb einzelne Nachbarschaften 
+Sollte keine dieser Überprüfungen auf Fehler stoßen, wird angenommen, es handle sich um eine valide Lösung für das PCP. Durch diese Überprüfung konnten auch schon Fehler innerhalb einzelne Nachbarschaften 
 nachgewiesen und schließlich behoben werden.
 
 
@@ -224,14 +224,14 @@ zu einer Verbesserung der Lösung führen kann. Durch immer wieder gleiche Einga
 parametrisierten Programminstanzen angestellt werden.
 
 Es gibt mehrere Dateiformate, mit denen Probleminstanzen des PCP abgespeichert werden können. In dieser Arbeit wurde vor Allem auf jenes
-Format Wert gelegt, in dem auch die meisten Testinstanzen der einschlägigen Literatur vorliegen. Allerdings wurde im Zuge von ausgeweiteten 
-Testungen auch ein zweites Format zum einlesen eines Konfliktgraphen implementiert. 
+Format Wert gelegt, in dem auch die meisten Testinstanzen der einschlägigen Literatur vorliegen. Allerdings wurde im Zuge von aus\-ge\-wei\-te\-ten 
+Testungen auch ein zweites Format zum Einlesen eines Problemgraphen implementiert. 
 
 Eine \texttt{.pcp}-Datei ist eine einfache Textdatei, welche allerdings nach einer bestimmten Struktur aufgebaut ist. Die aller erste Zeile
 einer solchen Datei besteht aus 3 Zahlen, welche jeweils durch ein Leerzeichen getrennt sind. Diese 3 Zahlen stehen für die Anzahl der Knoten, 
-die Anzahl der Kanten, und die Anzahl der Partition im Konfliktgraph, genau in jener Reihenfolge. Nun folgen \textit{n} Zeilen an Zahlen, mit 
-genau einer Zahl pro Zeile, wobei \textit{n} die Anzahl an Knoten ist. Diese Zahlen stehen für die Partitionen, denen die Knoten zugeordnet werden.
-Die erste Zeile beinhaltet also die Partition des ersten Knotens, die zweite Zeile die des zweiten Knotens und so weiter. Zuletzt folgen noch
+die Anzahl der Kanten und die Anzahl der Partition im Problemgraph, genau in dieser Reihenfolge. Nun folgen \textit{n} Zeilen an Zahlen, mit 
+genau einer Zahl pro Zeile, wobei \textit{n} die Anzahl an Knoten ist. Diese Zahlen stehen für die Partitionen, denen die jweiligen Knoten zugeordnet werden.
+Die erste Zeile dieses Abschnitts beinhaltet also die Partition des ersten Knotens, die zweite Zeile die des zweiten Knotens und so weiter. Zuletzt folgen noch
 \textit{m} Zeilen mit jeweils einem Zahlenpaar, welche die Kanten zwischen den Knoten definieren, wobei \textit{m} der Anzahl an Kanten insgesamt
 entspricht.
 
@@ -250,20 +250,20 @@ entspricht.
 \end{lstlisting}
 \setstretch{1.5}
 
-Der Parser, welcher eine solche Datei einliest, ist in die Klasse Solution eingearbeitet. Die statische Methode \texttt{fromPcpStream} ließt eine
-Datei von einem Eingabestream ein, und wandelt sie in ein Solutionobjekt mit entsprechendem Konfliktgraphen um. Dieses Solutiobjekt wird während
-der gesamten Laufzeit des Programmes nicht verändert oder gelöscht, und dient als Ausgangspunkt der Konstruktionsheuristik, aber auch als
-Referenz für Nachbarschaften, welche einzelne Knoten austauschen. Außerdem speichert diese Solutionobjekt als einziges eine direkte Zuordnung von einer Partitions-ID
+Der Parser, welcher eine solche Datei einliest, ist in die Klasse Solution eingearbeitet. Die statische Methode \texttt{fromPcpStream} liest eine
+Datei von einem Eingabestream ein und wandelt sie in ein Solutionobjekt mit entsprechendem Problemgraphen um. Dieses Solutionbjekt wird während
+der gesamten Laufzeit des Programmes nicht verändert oder gelöscht und dient als Ausgangspunkt der Konstruktionsheuristik, aber auch als
+Referenz für Nachbarschaften, welche einzelne Knoten austauschen. Außerdem speichert dieses Solutionobjekt als einziges eine direkte Zuordnung von einer Partitions-ID
 zu den verfügbaren Knoten in der Partition ab. 
 
 \section{Konstruktionsheuristik}
-Als Konstruktionsheuristik wurde der in Abschnitt~\ref{sec:onestep} Algorithmus OneStep-CD gewählt. Die verwendete Implementierung des Algorithmus
-erzeugt ein neues Solutionobjekt, als einziger Übergabeparameter ist das aus der Datei eingelesen Solutionobjekt, welches ja den vollständigen Konfliktgraphen
+Als Konstruktionsheuristik wurde der in Abschnitt \ref{sec:construct} vorgestellte Algorithmus OneStep-CD gewählt. Die verwendete Implementierung des Algorithmus
+erzeugt ein neues Solutionobjekt, als einziger Übergabeparameter wird das aus der Datei eingelesene Solutionobjekt benötigt, welches ja den vollständigen Problemgraphen
 enthält. Dieses Solutionobjekt bildet dann die Ausgangsbasis für die Verbesserung in der Variablen Nachbarschaftssuche. Der Graph, welcher in dem erzeugten Solutionobjekt
-referenziert wird, ist ein anderer Graph als in der Gesamtlösung verwendet wird. In dem referenzierten Graphen befinden sich nur mehr ein Knoten per Partition, welcher auch den ausgewählten Repräsentanten der jeweiligen Partition darstellt.
+referenziert wird, ist ein anderer Graph als jener, der in der Gesamtlösung verwendet wird. In dem referenzierten Graphen befindet sich nur mehr ein Knoten per Partition, welcher auch den ausgewählten Repräsentanten der jeweiligen Partition darstellt.
 
 \subsection{PILOT}
-Alternativ zu \texttt{onestepCD} wurde auch eine PILOT-inspirierte Variante der Heuristik implementiert. Zuerst werden hier wieder Kanten zwischen Knoten der selben Partition entfertn, um dann schrittweise rekursiv eine Lösung zu berechnen. Im Unterschied zu \texttt{onestepCD} werden allerdings Knoten nicht trivial gewählt, sondern eine Menge an Knoten gesucht, für die dann eine Lösung durchberechnet wird. So können auch andere, womöglich bessere Lösungen, gefunden werden.
+Alternativ zu \texttt{onestepCD} wurde auch eine PILOT-inspirierte Variante der Heuristik implementiert. Zuerst werden hier wieder Kanten zwischen Knoten der selben Partition entfernt, um dann schrittweise rekursiv eine Lösung zu berechnen. Im Unterschied zu \texttt{onestepCD} werden allerdings Knoten nicht trivial gewählt sondern eine Menge an Knoten gesucht, für die dann eine Lösung durchberechnet wird. So können auch andere, womöglich bessere Lösungen, gefunden werden.
 
 Wie \texttt{onestepCD} operiert auch \texttt{pilot} auf einem Solutionobjekt, dass dann nahtlos an die VNS weiteregereicht werden kann.
 
@@ -271,20 +271,19 @@ Wie \texttt{onestepCD} operiert auch \texttt{pilot} auf einem Solutionobjekt, da
 \label{sec:impl:vns}
 
 Die Variable Nachbarschaftssuche, wie sie in Abschnitt~\ref{sec:vns} beschrieben wurde, wurde als eine einzelne Funktion implementiert, welche den Ablauf der Nachbarschaften steuert. Um den Ablauf des Programmes
-möglichst einfach steuern zu können ist eine Vielzahl an Optionen am Programmstart spezifizierbar. Vieler dieser Optionen beeinfluss direkt oder indirekt den Ablauf der VNS\@. 
+möglichst einfach koordinieren zu können ist eine Vielzahl an Optionen beim Programmstart spezifizierbar. Vieler dieser Optionen beeinfluss direkt oder indirekt den Ablauf der VNS. 
 
 Die wichtigsten Parameter der Methode \texttt{vnsRun}, deren Signatur in Listing~\ref{lst:vns} zu sehen ist, sind die Übergabe der derzeit besten Lösung \texttt{best}, welche von der Konstruktionsheuristik erzeugt wurde, und
 die Übergabe der vollständigen, unveränderten Probleminstanz \texttt{orig}. Auch von essentieller Bedeutung ist der String \texttt{units}, welcher eine Zeichenkette enthält, der die Reihenfolge der verwendeten Nachbarschaften bestimmt. 
 
-Die nächsten Parameter bestimmen vor allem die Ausführungszeit der VNS\@. Der übergebene Parameter \texttt{unsuccessfulShake} bestimmt die maximale Anzahl an Schüttelvorgängen welche ohne Verbesserungen ablaufen werden, bevor die VNS beendet wird.
-Der Parameter \texttt{shakeStart} bestimmt die initiale Stärke des ersten Schüttelvorganges, und steht damit direkt im Zusammenhang mit der Stärke der Randomisation welche von diesen Schüttelvorgängen ausgeführt wird.
-Mit Hilfe des Parameters \texttt{shakeIncrement} wird bestimmt wie schnell der Stärkeparameter des Schüttelvorgangs ansteigt, sollten keine Verbesserung durch das Schütteln entstehen.
-Schließlich kann mit dem Parameter \texttt{maxTime} direkt maximale Anzahl an Sekunden angegeben werden, die die VNS läuft, bevor sie sich selbst beendet. 
+Die nächsten Parameter bestimmen vor allem die Ausführungszeit der VNS. Der übergebene Parameter \texttt{unsuccessfulShake} bestimmt die maximale Anzahl an Schüttelvorgängen, welche ohne Verbesserungen ablaufen dürfen, bevor die VNS beendet wird.
+Der Parameter \texttt{shakeStart} bestimmt die initiale Stärke des ersten Schüttelvorganges und steht damit direkt im Zusammenhang mit der Stärke der Randomisation, welche von diesen Schüttelvorgängen ausgeführt wird.
+Mit Hilfe des Parameters \texttt{shakeIncrement} wird bestimmt, wie schnell der Stär\-ke\-para\-me\-ter des Schüttelvorgangs ansteigt, sollten keine Verbesserung durch das Schütteln entstehen.
+Schließlich kann mit dem Parameter \texttt{maxTime} direkt die maximale Anzahl an Sekunden angegeben werden, die die VNS läuft, bevor sie sich selbst beendet. 
 
-Die letzten beiden Parameter dienen der Einstellung ob alle verbesserten Zwischenlösungen (\texttt{checkIntermediate}) oder die endgültige Lösung (\texttt{checkFinal}) durch die Plausibilitätsprüfung überprüft werden sollen.
-Da die Überprüfung durchaus aufwendig ist, und daher etwas Zeit in Anspruch nimmt, ist es meist eine gute Lösung, nur die endgültige Lösung überprüfen zu lassen, außer man will eine einzelne Nachbarschaft
-auf Fehler testen. Die Plausibilitätsprüfung selber ist in Abschnitt~\ref{sec:plausibility} beschrieben, und testet auf verschiedenste Gegebenheiten um zu einem Ergebnis zu kommen.
-
+Die letzten beiden Parameter dienen der Einstellung, ob alle verbesserten Zwischenlösungen (\texttt{checkIntermediate}) oder die endgültige Lösung (\texttt{checkFinal}) durch die Plausibilitätsprüfung überprüft werden sollen.
+Da die Überprüfung durchaus aufwendig ist und daher etwas Zeit in Anspruch nimmt, ist es meist eine gute Lösung, nur die endgültige Lösung überprüfen zu lassen, außer man will eine einzelne Nachbarschaft
+auf Fehler hin testen. Die Plausibilitätsprüfung selber ist in Abschnitt~\ref{sec:plausibility} beschrieben und testet verschiedenste Informationen, um die Korrektheit einer Lösung zu garantieren.
 \singlespacing
 \begin{lstlisting}[caption={Signatur der Funktion, welche die Variable Nachbarschaftssuche ausführt und steuert},label={lst:vns}]
    /// Run the VNS with a maximum of k iterations.
@@ -300,18 +299,18 @@ auf Fehler testen. Die Plausibilitätsprüfung selber ist in Abschnitt~\ref{sec:
 \setstretch{1.5}
 
 \section{Nachbarschaften}
-Die Nachbarschaften bilden das Herzstück der VNS\@. Eine einzelne Nachbarschaft versucht kleine Veränderungen vorzunehmen, welche die Lösung verbessern, und gibt diese Verbesserungen dann an weitere Nachbarschaften weiter.
-Jede Nachbarschaft verfolgt ihren eigenen Ansatz zur Verbesserung, und muss nicht immer bessere Ergebnisse liefern. 
+Die Nachbarschaften bilden das Herzstück der VNS. Eine einzelne Nachbarschaft versucht kleine Veränderungen vorzunehmen, welche die Lösung verbessern und gibt diese Verbesserungen dann an weitere Nachbarschaften weiter.
+Jede Nachbarschaft verfolgt ihren eigenen Ansatz zur Verbesserung und muss nicht immer bessere Ergebnisse liefern. 
 
 Bei der Implementierung der Nachbarschaften wurde versucht, ein möglichst einfach erweiterbares Gerüst zu schaffen, um schnell und einfach neue Ideen für Nachbarschaften ausprobieren zu können. Jede Nachbarschaft
 wurde daher als eigene Klasse implementiert, welche aber alle von einer einzelnen Basisklasse erben. Diese Basisklasse definiert ein Grundgerüst, welches von jeder Nachbarschaft ausgefüllt werden muss. 
 
-Zu diesem Grundgerüst zählt nicht nur die Implementierung der eigentlichen Nachbarschaft, sondern auch eine Funktion um den Namen der Nachbarschaft auszugeben, ein Funktion um ein Kurzzeichen für die Nachbarschaft
-zu definieren, und eine Funktion um eine bestehende Lösung zu schütteln, wie in Abschnitt~\ref{sec:vns} beschrieben. Jede dieser Funktionen muss für eine Nachbarschaft implementiert werden, und jede Nachbarschaft
-sollte nur gültige Lösungen zurückliefern, oder zumindet einen Indikator liefern, dass die zurückgelieferte Lösung ein unbrauchbares Ergebnis darstellt.
+Zu diesem Grundgerüst zählt nicht nur die Implementierung der eigentlichen Nachbarschaft, sondern auch eine Funktion, um den Namen der Nachbarschaft auszugeben, eine Funktion, um ein Kurzzeichen für die Nachbarschaft
+zu definieren und eine Funktion, um eine bestehende Lösung zu schütteln, wie dies in Abschnitt~\ref{sec:vns} beschrieben wurde. Jede dieser Funktionen muss für eine Nachbarschaft implementiert werden, und jede Nachbarschaft
+sollte nur gültige Lösungen zurückliefern oder zumindet einen Indikator liefern, dass die zurückgelieferte Lösung ein unbrauchbares Ergebnis darstellt.
 
 Die Basisklasse, von der jede Nachbarschaft erbt, heißt \texttt{VNS\_Unit}. Alle Nachbarschaften müssen alle definierten Methoden und Prozeduren implementieren. Jeder Nachbarschaft wird dabei beim Aufrufen der
-Verbesserungsmethode die zu verbessernde Lösung, und auch jenes Solutionobjekt, welches die unveränderte Aufgabenstellung beeinhaltet, übergeben. Das selbe gilt für Methode zum schütteln der Lösung, mit dem
+Verbesserungsmethode die zu verbessernde Lösung und auch jenes Solutionobjekt, welches die unveränderte Aufgabenstellung beeinhaltet, übergeben. Das selbe gilt für die Methode zum Schütteln der Lösung mit dem
 zusätzlichen Parameter der Stärke des Schüttelns. Somit kann von der VNS bestimmt werden, wie stark die Lösungen randomisiert werden. 
 
 \singlespacing
@@ -339,24 +338,24 @@ class VNS_Unit {
 \setstretch{1.5}
 
 \subsection{ChangeColor}
-Bei dieser Nachbarschaft wurde versucht die in Abschnitt~\ref{sec:ChangeColor} vorgeschlagenen Ansätze in eine konkrete Nachbarschaft zu übersetzen. Da sich bei Tests herrausstellte, dass der erste beschriebene Ansatz
-mit zufälliger Auswahl an Farbe, und zufälliger Bestimmung eines in konfliktstehenden Knotens bei großen Instanzen zu schlechten Ergebnissen führte, wurde ein etwas modifizierter Ansatz gewählt.
+Bei dieser Nachbarschaft wurde versucht, die in Abschnitt \ref{sec:ChangeColor} vorgeschlagenen Ansätze in eine konkrete Nachbarschaft zu übersetzen. Da sich bei Tests herrausstellte, dass der erste beschriebene Ansatz
+mit zufälliger Auswahl an Farbe und zufälliger Bestimmung eines in konfliktstehenden Knotens bei großen Instanzen zu schlechten Ergebnissen führte, wurde ein etwas modifizierter Ansatz gewählt.
 
-Die Nachbarschaft wurde wie der in Algorithmus~\ref{psy:ChangeColor} beschriebene Pseudocode implementiert. Da er ausschließlich die Farben bearbeitet, und sonst keine Veränderungen am Graphen durchführt,
-braucht die Nachbarschaft nur eine flache Kopie des vorherigen Solutionobjektes, und muss daher nicht auf den in Abschnitt~\ref{sec:copy} beschriebenen Kopiermechanismus zurückgreifen. 
+Die Nachbarschaft wurde wie der in Algorithmus~\ref{psy:ChangeColor} beschriebene Pseudocode implementiert. Da er ausschließlich die Farben bearbeitet und sonst keine Veränderungen am Graphen durchführt,
+braucht die Nachbarschaft nur eine flache Kopie des vorherigen Solutionobjektes und muss daher nicht auf den in Abschnitt~\ref{sec:copy} beschriebenen Kopiermechanismus zurückgreifen. 
 
 \subsection{ChangeNode}
 Ähnlich wie bei ChangeColor erwies sich der in Abschnitt~\ref{sec:changenode} beschriebene Ansatz in der Realität bei großen Instanzen als nicht verlässlich. Häufig lieferte die Nachbarschaft keine gültigen
-Ergebnisse, da die Anzahl der Konflike zu stark angestiegen war. Daher wurde auch hier ein modifizierter Ansatz gewählt, welcher in Einzelfällen zwar schlechtere Ergebnisse liefert, dafür aber regelmäßig
-bessere Lösung erzeugt.
+Ergebnisse, da die Anzahl der Konflike zu stark angestiegen war. Daher wurde auch hier ein modifizierter Ansatz gewählt, welcher in Einzelfällen zwar schlechtere Ergebnisse liefert, dafür aber deutlich öfter
+bessere Lösungen erzeugen kann.
 
 Die Implementierung dieser Nachbarschaft erfolgte unter Verwendung der in Abschnitt~\ref{sec:copy} beschriebenen Mechanismen zur Abkopplung einzelner Solutionobjekte von anderen, älteren Lösungen. Da diese 
 Nachbarschaft auch den zu Grunde liegenden Graphen verändert, ist es notwendig, ihn auf einem eigenen, abgetrennten Graphenobjekt arbeiten zu lassen. 
 
 \subsection{DSATUR}
-DSATUR steht im Kontrast zu den Change*-Heuristiken: Das generalisierte Graph Coloring Problem (PCP) wird auf das Graph Coloring Problem reduziert. Konkret werden belässt die Heuristik also die Auswahl der Knoten, färbt sie aber alle erneut ein. Dabei wird nach bestimmten Regeln verfahren, welche in~\ref{sec:dsatur} genauer beschrieben sind.
+DSATUR steht im Kontrast zu den Change*-Heuristiken: Das generalisierte Graph Coloring Problem (PCP) wird auf das Graph Coloring Problem ohne Einteilung der Knoten in Partitionen reduziert. Konkret belässt die Heuristik also die Auswahl der Knoten, färbt sie aber alle erneut ein. Dabei wird nach be\-stim\-mt\-en Regeln verfahren, welche in \ref{sec:dsatur} genauer beschrieben sind.
 
-Ein wesentlicher Vorteil dieser Heuristik ist, dass sie nur Änderungen an der Färbung durchführt, die Strukur des Graphs nicht verändert und somit ohne das Kopieren des Graphens auskommt, was sie zur schnellsten Methode macht.
+Ein wesentlicher Vorteil dieser Heuristik ist, dass sie nur Änderungen an der Färbung durchführt, die Strukur des Graphs aber nicht verändert und somit ohne das Kopieren des Graphens auskommt, was sie zur schnellsten Methode macht.
 
 \subsection{ChangeAll}
 Obwohl ChangeAll eine große Ähnlichkeit mit sowohl ChangeColor als auch ChangeNode aufweist, entstand diese Nachbarschaft erst wesentlich später. 
