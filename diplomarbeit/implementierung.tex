@@ -211,7 +211,7 @@ vertreten sind, und ob die jeweiligen Repräsentanten richtig abgespeichert wurd
 Zuletzt wird noch überprüft, ob der Lösungsgraph mit dem Ursprungsgraphen übereinstimmt. Dazu werden verschiedene Fakten überprüft. Zum einen werden fehlende oder überschüssige Kanten in der Lösung gesucht, 
 zum anderen wird überprüft, ob die ausgewählten Repräsentanten einer Partition wirklich zu dieser Partition zugehörig sind. 
 
-Sollte keine dieser Überprüfungen auf Fehler stoßen, wird angenommen, es handle sich um eine valide Lösung für das PCP. Durch diese Überprüfung konnten auch schon Fehler innerhalb einzelne Nachbarschaften 
+Sollte keine dieser Überprüfungen auf Fehler stoßen, wird angenommen, es handle sich um eine valide Lösung für das PCP\@. Durch diese Überprüfung konnten auch schon Fehler innerhalb einzelne Nachbarschaften 
 nachgewiesen und schließlich behoben werden.
 
 
@@ -271,12 +271,12 @@ Wie \texttt{onestepCD} operiert auch \texttt{pilot} auf einem Solutionobjekt, da
 \label{sec:impl:vns}
 
 Die Variable Nachbarschaftssuche, wie sie in Abschnitt~\ref{sec:vns} beschrieben wurde, wurde als eine einzelne Funktion implementiert, welche den Ablauf der Nachbarschaften steuert. Um den Ablauf des Programmes
-möglichst einfach steuern zu können ist eine Vielzahl an Optionen am Programmstart spezifizierbar. Vieler dieser Optionen beeinfluss direkt oder indirekt den Ablauf der VNS. 
+möglichst einfach steuern zu können ist eine Vielzahl an Optionen am Programmstart spezifizierbar. Vieler dieser Optionen beeinfluss direkt oder indirekt den Ablauf der VNS\@. 
 
 Die wichtigsten Parameter der Methode \texttt{vnsRun}, deren Signatur in Listing~\ref{lst:vns} zu sehen ist, sind die Übergabe der derzeit besten Lösung \texttt{best}, welche von der Konstruktionsheuristik erzeugt wurde, und
 die Übergabe der vollständigen, unveränderten Probleminstanz \texttt{orig}. Auch von essentieller Bedeutung ist der String \texttt{units}, welcher eine Zeichenkette enthält, der die Reihenfolge der verwendeten Nachbarschaften bestimmt. 
 
-Die nächsten Parameter bestimmen vor allem die Ausführungszeit der VNS. Der übergebene Parameter \texttt{unsuccessfulShake} bestimmt die maximale Anzahl an Schüttelvorgängen welche ohne Verbesserungen ablaufen werden, bevor die VNS beendet wird.
+Die nächsten Parameter bestimmen vor allem die Ausführungszeit der VNS\@. Der übergebene Parameter \texttt{unsuccessfulShake} bestimmt die maximale Anzahl an Schüttelvorgängen welche ohne Verbesserungen ablaufen werden, bevor die VNS beendet wird.
 Der Parameter \texttt{shakeStart} bestimmt die initiale Stärke des ersten Schüttelvorganges, und steht damit direkt im Zusammenhang mit der Stärke der Randomisation welche von diesen Schüttelvorgängen ausgeführt wird.
 Mit Hilfe des Parameters \texttt{shakeIncrement} wird bestimmt wie schnell der Stärkeparameter des Schüttelvorgangs ansteigt, sollten keine Verbesserung durch das Schütteln entstehen.
 Schließlich kann mit dem Parameter \texttt{maxTime} direkt maximale Anzahl an Sekunden angegeben werden, die die VNS läuft, bevor sie sich selbst beendet. 
@@ -300,7 +300,7 @@ auf Fehler testen. Die Plausibilitätsprüfung selber ist in Abschnitt~\ref{sec:
 \setstretch{1.5}
 
 \section{Nachbarschaften}
-Die Nachbarschaften bilden das Herzstück der VNS. Eine einzelne Nachbarschaft versucht kleine Veränderungen vorzunehmen, welche die Lösung verbessern, und gibt diese Verbesserungen dann an weitere Nachbarschaften weiter.
+Die Nachbarschaften bilden das Herzstück der VNS\@. Eine einzelne Nachbarschaft versucht kleine Veränderungen vorzunehmen, welche die Lösung verbessern, und gibt diese Verbesserungen dann an weitere Nachbarschaften weiter.
 Jede Nachbarschaft verfolgt ihren eigenen Ansatz zur Verbesserung, und muss nicht immer bessere Ergebnisse liefern. 
 
 Bei der Implementierung der Nachbarschaften wurde versucht, ein möglichst einfach erweiterbares Gerüst zu schaffen, um schnell und einfach neue Ideen für Nachbarschaften ausprobieren zu können. Jede Nachbarschaft

@@ -141,7 +141,7 @@ des fertig übersetzten Programmes, da unter anderem GCC einige Optimierungsmög
 vernachlässigbar gering.
 
 \section{DDD}
-DDD steht für Data Display Debugger, und ist ein weiteres Werkzeug zur Softwareentwicklung von GNU. DDD stellt Werkzeuge zum Debuggen, also der Fehlersuche in Software, zur Verfügung. Um produktiv eingesetzt
+DDD steht für Data Display Debugger, und ist ein weiteres Werkzeug zur Softwareentwicklung von GNU\@. DDD stellt Werkzeuge zum Debuggen, also der Fehlersuche in Software, zur Verfügung. Um produktiv eingesetzt
 werden zu können muss eine spezielle Option während der Übersetzung mit GCC gesetzt werden, damit DDD einzelnen Programmschritten den richtigen Quellcodezeilen zuordnen kann. DDD ist eine sehr vielseitige
 Anwendung mit graphischer Benutzeroberfläche, welche sehr intuitiv und einfach zu bedienen ist, und trotzdem viele Optionen bietet.
 
@@ -182,7 +182,7 @@ Außerdem wurden in dieser Arbeit viele Hilfsroutinen, welche von Boost bereitge
 \label{sec:boost:graph}
 Da es sich bei dem PCP um ein Optimierungsproblem aus dem Umfeld der Graphentheorie handelt, ist natürlich eine Graphenstruktur innerhalb des Programmes unerlässlich. Boost bietet eine ganze Unterbibliothek, 
 welche rein graphenbezogene Datenstrukturen und Algorithmen bereitstellt. Diese Graphenbibliothek ist gut getestet, vielseitung, stark anpassbar, schnell und einfach einzusetzen und war daher die ideale Wahl
-für die Lösung des PCP.
+für die Lösung des PCP\@.
 
 Boost bietet zwei grundsätzlich Unterschiedliche Implementierungen eines Graphen an. Bei der ersten Variante werden alle Kanten in einer Liste, oder ähnlichen Datenstruktur gespeichert, bei
 der zweiten Variante wird eine Matrix verwendet, um die Beziehungen zwischen zwei Knoten darzustellen. Während die zweite Variante für sehr Dichte Graphen einige Vorteile bietet, ist die gesamte
@@ -275,6 +275,6 @@ ausgeführten Software per HTTP-POST-Methode an den Server übermittelt, welcher
 
 Da es sich bei XML-RPC um einen textbasierten Standard handelt, ist vor allem die Integration von Ubigraph in Skriptsprachen besonders einfach. Für viele Sprachen werden bereits Schnittstellen angeliefert,
 welche eine noch einfachere Verwendung von Ubigraph ermöglichen. Der Quellcode dieser Schnittstellen ist als Open-Source-Software zur Verfügung gestellt, und kann daher ebenso eingesehen werden wie die
-Spezifikation für die Server-Schnittstelle per RPC. Da für C++ selbst keine eigene Schnittstelle vorhanden war, wurde auf die Schnittstelle für C zurückgegriffen, welche sich wiederum einiger anderen Bibliotheken
+Spezifikation für die Server-Schnittstelle per RPC\@. Da für C++ selbst keine eigene Schnittstelle vorhanden war, wurde auf die Schnittstelle für C zurückgegriffen, welche sich wiederum einiger anderen Bibliotheken
 aus dem XML und RPC-Umfeld bedient. Da C++ die Möglichkeit bietet, nahtlos mit C-Code umzugehen war die Integration von Ubigraph keine große Herausforderung. Die Ubigraphschnittstelle für C bietet einige
 einfache Optionen zum Zeichnen von Knoten, Kanten beziehungsweise der Manipulation der Eigenschaften der selben, wie eben Farbe, Form und Beschriftung.
