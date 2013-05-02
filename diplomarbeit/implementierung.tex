@@ -10,7 +10,7 @@ anzubieten, eine bestehende Lösung zu verändern. Diese einzelnen Bereiche soll
 \section{Solution}
 Bei Solution handelt es sich um die Basisklasse für alle weiteren Operationen. Sie speichert sowohl den Graphen, von dem bei der Lösung ausgegangen wird, als auch die Lösung selbst, mit konkret verteilten Farben
 für einzelne Partitionen. Außerdem stellt Solution Methoden bereit, um Veränderungen an Lösungen vorzunehmen, wie sie etwa von den Nachbarschaften gebraucht werden, um einzelne Knoten umzufärben, oder zu ersetzen.
-Außerdem besitzt Solution mehrere Methoden, einen Problemgraphen aus einer Datei auszulesen, und diesen wiederum in einem Solution-Objekt zu speichern. Diese Methoden zum Einlesen von Dateien werden genauer 
+Außerdem besitzt Solution mehrere Methoden, einen Konfliktgraphen aus einer Datei auszulesen, und diesen wiederum in einem Solution-Objekt zu speichern. Diese Methoden zum Einlesen von Dateien werden genauer 
 in Abschnitt~\ref{sec:parser} besprochen.
 
 \singlespacing
@@ -46,7 +46,7 @@ dort für jede Partition alle zugeordneten Knoten ab. Dies dient der schnellen F
 in mehreren Nachbarschaften Verwendung. 
 
 \subsection{Graph-Datenstruktur}
-Für die Speicherung von sowohl Lösungs- als auch Problemgraphen dient die \texttt{adjacency\_list}-Datenstruktur, welche von Boost bereitgestellt wird. Der Einsatz von Boost wird in Abschnitt~\ref{sec:boost} 
+Für die Speicherung von sowohl Lösungs- als auch Konfliktgraphen dient die \texttt{adjacency\_list}-Datenstruktur, welche von Boost bereitgestellt wird. Der Einsatz von Boost wird in Abschnitt~\ref{sec:boost} 
 beschrieben. Es wurde bewusst eine Liste als Grundlage der Speicherung verwendet, um ein schnelles Iterieren über Knoten und Kanten zu ermöglichen. Die ebenfalls von Boost bereitgestellte 
 \texttt{adjacency\_matrix} hatte sich in einem Test als ungeeignet erwiesen, da nicht alle Operationen, wie das hinzufügen und löschen von Knoten unterstützt werden. Des Weiteren wurde die Option für 
 ungerichtete Graphen gesetzt, da das PCP keine gerichteten Beziehungen zwischen Knoten vorsieht. Dies führt dazu, dass, sobald eine Kante vom Knoten \textit{A} zu Knoten \textit{B} führt, automatisch auch
@@ -200,7 +200,7 @@ bereitgestellte Hashtable verwendet bei gleichen Hashwerten aber unterschiedlich
 \subsection{Plausibilitätsprüfung}
 \label{sec:plausibility}
 Um eine manuelle Überprüfung der Korrektheit einer Lösung zu umgehen, wird innerhalb der VNS, siehe Abschnitt~\ref{sec:impl:vns}, eine Plausibilitätsprüfung durchgeführt. Diese Überprüfung stellt an Hand 
-der innerhalb einer Solution gespeicherten Eigenschaften, und an Hand des ursprünglichen Problemgraphen fest, ob es sich um eine valide Lösung handelt oder nicht. Diese Überprüfung erfolgt standardmäßig
+der innerhalb einer Solution gespeicherten Eigenschaften, und an Hand des ursprünglichen Konfliktgraphen fest, ob es sich um eine valide Lösung handelt oder nicht. Diese Überprüfung erfolgt standardmäßig
 am Ende der VNS, und überprüft das beste erzielte Ergebnis, welches dann auch als Endergebnis präsentiert wird. Mit Hilfe eines Programmparameters, welcher zu Ausführungsstart angegeben werden muss, ist es
 auch möglich eine solche Überprüfung für jede Lösung einzuschalten, welche eine Verbesserung zur vorherigen darstellt. 
 
@@ -225,11 +225,11 @@ parametrisierten Programminstanzen angestellt werden.
 
 Es gibt mehrere Dateiformate, mit denen Probleminstanzen des PCP abgespeichert werden können. In dieser Arbeit wurde vor Allem auf jenes
 Format Wert gelegt, in dem auch die meisten Testinstanzen der einschlägigen Literatur vorliegen. Allerdings wurde im Zuge von ausgeweiteten 
-Testungen auch ein zweites Format zum einlesen eines Problemgraphen implementiert. 
+Testungen auch ein zweites Format zum einlesen eines Konfliktgraphen implementiert. 
 
 Eine \texttt{.pcp}-Datei ist eine einfache Textdatei, welche allerdings nach einer bestimmten Struktur aufgebaut ist. Die aller erste Zeile
 einer solchen Datei besteht aus 3 Zahlen, welche jeweils durch ein Leerzeichen getrennt sind. Diese 3 Zahlen stehen für die Anzahl der Knoten, 
-die Anzahl der Kanten, und die Anzahl der Partition im Problemgraph, genau in jener Reihenfolge. Nun folgen \textit{n} Zeilen an Zahlen, mit 
+die Anzahl der Kanten, und die Anzahl der Partition im Konfliktgraph, genau in jener Reihenfolge. Nun folgen \textit{n} Zeilen an Zahlen, mit 
 genau einer Zahl pro Zeile, wobei \textit{n} die Anzahl an Knoten ist. Diese Zahlen stehen für die Partitionen, denen die Knoten zugeordnet werden.
 Die erste Zeile beinhaltet also die Partition des ersten Knotens, die zweite Zeile die des zweiten Knotens und so weiter. Zuletzt folgen noch
 \textit{m} Zeilen mit jeweils einem Zahlenpaar, welche die Kanten zwischen den Knoten definieren, wobei \textit{m} der Anzahl an Kanten insgesamt
@@ -251,14 +251,14 @@ entspricht.
 \setstretch{1.5}
 
 Der Parser, welcher eine solche Datei einliest, ist in die Klasse Solution eingearbeitet. Die statische Methode \texttt{fromPcpStream} ließt eine
-Datei von einem Eingabestream ein, und wandelt sie in ein Solutionobjekt mit entsprechendem Problemgraphen um. Dieses Solutiobjekt wird während
+Datei von einem Eingabestream ein, und wandelt sie in ein Solutionobjekt mit entsprechendem Konfliktgraphen um. Dieses Solutiobjekt wird während
 der gesamten Laufzeit des Programmes nicht verändert oder gelöscht, und dient als Ausgangspunkt der Konstruktionsheuristik, aber auch als
 Referenz für Nachbarschaften, welche einzelne Knoten austauschen. Außerdem speichert diese Solutionobjekt als einziges eine direkte Zuordnung von einer Partitions-ID
 zu den verfügbaren Knoten in der Partition ab. 
 
 \section{Konstruktionsheuristik}
 Als Konstruktionsheuristik wurde der in Abschnitt~\ref{sec:onestep} Algorithmus OneStep-CD gewählt. Die verwendete Implementierung des Algorithmus
-erzeugt ein neues Solutionobjekt, als einziger Übergabeparameter ist das aus der Datei eingelesen Solutionobjekt, welches ja den vollständigen Problemgraphen
+erzeugt ein neues Solutionobjekt, als einziger Übergabeparameter ist das aus der Datei eingelesen Solutionobjekt, welches ja den vollständigen Konfliktgraphen
 enthält. Dieses Solutionobjekt bildet dann die Ausgangsbasis für die Verbesserung in der Variablen Nachbarschaftssuche. Der Graph, welcher in dem erzeugten Solutionobjekt
 referenziert wird, ist ein anderer Graph als in der Gesamtlösung verwendet wird. In dem referenzierten Graphen befinden sich nur mehr ein Knoten per Partition, welcher auch den ausgewählten Repräsentanten der jeweiligen Partition darstellt.
 
