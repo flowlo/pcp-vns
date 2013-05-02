@@ -75,7 +75,7 @@ muss. Impliziert wird durch diese Abhängigkeitsdefinition auch, wann ein Progra
 Enddatei selber, muss diese neu übersetzt werden. Durch eine geschickte Aufteilung des Quellcodes auf mehrere Dateien kann so eine komplette Neuübersetzung vermieden werden. 
 
 Durch verschiedene Variablen, welche ebenfalls im Makefile spezifiziert sind, kann außerdem, ohne großen Aufwand, der Übersetzer, welcher die eigentliche Hauptaufgabe übernimmt ausgetauscht werden.
-Die für diese Arbeit verwendeten Compiler werden in Abschnitt \ref{sec:compiler} besprochen. Vereinfacht wird dies durch die beinahe gleiche Befehlssyntax, die von beiden Compilern verwendet wird.
+Die für diese Arbeit verwendeten Compiler werden in Abschnitt~\ref{sec:compiler} besprochen. Vereinfacht wird dies durch die beinahe gleiche Befehlssyntax, die von beiden Compilern verwendet wird.
 Hinzu kommt die Tatsache, dass die von den beiden Compilern erzeugten Dateiformate miteinander kompatibel sind, so dass auch uneinheitlicher Übersetzung mit immer wieder wechselnden Übersetzern
 keine Fehler entstehen.
 
@@ -89,7 +89,7 @@ des Programmes zu verifizieren.
 Der Compiler, oder Übersetzer, ist dafür verantwortlich, ein Programm von einer Quellsprache, in eine Zielsprache zu übersetzen. Im Falle dieser Arbeit war die Quellsprache C++, und die
 Zielsprache die Maschinensprache des Prozessors, also ein x86-Assembly. Übersetzer sind außerordentlich komplexe Stücke an Software, welche nicht einfach die Befehle eines Programmierers eins zu
 eins übernehmen, sondern auch noch Optimierungen vornehmen, um eine beschleunigte Programmausführung zu ermöglichen. Da dieser Vorgang sehr zeitaufwendig sein kann, ist es wichtig, Werkzeuge wie
-das in Abschnitt \ref{sec:make} besprochene make einzusetzen, um eine vollständige Neuübersetzung bei nur marginalen Änderungen im Quellcode zu verhindern. 
+das in Abschnitt~\ref{sec:make} besprochene make einzusetzen, um eine vollständige Neuübersetzung bei nur marginalen Änderungen im Quellcode zu verhindern. 
 
 Da C++ eine besonders komplexe Sprache, mit vielen verschiedenen, aufwendigen Funktionen und Sprachbesonderheiten ist, ist die Übersetzung eines C++-Quellcodes besonders aufwendig. Selbst kleinere
 C++-Programme können schon mehrere Minuten zum vollständigen Übersetzen brauchen. Dies gilt insbesondere für Quellcode, welche die C++-Funktion der so genannten \textit{Templates} benützt. \textit{Templates}
@@ -141,7 +141,7 @@ des fertig übersetzten Programmes, da unter anderem GCC einige Optimierungsmög
 vernachlässigbar gering.
 
 \section{DDD}
-DDD steht für Data Display Debugger, und ist ein weiteres Werkzeug zur Softwareentwicklung von GNU. DDD stellt Werkzeuge zum Debuggen, also der Fehlersuche in Software, zur Verfügung. Um produktiv eingesetzt
+DDD steht für Data Display Debugger, und ist ein weiteres Werkzeug zur Softwareentwicklung von GNU\@. DDD stellt Werkzeuge zum Debuggen, also der Fehlersuche in Software, zur Verfügung. Um produktiv eingesetzt
 werden zu können muss eine spezielle Option während der Übersetzung mit GCC gesetzt werden, damit DDD einzelnen Programmschritten den richtigen Quellcodezeilen zuordnen kann. DDD ist eine sehr vielseitige
 Anwendung mit graphischer Benutzeroberfläche, welche sehr intuitiv und einfach zu bedienen ist, und trotzdem viele Optionen bietet.
 
@@ -169,7 +169,7 @@ Im Laufe der Entwicklung wurden immer wieder auch ehemals kommerzielle Produkte 
 aber in den Boost-Stamm aufgenommen wurde.
 
 Boost erweitert den Umfang an vorprogrammierten Datenstrukturen, und auch Algorithmen, und fügt bestehende Strukturen nahtlos ein. Dabei versucht Boost immer eine möglichst einfache und klar verständliche
-Schnittstelle zu bieten, welche transparent mit Datenstrukturen etwa aus der STL umgeht, welche in Abschnitt \ref{sec:stl} besprochen werden. Von Boost geschaffene Datenstrukturen sind sehr ähnlich zu jenen
+Schnittstelle zu bieten, welche transparent mit Datenstrukturen etwa aus der STL umgeht, welche in Abschnitt~\ref{sec:stl} besprochen werden. Von Boost geschaffene Datenstrukturen sind sehr ähnlich zu jenen
 aus der STL zu verwenden, und wie jene bieten sie auch einfache Möglichkeiten des Zugriffes auf Datenelemente über Iteratoren. 
 
 Des Weiteren bietet Boost neue Möglichkeiten im Umgang mit Strings, also Zeichenketten, sowie weitere nützliche Hilfsfunktionen, welche von den meisten Programmen häufig gebraucht werden. Außerdem bietet
@@ -182,7 +182,7 @@ Außerdem wurden in dieser Arbeit viele Hilfsroutinen, welche von Boost bereitge
 \label{sec:boost:graph}
 Da es sich bei dem PCP um ein Optimierungsproblem aus dem Umfeld der Graphentheorie handelt, ist natürlich eine Graphenstruktur innerhalb des Programmes unerlässlich. Boost bietet eine ganze Unterbibliothek, 
 welche rein graphenbezogene Datenstrukturen und Algorithmen bereitstellt. Diese Graphenbibliothek ist gut getestet, vielseitung, stark anpassbar, schnell und einfach einzusetzen und war daher die ideale Wahl
-für die Lösung des PCP.
+für die Lösung des PCP\@.
 
 Boost bietet zwei grundsätzlich Unterschiedliche Implementierungen eines Graphen an. Bei der ersten Variante werden alle Kanten in einer Liste, oder ähnlichen Datenstruktur gespeichert, bei
 der zweiten Variante wird eine Matrix verwendet, um die Beziehungen zwischen zwei Knoten darzustellen. Während die zweite Variante für sehr Dichte Graphen einige Vorteile bietet, ist die gesamte
@@ -252,9 +252,9 @@ Graphviz ist eine Sammlung an Software-Werkzeugen zur Visualisierung von Graphen
 sie auf bestimmte Art und Weise. Die Funktionen umfassen von der Entfernung von doppelten Kanten, bis zur Visuellen Ausgabe in Form einer PDF oder PostScript-Datei viele nützliche Bearbeitungsmethoden für 
 Graphen. 
 
-Da die im Abschnitt \ref{sec:boost:graph} besprochene Implementation eines Graphen-Datentypes durch die Boost-Bibliothek eine automatische Ausgabe eines Graphen in das Graphviz-Dateiformat er\-möglicht, war 
+Da die im Abschnitt~\ref{sec:boost:graph} besprochene Implementation eines Graphen-Datentypes durch die Boost-Bibliothek eine automatische Ausgabe eines Graphen in das Graphviz-Dateiformat er\-möglicht, war 
 eine Verwendung dieser Werkzeuge sehr naheliegend. Durch die vielen verschiedenen Programme, welche von Graphviz bereitgestellt werden, war es ein leichtes, eine einfache Möglichkeit der visuellen Kontrolle
-der Arbeitsergebnisse zu implementieren. Im Gegensatz zur im Abschnitt \ref{sec:ubigraph} eingesetzten Echtzeitdarstellung der Vorgänge während des Ablaufes der Programmes, wurde die Werkzeugsammlung dazu eingesetzt
+der Arbeitsergebnisse zu implementieren. Im Gegensatz zur im Abschnitt~\ref{sec:ubigraph} eingesetzten Echtzeitdarstellung der Vorgänge während des Ablaufes der Programmes, wurde die Werkzeugsammlung dazu eingesetzt
 die Eingabe mit der Ausgabe zu vergleichen, und zu verifizieren, dass eventuelle Fehler in der internen Prüfungsroutine des Programmes nicht dazu führten, das falsche Lösungen plötzlich zulässig würden. 
 
 Eingeschränkt wurde der Einsatz von Graphviz durch die Tatsache, dass bei großen Probleminstanzen natürlich auch die Lösungsgröße entsprechend anwächst, und daher ein händischer Vergleich nur noch schwer bis gar nicht möglich
@@ -264,10 +264,16 @@ konnte dann verifiziert werden, dass das Programm in der Lage ist, ungültige L�
 
 \section{Ubigraph}
 \label{sec:ubigraph}
-Bei Ubigraph handelt es sich um eine Plattform zur visuellen Darstellung von Graphen. Die Plattform besteht einerseits aus einem Server, welcher Befehle entgegen nimmt und aus diesen Befehlen eine 
+Bei \textit{Ubigraph}\footnote{\url{http://ubietylab.net/ubigraph/}} handelt es sich um eine Plattform zur visuellen Darstellung von Graphen. Die Plattform besteht einerseits aus einem Server, welcher Befehle entgegen nimmt und aus diesen Befehlen eine 
 dreidimensionale Darstellung des Graphen ausgibt, und andererseits aus einer Vielzahl an Schnittstellen für alle nur erdenklichen Programmiersprachen. Mit Hilfe von Ubigraph ist es möglich, die
 Vorgänge innerhalb der VNS, und auch beim Aufbau der Initiallösung zeitnah mitzuverfolgen, und gleichzeitig eine ansehnliche dreidimensionale Darstellung des Graphen zu erlangen.
 
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{img/ubigraph.png}
+\caption[Ein Beispiel der graphischen Ausgabe der Ubigraph-Software]{Ein Beispiel der graphischen Ausgabe der Ubigraph-Software. Zu sehen ist die Ausgabe der finalen Lösung der VNS, welche bereits mehrere Nachbarschaften durchlaufen hat.}
+\label{img:ubigraph}
+\end{figure}
 Bei der Serversoftware handelt es sich um ein Stück proprietären Code, welcher per XML-RPCs angesprochen werden kann. Der Server nutzt OpenGL um die gezeichneten Graphen per Grafikkarte darzustellen. Als
 Schnittstelle dienen \textit{Remote Procedure Calls (RPC)} welche per \textit{Hyper Text Transfer Protocol (HTTP)} an den Server übermittelt werden. Der Name XML-RPC stammt von der Auszeichnungssprache
 \textit{Extensible Markup Languag (XML)}, was soviel heißt wie Erweiterbare Auszeichnungssprache, welche als Anfrage- und Antwortsprache verwendet wird. Die Daten einer solchen Anfrage werden von der
@@ -275,6 +281,6 @@ ausgeführten Software per HTTP-POST-Methode an den Server übermittelt, welcher
 
 Da es sich bei XML-RPC um einen textbasierten Standard handelt, ist vor allem die Integration von Ubigraph in Skriptsprachen besonders einfach. Für viele Sprachen werden bereits Schnittstellen angeliefert,
 welche eine noch einfachere Verwendung von Ubigraph ermöglichen. Der Quellcode dieser Schnittstellen ist als Open-Source-Software zur Verfügung gestellt, und kann daher ebenso eingesehen werden wie die
-Spezifikation für die Server-Schnittstelle per RPC. Da für C++ selbst keine eigene Schnittstelle vorhanden war, wurde auf die Schnittstelle für C zurückgegriffen, welche sich wiederum einiger anderen Bibliotheken
+Spezifikation für die Server-Schnittstelle per RPC\@. Da für C++ selbst keine eigene Schnittstelle vorhanden war, wurde auf die Schnittstelle für C zurückgegriffen, welche sich wiederum einiger anderen Bibliotheken
 aus dem XML und RPC-Umfeld bedient. Da C++ die Möglichkeit bietet, nahtlos mit C-Code umzugehen war die Integration von Ubigraph keine große Herausforderung. Die Ubigraphschnittstelle für C bietet einige
 einfache Optionen zum Zeichnen von Knoten, Kanten beziehungsweise der Manipulation der Eigenschaften der selben, wie eben Farbe, Form und Beschriftung.

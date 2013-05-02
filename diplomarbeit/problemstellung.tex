@@ -67,7 +67,7 @@ keinem Verhältnis zum Ergebnis steht.
 	\centering
 	\begin{subfigure}[t]{0.3\textwidth}
 		\includegraphics[width=\textwidth]{img/bsp3}
-		\caption{Der aus Abbildung \ref{fig:example:b} generierte Problemgraph. Jede Route wird als Knoten repräsentiert. Die verwendete Farbe stimmt mit den
+		\caption{Der aus Abbildung~\ref{fig:example:b} generierte Problemgraph. Jede Route wird als Knoten repräsentiert. Die verwendete Farbe stimmt mit den
 		für die Routen verwendeten Farben überein. Die Partitionierung wird durch das angedeutete Oval im Hintergrund der Knoten angedeutet.}
 		\label{fig:example:c}
 	\end{subfigure}
@@ -79,7 +79,7 @@ keinem Verhältnis zum Ergebnis steht.
 	\end{subfigure}
 	\begin{subfigure}[t]{0.3\textwidth}
 		\includegraphics[width=\textwidth]{img/bsp5}
-		\caption{Eine mögliche Lösung des PCP. Von jeder Partition muss nur ein Knoten ausgewählt werden, alle anderen werden ausgeblendet. Die Auswahl
+		\caption{Eine mögliche Lösung des PCP\@. Von jeder Partition muss nur ein Knoten ausgewählt werden, alle anderen werden ausgeblendet. Die Auswahl
 		für die Strecke zwischen A und B hat kein gemeinsames Teilstück mit der für die Strecke C-D getroffene Auswahl. Daher kann ein und die selbe Farbe
 		für beide Übertragungen verwendet werden.}
 		\label{fig:example:e}
@@ -101,21 +101,21 @@ Dazu wird die Problemstellung nun in einem ersten Schritt auf folgende Punkte fi
 Aus diesen Bedingungen kann ein Graph abgeleitet werden, der genau jene Bedürfnisse erfüllt, um eine einfaches lösen des Problems zu ermöglichen. Der Problemgraph
 aus dem dann die Lösung berechnet wird, besteht aus Partitionen, welche eine Menge von Knoten abbilden und Kanten, welche die einzelnen Knoten verbinden.
 Ein Kommunikationsbedürfnis zwischen zwei Partnern wird als eine Menge von Knoten gesehen. Die Knoten repräsentieren je eine Route zwischen den beiden Partnern. Ist also nur eine Route zur Auswahl
-zwischen zwei Kommunikationsendpunkten, gibt es nur einen Knoten in dieser Menge. Diese Menge an Knoten wird Partition genannt, und ist damit namensgebend für das PCP. Dieser
-Schritt wird in Abbildung \ref{fig:example:c} veranschaulicht.
+zwischen zwei Kommunikationsendpunkten, gibt es nur einen Knoten in dieser Menge. Diese Menge an Knoten wird Partition genannt, und ist damit namensgebend für das PCP\@. Dieser
+Schritt wird in Abbildung~\ref{fig:example:c} veranschaulicht.
 
 Die Kanten bilden nun die Beziehungen zwischen verschiedenen Routen ab. Teilen sich zwei Routen das selbe Teilstück im optischen Netzwerk, werden sie mit einer Kante verbunden.
 Zu beachten ist, dass dies nicht nur für Knoten in der selben Partition gilt, sondern auch für Knoten aus unterschiedlichen Partitionen. Verwendet also Route 1 der
 Kommunikation $(AB)$ ein Stück der Strecke, das auch von der Route 2 der Kommunikation $(CD)$ verwendet wird, werden diese beiden Routen, welche ja jeweils als Knoten
 repräsentiert werden, im Ausgangsgraphen mit Hilfe einer Kante verbunden. Außerdem ist noch zu beachten, dass für jedes in dieser Art verbundene Routenpaar nur eine Kante
 verwendet wird. Teilen sich Routen 1 und 2 mehr als ein Teilstück, so werden sie trotzdem nur einmal per Kante verbunden. Die Vervollständigung des Problemgraphen
-wird in Abbildung \ref{fig:example:d} dargestellt.
+wird in Abbildung~\ref{fig:example:d} dargestellt.
 
 Nachdem der Ausgangsgraph generiert wurde, kann eine Lösung für das PCP berechnet werden. Dazu muss für jede Partition genau ein Knoten ausgewählt werden, und diese
 Knoten dann so eingefärbt werden, dass sich keine 2 mit einer Kante verbunden Knoten die gleiche Farbe teilen. Der letztere Teil, also das einfärben von Knoten in
 Abhängigkeit der Farben der Nachbarknoten ist als klassisches Graph Coloring bekannt. Es kommt zum Beispiel bei der Einfärbung von politischen Landkarten zum Einsatz, 
 wo benachbarte Länder nicht die selbe Farbe haben dürfen. Was das PCP unterscheidet, ist die Möglichkeit, nur einen Knoten aus einer Partition als Repräsentanten
-auszuwählen, und die anderen quasi auszublenden. Ein Beispiel einer solchen Lösung des Problems ist in Abbildung \ref{fig:example:e} zu finden.
+auszuwählen, und die anderen quasi auszublenden. Ein Beispiel einer solchen Lösung des Problems ist in Abbildung~\ref{fig:example:e} zu finden.
 
 Die Schwierigkeit des Problems liegt in dem Zusammenspiel von verschiedenen Möglichkeiten, ein und den selben Graphen einzufärben, und andererseits mit einer anderen 
 Auswahl an Knoten gleich den gesamten Lösungsgraphen zu verändern. Das Kriterium für die Güte einer Lösung ist die Anzahl der verwendeten Farben. Um sich nur auf diese 
