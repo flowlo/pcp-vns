@@ -8,7 +8,7 @@ Bei der Variablen Nachbarschaftssuche handelt es sich um eine metaheuristische M
 
 Wie der Name bereits suggeriert versucht eine VNS auf Basis unterschiedlicher Nachbarschaften eine bereits bestehende, nicht optimale Lösung zu verbessern. Eine Nachbarschaft wird im Normalfall durch sogenannte \emph{Moves}, also Züge, definiert, die beschreiben, wie man von einer Lösung zu einer Nachbarlösung kommt, die hoffentlich besser als die Ursprungslösung ist. Ein solcher Zug kann z.B.\ die Auswahl eines anderen Knotens als Repräsentant eines Clusters sein. Kann eine Lösung mit Zügen aus einer Nachbarschaft nicht mehr verbessert werden, dann befindet man sich in einem \emph{lokalen Optimum}, das leider im Normalfall nicht dem globalen Optimum -- der besten möglichen Lösung -- entspricht.
 
-Die Variable Nachbarschaftssuche setzt nun in ihrer eigentlichen Optimierungskomponente (\emph{Variable Neighborhood Descent}, VND) nicht nur eine sondern gleich mehrere unterschiedliche Nachbarschaften hintereinander ein in der Hoffnung, dass ein lokales Optimum einer Nachbarschaft nicht zwangsläufig auch ein lokales Optimum einer anderen Nachbarschaft ist. Man setzt also darauf, dass eine Lösung, die in einer Nachbarschaft nicht mehr verbessert werden kann, in einer anderen Nachbarschaft sehr wohl noch Optimierungspotential besitzt. Diese neue Lösung kann dann vielleicht wieder mit einem Zug aus der ursprünglichen Nachbarschaft verbessert werden und so weiter.
+Die Variable Nachbarschaftssuche setzt nun in ihrer eigentlichen Optimierungskomponente (\emph{Variable Neighborhood Descent}, VND) nicht nur eine sondern gleich mehrere unterschiedliche Nachbarschaften hintereinander ein in der Hoffnung, dass ein lokales Optimum einer Nachbarschaft nicht zwangsläufig auch ein lokales Optimum einer anderen Nachbarschaft ist. Man setzt also darauf, dass eine Lösung, die in einer Nachbarschaft nicht mehr verbessert werden kann in einer anderen Nachbarschaft sehr wohl noch Optimierungspotential besitzt. Diese neue Lösung kann dann vielleicht wieder mit einem Zug aus der ursprünglichen Nachbarschaft verbessert werden und so weiter.
 
 Durchsucht man alle definierten Nachbarschaften systematisch (z.B.\ mittels \emph{Best Improvement} Strategie, d.h.\ von allen möglichen Zügen innerhalb einer Nachbarschaft wird jener gewählt, der die Lösung maximal verbessert) hintereinander und wiederholt nach besseren Lösungen, dann stoppt dieser Prozess erst dann, wenn eine Lösung gefunden wurde, die ein lokales Optimum bezüglich sämtlicher Nachbarschaften darstellt.
 
@@ -36,7 +36,7 @@ Obwohl die Variable Nachbarschaftssuche in der Theorie immer weiter laufen könn
 \While{Terminationsbedingung \textbf{nicht} erfüllt}
 \State Führe Variable Neighborhood Descent mit Best Improvement Strategie durch:
 \State Nachbarschaft $l \leftarrow 1$
-\While{$l \leq 3$ \textbf{und} Zeitlimit nicht erreicht}
+\While{$l \leq $ maximale Anzahl an Nachbarschaften \textbf{und} Zeitlimit nicht erreicht}
 \State Führe Nachbarschaft $n_l$ aus
 \If {Lösung verbessert \textbf{und} $l\neq 1$} 
 \State  $l\leftarrow 1$  
@@ -58,13 +58,13 @@ Obwohl die Variable Nachbarschaftssuche in der Theorie immer weiter laufen könn
 
 \section{Konstruktionsheuristiken}
 \label{sec:construct}
-\citet*{Li2000} beschreiben mehrere schnelle Greedy Algorithmen zur näherungsweisen Lösung des Problems. Im Vergleich der benötigten Farben schneidet dabei der Algorithmus \emph{onestepCD} am besten ab:
+\citet*{Li2000} beschreiben mehrere schnelle Greedy Algorithmen (es wird beim Aufbau der Lösung die lokal beste Entscheidung getroffen ohne auf das große Ganze zu achten) zur näherungsweisen Lösung des Problems. Im Vergleich der benötigten Farben schneidet dabei der Algorithmus \emph{onestepCD} am besten ab:
 \subsection{onestepCD}
-Zunächst werden in einem Vorverarbeitungsschritt alle Kanten aus dem Konfliktgraphen entfernt, die Knoten innerhalb eines Clusters miteinander verbinden (da für jede Kommunikation nur genau ein Kommunikationsweg gewählt wird, können sich Knoten eines Clusters nie gegenseitig stören, die entsprechenden Kanten sind daher für die Lösung des Problems irrelevant und können gelöscht werden). Danach wird für jeden Cluster der Knoten mit der geringsten Anzahl an bereits eingefärbten Nachbarknoten bestimmt, der Knoten mit der insgesamt kleinsten Anzahl wird ausgewählt. Gibt es hier mehrere gleichwertige Kandidaten, wird aus diesen der Knoten mit der größten Anzahl an noch nicht eingefärbten Nachbarknoten gewählt bzw. -- falls dies immer noch nicht eindeutig möglich ist -- der erste Knoten aus diesen Kandidaten. Nachdem nun ein Knoten als Repräsentant für seinen Cluster bestimmt und ihm die kleinstmögliche Farbe zugewiesen wurde, werden alle anderen Knoten, die sich im selben Cluster befinden, gelöscht. Der Prozess wird solange fortgeführt, bis die Repräsentanten aller Cluster gewählt und eingefärbt sind.
+Zunächst werden in einem Vorverarbeitungsschritt alle Kanten aus dem Konfliktgraphen entfernt, die Knoten innerhalb eines Clusters miteinander verbinden (da für jede Kommunikation nur genau ein Kommunikationsweg gewählt wird, können sich Knoten eines Clusters nie gegenseitig stören, die entsprechenden Kanten sind daher für die Lösung des Problems irrelevant und können gelöscht werden). Danach wird für jeden Cluster der Knoten mit der geringsten Anzahl an bereits eingefärbten Nachbarknoten bestimmt, der Knoten mit der insgesamt kleinsten Anzahl wird ausgewählt. Gibt es hier mehrere gleichwertige Kandidaten, wird aus diesen der Knoten mit der größten Anzahl an noch nicht eingefärbten Nachbarknoten gewählt bzw. -- falls dies immer noch nicht eindeutig möglich ist -- der erste Knoten aus diesen Kandidaten. Nachdem nun ein Knoten als Repräsentant für seinen Cluster bestimmt und ihm die klei\-nst\-mö\-gliche Farbe zugewiesen wurde, werden alle anderen Knoten, die sich im selben Cluster befinden, gelöscht. Der Prozess wird solange fortgeführt, bis die Repräsentanten aller Cluster gewählt und eingefärbt sind.
 
 \subsection{PILOT}
 
-Bessere Ergebnisse als die einer naiven Konstruktionsheuristik wie \textit{onestepCD} liefern häufig Varianten der gleichen Verfahren nach dem PILOT-Schema. Hier  wird grundsätzlich nach den Entscheidungskriterien von \textit{onestepCD} verfahren um jedoch nicht nur einen, sondern mehrere Knoten auszuwählen. Diese werden dann jeweils fixiert und durch Rekursion vollständige Lösungen berechnet. Von den verschiedenen Lösungen, die auf höherer Rekursionsebene zur Verfügung stehen, kann dann die vielversprechendste, also jene mit den wenigsten Farben, herangezogen werden.
+Bessere Ergebnisse als die einer naiven Konstruktionsheuristik wie \textit{onestepCD} liefern häufig Varianten der gleichen Verfahren nach dem PILOT-Schema. Hier  wird grundsätzlich nach den Entscheidungskriterien von \textit{onestepCD} verfahren um jedoch nicht nur einen, sondern mehrere Knoten auszuwählen. Diese werden dann jeweils fixiert und durch Rekursion vollständige Lösungen berechnet. Von den verschiedenen Lösungen, die auf höherer Rekursionsebene zur Verfügung stehen, kann dann die vielversprechendste, also jene mit den wenigsten Farben, herangezogen werden, um eine lokal bessere Entscheidung zu treffen.
 
 Es entsteht also eine beschränkte Enumeration der Lösungen, was deutlich zeitintensiver als die einmalige Berechnung von \textit{onestepCD} ist, aber möglicherweise deutlich bessere Ergebnisse liefert.
 
@@ -79,7 +79,7 @@ Es entsteht also eine beschränkte Enumeration der Lösungen, was deutlich zeiti
 \label{sec:neigh}
 Wie bereits beschrieben handelt es sich bei Nachbarschaften um einzelne Algorithmen die versuchen, eine gültige Lösung in eine andere, bessere Lösung durch eine relativ kleine Änderung umzuwandeln. Wir haben uns zunächst auf die drei Nachbarschaften \emph{changeColor}, \emph{changeNode} und \emph{DSATUR} konzentriert, wobei weitere Nachbarschaften noch zur Diskussion stehen.
 
-Jede Nachbarschaft bietet auch eine Methode an, eine Lösung zu ``schütteln'', welche ähnlich abläuft wie die Methode zur Suche des jeweiligen lokalen Optimums, allerdings ohne die Beschränkung ausschließlich bessere Ergebnisse zurück liefern zu müssen.
+Jede Nachbarschaft bietet auch eine Methode an, eine Lösung zu ``schütteln'', welche ähnlich abläuft wie die Methode zur Suche des jeweiligen lokalen Optimums, allerdings ohne die Beschränkung ausschließlich bessere Ergebnisse zurückliefern zu müssen.
 
 \subsection{ChangeColor}
 \label{sec:changecolor}
@@ -87,7 +87,7 @@ Bei dieser sehr einfachen Nachbarschaft, die von der Tabu-Suche aus \citet*{Noro
 
 \subsubsection{Erster Ansatz}
 Der erste Ansatz für diese Nachbarschaft arbeitete wie folgt.
-Alle Knoten, welche die höchste Farbe besitzen, werden mit einer neuen zufälligen Farbe markiert. Dies führt natürlich unweigerlich zu Konflikten zwischen verbundenen Knoten im Konfliktgraph, d.h.\ zu benachbarten Knoten mit gleicher Farbe. 
+Alle Knoten, welche die höchste Farbe besitzen, werden mit einer neuen zufälligen, aber natürlich kleineren, Farbe markiert. Dies führt meist unweigerlich zu Konflikten zwischen verbundenen Knoten im Konfliktgraph, d.h.\ zu benachbarten Knoten mit gleicher Farbe. 
 
 Um diese Konflikte zu lösen wird ein zufälliger, im Konflikt stehender Knoten ausgewählt, um ihn mit einer passenden Farbe zu füllen. Zu beachten ist hierbei die Tatsache, das diese passende Farbe kleiner sein muss als die frühere höchste Farbe, da ja eine Verbesserung (eine Reduktion der Farbenanzahl um 1) erzielt werden soll.
 
@@ -101,7 +101,7 @@ Knoten mit der höchsten Farbe, diesmal allerdings ohne eine willkürliche Auswa
 
 Die veränderte Heuristik ist unter Algorihtmus~\ref{psy:ChangeColor} zu finden. Jeder Knoten, welcher die höchste Farbe besitzt, wird umgefärbt. Es werden alle Farben ausprobiert, welche kleiner als
 die ursprünglich höchste Farbe sind. Dann wird versucht, die adjazenten Knoten umzufärben, und zwar so, dass auch hier nicht mehr die höchste Farbe verwendet wird. Wenn keine der ausprobierten Farben eine
-Verbesserung bringt, wird die Nachbarschaft abgebrochen. Konnten für alle Knoten, welche ursprünglich die höchste Farbe besaßen, eine Ersatzfarbe gefunden werden, wird das neue Solutionobjekt zurückgegeben, 
+Verbesserung bringt, wird die Nachbarschaft abgebrochen. Konnten für alle Knoten, welche ursprünglich die höchste Farbe besaßen, eine Ersatzfarbe gefunden werden, wird die neue Lösung zurückgegeben, 
 welches eine Verbesserung zum Eingabeobjekt darstellt.
 
 \begin{algorithm}
@@ -142,11 +142,11 @@ Dieser Vorgang wird solange wiederholt bis alle Konflikte gelöst wurden oder zu
 \subsubsection{Zweiter Ansatz}
 
 Bei dem ersten Ansatz dieser Nachbarschaft ergaben sich ähnliche Probleme wie beim ersten Ansatz von ChangeColor. Durch den höheren Aufwand, der durch das Tauschen von Knoten entsteht, erwies sich dieser erste Verusch der Nachbarschaft
-sogar als noch unverlässlicher als ChangeColor. Mit Hilfe dieses zweiten Ansatzes, welcher es auch in die schlussendliche Implementierung schaffte, konnten verlässlicher, und vor allem schneller Ergebnisse erzielt werden.
+sogar als noch unzuverlässiger als ChangeColor. Mit Hilfe dieses zweiten Ansatzes, welcher es auch in die schlussendliche Implementierung schaffte, konnten verlässlicher und vor allem schneller Ergebnisse erzielt werden.
 
-Die schlussendliche Variante der Nachbarschaft ist unter Algorithmus~\ref{psy:ChangeNode} zu finden. Ähnlich wie bei ChangeColor wird versucht, alle Knoten mit der maximalen Farbe umzufärben. Bei diesem zweiten Ansatz wird dies versucht, in dem
+Die schlussendliche Variante der Nachbarschaft ist unter Algorithmus~\ref{psy:ChangeNode} zu finden. Ähnlich wie bei ChangeColor wird versucht, alle Knoten mit der maximalen Farbe umzufärben. Bei diesem zweiten Ansatz wird dies versucht, indem
 ein Knoten mit maximaler Farbe gegen einen anderen Knoten ausgetauscht wird. Dieser Austauschknoten muss natürlich auch Vertreter der selben Partition sein. Dieser Knoten wird dann versucht ganz normal
-neu einzufärben. Sollte die Neueinfärbung mit einer Farbe niedriger als der maximalen Farbe erfolgen, wird nach weiteren Knoten maximaler Farbe gesucht. Sollte der Algorithmus nicht in der Lage sein, ein
+neu einzufärben. Sollte die Neueinfärbung mit einer Farbe niedriger als der bisher maximalen Farbe erfolgen, wird nach weiteren Knoten maximaler Farbe gesucht. Sollte der Algorithmus nicht in der Lage sein, einen
 passenden Ersatzknoten zu finden, welcher die Anzahl an verwendeten Farben verringert, bricht die Nachbarschaft ohne Verbesserung ab.
 
 \begin{algorithm}
@@ -158,7 +158,7 @@ passenden Ersatzknoten zu finden, welcher die Anzahl an verwendeten Farben verri
 \ForAll{Knoten $v \in l.graph$ für die gilt $v.farbe = c$}
 \ForAll{Knoten $a \in full.graph$ für die gilt $a.partition = v.partition \wedge a \neq v$}
 \State Tausche Knoten $v$ mit Knoten $a$ in Solution $l$
-\State Färbe Knoten $a$ mit minimaler Farbe ein
+\State Färbe Knoten $a$ mit minimal möglicher Farbe ein
 \If{$a.farbe < c$}
 \State Beende innere Schleife
 \EndIf
@@ -197,7 +197,7 @@ Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das norma
 \State $B \leftarrow -1$
 \State $C \leftarrow -1$
 \State $t \leftarrow $ undefiniert
-\For{alle $v \in V$}
+\For{alle $v \in V'$}
 \If{Partition von $v$ ist eingefärbt}
 \State Überspringe diesen Knoten
 \Else
@@ -206,11 +206,11 @@ Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das norma
 \If{$d < D$}
 \State Überspringe diesen Knoten
 \EndIf
-\State $b\leftarrow$ Anzahl an nicht eingefärbten Machbaren von $v$ ($deg(v) - d$)
+\State $b\leftarrow$ Anzahl an nicht eingefärbten Nachbarn von $v$ ($deg(v) - d$)
 \If{$d = D \wedge b \leq B$}
 \State Überspringe diesen Knoten
 \EndIf
-\State Wähle $v$ als besten Kandidaten:
+\State Wähle $v$ als besten Kandidaten, zum jetzt Einfärben:
 \State $D \leftarrow d$
 \State $B \leftarrow b$
 \State $C \leftarrow c$
