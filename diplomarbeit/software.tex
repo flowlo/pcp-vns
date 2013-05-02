@@ -75,7 +75,7 @@ muss. Impliziert wird durch diese Abhängigkeitsdefinition auch, wann ein Progra
 Enddatei selber, muss diese neu übersetzt werden. Durch eine geschickte Aufteilung des Quellcodes auf mehrere Dateien kann so eine komplette Neuübersetzung vermieden werden. 
 
 Durch verschiedene Variablen, welche ebenfalls im Makefile spezifiziert sind, kann außerdem, ohne großen Aufwand, der Übersetzer, welcher die eigentliche Hauptaufgabe übernimmt ausgetauscht werden.
-Die für diese Arbeit verwendeten Compiler werden in Abschnitt \ref{sec:compiler} besprochen. Vereinfacht wird dies durch die beinahe gleiche Befehlssyntax, die von beiden Compilern verwendet wird.
+Die für diese Arbeit verwendeten Compiler werden in Abschnitt~\ref{sec:compiler} besprochen. Vereinfacht wird dies durch die beinahe gleiche Befehlssyntax, die von beiden Compilern verwendet wird.
 Hinzu kommt die Tatsache, dass die von den beiden Compilern erzeugten Dateiformate miteinander kompatibel sind, so dass auch uneinheitlicher Übersetzung mit immer wieder wechselnden Übersetzern
 keine Fehler entstehen.
 
@@ -89,7 +89,7 @@ des Programmes zu verifizieren.
 Der Compiler, oder Übersetzer, ist dafür verantwortlich, ein Programm von einer Quellsprache, in eine Zielsprache zu übersetzen. Im Falle dieser Arbeit war die Quellsprache C++, und die
 Zielsprache die Maschinensprache des Prozessors, also ein x86-Assembly. Übersetzer sind außerordentlich komplexe Stücke an Software, welche nicht einfach die Befehle eines Programmierers eins zu
 eins übernehmen, sondern auch noch Optimierungen vornehmen, um eine beschleunigte Programmausführung zu ermöglichen. Da dieser Vorgang sehr zeitaufwendig sein kann, ist es wichtig, Werkzeuge wie
-das in Abschnitt \ref{sec:make} besprochene make einzusetzen, um eine vollständige Neuübersetzung bei nur marginalen Änderungen im Quellcode zu verhindern. 
+das in Abschnitt~\ref{sec:make} besprochene make einzusetzen, um eine vollständige Neuübersetzung bei nur marginalen Änderungen im Quellcode zu verhindern. 
 
 Da C++ eine besonders komplexe Sprache, mit vielen verschiedenen, aufwendigen Funktionen und Sprachbesonderheiten ist, ist die Übersetzung eines C++-Quellcodes besonders aufwendig. Selbst kleinere
 C++-Programme können schon mehrere Minuten zum vollständigen Übersetzen brauchen. Dies gilt insbesondere für Quellcode, welche die C++-Funktion der so genannten \textit{Templates} benützt. \textit{Templates}
@@ -169,7 +169,7 @@ Im Laufe der Entwicklung wurden immer wieder auch ehemals kommerzielle Produkte 
 aber in den Boost-Stamm aufgenommen wurde.
 
 Boost erweitert den Umfang an vorprogrammierten Datenstrukturen, und auch Algorithmen, und fügt bestehende Strukturen nahtlos ein. Dabei versucht Boost immer eine möglichst einfache und klar verständliche
-Schnittstelle zu bieten, welche transparent mit Datenstrukturen etwa aus der STL umgeht, welche in Abschnitt \ref{sec:stl} besprochen werden. Von Boost geschaffene Datenstrukturen sind sehr ähnlich zu jenen
+Schnittstelle zu bieten, welche transparent mit Datenstrukturen etwa aus der STL umgeht, welche in Abschnitt~\ref{sec:stl} besprochen werden. Von Boost geschaffene Datenstrukturen sind sehr ähnlich zu jenen
 aus der STL zu verwenden, und wie jene bieten sie auch einfache Möglichkeiten des Zugriffes auf Datenelemente über Iteratoren. 
 
 Des Weiteren bietet Boost neue Möglichkeiten im Umgang mit Strings, also Zeichenketten, sowie weitere nützliche Hilfsfunktionen, welche von den meisten Programmen häufig gebraucht werden. Außerdem bietet
@@ -252,9 +252,9 @@ Graphviz ist eine Sammlung an Software-Werkzeugen zur Visualisierung von Graphen
 sie auf bestimmte Art und Weise. Die Funktionen umfassen von der Entfernung von doppelten Kanten, bis zur Visuellen Ausgabe in Form einer PDF oder PostScript-Datei viele nützliche Bearbeitungsmethoden für 
 Graphen. 
 
-Da die im Abschnitt \ref{sec:boost:graph} besprochene Implementation eines Graphen-Datentypes durch die Boost-Bibliothek eine automatische Ausgabe eines Graphen in das Graphviz-Dateiformat er\-möglicht, war 
+Da die im Abschnitt~\ref{sec:boost:graph} besprochene Implementation eines Graphen-Datentypes durch die Boost-Bibliothek eine automatische Ausgabe eines Graphen in das Graphviz-Dateiformat er\-möglicht, war 
 eine Verwendung dieser Werkzeuge sehr naheliegend. Durch die vielen verschiedenen Programme, welche von Graphviz bereitgestellt werden, war es ein leichtes, eine einfache Möglichkeit der visuellen Kontrolle
-der Arbeitsergebnisse zu implementieren. Im Gegensatz zur im Abschnitt \ref{sec:ubigraph} eingesetzten Echtzeitdarstellung der Vorgänge während des Ablaufes der Programmes, wurde die Werkzeugsammlung dazu eingesetzt
+der Arbeitsergebnisse zu implementieren. Im Gegensatz zur im Abschnitt~\ref{sec:ubigraph} eingesetzten Echtzeitdarstellung der Vorgänge während des Ablaufes der Programmes, wurde die Werkzeugsammlung dazu eingesetzt
 die Eingabe mit der Ausgabe zu vergleichen, und zu verifizieren, dass eventuelle Fehler in der internen Prüfungsroutine des Programmes nicht dazu führten, das falsche Lösungen plötzlich zulässig würden. 
 
 Eingeschränkt wurde der Einsatz von Graphviz durch die Tatsache, dass bei großen Probleminstanzen natürlich auch die Lösungsgröße entsprechend anwächst, und daher ein händischer Vergleich nur noch schwer bis gar nicht möglich
