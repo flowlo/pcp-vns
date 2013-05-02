@@ -38,7 +38,7 @@ ausgewählt wurden. Der Graph muss daher verändert werden, wenn eine Partition 
 gespeichert sowie die Anzahl an verwendeten Farben für die konkrete Lösung. 
 
 Im \texttt{partition}-Array werden für jede Partition genau eine ausgewählte Farbe gespeichert, wobei sich diese Farben natürlich von Lösung zu Lösung 
-unterscheiden können, als Index dient die Partitions-ID. Das Array \texttt{representatives} bietet eine Zuordnung von Partition zu Knoten. Ein Wert 
+unterscheiden können, als Index dient die Partitions-ID\@. Das Array \texttt{representatives} bietet eine Zuordnung von Partition zu Knoten. Ein Wert 
 an der Position $n$ zeigt auf jenen Knoten, der die Partition $n$ vertritt.
 
 Einen Sonderfall stellt das Vector-Array \texttt{partNodes} dar. Es wird ausschließlich bei der eingelesenen Probleminstanz eingesetzt und speichert
@@ -211,7 +211,7 @@ vertreten sind und ob die jeweiligen Repräsentanten richtig abgespeichert wurde
 Zuletzt wird noch überprüft, ob der Lösungsgraph mit dem Ursprungsgraphen übereinstimmt. Dazu werden verschiedene Fakten überprüft. Zum einen werden fehlende oder überschüssige Kanten in der Lösung gesucht, 
 zum anderen wird überprüft, ob die ausgewählten Repräsentanten einer Partition wirklich zu dieser Partition zugehörig sind. 
 
-Sollte keine dieser Überprüfungen auf Fehler stoßen, wird angenommen, es handle sich um eine valide Lösung für das PCP. Durch diese Überprüfung konnten auch schon Fehler innerhalb einzelne Nachbarschaften 
+Sollte keine dieser Überprüfungen auf Fehler stoßen, wird angenommen, es handle sich um eine valide Lösung für das PCP\@. Durch diese Überprüfung konnten auch schon Fehler innerhalb einzelne Nachbarschaften 
 nachgewiesen und schließlich behoben werden.
 
 
@@ -276,7 +276,7 @@ möglichst einfach koordinieren zu können ist eine Vielzahl an Optionen beim Pr
 Die wichtigsten Parameter der Methode \texttt{vnsRun}, deren Signatur in Listing~\ref{lst:vns} zu sehen ist, sind die Übergabe der derzeit besten Lösung \texttt{best}, welche von der Konstruktionsheuristik erzeugt wurde, und
 die Übergabe der vollständigen, unveränderten Probleminstanz \texttt{orig}. Auch von essentieller Bedeutung ist der String \texttt{units}, welcher eine Zeichenkette enthält, der die Reihenfolge der verwendeten Nachbarschaften bestimmt. 
 
-Die nächsten Parameter bestimmen vor allem die Ausführungszeit der VNS. Der übergebene Parameter \texttt{unsuccessfulShake} bestimmt die maximale Anzahl an Schüttelvorgängen, welche ohne Verbesserungen ablaufen dürfen, bevor die VNS beendet wird.
+Die nächsten Parameter bestimmen vor allem die Ausführungszeit der VNS\@. Der übergebene Parameter \texttt{unsuccessfulShake} bestimmt die maximale Anzahl an Schüttelvorgängen, welche ohne Verbesserungen ablaufen dürfen, bevor die VNS beendet wird.
 Der Parameter \texttt{shakeStart} bestimmt die initiale Stärke des ersten Schüttelvorganges und steht damit direkt im Zusammenhang mit der Stärke der Randomisation, welche von diesen Schüttelvorgängen ausgeführt wird.
 Mit Hilfe des Parameters \texttt{shakeIncrement} wird bestimmt, wie schnell der Stär\-ke\-para\-me\-ter des Schüttelvorgangs ansteigt, sollten keine Verbesserung durch das Schütteln entstehen.
 Schließlich kann mit dem Parameter \texttt{maxTime} direkt die maximale Anzahl an Sekunden angegeben werden, die die VNS läuft, bevor sie sich selbst beendet. 
@@ -299,7 +299,7 @@ auf Fehler hin testen. Die Plausibilitätsprüfung selber ist in Abschnitt~\ref{
 \setstretch{1.5}
 
 \section{Nachbarschaften}
-Die Nachbarschaften bilden das Herzstück der VNS. Eine einzelne Nachbarschaft versucht kleine Veränderungen vorzunehmen, welche die Lösung verbessern und gibt diese Verbesserungen dann an weitere Nachbarschaften weiter.
+Die Nachbarschaften bilden das Herzstück der VNS\@. Eine einzelne Nachbarschaft versucht kleine Veränderungen vorzunehmen, welche die Lösung verbessern und gibt diese Verbesserungen dann an weitere Nachbarschaften weiter.
 Jede Nachbarschaft verfolgt ihren eigenen Ansatz zur Verbesserung und muss nicht immer bessere Ergebnisse liefern. 
 
 Bei der Implementierung der Nachbarschaften wurde versucht, ein möglichst einfach erweiterbares Gerüst zu schaffen, um schnell und einfach neue Ideen für Nachbarschaften ausprobieren zu können. Jede Nachbarschaft
