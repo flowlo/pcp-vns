@@ -1,0 +1,24 @@
+==3504== HEAP SUMMARY:
+==3504==     in use at exit: 72 bytes in 3 blocks
+==3504==   total heap usage: 3,436 allocs, 3,433 frees, 169,780 bytes allocated
+==3504== 
+==3504== Searching for pointers to 3 not-freed blocks
+==3504== Checked 221,528 bytes
+==3504== 
+==3504== 72 bytes in 3 blocks are definitely lost in loss record 1 of 1
+==3504==    at 0x4C2C7A7: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3504==    by 0x421D4C: pcp::vnsRun(pcp::Solution&, pcp::Solution&, std::string, int, int, int, int, bool, bool) (vns.cpp:111)
+==3504==    by 0x40925E: main (main.cpp:132)
+==3504== 
+==3504== LEAK SUMMARY:
+==3504==    definitely lost: 72 bytes in 3 blocks
+==3504==    indirectly lost: 0 bytes in 0 blocks
+==3504==      possibly lost: 0 bytes in 0 blocks
+==3504==    still reachable: 0 bytes in 0 blocks
+==3504==         suppressed: 0 bytes in 0 blocks
+==3504== 
+==3504== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 2 from 2)
+--3504-- 
+--3504-- used_suppression:      2 dl-hack3-cond-1
+==3504== 
+==3504== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 2 from 2)

@@ -1,15 +1,15 @@
 \appendix
 
-\chapter{Bisherige Ergebnisse}
+\chapter{Ergebnisse}
 
-Eine Auswahl der bisherigen Ergebnisse unseres Projektes auf aus der wissenschaftlichen Literatur für dieses Optimierungsproblem bekannten Instanzen können der Tabelle~\ref{tab:result} entnommen werden, die Bedeutung der einzelnen Spalten ist wie folgt:
+Eine Auswahl der bisherigen Ergebnisse unseres Projektes auf aus der wissenschaftlichen Li\-te\-ra\-tur für dieses Optimierungsproblem bekannten Instanzen können der Tabelle~\ref{tab:result} entnommen werden, die Bedeutung der einzelnen Spalten ist wie folgt:
 
 \begin{description}
     \item[Instanz] Name der berechneten Instanz\footnote{Zu finden unter \url{www.ic.uff.br/~celso/grupo/pcp.htm}}.% In dem Format \texttt{n}\textit{(Anzahl der Knoten)}\texttt{}
-    \item[$|V|$] Anzahl an Knoten der Instanz.
-    \item[$|E|$] Anzahl an Kanten der Instanz.
-    \item[$|C|$] Anzahl an Clustern der Instanz.
-    \item[$S_i$] Die Anzahl an Farben, die von der durch \emph{onestepCD} berechneten Ausgangslösung benötigt werden.
+    \item[$|V|$] Anzahl der Knoten der Instanz.
+    \item[$|E|$] Anzahl der Kanten der Instanz.
+    \item[$|C|$] Anzahl der Clustern der Instanz.
+    \item[$S_i$] Die Anzahl der Farben, die von der durch \emph{onestepCD} berechneten Ausgangslösung benötigt werden.
     \item[$N$] Die verwendeten Nachbarschaften in Reihenfolge der Iteration:
         \begin{description}
             \item[\texttt{c}] \emph{ChangeColor}
@@ -22,7 +22,7 @@ Eine Auswahl der bisherigen Ergebnisse unseres Projektes auf aus der wissenschaf
     \item[$t$] Mittlere Laufzeit in Sekunden (ermittelt auf einem Linux-System Kernel 3.5.0 x86\_64, Intel Core i5-3317U CPU mit 1.70GHz, Compiler gcc 4.7.2 ).
 \end{description}
 
-\paragraph{Kurzinterpretation}{Wie man erkennen kann ist die Reihenfolge, in der das VND die einzelnen Nachbarschaften durchsucht muss um die jeweils besten Resultate zu erzielen, nicht wirklich eindeutig, auch wenn sich eine Tendenz zu \texttt{cnd} abzeichnet. Die erzielten Verbesserung gegenüber der von der Konstruktionsheuristik \emph{onestepCD} ermittelten Ausgangslösungen sind mitunter beachtlich und bewegen sich Großteils im Bereich zwischen 20 und 40\%.}
+\paragraph{Kurzinterpretation}{Wie man erkennen kann ist die Reihenfolge, in der das VND die einzelnen Nachbarschaften durchsuchen muss, um die jeweils besten Resultate zu erzielen, nicht wirklich eindeutig, auch wenn sich eine Tendenz zu \texttt{cnd} abzeichnet. Die erzielten Verbesserung gegenüber der von der Konstruktionsheuristik \emph{onestepCD} ermittelten Ausgangslösungen sind mitunter beachtlich und bewegen sich großteils im Bereich zwischen 20 und 40\%.}
 
 \begin{table}[!htbp]
 \centering
