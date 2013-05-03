@@ -16,19 +16,19 @@ in Abschnitt~\ref{sec:parser} besprochen.
 \singlespacing
 \begin{lstlisting}[caption={Ein Ausschnitt aus der Signatur der Solutionklasse},label=lst:solution]
 class Solution {
-   public:
-      Solution();
-      Solution(Solution *s);
-      ~Solution(); 
-      void requestDeepCopy();
+	public:
+		Solution();
+		Solution(Solution *s);
+		~Solution(); 
+		void requestDeepCopy();
 
-      Graph *g;
-      int numParts;
-      int *partition;
-      std::vector<Vertex> *partNodes;
-      int colorsUsed;
-      int *representatives;
-      int *copyCounter;
+		Graph *g;
+		int numParts;
+		int *partition;
+		std::vector<Vertex> *partNodes;
+		int colorsUsed;
+		int *representatives;
+		int *copyCounter;
 };
 \end{lstlisting}
 \setstretch{1.5}
@@ -82,21 +82,21 @@ anstatt den gesamten Graphen zu kopieren, eine Referenz auf den alten Graphen au
 // Copy an existing solution, this will use the same graph object as the 
 // original, to cut these ties, use requestDeepCopy()
 Solution::Solution(Solution *toCopy) {
-   this->partNodes = NULL;
-   this->g = toCopy->g;
-   this->copyCounter = toCopy->copyCounter;
-   // increment copycounter, to keep track of referencing solution
-   *this->copyCounter += 1;
-   this->numParts = toCopy->numParts;
-   this->partition = new int[this->numParts];
-   this->representatives = toCopy->representatives;
-   this->colorsUsed = toCopy->colorsUsed;
-   this->partitionMap = get(vertex_index1_t(), *this->g);
-   this->idMap = get(vertex_index2_t(), *this->g);
-   
-   for (int i = 0; i < this->numParts; i++) {
-      this->partition[i] = toCopy->partition[i];
-   }
+	this->partNodes = NULL;
+	this->g = toCopy->g;
+	this->copyCounter = toCopy->copyCounter;
+	// increment copycounter, to keep track of referencing solution
+	*this->copyCounter += 1;
+	this->numParts = toCopy->numParts;
+	this->partition = new int[this->numParts];
+	this->representatives = toCopy->representatives;
+	this->colorsUsed = toCopy->colorsUsed;
+	this->partitionMap = get(vertex_index1_t(), *this->g);
+	this->idMap = get(vertex_index2_t(), *this->g);
+
+	for (int i = 0; i < this->numParts; i++) {
+		this->partition[i] = toCopy->partition[i];
+	}
 }
 \end{lstlisting}
 \setstretch{1.5}
@@ -111,29 +111,29 @@ Methode werden dann alle verbleibenden Fremdreferenzen noch einmal kopiert und i
 // Cut ties between a copy and the underlying graph by 
 // making a copy of the graph
 void Solution::requestDeepCopy() {
-   // Copy graph
-   Graph *cp = g;
-   g = new Graph(*g);
-   // Reset property maps
-   this->partitionMap = get(vertex_index1_t(), *g);
-   this->idMap = get(vertex_index2_t(), *g);
+	// Copy graph
+	Graph *cp = g;
+	g = new Graph(*g);
+	// Reset property maps
+	this->partitionMap = get(vertex_index1_t(), *g);
+	this->idMap = get(vertex_index2_t(), *g);
 
-   // Copy representatives array
-   int *rep = representatives;
-   representatives = new int[numParts];
-   for (int i = 0; i < numParts; i++) {
-      representatives[i] = rep[i];
-   }
+	// Copy representatives array
+	int *rep = representatives;
+	representatives = new int[numParts];
+	for (int i = 0; i < numParts; i++) {
+		representatives[i] = rep[i];
+	}
 
-   // delete the old copy if counter reached zero
-   *copyCounter -= 1;
-   if (*copyCounter <= 0) {
-      delete copyCounter;
-      delete cp;
-      delete[] rep;
-   }
-   copyCounter = new int;
-   *copyCounter = 1;
+	// delete the old copy if counter reached zero
+	*copyCounter -= 1;
+	if (*copyCounter <= 0) {
+		delete copyCounter;
+		delete cp;
+		delete[] rep;
+	}
+	copyCounter = new int;
+	*copyCounter = 1;
 }
 \end{lstlisting}
 \setstretch{1.5}
@@ -148,16 +148,16 @@ Referenz auf diese Objekte hält. Wenn ja, löscht er diese und seine eigenen Re
 \begin{lstlisting}[caption={Der Destruktor der Solutionklasse mit Rücksichtnahme auf eventuelle verbleibende Referenzen},label={lst:destruct}]
 // Destructor
 Solution::~Solution() {
-   // Decrement copyCounter, if <= 0 delete all information about the 
-   // referenced graph and corresponding arrays
-   *copyCounter -= 1;
-   if (*copyCounter <= 0) {
-      delete g;
-      delete copyCounter;
-      delete[] representatives;
-   }
-   delete[] partition;
-   delete[] partNodes;
+	// Decrement copyCounter, if <= 0 delete all information about the 
+	// referenced graph and corresponding arrays
+	*copyCounter -= 1;
+	if (*copyCounter <= 0) {
+		delete g;
+		delete copyCounter;
+		delete[] representatives;
+	}
+	delete[] partition;
+	delete[] partNodes;
 }
 \end{lstlisting}
 \setstretch{1.5}
@@ -176,15 +176,15 @@ ein Konstruktor definiert, welcher ein klassisches Solutionobjekt übernimmt.
 \singlespacing
 \begin{lstlisting}[caption={Die Signatur von StoredSolution},label={lst:stored}]
 struct StoredSolution {
-   StoredSolution(Solution& toStore);
-   ~StoredSolution();
-   
-   int n;
-   
-   int *colors;
-   int *representatives;
-   
-   std::string toString();
+	StoredSolution(Solution& toStore);
+	~StoredSolution();
+
+	int n;
+
+	int *colors;
+	int *representatives;
+
+	std::string toString();
 };
 \end{lstlisting}
 \setstretch{1.5}
@@ -286,15 +286,12 @@ Da die Überprüfung durchaus aufwendig ist und daher etwas Zeit in Anspruch nim
 auf Fehler hin testen. Die Plausibilitätsprüfung selber ist in Abschnitt~\ref{sec:plausibility} beschrieben und testet verschiedenste Informationen, um die Korrektheit einer Lösung zu garantieren.
 \singlespacing
 \begin{lstlisting}[caption={Signatur der Funktion, welche die Variable Nachbarschaftssuche ausführt und steuert},label={lst:vns}]
-   /// Run the VNS with a maximum of k iterations.
-   /// Returns after either there were a number of unsuccessful shakes 
-   /// or if 'time' seconds have elapsed.
-   /// Shaking starts with shakeStart steps and is then incremented by
-   /// shakeIncrement.
-   Solution *vnsRun( Solution& best, Solution& orig, std::string units, 
-                     int unsuccessfulShake, int shakeStart, 
-                     int shakeIncrement, int maxTime, 
-                     bool checkIntermediate, bool checkFinal);
+/// Run the VNS with a maximum of k iterations.
+/// Returns after either there were a number of unsuccessful shakes 
+/// or if 'time' seconds have elapsed.
+/// Shaking starts with shakeStart steps and is then incremented by
+/// shakeIncrement.
+Solution *vnsRun( Solution& best, Solution& orig, std::string units, int unsuccessfulShake, int shakeStart, int shakeIncrement, int maxTime, bool checkIntermediate, bool checkFinal);
 \end{lstlisting}
 \setstretch{1.5}
 
@@ -316,23 +313,21 @@ zusätzlichen Parameter der Stärke des Schüttelns. Somit kann von der VNS best
 \singlespacing
 \begin{lstlisting}[caption={Signatur der Basisklasse \texttt{VNS\_Unit}, von welcher alle Nachbarschaften erben},label={lst:vnsunit}]
 class VNS_Unit {
-   public:
-      /// Compute the new improved solution of this neighborhood
-      virtual Solution *findLocalMin(Solution& curBest, Solution& full);
+	public:
+		/// Compute the new improved solution of this neighborhood
+		virtual Solution *findLocalMin(Solution& curBest, Solution& full) = 0;
 
-      /// Shuffle a solution using the neighborhood as a base
-      virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
-   
-      virtual ~VNS_Unit();
-      
-      /// Returns a given name for the neighborhood
-      virtual const std::string getName();
+		/// Shuffle a solution using the neighborhood as a base
+		virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps) = 0;
 
-      /// Returns a given (unique) character used to quickly reference
-      /// an unit via command line argument.
-      virtual const char getAbbreviation();
-      
-      static const char getStaticAbbreviation();
+		virtual ~VNS_Unit();
+
+		/// Returns a given name for the neighborhood
+		virtual const std::string getName() = 0;
+
+		/// Returns a given (unique) character used to quickly reference
+		/// an unit via command line argument.
+		static const char getAbbreviation();
 };
 \end{lstlisting}
 \setstretch{1.5}
