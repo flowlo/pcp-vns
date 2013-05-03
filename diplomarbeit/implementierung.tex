@@ -1,5 +1,5 @@
 \chapter{Implementierung}
-Für die Implementierung des in Abschnitt \ref{sec:ansatz} vorgeschlagenen Lösungsansatzes wurde eine möglichst flexible Struktur des Programms verwendet. Wie in Abschnitt \ref{sec:cpp} begründet, wurde
+Für die Implementierung des in Abschnitt~\ref{sec:ansatz} vorgeschlagenen Lösungsansatzes wurde eine möglichst flexible Struktur des Programms verwendet. Wie in Abschnitt~\ref{sec:cpp} begründet, wurde
 als Implementierungssprache C++ gewählt. Durch den Einsatz von C++ kann ein einfach erweiterbares Programmgerüst geschrieben werden, welches es erlaubt, schnell und ohne großen Aufwand mehrere Nachbarschaften
 für die VNS zu implementieren. 
 
@@ -11,7 +11,7 @@ anzubieten, eine bestehende Lösung zu verändern. Diese einzelnen Be\-rei\-che 
 Bei Solution handelt es sich um die Basisklasse für alle weiteren Operationen. Sie speichert sowohl den Graphen, von dem bei der Lösung ausgegangen wird, als auch die Lösung selbst mit den für die Partition gewählten Knoten und den konkret verteilten Farben
 für diese Knoten. Außerdem stellt Solution Methoden bereit, um Veränderungen an Lösungen vorzunehmen, wie sie etwa von den Nachbarschaften gebraucht werden, um einzelne Knoten umzufärben oder innerhalb einer Partition auszutauschen.
 Außerdem besitzt Solution mehrere Methoden, einen Problemgraphen aus einer Datei einzulesen und diesen wiederum in einem Solution-Objekt zu speichern. Diese Methoden zum Einlesen von Dateien werden genauer 
-in Abschnitt \ref{sec:parser} besprochen.
+in Abschnitt~\ref{sec:parser} besprochen.
 
 \singlespacing
 \begin{lstlisting}[caption={Ein Ausschnitt aus der Signatur der Solutionklasse},label=lst:solution]
@@ -38,7 +38,7 @@ ausgewählt wurden. Der Graph muss daher verändert werden, wenn eine Partition 
 gespeichert sowie die Anzahl an verwendeten Farben für die konkrete Lösung. 
 
 Im \texttt{partition}-Array werden für jede Partition genau eine ausgewählte Farbe gespeichert, wobei sich diese Farben natürlich von Lösung zu Lösung 
-unterscheiden können, als Index dient die Partitions-ID. Das Array \texttt{representatives} bietet eine Zuordnung von Partition zu Knoten. Ein Wert 
+unterscheiden können, als Index dient die Partitions-ID\@. Das Array \texttt{representatives} bietet eine Zuordnung von Partition zu Knoten. Ein Wert 
 an der Position $n$ zeigt auf jenen Knoten, der die Partition $n$ vertritt.
 
 Einen Sonderfall stellt das Vector-Array \texttt{partNodes} dar. Es wird ausschließlich bei der eingelesenen Probleminstanz eingesetzt und speichert
@@ -46,7 +46,7 @@ dort für jede Partition alle zugeordneten Knoten ab. Dies dient der schnellen F
 in mehreren Nachbarschaften Verwendung. 
 
 \subsection{Graph-Datenstruktur}
-Für die Speicherung von sowohl Lösungs- als auch Problemgraphen dient die \texttt{adjacency\_list}-Datenstruktur, welche von Boost bereitgestellt wird. Der Einsatz von Boost, einer C++ Bibliothek, wird in Abschnitt \ref{sec:boost} 
+Für die Speicherung von sowohl Lösungs- als auch Problemgraphen dient die \texttt{adjacency\_list}-Datenstruktur, welche von Boost bereitgestellt wird. Der Einsatz von Boost, einer C++ Bibliothek, wird in Abschnitt~\ref{sec:boost} 
 beschrieben. Es wurde bewusst eine Liste als Grundlage der Speicherung verwendet, um ein schnelles Iterieren über Knoten und Kanten zu ermöglichen. Die ebenfalls von Boost be\-reit\-ge\-stel\-lte 
 \texttt{adjacency\_matrix} (zwei Knoten sind adjazent, wenn sie über eine Kante miteinander verbunden sind) hatte sich in einem Test als ungeeignet erwiesen, da nicht alle Operationen wie das Hinzufügen und Löschen von Knoten unterstützt werden. Des Weiteren wurde die Option für 
 ungerichtete Graphen gesetzt, da das PCP keine gerichteten Beziehungen zwischen Knoten vorsieht. Dies führt dazu, dass, sobald eine Kante vom Knoten \textit{A} zu Knoten \textit{B} führt, automatisch auch
@@ -71,7 +71,7 @@ auf die höhere Datenlokalität zurückzuführen, durch die der Prozessor bereit
 
 Besonders interessant bei der Solution-Klasse ist die automatisch bereitgestellte Kopiermechanik. Einer der besonderen Eigenschaften von C++ ist es, für jede Klasse automatisch einen sogenannten Kopierkonstruktor
 bereitzustellen, welcher als Parameter ein Objekt des selben Typs entgegen nimmt und dieses kopiert. Da im Falle einer Lösung aber nicht immer alle Daten kopiert werden müssen, wurde in dieser Arbeit eine
-eigene Kopiermechanik implementiert. Wie in Listing \ref{lst:copy} zu sehen ist wird ein Großteil der Referenzdatentypen direkt übernommen, da diese häufig gar nicht verändert werden. 
+eigene Kopiermechanik implementiert. Wie in Listing~\ref{lst:copy} zu sehen ist wird ein Großteil der Referenzdatentypen direkt übernommen, da diese häufig gar nicht verändert werden. 
 
 Das Kopieren einer Lösung kommt vor Allem bei den verschieden Nachbarschaften zum Einsatz. Eine bestehende Lösung soll verändert werden, ohne dass die Information der Ausgangslösung verloren geht. Also wird
 die bestehende Lösung kopiert, und die Veränderungen nur auf der neuen Lösung ausgeführt. Da viele der Nachbarschaften darauf basieren, dass ausschließlich die Lösungsfarben verändert werden, kann zum Beispiel, 
@@ -192,7 +192,7 @@ struct StoredSolution {
 Für die schnelle Zuordnung einer neuen Lösung zu den bestehenden Lösungen wird eine Hashtable-Datenstruktur verwendet. Durch die Verwendung einer
 Hashtable ist eine quasi sofortige Zuordnung einer Lösung zu dem entsprechenden Platz in der Hashtable möglich. Sollte eine Lösung schon einmal 
 aufgekommen sein, so wird dieser Lösungsstrang verworfen, da er nicht zu neuen Lösungen führen würde. Die Implementierung der Hashtable wird von 
-Boost, beschrieben im Abschnitt \ref{sec:boost}, bereitgestellt. Um die Hashtable zu betreiben sind außerdem noch eine Methode zur Hashberechnung
+Boost, beschrieben im Abschnitt~\ref{sec:boost}, bereitgestellt. Um die Hashtable zu betreiben sind außerdem noch eine Methode zur Hashberechnung
 sowie eine Methode zum Vergleich zweier gespeicherten Solutions notwendig. Der Hash für ein StoredSolutionobjekt wird aus den gesammelten Werten
 der beiden internen Arrays (Repräsentanten und Farben) berechnet, während für die Vergleichsmethode die beiden Arrays Wert für Wert verglichen werden. Die von Boost 
 bereitgestellte Hashtable verwendet bei gleichen Hashwerten für unterschiedliche Lösungen eine einfache Liste, um die Ergebnisse zu speichern.
@@ -211,7 +211,7 @@ vertreten sind und ob die jeweiligen Repräsentanten richtig abgespeichert wurde
 Zuletzt wird noch überprüft, ob der Lösungsgraph mit dem Ursprungsgraphen übereinstimmt. Dazu werden verschiedene Fakten überprüft. Zum einen werden fehlende oder überschüssige Kanten in der Lösung gesucht, 
 zum anderen wird überprüft, ob die ausgewählten Repräsentanten einer Partition wirklich zu dieser Partition zugehörig sind. 
 
-Sollte keine dieser Überprüfungen auf Fehler stoßen, wird angenommen, es handle sich um eine valide Lösung für das PCP. Durch diese Überprüfung konnten auch schon Fehler innerhalb einzelne Nachbarschaften 
+Sollte keine dieser Überprüfungen auf Fehler stoßen, wird angenommen, es handle sich um eine valide Lösung für das PCP\@. Durch diese Überprüfung konnten auch schon Fehler innerhalb einzelne Nachbarschaften 
 nachgewiesen und schließlich behoben werden.
 
 
@@ -257,7 +257,7 @@ Referenz für Nachbarschaften, welche einzelne Knoten austauschen. Außerdem spe
 zu den verfügbaren Knoten in der Partition ab. 
 
 \section{Konstruktionsheuristik}
-Als Konstruktionsheuristik wurde der in Abschnitt \ref{sec:construct} vorgestellte Algorithmus OneStep-CD gewählt. Die verwendete Implementierung des Algorithmus
+Als Konstruktionsheuristik wurde der in Abschnitt~\ref{sec:construct} vorgestellte Algorithmus OneStep-CD gewählt. Die verwendete Implementierung des Algorithmus
 erzeugt ein neues Solutionobjekt, als einziger Übergabeparameter wird das aus der Datei eingelesene Solutionobjekt benötigt, welches ja den vollständigen Problemgraphen
 enthält. Dieses Solutionobjekt bildet dann die Ausgangsbasis für die Verbesserung in der Variablen Nachbarschaftssuche. Der Graph, welcher in dem erzeugten Solutionobjekt
 referenziert wird, ist ein anderer Graph als jener, der in der Gesamtlösung verwendet wird. In dem referenzierten Graphen befindet sich nur mehr ein Knoten per Partition, welcher auch den ausgewählten Repräsentanten der jeweiligen Partition darstellt.
@@ -276,7 +276,7 @@ möglichst einfach koordinieren zu können ist eine Vielzahl an Optionen beim Pr
 Die wichtigsten Parameter der Methode \texttt{vnsRun}, deren Signatur in Listing~\ref{lst:vns} zu sehen ist, sind die Übergabe der derzeit besten Lösung \texttt{best}, welche von der Konstruktionsheuristik erzeugt wurde, und
 die Übergabe der vollständigen, unveränderten Probleminstanz \texttt{orig}. Auch von essentieller Bedeutung ist der String \texttt{units}, welcher eine Zeichenkette enthält, der die Reihenfolge der verwendeten Nachbarschaften bestimmt. 
 
-Die nächsten Parameter bestimmen vor allem die Ausführungszeit der VNS. Der übergebene Parameter \texttt{unsuccessfulShake} bestimmt die maximale Anzahl an Schüttelvorgängen, welche ohne Verbesserungen ablaufen dürfen, bevor die VNS beendet wird.
+Die nächsten Parameter bestimmen vor allem die Ausführungszeit der VNS\@. Der übergebene Parameter \texttt{unsuccessfulShake} bestimmt die maximale Anzahl an Schüttelvorgängen, welche ohne Verbesserungen ablaufen dürfen, bevor die VNS beendet wird.
 Der Parameter \texttt{shakeStart} bestimmt die initiale Stärke des ersten Schüttelvorganges und steht damit direkt im Zusammenhang mit der Stärke der Randomisation, welche von diesen Schüttelvorgängen ausgeführt wird.
 Mit Hilfe des Parameters \texttt{shakeIncrement} wird bestimmt, wie schnell der Stär\-ke\-para\-me\-ter des Schüttelvorgangs ansteigt, sollten keine Verbesserung durch das Schütteln entstehen.
 Schließlich kann mit dem Parameter \texttt{maxTime} direkt die maximale Anzahl an Sekunden angegeben werden, die die VNS läuft, bevor sie sich selbst beendet. 
@@ -299,7 +299,7 @@ auf Fehler hin testen. Die Plausibilitätsprüfung selber ist in Abschnitt~\ref{
 \setstretch{1.5}
 
 \section{Nachbarschaften}
-Die Nachbarschaften bilden das Herzstück der VNS. Eine einzelne Nachbarschaft versucht kleine Veränderungen vorzunehmen, welche die Lösung verbessern und gibt diese Verbesserungen dann an weitere Nachbarschaften weiter.
+Die Nachbarschaften bilden das Herzstück der VNS\@. Eine einzelne Nachbarschaft versucht kleine Veränderungen vorzunehmen, welche die Lösung verbessern und gibt diese Verbesserungen dann an weitere Nachbarschaften weiter.
 Jede Nachbarschaft verfolgt ihren eigenen Ansatz zur Verbesserung und muss nicht immer bessere Ergebnisse liefern. 
 
 Bei der Implementierung der Nachbarschaften wurde versucht, ein möglichst einfach erweiterbares Gerüst zu schaffen, um schnell und einfach neue Ideen für Nachbarschaften ausprobieren zu können. Jede Nachbarschaft
@@ -338,7 +338,7 @@ class VNS_Unit {
 \setstretch{1.5}
 
 \subsection{ChangeColor}
-Bei dieser Nachbarschaft wurde versucht, die in Abschnitt \ref{sec:ChangeColor} vorgeschlagenen Ansätze in eine konkrete Nachbarschaft zu übersetzen. Da sich bei Tests herrausstellte, dass der erste beschriebene Ansatz
+Bei dieser Nachbarschaft wurde versucht, die in Abschnitt~\ref{sec:ChangeColor} vorgeschlagenen Ansätze in eine konkrete Nachbarschaft zu übersetzen. Da sich bei Tests herrausstellte, dass der erste beschriebene Ansatz
 mit zufälliger Auswahl an Farbe und zufälliger Bestimmung eines in konfliktstehenden Knotens bei großen Instanzen zu schlechten Ergebnissen führte, wurde ein etwas modifizierter Ansatz gewählt.
 
 Die Nachbarschaft wurde wie der in Algorithmus~\ref{psy:ChangeColor} beschriebene Pseudocode implementiert. Da er ausschließlich die Farben bearbeitet und sonst keine Veränderungen am Graphen durchführt,
@@ -353,49 +353,15 @@ Die Implementierung dieser Nachbarschaft erfolgte unter Verwendung der in Abschn
 Nachbarschaft auch den zu Grunde liegenden Graphen verändert, ist es notwendig, ihn auf einem eigenen, abgetrennten Graphenobjekt arbeiten zu lassen. 
 
 \subsection{DSATUR}
-DSATUR steht im Kontrast zu den Change*-Heuristiken: Das generalisierte Graph Coloring Problem (PCP) wird auf das Graph Coloring Problem ohne Einteilung der Knoten in Partitionen reduziert. Konkret belässt die Heuristik also die Auswahl der Knoten, färbt sie aber alle erneut ein. Dabei wird nach be\-stim\-mt\-en Regeln verfahren, welche in \ref{sec:dsatur} genauer beschrieben sind.
+DSATUR steht im Kontrast zu den Change*-Heuristiken: Das generalisierte Graph Coloring Problem (PCP) wird auf das Graph Coloring Problem ohne Einteilung der Knoten in Partitionen reduziert. Konkret belässt die Heuristik also die Auswahl der Knoten, färbt sie aber alle erneut ein. Dabei wird nach be\-stim\-mt\-en Regeln verfahren, welche in~\ref{sec:dsatur} genauer beschrieben sind.
 
 Ein wesentlicher Vorteil dieser Heuristik ist, dass sie nur Änderungen an der Färbung durchführt, die Strukur des Graphs aber nicht verändert und somit ohne das Kopieren des Graphens auskommt, was sie zur schnellsten Methode macht.
 
 \subsection{ChangeAll}
-Bei der Nachbarschaft ChangeAll handelt es sich um eine Kombination aus den beiden Nachbarschaften ChangeColor und ChangeNode. Beide Ansätze werden kombiniert, um ihre einzelnen Stärken gemeinsam ausspielen
-zu können. In Tests mit großen und kleinen Probleminstanzen zeigte sich, das ChangeAll zu Verbesserungen führt, welche weder von ChangeNode noch von ChangeColor vorgenommen wurden. ChangeAll wurde als letzte
-Nachbarschaft implementiert und ist daher nicht im originalen Ansatz zu finden.
+Obwohl ChangeAll eine große Ähnlichkeit mit sowohl ChangeColor als auch ChangeNode aufweist, entstand diese Nachbarschaft erst wesentlich später. Der Ansatz dieser Nachbarschaft ist im Abschnitt~\ref{sec:changeall} zu finden.
+Es zeigte sich, dass durch die Verwendung von ChangeAll weitere Verbesserungen durchgeführt werden konnten, welche nicht mit Hilfe von anderen 
+Nachbarschaften erzielt werden konnten.
 
-Der Pseudocode ist unter Algorithmus~\ref{psy:ChangeAll} zu finden. Zuerst wird bei ChangeNode nach einem neuen Knoten gesucht, welcher einen anderen Knoten mit höchster Farbe ersetzen soll. Dann wird
-allerdings wie bei ChangeColor dieser neue Knoten in verschiedenen Einfärbungen ausprobiert. Sollte eine dieser Kombinationen aus Knotenauswahl und Farben eine Verbesserung darstellen, werden weitere Knoten
-mit maximaler Farbe gesucht. Sollte keine Verbesserung gefunden werden, so bricht die Nachbarschaft ohne Ergebnis ab.
-
-Ähnlich wie bei der ChangeNode-Nachbarschaft werden auch bei dieser Heuristik einzelne Knoten der Lösung ausgetauscht. Da dies zu einer Veränderung im Lösungsgraphen führt ist es notwendig, das erzeugte
+Ähnlich wie bei der ChangeNode-Nachbarschaft werden auch bei dieser Heuristik einzelne Knoten der Lösung ausgetauscht. Da dies zu einer Veränderung im Lösungsgraphen führt, ist es notwendig, das erzeugte
 Solutionobjekt mit samt dem Graphenobjekt vollständig abzutrennen. Dazu werden die in Abschnitt~\ref{sec:copy} beschriebenen Methoden verwendet.
 
-\begin{algorithm}
-\begin{algorithmic}[1]
-\Require Solution $s$, Solution $full$
-\Ensure Solution $l$
-\State $l \leftarrow$ Kopie von $s$
-\State $c \leftarrow maximaleFarbe(l)$
-\ForAll{Knoten $v \in l.graph$ für die gilt $v.farbe = c$}
-\ForAll{Knoten $a \in full.graph$ für die gilt $a.partition = v.partition \wedge a \neq v$}
-\State Tausche Knoten $v$ mit Knoten $a$ in Solution $l$
-\For{Farbe $i = 0 \to c - 1$}
-\State $a.farbe \leftarrow i$
-\State Färbe alle adjazenten Knoten mit gleicher Farbe neu ein
-\If{$maxFarbe(a.adjazenzen) < c$}
-\State Beende innerste Schleife  
-\EndIf
-\EndFor
-\If{$maxFarbe(a.adjazenzen) < c$}
-\State Beende mittlere Schleife  
-\EndIf
-\EndFor
-\If{$maxFarbe(a.adjazenzen) \ge c$}
-\State Stoppe Nachbarschaft ohne bessere Lösung
-\EndIf
-\EndFor
-\State retourniere $l$
-\end{algorithmic}
-\caption{Pseudocode der ChangeAll-Nachbarschaft}
-\label{psy:ChangeAll}
-\end{algorithm}
- 

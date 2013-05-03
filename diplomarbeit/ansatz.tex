@@ -222,3 +222,42 @@ Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das norma
 \end{algorithmic}
 \caption{Pseudocode der Nachbarschaft DSATUR}
 \end{algorithm}
+
+\subsection{ChangeAll}
+\label{sec:changeall}
+Bei der Nachbarschaft ChangeAll handelt es sich um eine Kombination aus den beiden Nachbarschaften ChangeColor und ChangeNode. Beide Ansätze werden kombiniert, um ihre einzelnen Stärken gemeinsam auspielen
+zu können. In Tests mit großen und kleinen Probleminstanzen zeigte sich, das ChangeAll zu Verbesserungen führt, welche weder von ChangeNode noch von ChangeColor vorgenommen wurden.
+
+Der Pseudocode ist unter Algorithmus~\ref{psy:ChangeAll} zu finden. Zuerst wird die bei ChangeNode nach einem neuen Knoten gesucht, welcher einen anderen Knoten mit höchster Farbe ersetzen soll. Dann wird
+allerdings wie bei ChangeColor dieser neue Knoten in verschiedenen Einfärbungen ausprobiert. Sollte eine dieser Kombinationen aus Knotenauswahl und Farben eine Verbesserung darstellen werden weitere Knoten
+mit maximaler Farbe gesucht. Sollte keine Verbesserung gefunden werden, bricht die Nachbarschaft ohne Ergebnis ab.
+
+\begin{algorithm}
+\begin{algorithmic}[1]
+\Require Solution $s$, Solution $full$
+\Ensure Solution $l$
+\State $l \leftarrow$ Kopie von $s$
+\State $c \leftarrow maximaleFarbe(l)$
+\ForAll{Knoten $v \in l.graph$ für die gilt $v.farbe = c$}
+\ForAll{Knoten $a \in full.graph$ für die gilt $a.partition = v.partition \wedge a \neq v$}
+\State Tausche Knoten $v$ mit Knoten $a$ in Solution $l$
+\For{Farbe $i = 0 \to c - 1$}
+\State $a.farbe \leftarrow i$
+\State Färbe alle adjazenten Knoten mit gleicher Farbe neu ein
+\If{$maxFarbe(a.adjazenzen) < c$}
+\State Beende innerste Schleife
+\EndIf
+\EndFor
+\If{$maxFarbe(a.adjazenzen) < c$}
+\State Beende mittlere Schleife
+\EndIf
+\EndFor
+\If{$maxFarbe(a.adjazenzen) \ge c$}
+\State Stoppe Nachbarschaft ohne bessere Lösung
+\EndIf
+\EndFor
+\State retourniere $l$
+\end{algorithmic}
+\caption{Pseudocode der ChangeAll-Nachbarschaft}
+\label{psy:ChangeAll}
+\end{algorithm}
