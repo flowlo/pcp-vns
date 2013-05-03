@@ -9,10 +9,6 @@ const string dsatur::getName() {
 }
 
 const char dsatur::getAbbreviation() {
-	return getStaticAbbreviation();
-}
-
-const char dsatur::getStaticAbbreviation() {
 	return 'd';
 }
 

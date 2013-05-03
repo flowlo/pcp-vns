@@ -35,15 +35,15 @@ namespace pcp {
 		vector<VNS_Unit*> neighbors = vector<VNS_Unit*>();
 		
 		for (string::iterator i = units.begin(); i < units.end(); i++) {
-			if (*i == changeNode::getStaticAbbreviation())
+			if (*i == changeNode::getAbbreviation())
 				neighbors.push_back(new changeNode());
-			else if (*i == changeColor::getStaticAbbreviation())
+			else if (*i == changeColor::getAbbreviation())
 				neighbors.push_back(new changeColor());
-			/*else if (*i == tabuSearch::getStaticAbbreviation())
+			/*else if (*i == tabuSearch::getAbbreviation())
 				neighbors.push_back(new tabuSearch());*/
-			else if (*i == dsatur::getStaticAbbreviation())
+			else if (*i == dsatur::getAbbreviation())
 				neighbors.push_back(new dsatur());
-			else if (*i == changeAll::getStaticAbbreviation())
+			else if (*i == changeAll::getAbbreviation())
 				neighbors.push_back(new changeAll());
 			else {
 				cerr << "Invalid unit specified. " << units << endl;

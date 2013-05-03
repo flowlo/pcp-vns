@@ -9,10 +9,6 @@ const string changeColor::getName() {
 }
 
 const char changeColor::getAbbreviation() {
-	return getStaticAbbreviation();
-}
-
-const char changeColor::getStaticAbbreviation() {
 	return 'c' ;
 }
 

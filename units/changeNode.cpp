@@ -9,10 +9,6 @@ const string changeNode::getName() {
 }
 
 const char changeNode::getAbbreviation() {
-	return getStaticAbbreviation();
-}
-
-const char changeNode::getStaticAbbreviation() {
 	return 'n';
 }
 

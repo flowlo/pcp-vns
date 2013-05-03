@@ -9,10 +9,6 @@ const string changeAll::getName() {
 }
 
 const char changeAll::getAbbreviation() {
-	return getStaticAbbreviation();
-}
-
-const char changeAll::getStaticAbbreviation() {
 	return 'a';
 }
 
