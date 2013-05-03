@@ -208,7 +208,7 @@ Speicherung der Knoten bei weitem von den Vorteilen aufgewogen.
 Da im Rahmen der Variablen Nachbarschaftssuche mehrere Nachbarschaften immer wieder eine Veränderung der Adjazenzen vornehmen, fiel die Wahl der Datenstruktur für die Spei\-cher\-ung der Kanten zunächst auf eine
 Liste. Zu jedem Knoten wird eine Liste der Nachbarknoten gespeichert, woraus dann die Kanten gebildet werden. Da das Löschen aus und das Einfügen in eine Liste in konstanter Laufzeit möglich ist, wurden
 mit der Listenstruktur die besten Ergebnisse erwartet. Ausgiebige Tests ergaben jedoch, dass auch für die Speicherung der Kanten ein Vektor besser geeignet war. Da beim Löschen eines Knotens zumeist gleich alle adjazenten
-Kanten gelöscht werden, reduzierte sich der Vorteil einer Listenstruktur, und das Einfügen ist auch in einen Vektor in zumeist konstanter Zeit möglich. 
+Kanten gelöscht werden, reduzierte sich der Vorteil einer Listenstruktur und das Einfügen ist auch in einen Vektor in zumeist konstanter Zeit möglich. 
 
 Eine weitere Konfigurationsmöglichkeit betrifft das Verhalten des Graphen beim Hinzufügen von Kanten. Es gibt gerichtete und ungerichtete Graphen, wobei gerichtete Graphen Kanten besitzen, welche quasi
 als Einbahn fungieren, sie haben einen Anfangsknoten und einen Zielknoten und stellen nicht automatisch auch eine Verbindung vom Zielknoten zum Anfangsknoten her. Im Gegensatz dazu stehen die ungerichtete Graphen, bei denen
@@ -247,7 +247,7 @@ Programmablaufes die Geschwindigkeit desselben stark beeinflusst wird. Daher ist
 um eine korrekte und ausreichend lange Ausführung des Programmes zu gewährleisten. 
 
 Wenn nun innerhalb des Programmes ein Stück Arbeitsspeicher reserviert wird, merkt sich Valgrind diesen Vorgang und protokolliert mit, wieviele Zeiger auf diesen Speicherbereich verweisen. Sollte nun irgendwann
-kein einziger Zeiger mehr diesen Speicherbereich referenzieren, es wurden also quasi alle Variablen, die diese Information enthielten, verworfen oder überschrieben, und der Speicherbereich wurde nicht wieder
+kein einziger Zeiger mehr diesen Speicherbereich referenzieren, es wurden also quasi alle Variablen, die diese Information enthielten, verworfen oder überschrieben und der Speicherbereich wurde nicht wieder
 freigegeben, so weiß Valgrind, dass dieser Speicher für das Programm verloren gegangen ist. Sollte sich dieser Vorgang wiederholen entsteht ein immer größer werdender Pool aus nicht freigegebenen Speicherbereichen, welche
 nicht gelöscht wurden. Nachdem eine Low-Level-Programmiersprache wie C++ keine richtige automatisierte Speicherverwaltung wie andere Sprachen, z.~B.\ Java und C\# hat muss der Programmierer selbst für die 
 Freigabe von reservierten Speicherbereichen sorgen. Daher ist es essentiell für gute Programmierung, alle erzeugten Objekte nach ihrer Verwendung wieder freizugeben, um so den exzessiven und sinnlosen Gebrauch von
@@ -295,7 +295,7 @@ kon\-nte dann verifiziert werden, dass das Programm in der Lage ist, ungültige 
 \section{Ubigraph}
 \label{sec:ubigraph}
 Bei \textit{Ubigraph}\footnote{\url{http://ubietylab.net/ubigraph/}} handelt es sich um eine Plattform zur visuellen Darstellung von Graphen. Die Plattform besteht einerseits aus einem Server, welcher Befehle entgegen nimmt und aus diesen Befehlen eine 
-dreidimensionale Darstellung des Graphen ausgibt, und andererseits aus einer Vielzahl an Schnittstellen für alle nur erdenklichen Programmiersprachen. Mit Hilfe von Ubigraph ist es möglich, die
+dreidimensionale Darstellung des Graphen ausgibt und andererseits aus einer Vielzahl an Schnittstellen für alle nur erdenklichen Programmiersprachen. Mit Hilfe von Ubigraph ist es möglich, die
 Vorgänge innerhalb der VNS, sowie beim Aufbau der Initiallösung zeitnah mitzuverfolgen und gleichzeitig eine ansehnliche dreidimensionale Darstellung des Graphen zu erlangen.
 
 \begin{figure}

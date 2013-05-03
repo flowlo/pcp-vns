@@ -57,7 +57,7 @@ zu beeinflussen. Zum einen kann bei der Speicherung der Knoten sowohl eine norma
 Ein Vector ist eine Datenstruktur ähnlich einem Array, bei dem alle Datenelemente im Speicher hintereinander angeordnet sind, welche aber vergrößert oder verkleinert werden kann.
 
 Für die Speicherung der Knoten wurde ein Vector herangezogen, zum einen, da nun ein Knoten direkt über einen zahlenbasierten Index ansprechbar ist, zum Anderen, weil während der Laufzeit des Programms nur
-zwei Mal Knoten hinzugefügt oder entfernt werden: Einmal beim Einlesen der Probleminstanz aus einer Datei, und einmal bei der Berechnung der Ausgangslösung. Bei allen anderen Veränderungen der Lösung erfolgt
+zwei Mal Knoten hinzugefügt oder entfernt werden: Einmal beim Einlesen der Probleminstanz aus einer Datei und einmal bei der Berechnung der Ausgangslösung. Bei allen anderen Veränderungen der Lösung erfolgt
 der Austausch von Knoten direkt an der Stelle des zu ersetzenden Knoten. Es ist daher anzunehmen, dass während der Laufzeit des Programms keine größeren Reallokationsoperationen vorgenommen werden müssen.
 
 Schwieriger ist die Wahl schon bei der Frage, ob für die Speicherung der Kanten eine Liste nicht besser geeignet wäre. Da in verschiedenen, weiter unten beschriebenen Nachbarschaften Knoten ausgetauscht werden,
@@ -74,7 +74,7 @@ bereitzustellen, welcher als Parameter ein Objekt des selben Typs entgegen nimmt
 eigene Kopiermechanik implementiert. Wie in Listing~\ref{lst:copy} zu sehen ist wird ein Großteil der Referenzdatentypen direkt übernommen, da diese häufig gar nicht verändert werden. 
 
 Das Kopieren einer Lösung kommt vor Allem bei den verschieden Nachbarschaften zum Einsatz. Eine bestehende Lösung soll verändert werden, ohne dass die Information der Ausgangslösung verloren geht. Also wird
-die bestehende Lösung kopiert, und die Veränderungen nur auf der neuen Lösung ausgeführt. Da viele der Nachbarschaften darauf basieren, dass ausschließlich die Lösungsfarben verändert werden, kann zum Beispiel, 
+die bestehende Lösung kopiert und die Veränderungen nur auf der neuen Lösung ausgeführt. Da viele der Nachbarschaften darauf basieren, dass ausschließlich die Lösungsfarben verändert werden, kann zum Beispiel, 
 anstatt den gesamten Graphen zu kopieren, eine Referenz auf den alten Graphen aufrecht erhalten werden. Selbiges gilt natürlich auch für alle direkt mit dem Graph in Verbindung stehenden gespeicherten Daten.
 
 \singlespacing
@@ -273,7 +273,7 @@ Wie \texttt{onestepCD} operiert auch \texttt{pilot} auf einem Solutionobjekt, da
 Die Variable Nachbarschaftssuche, wie sie in Abschnitt~\ref{sec:vns} beschrieben wurde, wurde als eine einzelne Funktion implementiert, welche den Ablauf der Nachbarschaften steuert. Um den Ablauf des Programmes
 möglichst einfach koordinieren zu können ist eine Vielzahl an Optionen beim Programmstart spezifizierbar. Vieler dieser Optionen beeinfluss direkt oder indirekt den Ablauf der VNS. 
 
-Die wichtigsten Parameter der Methode \texttt{vnsRun}, deren Signatur in Listing~\ref{lst:vns} zu sehen ist, sind die Übergabe der derzeit besten Lösung \texttt{best}, welche von der Konstruktionsheuristik erzeugt wurde, und
+Die wichtigsten Parameter der Methode \texttt{vnsRun}, deren Signatur in Listing~\ref{lst:vns} zu sehen ist, sind die Übergabe der derzeit besten Lösung \texttt{best}, welche von der Konstruktionsheuristik erzeugt wurde und
 die Übergabe der vollständigen, unveränderten Probleminstanz \texttt{orig}. Auch von essentieller Bedeutung ist der String \texttt{units}, welcher eine Zeichenkette enthält, der die Reihenfolge der verwendeten Nachbarschaften bestimmt. 
 
 Die nächsten Parameter bestimmen vor allem die Ausführungszeit der VNS\@. Der übergebene Parameter \texttt{unsuccessfulShake} bestimmt die maximale Anzahl an Schüttelvorgängen, welche ohne Verbesserungen ablaufen dürfen, bevor die VNS beendet wird.
@@ -303,7 +303,7 @@ Bei der Implementierung der Nachbarschaften wurde versucht, ein möglichst einfa
 wurde daher als eigene Klasse implementiert, welche aber alle von einer einzelnen Basisklasse erben. Diese Basisklasse definiert ein Grundgerüst, welches von jeder Nachbarschaft ausgefüllt werden muss. 
 
 Zu diesem Grundgerüst zählt nicht nur die Implementierung der eigentlichen Nachbarschaft, sondern auch eine Funktion, um den Namen der Nachbarschaft auszugeben, eine Funktion, um ein Kurzzeichen für die Nachbarschaft
-zu definieren und eine Funktion, um eine bestehende Lösung zu schütteln, wie dies in Abschnitt~\ref{sec:vns} beschrieben wurde. Jede dieser Funktionen muss für eine Nachbarschaft implementiert werden, und jede Nachbarschaft
+zu definieren und eine Funktion, um eine bestehende Lösung zu schütteln, wie dies in Abschnitt~\ref{sec:vns} beschrieben wurde. Jede dieser Funktionen muss für eine Nachbarschaft implementiert werden und jede Nachbarschaft
 sollte nur gültige Lösungen zurückliefern oder zumindet einen Indikator liefern, dass die zurückgelieferte Lösung ein unbrauchbares Ergebnis darstellt.
 
 Die Basisklasse, von der jede Nachbarschaft erbt, heißt \texttt{VNS\_Unit}. Alle Nachbarschaften müssen alle definierten Methoden und Prozeduren implementieren. Jeder Nachbarschaft wird dabei beim Aufrufen der
