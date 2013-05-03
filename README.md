@@ -8,7 +8,7 @@ A VNS approach to solve the Partition Graph Coloring Problem.
 
 We use `onestepCD` from [1] to find an initial solution and then iteratively apply various neighborhood improvement strategies.
 
-## Prerequisites
+### Prerequisites
 
 This implementation uses various components of the [boost C++ libraries](http://www.boost.org/). Needed packages on Ubuntu are [`libboost-dev` and `libboost-program-options-dev`](apt:libboost-dev,libboost-program-options-dev).
 
