@@ -11,7 +11,45 @@ Um das Management während dem Projektverlauf zu erleichtern, wurde das Projekt 
 \begin{landscape}
 \begin{figure}
 \centering
-\includegraphics[width=23cm]{img/psp.png}
+\begin{tikzpicture}[
+  basic/.style  = {draw, text width=6cm, rectangle, font=\sffamily\footnotesize, align=center},
+  root/.style   = {basic, rounded corners=2pt, thin, text width=21.9cm},
+  part/.style = {basic, rounded corners=6pt, thin, text width=4.5cm},
+  work package/.style = {basic, thin, text width=4.5cm, sibling distance=4cm, font=\sffamily\scriptsize},
+  >=latex]
+
+\node[left = 0mm, root] (root) {Variable Neighborhood Search für das Partition Graph Coloring Problem};
+
+\begin{scope}[every node/.style={part}]
+\node [yshift = -1cm, left = 0mm, draw=Sepia] (c4) {Testen und Evaluieren};
+\node [left = 1cm of c4, draw=Red] (c3) {Implementieren der Nachbarschaften};
+\node [left = 1cm of c3, draw=blue] (c2) {Design};
+\node [left = 1cm of c2, draw=black!60!green] (c1) {Recherche};
+\end{scope}
+
+\begin{scope}[every node/.style={work package}]
+\node [below = 4mm of c1 , draw=black!60!green] (c11) {\footnotesize\ap{1.1}\\ Beschaffen der wissenschaftlichen Arbeiten zum Thema};
+\node [below = 3mm of c11, draw=black!60!green] (c12) {\footnotesize\ap{1.2}\\ Besprechen der bisherigen Ansätze und Ergebnisse};
+\node [below = 3mm of c12, draw=black!60!green] (c13) {\footnotesize\ap{1.3}\\ Ideenfindung für Nachbarschaften};
+
+\node [below = 4mm of c2 , draw=blue] (c21) {\footnotesize\ap{2.1}\\ Definieren einer Repräsentation für Lösungen};
+\node [below = 3mm of c21, draw=blue] (c22) {\footnotesize\ap{2.2}\\ Analysieren des Eingabeformats};
+\node [below = 3mm of c22, draw=blue] (c23) {\footnotesize\ap{2.3}\\ Definieren des Ausgabeformats};
+\node [below = 3mm of c23, draw=blue] (c24) {\footnotesize\ap{2.4}\\ Wahl von Codebibliotheken, Compiler, etc.};
+\node [below = 3mm of c24, draw=blue] (c25) {\footnotesize\ap{2.5}\\ Implementieren ei\-ner Visualisierung};
+
+\node [below = 4mm of c3 , draw=Red] (c31) {\footnotesize\ap{3.1}\\ Implementieren von TabuSearch};
+\node [below = 3mm of c31, draw=Red] (c32) {\footnotesize\ap{3.2}\\ Implementieren von ChangeColor};
+\node [below = 3mm of c32, draw=Red] (c33) {\footnotesize\ap{3.3}\\ Implementieren von ChangeNode};
+\node [below = 3mm of c33, draw=Red] (c34) {\footnotesize\ap{3.4}\\ Implementieren von DSATUR};
+
+\node [below = 4mm of c4 , draw=Sepia] (c41) {\footnotesize\ap{4.1}\\Implementieren der Plausibilitätsprüfung};
+\node [below = 3mm of c41, draw=Sepia] (c42) {\footnotesize\ap{4.2}\\Berechnen der Lösungen für Testinstanzen};
+\node [below = 3mm of c42, draw=Sepia] (c43) {\footnotesize\ap{4.3}\\Diskutieren von Verbesserungsvorschlägen};
+\end{scope}
+
+\end{tikzpicture}
+
 \caption[Projektstrukturplan]{Pro\-jekt\-struk\-tur\-plan zur Übersicht über die Teilaufgaben innerhalb des Projektablaufs.}
 \label{fig:psp}
 \end{figure}
