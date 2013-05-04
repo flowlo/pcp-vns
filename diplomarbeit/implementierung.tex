@@ -61,7 +61,7 @@ zwei Mal Knoten hinzugefügt oder entfernt werden: Einmal beim Einlesen der Prob
 der Austausch von Knoten direkt an der Stelle des zu ersetzenden Knoten. Es ist daher anzunehmen, dass während der Laufzeit des Programms keine größeren Reallokationsoperationen vorgenommen werden müssen.
 
 Schwieriger ist die Wahl schon bei der Frage, ob für die Speicherung der Kanten eine Liste nicht besser geeignet wäre. Da in verschiedenen, weiter unten beschriebenen Nachbarschaften Knoten ausgetauscht werden,
-ein Vorgang der darauf basiert, die alten Adjazenzen eines Knotens zu kappen und an deren Stelle neue Adjazenzen zu schaffen, welche dem ausgetauschten Knoten entsprechen, handelt es sich bei der Kantenspeicherung
+ein Vorgang der darauf basiert, die alten Adjazenzen eines Kno\-tens zu kappen und an deren Stelle neue Adjazenzen zu schaffen, welche dem ausgetauschten Knoten entsprechen, handelt es sich bei der Kantenspeicherung
 um eine Datenstruktur, die häufigen Änderungen unterliegt. Da die meisten Knoten aber eine ähnliche Anzahl an Adjazenzen haben, würde auch hier ein Vektor keine allzu häufigen Reallokationen durchführen müssen.
 In einem Test ergab sich unter Verwendung eines Vectors als Speicherstruktur für die Adjazenzinformationen eine bis zu 20\% höhere Geschwindigkeit im Vergleich zur Verwendung einer Liste. Dies ist wohl vor allem
 auf die höhere Datenlokalität zurückzuführen, durch die der Prozessor bereits ganze Speicherbereiche in den Cache laden kann, wenn über die Adjazenzen iteriert wird.
@@ -69,7 +69,7 @@ auf die höhere Datenlokalität zurückzuführen, durch die der Prozessor bereit
 \subsection{Kopierkonstruktor}
 \label{sec:copy}
 
-Besonders interessant bei der Solution-Klasse ist die automatisch bereitgestellte Kopiermechanik. Einer der besonderen Eigenschaften von C++ ist es, für jede Klasse automatisch einen sogenannten Kopierkonstruktor
+Besonders interessant bei der Solution-Klasse ist die automatisch bereitgestellte Ko\-pier\-mech\-a\-nik. Einer der besonderen Eigenschaften von C++ ist es, für jede Klasse automatisch einen sogenannten Kopierkonstruktor
 bereitzustellen, welcher als Parameter ein Objekt des selben Typs entgegen nimmt und dieses kopiert. Da im Falle einer Lösung aber nicht immer alle Daten kopiert werden müssen, wurde in dieser Arbeit eine
 eigene Kopiermechanik implementiert. Wie in Listing~\ref{lst:copy} zu sehen ist wird ein Großteil der Referenzdatentypen direkt übernommen, da diese häufig gar nicht verändert werden. 
 
@@ -145,7 +145,7 @@ Verweise auf den selben Graphen mitzählt. So lange dieser Zähler über eins is
 Referenz auf diese Objekte hält. Wenn ja, löscht er diese und seine eigenen Referenzen, wenn nicht, löscht er wiederum nur seine eigenen Referenzen und vermindert den Zähler um eins.
 
 \singlespacing
-\begin{lstlisting}[caption={Der Destruktor der Solutionklasse mit Rücksichtnahme auf eventuelle verbleibende Referenzen},label={lst:destruct}]
+\begin{lstlisting}[caption={Der Destruktor der Solutionklasse mit Rücksichtnahme auf eventuell ver\-blei\-ben\-de Referenzen},label={lst:destruct}]
 // Destructor
 Solution::~Solution() {
 	// Decrement copyCounter, if <= 0 delete all information about the 
