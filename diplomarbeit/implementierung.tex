@@ -257,7 +257,7 @@ Referenz für Nachbarschaften, welche einzelne Knoten austauschen. Außerdem spe
 zu den verfügbaren Knoten in der Partition ab. 
 
 \section{Konstruktionsheuristik}
-Als Konstruktionsheuristik wurde der in Abschnitt~\ref{sec:construct} vorgestellte Algorithmus OneStep-CD gewählt. Die verwendete Implementierung des Algorithmus
+Als Konstruktionsheuristik wurde der in Abschnitt~\ref{sec:construct} vorgestellte Algorithmus \emph{onestepCD} gewählt. Die verwendete Implementierung des Algorithmus
 erzeugt ein neues Solutionobjekt, als einziger Übergabeparameter wird das aus der Datei eingelesene Solutionobjekt benötigt, welches ja den vollständigen Problemgraphen
 enthält. Dieses Solutionobjekt bildet dann die Ausgangsbasis für die Verbesserung in der Variablen Nachbarschaftssuche. Der Graph, welcher in dem erzeugten Solutionobjekt
 referenziert wird, ist ein anderer Graph als jener, der in der Gesamtlösung verwendet wird. In dem referenzierten Graphen befindet sich nur mehr ein Knoten per Partition, welcher auch den ausgewählten Repräsentanten der jeweiligen Partition darstellt.
@@ -333,7 +333,7 @@ class VNS_Unit {
 \setstretch{1.5}
 
 \subsection{ChangeColor}
-Bei dieser Nachbarschaft wurde versucht, die in Abschnitt~\ref{sec:ChangeColor} vorgeschlagenen Ansätze in eine konkrete Nachbarschaft zu übersetzen. Da sich bei Tests herrausstellte, dass der erste beschriebene Ansatz
+Bei dieser Nachbarschaft wurde versucht, die in Abschnitt~\ref{sec:changecolor} vorgeschlagenen Ansätze in eine konkrete Nachbarschaft zu übersetzen. Da sich bei Tests herrausstellte, dass der erste beschriebene Ansatz
 mit zufälliger Auswahl an Farbe und zufälliger Bestimmung eines in konfliktstehenden Knotens bei großen Instanzen zu schlechten Ergebnissen führte, wurde ein etwas modifizierter Ansatz gewählt.
 
 Die Nachbarschaft wurde wie der in Algorithmus~\ref{psy:ChangeColor} beschriebene Pseudocode implementiert. Da er ausschließlich die Farben bearbeitet und sonst keine Veränderungen am Graphen durchführt,

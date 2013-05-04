@@ -60,13 +60,14 @@ Obwohl die Variable Nachbarschaftssuche in der Theorie immer weiter laufen könn
 \label{sec:construct}
 \citet*{Li2000} beschreiben mehrere schnelle Greedy Algorithmen (es wird beim Aufbau der Lösung die lokal beste Entscheidung getroffen ohne auf das große Ganze zu achten) zur näherungsweisen Lösung des Problems. Im Vergleich der benötigten Farben schneidet dabei der Algorithmus \emph{onestepCD} am besten ab:
 \subsection{onestepCD}
+\label{sec:onestep}
 Zunächst werden in einem Vorverarbeitungsschritt alle Kanten aus dem Konfliktgraphen entfernt, die Knoten innerhalb eines Clusters miteinander verbinden (da für jede Kommunikation nur genau ein Kommunikationsweg gewählt wird, können sich Knoten eines Clusters nie gegenseitig stören, die entsprechenden Kanten sind daher für die Lösung des Problems irrelevant und können gelöscht werden). Danach wird für jeden Cluster der Knoten mit der geringsten Anzahl an bereits eingefärbten Nachbarknoten bestimmt, der Knoten mit der insgesamt kleinsten Anzahl wird ausgewählt. Gibt es hier mehrere gleichwertige Kandidaten, wird aus diesen der Knoten mit der größten Anzahl an noch nicht eingefärbten Nachbarknoten gewählt bzw. -- falls dies immer noch nicht eindeutig möglich ist -- der erste Knoten aus diesen Kandidaten. Nachdem nun ein Knoten als Repräsentant für seinen Cluster bestimmt und ihm die klei\-nst\-mö\-gliche Farbe zugewiesen wurde, werden alle anderen Knoten, die sich im selben Cluster befinden, gelöscht. Der Prozess wird solange fortgeführt, bis die Repräsentanten aller Cluster gewählt und eingefärbt sind.
 
 \subsection{PILOT}
 
-Bessere Ergebnisse als die einer naiven Konstruktionsheuristik wie \textit{onestepCD} liefern häufig Varianten der gleichen Verfahren nach dem PILOT-Schema. Hier  wird grundsätzlich nach den Entscheidungskriterien von \textit{onestepCD} verfahren um jedoch nicht nur einen, sondern mehrere Knoten auszuwählen. Diese werden dann jeweils fixiert und durch Rekursion vollständige Lösungen berechnet. Von den verschiedenen Lösungen, die auf höherer Rekursionsebene zur Verfügung stehen, kann dann die vielversprechendste, also jene mit den wenigsten Farben, herangezogen werden, um eine lokal bessere Entscheidung zu treffen.
+Bessere Ergebnisse als die einer naiven Konstruktionsheuristik wie \emph{onestepCD} liefern häufig Varianten der gleichen Verfahren nach dem PILOT-Schema. Hier  wird grundsätzlich nach den Entscheidungskriterien von \emph{onestepCD} verfahren um jedoch nicht nur einen, sondern mehrere Knoten auszuwählen. Diese werden dann jeweils fixiert und durch Rekursion vollständige Lösungen berechnet. Von den verschiedenen Lösungen, die auf höherer Rekursionsebene zur Verfügung stehen, kann dann die vielversprechendste, also jene mit den wenigsten Farben, herangezogen werden, um eine lokal bessere Entscheidung zu treffen.
 
-Es entsteht also eine beschränkte Enumeration der Lösungen, was deutlich zeitintensiver als die einmalige Berechnung von \textit{onestepCD} ist, aber möglicherweise deutlich bessere Ergebnisse liefert.
+Es entsteht also eine beschränkte Enumeration der Lösungen, was deutlich zeitintensiver als die einmalige Berechnung von \emph{onestepCD} ist, aber möglicherweise deutlich bessere Ergebnisse liefert.
 
 \begin{figure}
 	\centering
@@ -177,7 +178,7 @@ passenden Ersatzknoten zu finden, welcher die Anzahl an verwendeten Farben verri
 Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das normale Graph Coloring Problem ohne Clusterung der Knoten, indem die aktuell gewählten Repräsentanten fixiert werden und dieses so vereinfachte Problem (das allerdings immer noch NP-hart ist) wird nun mit folgendem Greedy Ansatz näherungsweise gelöst:
 
 \begin{enumerate}
-    \item Finde den (noch nicht eingefärbten) Repräsentanten mit der größten Anzahl an eingefärbten Nachbarn (engl.\ \textit{Degree Saturation}).
+    \item Finde den (noch nicht eingefärbten) Repräsentanten mit der größten Anzahl an eingefärbten Nachbarn (engl.\ \emph{Degree Saturation}).
     \item Bei Gleichstand: Wähle den Knoten mit der größten Anzahl an nicht eingefärbten Nachbarn.
     \item Bei Gleichstand wähle den ersten Knoten in lexikographischer Abfolge.
     \item Weise dem gewählten Knoten die kleinste mögliche Farbe zu.
@@ -201,7 +202,7 @@ Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das norma
 \State Überspringe diesen Knoten
 \Else
 \State $c\leftarrow$ kleinstmögliche Färbung von $v$
-\State $d\leftarrow$ Anzahl an eingefärbten Nachbarn von $v$ (\textit{Degree Saturation})
+\State $d\leftarrow$ Anzahl an eingefärbten Nachbarn von $v$ (\emph{Degree Saturation})
 \If{$d < D$}
 \State Überspringe diesen Knoten
 \EndIf
