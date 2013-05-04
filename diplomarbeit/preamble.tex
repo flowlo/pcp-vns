@@ -11,6 +11,9 @@
 \usepackage{hyperref}
 \usepackage{graphicx, fancyhdr, array, wrapfig, colortbl, algorithm, algpseudocode, subcaption, setspace}
 \usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{pgfgantt}
+\usepackage{pdflscape}
+\usepackage{amsfonts}
 \floatname{algorithm}{Algorithmus}
 \renewcommand{\listalgorithmname}{Algorithmenverzeichnis}
 \renewcommand{\algorithmicend}{\textbf{Ende}}
@@ -25,7 +28,7 @@
 \renewcommand{\algorithmicforall}{\textbf{Für alle}}
 \renewcommand{\algorithmicfor}{\textbf{Für}}
 
-
+\newcommand{\ap}[1]{\ensuremath{\mathfrak{#1}}}
 
 \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}

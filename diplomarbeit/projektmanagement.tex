@@ -8,17 +8,19 @@ Es folgt eine übersichtsartige verbale Beschreibung der Arbeitsphasen und -schr
 
 Um das Management während dem Projektverlauf zu erleichtern, wurde das Projekt in vier Teilbereiche, welche wiederum aus Arbeitspaketen bestehen, gegliedert, die in Gesamtheit alle Aufgaben, die im Rahmen des Projekts erledigt wurden, abdecken.
 
+\begin{landscape}
 \begin{figure}
 \centering
-\includegraphics[angle=90, height=0.9\textheight]{img/psp.png}
+\includegraphics[width=23cm]{img/psp.png}
 \caption[Projektstrukturplan]{Pro\-jekt\-struk\-tur\-plan zur Übersicht über die Teilaufgaben innerhalb des Projektablaufs.}
 \label{fig:psp}
 \end{figure}
+\end{landscape}
 
 \subsection{Recherche}
 Um nicht bereits zu Projektbeginn die Fehler anderer erneut zu begehen, erschien eine ausgedehnte Recherchephase sinnvoll. Rückblickend zeigte sich diese Phase als besonders hilfreich, um mit der komplexen Materie vertraut zu werden.
 
-\subsubsection{Beschaffung der wissenschaftlichen Arbeiten zum Thema}
+\subsubsection{\ap{1.1} Beschaffung der wissenschaftlichen Arbeiten zum Thema}
 
 \begin{center}
 \begin{tabular}{lll}
@@ -31,7 +33,7 @@ Um nicht bereits zu Projektbeginn die Fehler anderer erneut zu begehen, erschien
 
 Die wissenschaftliche Komponente des Projekts erforderte die umfangreiche Auseinandersetzung mit bereits abgeschlossenen Arbeiten zu ähnlichen Lösungsansätzen der gleichen Pro\-blem\-stel\-lung. Am wichtigsten hierbei ist das Identifizieren von wichtigen Erkenntnissen, die sich vorteilhaft für die eigene Arbeit nutzen lassen. So konnten wir beispielsweise schnell die Konstruktionsheuristik \textit{onestepCD} (siehe~\ref{sec:construct}) anderen Varianten vorziehen, da diese in früheren Evaluierungen die besten Ergebnisse berechnete.
 
-\subsubsection{Besprechung der bisherigen Ansätze und Ergebnisse}
+\subsubsection{\ap{1.2} Besprechung der bisherigen Ansätze und Ergebnisse}
 
 \begin{center}
 \begin{tabular}{lll}
@@ -44,7 +46,7 @@ Die wissenschaftliche Komponente des Projekts erforderte die umfangreiche Ausein
 
 Abgesehen von der Wahl von onestepCD aufgrund der offensichtlichen Vorteile wurde vor allem die Tabu-Suche von \citet*{Noronha2006} genauer analysiert, um daraus eventuell Schlüsse für leistungsfähige Nachbarschaften ziehen zu können. In der Tat führte dies zur Implementierung der Tabu-Suche als Nachbarschaft zu Testzwecken. %TODO referenz auf onestep, referenz auf tabusearch paper
 
-\subsubsection{Ideenfindung für Nachbarschaften}
+\subsubsection{\ap{1.3} Ideenfindung für Nachbarschaften}
 
 \begin{center}
 \begin{tabular}{lll}
@@ -60,7 +62,7 @@ Zum Abschluss der Recherchephase entwickelte sich bereits ein Gespür für die S
 \subsection{Design}
 Nach einer Umfangreichen Recherche und Auseinandersetzung mit der Problemstellung ging das Projekt in die Designphase über. Hier galt es sicherzustellen, wie die Implementierung der Nachbarschaften erfolgen soll und außerdem Schnittstellen des Programms zur Außenwelt klar zu definieren.
 
-\subsubsection{Definieren einer Repräsentation für Lösungen}
+\subsubsection{\ap{2.1} Definieren einer Repräsentation für Lösungen}
 
 \begin{center}
 \begin{tabular}{lll}
@@ -71,7 +73,7 @@ Nach einer Umfangreichen Recherche und Auseinandersetzung mit der Problemstellun
 \end{tabular}
 \end{center}
 
-\subsubsection{Analyse des Eingabeformats}
+\subsubsection{\ap{2.2} Analyse des Eingabeformats}
 
 \begin{center}
 \begin{tabular}{lll}
@@ -84,7 +86,7 @@ Nach einer Umfangreichen Recherche und Auseinandersetzung mit der Problemstellun
 
 Eine wichtige Eingabeschnittstelle des Programms ist das Einlesen von Probleminstanzen über die Standardeingabe. Hier wurde das Parsing zweier verschiedener Quellformate implementiert. Einerseits das \texttt{.pcp}-Format, in welchem ein Großteil der Instanzen vorlagen andererseits, das \texttt{.col}-Format.
 
-\subsubsection{Festlegung des Ausgabeformats}
+\subsubsection{\ap{2.3} Festlegung des Ausgabeformats}
 
 \begin{center}
 \begin{tabular}{lll}
@@ -97,7 +99,7 @@ Eine wichtige Eingabeschnittstelle des Programms ist das Einlesen von Problemins
 
 Um die Ergebnisse der Berechnungen leicht auswerten zu können, wurde die Ausgabe aller Daten im JSON-Format beschlossen.
 
-\subsubsection{Wahl von Codebibliotheken, Compiler, etc.}
+\subsubsection{\ap{2.4} Wahl von Codebibliotheken, Compiler, etc.}
 
 \begin{center}
 \begin{tabular}{lll}
@@ -110,7 +112,7 @@ Um die Ergebnisse der Berechnungen leicht auswerten zu können, wurde die Ausgab
 
 Bevor die Entwicklung des Programms tatsächlich beginnen konnte wurde eine Code\-bi\-bli\-othek gewählt, welche zusätzlich Zeit sparen und Fehlerquellen eindämmen sollte. Weitere Details siehe~\ref{sec:boost}
 
-\subsubsection{Implementierung einer Visualisierung}
+\subsubsection{\ap{2.5} Implementierung einer Visualisierung}
 
 \begin{center}
 \begin{tabular}{lll}
@@ -125,7 +127,7 @@ Um die Arbeitsweise des Programms möglichst anschaulich darstellen zu können, 
 
 \subsection{Implementierung von Nachbarschaften}
 
-\subsubsection{Implementierung von TabuSearch}
+\subsubsection{\ap{3.1} Implementierung von TabuSearch}
 
 \begin{center}
 \begin{tabular}{lll}
@@ -137,7 +139,7 @@ Um die Arbeitsweise des Programms möglichst anschaulich darstellen zu können, 
 
 Als erstes wurde die Tabu-Suche implementiert, da eine ausführliche Beschreibung des Verfahrens vor lag. %TODO referenz tabusuche
 
-\subsubsection{Implementierung von ChangeColor} %TODO moritz?
+\subsubsection{\ap{3.2} Implementierung von ChangeColor} %TODO moritz?
 
 \begin{center}
 \begin{tabular}{lll}
@@ -147,7 +149,7 @@ Als erstes wurde die Tabu-Suche implementiert, da eine ausführliche Beschreibun
 \end{tabular}
 \end{center}
 
-\subsubsection{Implementierung von ChangeNode} %TODO moritz?
+\subsubsection{\ap{3.3} Implementierung von ChangeNode} %TODO moritz?
 
 \begin{center}
 \begin{tabular}{lll}
@@ -157,7 +159,7 @@ Als erstes wurde die Tabu-Suche implementiert, da eine ausführliche Beschreibun
 \end{tabular}
 \end{center}
 
-\subsubsection{Implementierung von DSATUR}
+\subsubsection{\ap{3.4} Implementierung von DSATUR}
 
 \begin{center}
 \begin{tabular}{lll}
@@ -169,7 +171,7 @@ Als erstes wurde die Tabu-Suche implementiert, da eine ausführliche Beschreibun
 
 \subsection{Testen und Evaluieren}
 
-\subsubsection{Implementieren einer Plausibilitätsprüfung}
+\subsubsection{\ap{4.1} Implementieren einer Plausibilitätsprüfung}
 
 \begin{center}
 \begin{tabular}{lll}
@@ -181,7 +183,7 @@ Als erstes wurde die Tabu-Suche implementiert, da eine ausführliche Beschreibun
 
 Um sicher zu gehen, dass die von den Heuristiken berechneten Lösungen plausibel sind, also keine Konflikte oder unerwünschte Verbindungen enthalten, müssen diese überprüft werden. Da dies mit steigender Instanzgröße nicht von Hand möglich ist, wurde ein simpler Plau\-si\-bi\-li\-täts\-check implementiert.
 
-\subsubsection{Berechnung der Lösungen für Testinstanzen}
+\subsubsection{\ap{4.2} Berechnung der Lösungen für Testinstanzen}
 
 \begin{center}
 \begin{tabular}{lll}
@@ -193,7 +195,7 @@ Um sicher zu gehen, dass die von den Heuristiken berechneten Lösungen plausibel
 
 Um die Ergebnisse des in dieser Arbeit beschriebenen Ansatzes vergleichen zu können, wurden Testinstanzen herangezogen, welche als Richtwert dienen können.
 
-\subsubsection{Diskutieren von Verbesserungsvorschlägen}
+\subsubsection{\ap{4.3} Diskutieren von Verbesserungsvorschlägen}
 
 \begin{center}
 \begin{tabular}{lll}
@@ -205,6 +207,79 @@ Um die Ergebnisse des in dieser Arbeit beschriebenen Ansatzes vergleichen zu kö
 \end{center}
 
 Nach Abschluss des Projekts ist davon auszugehen, dass eine weitere Verbesserung der Ergebnisse möglich ist. In einer abschließenden Diskussion ging es darum, wie dieser Weg weiter verfolgt werden könnte.
+
+\begin{landscape}
+\begin{figure}[ftbp]
+\begin{center}
+
+\begin{ganttchart}[y unit title=0.4cm,
+y unit chart=0.5cm,
+x unit=0.47cm,
+vgrid,hgrid, 
+title label anchor/.style={below=-1.6ex},
+title left shift=.05,
+title right shift=-.05,
+title height=1,
+bar/.style={fill=gray!50},
+task/.style={},
+incomplete/.style={fill=white},
+progress label text={},
+bar height=0.7,
+group right shift=0,
+group top shift=.6,
+group height=.3,
+milestone/.style={fill=orange, draw=black},
+milestone width=0.4,
+group peaks={}{}{.3}]{49}
+
+\gantttitle{Recherche}{13}
+\gantttitle{Design}{10}
+\gantttitle{Implementieren der Nachbarschaften}{16}
+\gantttitle{Testen und Evaluieren}{10} \\
+
+\gantttitle{Oktober}{7} 
+\gantttitle{November}{7} 
+\gantttitle{Dezember}{7} 
+\gantttitle{Jänner}{7} 
+\gantttitle{Februar}{7} 
+\gantttitle{März}{7}
+\gantttitle{April}{7} \\
+
+\ganttgroup[progress = 0, incomplete/.style={fill=black!60!green}]{\ap{1}}{1}{10} \\
+\ganttbar[name=1.1]{\ap{1.1}}{1}{3} \\
+\ganttbar[name=1.2]{\ap{1.2}}{4}{8} \\
+\ganttbar[name=1.3]{\ap{1.3}}{6}{10} \\
+\ganttgroup[progress = 0, incomplete/.style={fill=blue}]{\ap{2}}{11}{24} \\
+\ganttbar[name=2.1]{\ap{2.1}}{11}{15} \\
+\ganttmilestone{}{15} \\
+\ganttbar[name=2.2]{\ap{2.2}}{12}{16} \\
+\ganttbar[name=2.3]{\ap{2.3}}{15}{19} \\
+\ganttbar[name=2.4]{\ap{2.4}}{18}{20} \\
+\ganttbar[name=2.5]{\ap{2.5}}{21}{24} \\
+\ganttmilestone{}{24} \\
+\ganttgroup[name=3, progress = 0, incomplete/.style={fill=Red}]{\ap{3}}{25}{39} \\
+\ganttbar[name=3.1]{\ap{3.1}}{25}{29} \\
+\ganttbar[name=3.2]{\ap{3.2}}{29}{32} \\
+\ganttbar[name=3.3]{\ap{3.3}}{32}{35} \\
+\ganttbar[name=3.4]{\ap{3.4}}{36}{39} \\
+\ganttmilestone{}{39} \\
+\ganttgroup[name=4, progress = 0, incomplete/.style={fill=Sepia}]{\ap{4}}{40}{49} \\
+\ganttbar[name=4.1]{\ap{4.1}}{40}{42} \\
+\ganttbar[name=4.2]{\ap{4.2}}{43}{45} \\
+\ganttbar[name=4.3]{\ap{4.3}}{46}{49}
+
+\ganttlink	{1.1}	{1.2}
+\ganttlink	{1.3}	{3}
+\ganttlink	{2.4}	{2.5}
+\ganttlink	{2.4}	{3}
+\ganttlink	{3}	{4.2}
+\ganttlink	{4.2}	{4.3}
+
+\end{ganttchart}
+\end{center}
+\caption[Gantt-Diagramm]{Gantt-Diagramm mit Abhängigkeiten zwischen Arbeitspaketen und Meilensteinen}
+\end{figure}
+\end{landscape}
 
 \section{Risikoanalyse}
 \begin{table}

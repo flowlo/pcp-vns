@@ -1796,7 +1796,7 @@
         </Extended>
       </WBSElement>
       <WBSElement>
-        <name>Testen und Evaluierung</name>
+        <name>Testen und Evaluieren</name>
         <duration>0</duration>
         <durationUnit/>
         <acceptance_criteria/>
