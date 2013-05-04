@@ -22,13 +22,13 @@ Durchsucht man alle definierten Nachbarschaften systematisch (z.B.\ mittels \emp
 \vspace{-8mm}
 \end{wrapfigure}
 
-Um diesem Zustand des vollkommenen Stillstandes zu entkommen, wird, nachdem dieses lokale Optimum für alle definierten Nachbarschaften erreicht wurde, mit immer größer werdenden Kraft die Lösung ``geschüttelt''. Gemeint ist damit, dass die lokal optimale Lösung durch verschiedene Algorithmen verändert wird, welche nicht darauf abzielen, eine Lösung besser zu machen, sondern sie zunächst ein wenig, mit dem Fortschreiten der Optimierung aber auch möglichst stark zu verfremden, um einen neuen Startpunkt für das VND zu besitzen.
+Um diesem Zustand des vollkommenen Stillstandes zu entkommen, wird, nachdem dieses lokale Optimum für alle definierten Nachbarschaften erreicht wurde, mit immer größer werdenden Kraft die Lösung \enquote{geschüttelt}. Gemeint ist damit, dass die lokal optimale Lösung durch verschiedene Algorithmen verändert wird, welche nicht darauf abzielen, eine Lösung besser zu machen, sondern sie zunächst ein wenig, mit dem Fortschreiten der Optimierung aber auch möglichst stark zu verfremden, um einen neuen Startpunkt für das VND zu besitzen.
 
 Veranschaulichen kann man sich das Verfahren, wenn man sich alle gültigen Lösungen als eine große Fläche vorstellt. Je nach Güte der Lösung sind einzelne Teile dieser Fläche unterschiedlich hoch, gute Lösungen bilden Senken (wenige Farben werden für die Färbung benötigt), während schlechte Lösungen Berge bilden. Das VND tendiert nun dazu, sich in einer dieser Senken festzufahren, es wurde ein lokales Optimum bezüglich sämtlicher Nachbarschaften erreicht.
 
-Mit Hilfe des ``Schüttelns'' wird nun versucht, aus eben jenen Senken zu entkommen, um eine andere, hoffentlich tiefere Senke zu finden, also eine bessere Lösung. Nach diesem Schritt beginnt der Algorithmus nämlich wieder von vorne und sucht mit Hilfe der Nachbarschaften erneut ein lokales Optimum.
+Mit Hilfe des \enquote{Schüttelns} wird nun versucht, aus eben jenen Senken zu entkommen, um eine andere, hoffentlich tiefere Senke zu finden, also eine bessere Lösung. Nach diesem Schritt beginnt der Algorithmus nämlich wieder von vorne und sucht mit Hilfe der Nachbarschaften erneut ein lokales Optimum.
 
-Obwohl die Variable Nachbarschaftssuche in der Theorie immer weiter laufen könnte und dabei hoffentlich immer wieder neue, bessere Lösungen erreicht, wird meist eine fixe Zeit oder eine Anzahl an Iterationen bzw.\ ``Schüttelungen'' ohne Verbesserung als Abbruchkriterium gewählt.
+Obwohl die Variable Nachbarschaftssuche in der Theorie immer weiter laufen könnte und dabei hoffentlich immer wieder neue, bessere Lösungen erreicht, wird meist eine fixe Zeit oder eine Anzahl an Iterationen bzw.\ \enquote{Schüttelungen} ohne Verbesserung als Abbruchkriterium gewählt.
 
 \begin{algorithm}
 \begin{algorithmic}[1]
@@ -36,7 +36,7 @@ Obwohl die Variable Nachbarschaftssuche in der Theorie immer weiter laufen könn
 \While{Terminationsbedingung \textbf{nicht} erfüllt}
 \State Führe Variable Neighborhood Descent mit Best Improvement Strategie durch:
 \State Nachbarschaft $l \leftarrow 1$
-\While{$l \leq $ maximale Anzahl an Nachbarschaften \textbf{und} Zeitlimit nicht erreicht}
+\While{$l \leq $ Anzahl der Nachbarschaften \textbf{und} Zeitlimit nicht erreicht}
 \State Führe Nachbarschaft $n_l$ aus
 \If {Lösung verbessert \textbf{und} $l\neq 1$} 
 \State  $l\leftarrow 1$  
@@ -49,7 +49,7 @@ Obwohl die Variable Nachbarschaftssuche in der Theorie immer weiter laufen könn
 \Else
 \State $k \leftarrow k + 1$
 \EndIf
-\State Wähle zufällig Nachbarschaft aus und ``schüttle" Lösung mit $k$ zufälligen Zügen
+\State Wähle zufällig Nachbarschaft aus und \enquote{schüttle} Lösung mit $k$ zufälligen Zügen
 \EndWhile
 \State\Return Beste gefundene Lösung
 \end{algorithmic}
@@ -80,7 +80,7 @@ Es entsteht also eine beschränkte Enumeration der Lösungen, was deutlich zeiti
 \label{sec:neigh}
 Wie bereits beschrieben handelt es sich bei Nachbarschaften um einzelne Algorithmen die versuchen, eine gültige Lösung in eine andere, bessere Lösung durch eine relativ kleine Änderung umzuwandeln. Wir haben uns zunächst auf die drei Nachbarschaften \emph{ChangeColor}, \emph{ChangeNode} und \emph{DSATUR} konzentriert, wobei weitere Nachbarschaften noch zur Diskussion stehen.
 
-Jede Nachbarschaft bietet auch eine Methode an, eine Lösung zu ``schütteln'', welche ähnlich abläuft wie die Methode zur Suche des jeweiligen lokalen Optimums, allerdings ohne die Beschränkung ausschließlich bessere Ergebnisse zurückliefern zu müssen.
+Jede Nachbarschaft bietet auch eine Methode an, eine Lösung zu \enquote{schütteln}, welche ähnlich abläuft wie die Methode zur Suche des jeweiligen lokalen Optimums, allerdings ohne die Beschränkung ausschließlich bessere Ergebnisse zurückliefern zu müssen.
 
 \subsection{ChangeColor}
 \label{sec:changecolor}

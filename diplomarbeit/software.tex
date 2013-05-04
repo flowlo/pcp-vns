@@ -118,7 +118,7 @@ Implementierung nicht immer gegeben.
 
 Auf Grund dieser gewachsenen Struktur von GCC ist der \textit{g++}-Compiler nicht der schnellste Vertreter seiner Art. Vor allem die Übersetzung von Headern nimmt mit der GCC mehr Zeit in Anspruch als
 bei der Konkurrenz. Wie viele andere Compiler unterstützt auch \textit{g++} die Übersetzung von Header-Dateien in \textit{Precompiled Headers}. Dazu wird ein GCC-eigenes Format verwendet und \textit{g++} sucht bei einer
-späteren Einbindung eines Headers in den Quellcode nach einer gleichnamigen Datei mit der Endung ``.gch''. Die Verwendung von solchen \textit{Precompiled Headers} beschleunigt die Übersetzung ungemein, 
+späteren Einbindung eines Headers in den Quellcode nach einer gleichnamigen Datei mit der Endung \enquote{.gch}. Die Verwendung von solchen \textit{Precompiled Headers} beschleunigt die Übersetzung ungemein, 
 weil die Übersetzung des Headers selber einige Zeit in Anspruch nimmt. Die für diese Arbeit verwendeten \textit{Precompiled Headers} bewegten sich in der Größenordnung von knapp über 100 Megabyte, 
 eine erstaunliche Datenmenge für eine einzige Übersetzungseinheit. Diese Datenmengen sind vor allem den \textit{Templates} geschuldet, welche während ihrer Expansion wesentlich an Speicherbedarf zunehmen.
 
