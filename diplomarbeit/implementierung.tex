@@ -257,7 +257,7 @@ Referenz für Nachbarschaften, welche einzelne Knoten austauschen. Außerdem spe
 zu den verfügbaren Knoten in der Partition ab. 
 
 \section{Konstruktionsheuristik}
-Als Konstruktionsheuristik wurde der in Abschnitt~\ref{sec:construct} vorgestellte Algorithmus \emph{onestepCD} gewählt. Die verwendete Implementierung des Algorithmus
+Als Konstruktionsheuristik wurde der in Abschnitt~\ref{sec:construct} vorgestellte Algorithmus \emph{onestepCD} gewählt. Die Implementierung des Algorithmus erfolgt mit Hilfe der Methode \texttt{onestepCD} und.
 erzeugt ein neues Solutionobjekt, als einziger Übergabeparameter wird das aus der Datei eingelesene Solutionobjekt benötigt, welches ja den vollständigen Problemgraphen
 enthält. Dieses Solutionobjekt bildet dann die Ausgangsbasis für die Verbesserung in der Variablen Nachbarschaftssuche. Der Graph, welcher in dem erzeugten Solutionobjekt
 referenziert wird, ist ein anderer Graph als jener, der in der Gesamtlösung verwendet wird. In dem referenzierten Graphen befindet sich nur mehr ein Knoten per Partition, welcher auch den ausgewählten Repräsentanten der jeweiligen Partition darstellt.
@@ -284,6 +284,7 @@ Schließlich kann mit dem Parameter \texttt{maxTime} direkt die maximale Anzahl 
 Die letzten beiden Parameter dienen der Einstellung, ob alle verbesserten Zwischenlösungen (\texttt{checkIntermediate}) oder die endgültige Lösung (\texttt{checkFinal}) durch die Plausibilitätsprüfung überprüft werden sollen.
 Da die Überprüfung durchaus aufwendig ist und daher etwas Zeit in Anspruch nimmt, ist es meist eine gute Lösung, nur die endgültige Lösung überprüfen zu lassen, außer man will eine einzelne Nachbarschaft
 auf Fehler hin testen. Die Plausibilitätsprüfung selber ist in Abschnitt~\ref{sec:plausibility} beschrieben und testet verschiedenste Informationen, um die Korrektheit einer Lösung zu garantieren.
+
 \singlespacing
 \begin{lstlisting}[caption={Signatur der Funktion, welche die Variable Nachbarschaftssuche ausführt und steuert},label={lst:vns}]
 /// Run the VNS with a maximum of k iterations.

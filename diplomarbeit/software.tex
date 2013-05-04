@@ -3,18 +3,19 @@ Im folgenden Abschnitt sollen verschiedene Programmiersprachen, Programme und Co
 Viele der erwähnten Programme und Bi\-bli\-o\-the\-ken sind Standardwerkzeuge der Entwicklung unter Linux und sind unter Open-Source-Lizenzen frei verfügbar. 
 
 Um sowohl ein funktionierendes als auch bequem zu bedienendes Programm zu entwickeln, kamen auch mehrere Programmiersprachen zum Einsatz. Jede dieser Programmiersprachen hat ihre Stärken in 
-einem bestimmten Bereich und es wurde versucht, jede Sprache nach ihren individuellen Stärken einzusetzen. 
+einem bestimmten Bereich und es wurde versucht, jede Sprache nach ihrer individuellen Stärke einzusetzen. 
 
 \section{C++}
 \label{sec:cpp}
 Als primäre Programmiersprache wurde C++ gewählt. Verschiedene Gründe sprachen für C++, unter anderem die an C angelehnte Syntax, aber
 auch die gute Performance des generierten Maschinencodes im Vergleich zu Sprachen, welche üblicherweise in einer virtuellen Maschine laufen oder gar interpretiert werden. Zu 
-all diesen Gründen kam noch hinzu, dass für C++ bereits ausgezeichnete Codebibliotheken zur Verfügung stehen, welche ein schnelles
+all diesen Gründen kam noch hinzu, dass für C++ be\-reits ausgezeichnete Codebibliotheken zur Verfügung stehen, welche ein schnelles
 und effizientes Arbeiten ermöglichen.
 
 Bei C++ handelt es sich um eine im Jahr 1979 von Bjarne Stroustrup entwickelte Programmiersprache, welche anfangs als \textit{C mit Klassen}
 ausgelegt wurde. Über mehrere Ent\-wick\-lungs\-schrit\-te entwickelte sich eine Sprache, dessen Wurzeln in der Sprache C immer noch zu erkennen sind, 
-dessen Möglichkeiten jene von C aber bei weitem übersteigen. 
+dessen Möglichkeiten jene von C aber bei weitem übersteigen. Trotzdem wird C++ häufig in Verbindung mit C gebracht, unter anderem wohl deswegen, weil beide
+Sprachen häufig gemeinsam eingesetzt werden.
 
 Wie C handelt es sich bei C++ um eine statisch-typisierte Programmiersprache, das heißt der Compiler kann schon während der Übersetzung die
 syntaktisch korrekte Verwendung von Datentypen sicherstellen. Dadurch können solche Überprüfungen während der Ausführung des Programms
@@ -38,7 +39,7 @@ vergleichbare C-Programme. In manchen Fällen ist C++ sogar schneller als C, da 
 
 \subsection{STL}
 \label{sec:stl}
-Zusätzlich zu erwähnen ist die umfangreiche \textit{Standard Template Library (STL)}, welche es inzwischen sogar fast vollständig in den 
+Zusätzlich zu erwähnen ist die umfangreiche \textit{Standard Template Library} (STL), welche es inzwischen sogar fast vollständig in den 
 C++-Standard geschafft hat. Bei der STL handelt es sich um eine von den meisten Compilern bereitgestellte Code-Bibliothek für häufig 
 verwendete Datenstrukturen und Hilfsroutinen, welche eine wesentliche Erleichterung für jeden C++-Programmierer darstellen. Unter anderem
 in der STL enthaltene Datenstrukturen sind Listen, Stacks, aber auch Iteratoren für die meisten Datenstrukturen, sowie häufig verwendete Algorithmen
@@ -67,12 +68,13 @@ Während bei der Implementierung der Variablen Nachbarschaftssuche besonders die
 \label{sec:make}
 Bei GNU make handelt es sich um ein Standardwerkzeug der Linux-Software-Entwicklung. Mit Hilfe von make kann die Übersetzung des Quellcodes in den Programmcode automatisiert werden. 
 Dabei stellt make viele verschiedene Konfigurationsmöglichkeiten bereit. Unter anderem können verschiedene Compiler aber auch verschiedene Übersetzungsmodi eingestellt werden.
-Um ein schnelleres Übersetzen zu ermöglichen werden außerdem nur jene Quellcode-Dateien neu übersetzt, welche sich seit dem letzten Mal verändert haben. 
+Um ein schnelleres Übersetzen zu ermöglichen werden, bei richtiger Konfiguration, außerdem nur jene Quellcode-Dateien neu übersetzt, welche seit dem letzten Übersetzungsvorgang verändert haben. 
 
 In der Konfigurationsdatei für make, dem so genannten Makefile, können unter anderem mehrere \textit{Targets} angegeben werden, also quasi verschiedene Endprogramme oder verschiedene
 Übersetzerkonfigurationen für das selbe Programm. Zu diesen \textit{Targets} werden dann Ab\-hängig\-keiten definiert welche bestimmen, in welcher Reihenfolge die einzelnen Quelltextdateien, aus denen das gesamte Projekt besteht, übersetzt werden 
-müssen. Impliziert wird durch diese Abhängigkeitsdefinition auch, wann ein Programmteil neu übersetzt werden muss. Ist eine der Abhängigkeiten einer bestimmten Enddatei jünger als die 
-Enddatei selber, muss diese neu übersetzt werden. Durch eine geschickte Aufteilung des Quellcodes auf mehrere Dateien kann so eine komplette Neuübersetzung in den meisten Fällen vermieden werden. 
+müssen. Impliziert wird durch diese Abhängigkeitsdefinition auch, wann ein Programmteil neu übersetzt werden muss. Bei diesen Abhängigkeiten handelt es sich meist selbst um Dateien, oft Quelltextdateien, welche den
+den Code für einen \textit{Target} enthalten. GNU make erkennt nun automatisch wenn eine dieser Abhängigkeiten seit dem letzten Programmablauf verändert wurde und wird genau für jenen \textit{Target} einen neuen
+Übersetzungsvorgang starten.
 
 Durch verschiedene Variablen, welche ebenfalls im Makefile spezifiziert sind, kann außerdem ohne großen Aufwand der Übersetzer, welcher die eigentliche Hauptaufgabe übernimmt, ausgetauscht werden.
 Die für diese Arbeit verwendeten Compiler werden in Abschnitt~\ref{sec:compiler} besprochen. Vereinfacht wird dies durch die beinahe gleiche Befehlssyntax, die von beiden Compilern verwendet wird.
@@ -86,9 +88,9 @@ des Programmes zu verifizieren.
 
 \section{Compiler}
 \label{sec:compiler}
-Der Compiler oder Übersetzer ist dafür verantwortlich, ein Programm von einer Quellsprache in eine Zielsprache zu übersetzen. Im Falle dieser Arbeit war die Quellsprache C++ und die
+Der Compiler oder Übersetzer ist dafür verantwortlich, ein Programm von einer Quellsprache in eine Zielsprache zu übersetzen. Im Falle dieser Arbeit war die primäre Quellsprache C++ und die
 Zielsprache die Maschinensprache des Prozessors, also ein x86-Assembly. Übersetzer sind außerordentlich komplexe Stücke an Software, welche nicht einfach die Befehle eines Programmierers eins zu
-eins übernehmen, sondern zusätzlich noch Optimierungen vornehmen, um eine beschleunigte Programmausführung zu ermöglichen. Da dieser Vorgang sehr zeitaufwendig sein kann ist es wichtig, Werkzeuge wie
+eins übernehmen, sondern zusätzlich noch auf eventuelle Programmierfehler aufmerksam machen und Optimierungen vornehmen, um eine beschleunigte Programmausführung zu ermöglichen. Da dieser Vorgang sehr zeitaufwendig sein kann ist es wichtig, Werkzeuge wie
 das in Abschnitt~\ref{sec:make} besprochene make einzusetzen, um eine vollständige Neuübersetzung bei nur marginalen Änderungen im Quellcode zu verhindern. 
 
 Da C++ eine besonders komplexe Sprache mit vielen verschiedenen, aufwendigen Funktionen und Sprachbesonderheiten ist, ist die Übersetzung eines C++-Quellcodes besonders aufwendig. Selbst kleinere
@@ -161,7 +163,7 @@ Sobald ein solcher Un\-ter\-brech\-ungs\-pun\-kt erreicht ist, kann DDD die Bele
 Progamm\-ablaufes zu untersuchen und zu beheben. 
 
 Außerdem bietet DDD die Möglichkeit, im Falle eines Programmabsturzes die auslösende Zeile des Quellcodes zu ermitteln und von dort aus auf die Ursachen des Absturzes zu schließen. Dies ist besonders
-praktisch, da eine genaue Eingrenzung der Absturzursache ansonsten äußerst schwierig ist. Sollte ein Programm schadhaftes oder fehlerhaftes Verhalten an den Tag legen, zum Beispiel einen unberechtigten Speicherzugriff,
+praktisch, da eine genaue Eingrenzung der Absturzursache ansonsten äußerst schwierig und zeitaufwendig ist. Sollte ein Programm schadhaftes oder fehlerhaftes Verhalten an den Tag legen, zum Beispiel einen unberechtigten Speicherzugriff,
 wird normalerweise das Programm sofort vom Betriebssystem beendet. DDD protokolliert aber jede aufgerufenen Zeile Code mit und kann daher genaue Auskunft geben, in welchem Programmabschnitt der
 Fehler aufgetreten ist.
 
@@ -305,8 +307,8 @@ Vorgänge innerhalb der VNS, sowie beim Aufbau der Initiallösung zeitnah mitzuv
 \label{img:ubigraph}
 \end{figure}
 Bei der Serversoftware handelt es sich um ein Stück proprietären Code, welcher per XML-RPCs angesprochen werden kann. Der Server nutzt OpenGL, um die gezeichneten Graphen per Grafikkarte darzustellen. Als
-Schnittstelle dienen \textit{Remote Procedure Calls (RPC)}, welche per \textit{Hyper Text Transfer Protocol (HTTP)} an den Server übermittelt werden. Der Name XML-RPC stammt von der Auszeichnungssprache
-\textit{Extensible Markup Languag (XML)}, was soviel heißt wie Erweiterbare Auszeichnungssprache, welche als Anfrage- und Antwortsprache verwendet wird. Die Daten einer solchen Anfrage werden von der
+Schnittstelle dienen \textit{Remote Procedure Calls} (RPC), welche per \textit{Hyper Text Transfer Protocol} (HTTP) an den Server übermittelt werden. Der Name XML-RPC stammt von der Auszeichnungssprache
+\textit{Extensible Markup Language} (XML), was soviel heißt wie Erweiterbare Auszeichnungssprache, welche als Anfrage- und Antwortsprache verwendet wird. Die Daten einer solchen Anfrage werden von der
 ausgeführten Software per HTTP-POST-Methode an den Server übermittelt, welcher auch wieder eine XML-Meldung über Erfolg oder Misserfolg der Operation zurückliefert. 
 
 Da es sich bei XML-RPC um einen textbasierten Standard handelt, ist vor allem die Integration von Ubigraph in Skriptsprachen besonders einfach. Für viele Sprachen werden bereits Schnittstellen mitgeliefert,
