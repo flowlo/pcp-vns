@@ -341,7 +341,7 @@ Die Nachbarschaft wurde wie der in Algorithmus~\ref{psy:ChangeColor} beschrieben
 braucht die Nachbarschaft nur eine flache Kopie des vorherigen Solutionobjektes und muss daher nicht auf den in Abschnitt~\ref{sec:copy} beschriebenen Kopiermechanismus zurückgreifen. 
 
 \subsection{ChangeNode}
-Ähnlich wie bei ChangeColor erwies sich der in Abschnitt~\ref{sec:changenode} beschriebene Ansatz in der Realität bei großen Instanzen als nicht verlässlich. Häufig lieferte die Nachbarschaft keine gültigen
+Ähnlich wie bei \emph{ChangeColor} erwies sich der in Abschnitt~\ref{sec:changenode} beschriebene Ansatz in der Realität bei großen Instanzen als nicht verlässlich. Häufig lieferte die Nachbarschaft keine gültigen
 Ergebnisse, da die Anzahl der Konflike zu stark angestiegen war. Daher wurde auch hier ein modifizierter Ansatz gewählt, welcher in Einzelfällen zwar schlechtere Ergebnisse liefert, dafür aber deutlich öfter
 bessere Lösungen erzeugen kann.
 
@@ -349,15 +349,15 @@ Die Implementierung dieser Nachbarschaft erfolgte unter Verwendung der in Abschn
 Nachbarschaft auch den zu Grunde liegenden Graphen verändert, ist es notwendig, ihn auf einem eigenen, abgetrennten Graphenobjekt arbeiten zu lassen. 
 
 \subsection{DSATUR}
-DSATUR steht im Kontrast zu den Change*-Heuristiken: Das PCP wird auf das Graph Coloring Problem ohne Einteilung der Knoten in Partitionen reduziert. Konkret belässt die Heuristik also die Auswahl der Knoten, färbt sie aber alle erneut ein. Dabei wird nach be\-stim\-mt\-en Regeln verfahren, welche in~\ref{sec:dsatur} genauer beschrieben sind.
+DSATUR steht im Kontrast zu den \emph{Change*}-Heuristiken: Das PCP wird auf das Graph Coloring Problem ohne Einteilung der Knoten in Partitionen reduziert. Konkret belässt die Heuristik also die Auswahl der Knoten, färbt sie aber alle erneut ein. Dabei wird nach be\-stim\-mt\-en Regeln verfahren, welche in~\ref{sec:dsatur} genauer beschrieben sind.
 
 Ein wesentlicher Vorteil dieser Heuristik ist, dass sie nur Änderungen an der Färbung durchführt, die Strukur des Graphs aber nicht verändert und somit ohne das Kopieren des Graphens auskommt, was sie zur schnellsten Methode macht.
 
 \subsection{ChangeAll}
-Obwohl ChangeAll eine große Ähnlichkeit mit sowohl ChangeColor als auch ChangeNode aufweist, entstand diese Nachbarschaft erst wesentlich später. Der Ansatz dieser Nachbarschaft ist im Abschnitt~\ref{sec:changeall} zu finden.
-Es zeigte sich, dass durch die Verwendung von ChangeAll weitere Verbesserungen durchgeführt werden konnten, welche nicht mit Hilfe von anderen 
+Obwohl \emph{ChangeAll} eine große Ähnlichkeit mit sowohl \emph{ChangeColor} als auch \emph{ChangeNode} aufweist, entstand diese Nachbarschaft erst wesentlich später. Der Ansatz dieser Nachbarschaft ist im Abschnitt~\ref{sec:changeall} zu finden.
+Es zeigte sich, dass durch die Verwendung von \emph{ChangeAll} weitere Verbesserungen durchgeführt werden konnten, welche nicht mit Hilfe von anderen 
 Nachbarschaften erzielt werden konnten.
 
-Ähnlich wie bei der ChangeNode-Nachbarschaft werden auch bei dieser Heuristik einzelne Knoten der Lösung ausgetauscht. Da dies zu einer Veränderung im Lösungsgraphen führt, ist es notwendig, das erzeugte
+Ähnlich wie bei der \emph{ChangeNode}-Nachbarschaft werden auch bei dieser Heuristik einzelne Knoten der Lösung ausgetauscht. Da dies zu einer Veränderung im Lösungsgraphen führt, ist es notwendig, das erzeugte
 Solutionobjekt mit samt dem Graphenobjekt vollständig abzutrennen. Dazu werden die in Abschnitt~\ref{sec:copy} beschriebenen Methoden verwendet.
 

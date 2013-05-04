@@ -40,10 +40,10 @@ Die Darstellung des Projektstrukurplans (Abbildung~\ref{fig:psp}) und das Gantt-
 \node [below = 3mm of c23, draw=blue] (c24) {\footnotesize\ap{2.4}\\ Wahl von Codebibliotheken, Compiler, etc.};
 \node [below = 3mm of c24, draw=blue] (c25) {\footnotesize\ap{2.5}\\ Implementieren ei\-ner Visualisierung};
 
-\node [below = 4mm of c3 , draw=Red] (c31) {\footnotesize\ap{3.1}\\ Implementieren von TabuSearch};
-\node [below = 3mm of c31, draw=Red] (c32) {\footnotesize\ap{3.2}\\ Implementieren von ChangeColor};
-\node [below = 3mm of c32, draw=Red] (c33) {\footnotesize\ap{3.3}\\ Implementieren von ChangeNode};
-\node [below = 3mm of c33, draw=Red] (c34) {\footnotesize\ap{3.4}\\ Implementieren von DSATUR};
+\node [below = 4mm of c3 , draw=Red] (c31) {\footnotesize\ap{3.1}\\ Implementieren von \emph{TabuSearch}};
+\node [below = 3mm of c31, draw=Red] (c32) {\footnotesize\ap{3.2}\\ Implementieren von \emph{ChangeColor}};
+\node [below = 3mm of c32, draw=Red] (c33) {\footnotesize\ap{3.3}\\ Implementieren von \emph{ChangeNode}};
+\node [below = 3mm of c33, draw=Red] (c34) {\footnotesize\ap{3.4}\\ Implementieren von \emph{DSATUR}};
 
 \node [below = 4mm of c4 , draw=Sepia] (c41) {\footnotesize\ap{4.1}\\Implementieren der Plausibilitätsprüfung};
 \node [below = 3mm of c41, draw=Sepia] (c42) {\footnotesize\ap{4.2}\\Berechnen der Lösungen für Testinstanzen};
@@ -221,7 +221,7 @@ Um die Ergebnisse der Berechnungen leicht auswerten zu können, wurde die Ausgab
 
 Bevor die Entwicklung des Programms tatsächlich beginnen konnte wurde eine Code\-bi\-bli\-othek gewählt, welche zusätzlich Zeit sparen und Fehlerquellen eindämmen sollte. Weitere Details siehe~\ref{sec:boost}
 
-\subsubsection{\ap{2.5} Implementierung einer Visualisierung}
+\subsubsection{\ap{2.5} Implementieren einer Visualisierung}
 
 \begin{center}
 \begin{tabular}{lll}
@@ -234,7 +234,7 @@ Bevor die Entwicklung des Programms tatsächlich beginnen konnte wurde eine Code
 
 Um die Arbeitsweise des Programms möglichst anschaulich darstellen zu können, wurde eine Visualisierung mit Ubigraph implementiert. Dies ermöglicht eine Überwachung der Ar\-beits\-schrit\-te einzelner Nachbarschaften, sodass auch Dritte Einsicht in den Ablauf gewinnen.
 
-\subsection{Implementierung von Nachbarschaften}
+\subsection{Implementieren der Nachbarschaften}
 
 \subsubsection{\ap{3.1} Implementierung von TabuSearch}
 
@@ -248,7 +248,7 @@ Um die Arbeitsweise des Programms möglichst anschaulich darstellen zu können, 
 
 Als erstes wurde die Tabu-Suche implementiert, da eine ausführliche Beschreibung des Verfahrens (zu finden in Abschnitt~\ref{sec:tabu}) vor lag.
 
-\subsubsection{\ap{3.2} Implementierung von ChangeColor}
+\subsubsection{\ap{3.2} Implementieren von ChangeColor}
 \begin{center}
 \begin{tabular}{lll}
 	Mitarbeit & Verantwortlichkeit & Betreuer informiert \\
@@ -259,7 +259,7 @@ Als erstes wurde die Tabu-Suche implementiert, da eine ausführliche Beschreibun
 
 Die Nachbarschaft \emph{ChangeColor} (ausführlich beschrieben in Abschnitt~\ref{sec:changecolor}) ließ sich einfach implementieren.
 
-\subsubsection{\ap{3.3} Implementierung von ChangeNode} 
+\subsubsection{\ap{3.3} Implementieren von ChangeNode} 
 
 \begin{center}
 \begin{tabular}{lll}
@@ -269,9 +269,9 @@ Die Nachbarschaft \emph{ChangeColor} (ausführlich beschrieben in Abschnitt~\ref
 \end{tabular}
 \end{center}
 
-Da es sich bei ChangeNode, erläutert in Abschnitt~\ref{sec:changenode}, um eine kompliziertere Nachbarschaft handelt, wurde sie als eine der letzten implementiert. 
+Da es sich bei \emph{ChangeNode}, erläutert in Abschnitt~\ref{sec:changenode}, um eine kompliziertere Nachbarschaft handelt, wurde sie als eine der letzten implementiert. 
 
-\subsubsection{\ap{3.4} Implementierung von DSATUR}
+\subsubsection{\ap{3.4} Implementieren von DSATUR}
 
 \begin{center}
 \begin{tabular}{lll}
