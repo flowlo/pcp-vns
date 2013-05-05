@@ -17,12 +17,62 @@ Mit Hilfe des \textit{Partition Graph Coloring Problems} (PCP) wird versucht, di
 \begin{figure}
 	\centering
 	\begin{subfigure}{\textwidth}
-		\includegraphics{img/bsp1}
+		\begin{tikzpicture}[every node/.style  = {draw, font=\bfseries\sffamily, text=white, align=center, circle, fill = black!60}]
+			\node [fill = blue] (a) {A};
+			\node [fill = blue, right = 12cm of a, yshift = -1.8cm] (b) {B};
+			\node [fill = red, right = 14.5cm of a, yshift = 1.6cm] (c) {C};
+			\node [fill = red, right = 9 cm of a, yshift = -3cm](d) {D};
+			\node [right = 7cm of a, yshift = 7mm](x) {};
+			\node [right = 10cm of a, yshift = 2.2cm] (y) {};
+
+			\path [draw, gray, dotted] (a) edge (b);
+			\path [draw, gray, dotted] (c) edge (d);
+
+			\path [draw] (x) edge (y);
+
+			\path [draw] (x) edge (a);
+			\path [draw] (x) edge (d);
+
+			\path [draw] (y) edge (b);
+			\path [draw] (y) edge (c);
+
+			\path [draw] (b) edge (d);
+			\path [draw] (b) edge (c);
+		\end{tikzpicture}
 		\caption{Repräsentatives Beispiel für ein Glasfasernetzwerk innerhalb Österreichs. Es gibt zwei Kommunikationswünsche und zwar zwischen $A$ und $B$ sowie zwischen $C$ und $D$.}
 		\label{fig:example:a}
 	\end{subfigure}
 	\begin{subfigure}{\textwidth}
-		\includegraphics{img/bsp2}
+		\begin{tikzpicture}[every node/.style  = {draw, font=\bfseries\sffamily, text=white, align=center, circle, fill = black!60}]
+			\node [fill = blue] (a) {A};
+			\node [fill = blue, right = 12cm of a, yshift = -1.8cm] (b) {B};
+			\node [fill = red, right = 14.5cm of a, yshift = 1.6cm] (c) {C};
+			\node [fill = red, right = 9 cm of a, yshift = -3cm](d) {D};
+			\node [right = 7cm of a, yshift = 7mm](x) {};
+			\node [right = 10cm of a, yshift = 2.2cm] (y) {};
+
+			\path [draw, gray, dotted]		(a) edge			(b);
+			\path [draw, gray, dotted]		(c) edge			(d);
+
+			\path [draw, very thick, blue!40]	(x) edge			(y);
+			\path [draw, very thick, yellow]	(x) edge [bend right = 20]	(y);
+			\path [draw, very thick, blue!90]	(x) edge [bend left = 20]	(y);
+
+			\path [draw, very thick, blue!40]	(x) edge			(a);
+			\path [draw, very thick, blue!90]	(x) edge [bend right = 20]	(a);
+			\path [draw, very thick, violet]	(x) edge [bend left = 20]	(a);
+			\path [draw, very thick, yellow]	(x) edge [bend left = 20]	(d);
+			\path [draw, very thick, violet]	(x) edge [bend right = 20]	(d);
+
+			\path [draw, very thick, blue!90]	(y) edge 			(b);
+			\path [draw, very thick, blue!40]	(y) edge [bend left = 20]	(c);
+			\path [draw, very thick, yellow]	(y) edge [bend right = 20]	(c);
+
+			\path [draw, very thick, orange]	(b) edge [bend right = 20]	(d);
+			\path [draw, very thick, violet]	(b) edge [bend left = 20]	(d);
+			\path [draw, very thick, blue!40]	(b) edge [bend right = 20]	(c);
+			\path [draw, very thick, orange]	(b) edge [bend left = 20]	(c);
+		\end{tikzpicture}
 		\caption{Beispiel für verschiedene Routen zwischen insgesamt vier Kommunikationspartnern. Verschiedene Möglichkeiten der Wegfindung zwischen $A$ und $B$ werden in Hell- und Dunkelblau sowie Violett dargestellt. Die alternativen Routen zwischen $C$ und $D$ sind gelb und orange eingefärbt.}
 		\label{fig:example:b}
 	\end{subfigure}
@@ -33,17 +83,71 @@ Mit Hilfe des \textit{Partition Graph Coloring Problems} (PCP) wird versucht, di
 \begin{figure}
 	\centering
 	\begin{subfigure}[t]{0.3\textwidth}
-		\includegraphics[width=\textwidth]{img/bsp3}
+		\begin{tikzpicture}[every node/.style  = {draw, circle, minimum size = 5mm}]
+			\node [fill = blue!40] (ab1) {};
+			\node [fill = violet, right = 1.7cm of ab1] (ab2) {};
+			\node [fill = blue!90, right = 1.7cm of ab2] (ab3) {};
+
+			\node [fill = orange, yshift=-2.5cm, xshift = 1.1cm] (cd1) {};
+			\node [fill = yellow, right = 1.7cm of cd1] (cd2) {};
+
+			\begin{scope}[on background layer]
+				\node[fit=(ab1)(ab2)(ab3), draw = none, shading=radial, outer color=white, inner color = blue!20, inner sep = 0mm, xscale = 1.1, yscale = 0.3] {};
+				\node[fit=(cd1)(cd2), draw = none, shading=radial, outer color=white, inner color = red!20, inner sep = 0mm, xscale = 1.2, yscale = 0.4] {};
+			\end{scope}
+		\end{tikzpicture}
 		\caption{Der aus Abbildung~\ref{fig:example:b} generierte Konfliktgraph. Jede Route wird als Knoten repräsentiert. Die verwendete Farbe stimmt mit den für die Routen verwendeten Farben überein. Die Partitionierung wird durch das Oval im Hintergrund der Knoten angedeutet.}
 		\label{fig:example:c}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.3\textwidth}
-		\includegraphics[width=\textwidth]{img/bsp4}
+		\begin{tikzpicture}[every node/.style  = {draw, circle, minimum size = 5mm}]
+			\node [fill = blue!40] (ab1) {};
+			\node [fill = violet, right = 1.7cm of ab1] (ab2) {};
+			\node [fill = blue!90, right = 1.7cm of ab2] (ab3) {};
+
+			\node [fill = orange, yshift=-2.5cm, xshift = 1.1cm] (cd1) {};
+			\node [fill = yellow, right = 1.7cm of cd1] (cd2) {};
+
+			\begin{scope}[on background layer]
+				\node[fit=(ab1)(ab2)(ab3), draw = none, shading=radial, outer color=white, inner color = blue!20, inner sep = 0mm, xscale = 1.1, yscale = 0.3] {};
+				\node[fit=(cd1)(cd2), draw = none, shading=radial, outer color=white, inner color = red!20, inner sep = 0mm, xscale = 1.2, yscale = 0.4] {};
+			\end{scope}
+
+			\path [draw, very thick]	(ab1) edge	(ab2);
+			\path [draw, very thick]	(ab2) edge	(ab3);
+			\path [draw, very thick]	(ab1) edge	(cd1);
+			\path [draw, very thick]	(ab1) edge	(cd2);
+			\path [draw, very thick]	(ab2) edge	(cd1);
+			\path [draw, very thick]	(ab2) edge	(cd2);
+			\path [draw, very thick]	(ab3) edge	(cd2);
+			\path [draw, very thick]	(ab1) edge [bend left = 30]	(ab3);
+		\end{tikzpicture}
 		\caption{Der Konfliktgraph wird um die Beziehungen der Knoten untereinander erweitert. Jede Route, welche eine Teilstrecke mit einer anderen Route gemeinsam hat, wird mit dieser Route verbunden. Die Kanten zwischen den Knoten stellen diese Beziehung dar.}
 		\label{fig:example:d}
 	\end{subfigure}
 	\begin{subfigure}[t]{0.3\textwidth}
-		\includegraphics[width=\textwidth]{img/bsp5}
+		\begin{tikzpicture}[every node/.style  = {draw, circle, minimum size = 5mm}]
+			\node [fill = white] (ab1) {};
+			\node [fill = white, right = 1.7cm of ab1] (ab2) {};
+			\node [fill = blue!90, right = 1.7cm of ab2] (ab3) {};
+
+			\node [fill = orange, yshift=-2.5cm, xshift = 1.1cm] (cd1) {};
+			\node [fill = white, right = 1.7cm of cd1] (cd2) {};
+
+			\begin{scope}[on background layer]
+				\node[fit=(ab1)(ab2)(ab3), draw = none, shading=radial, outer color=white, inner color = blue!20, inner sep = 0mm, xscale = 1.1, yscale = 0.3] {};
+				\node[fit=(cd1)(cd2), draw = none, shading=radial, outer color=white, inner color = red!20, inner sep = 0mm, xscale = 1.2, yscale = 0.4] {};
+			\end{scope}
+
+			\path [draw, very thick, gray]	(ab1) edge	(ab2);
+			\path [draw, very thick, gray]	(ab2) edge	(ab3);
+			\path [draw, very thick]	(ab1) edge	(cd1);
+			\path [draw, very thick, gray]	(ab1) edge	(cd2);
+			\path [draw, very thick]	(ab2) edge	(cd1);
+			\path [draw, very thick, gray]	(ab2) edge	(cd2);
+			\path [draw, very thick]	(ab3) edge	(cd2);
+			\path [draw, very thick, gray]	(ab1) edge [bend left = 30]	(ab3);
+		\end{tikzpicture}
 		\caption{Eine mögliche Lösung des PCP\@. Von jeder Partition muss nur ein Knoten ausgewählt werden, alle anderen werden ausgeblendet. Die Auswahl für die Strecke zwischen $A$ und $B$ hat kein gemeinsames Teilstück mit der für die Strecke $\overline{CD}$ getroffenen Auswahl. Daher kann ein und dieselbe Wellenlänge für beide Übertragungen verwendet werden.}
 		\label{fig:example:e}
 	\end{subfigure}
