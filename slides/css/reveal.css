@@ -328,6 +328,22 @@ body {
 }
 
 
+.reveal .timer {
+	position: absolute;
+	width: 110px;
+	height: 21px;
+	z-index: 30;
+	left: 10px;
+	bottom: 44px;
+	
+	font-size: 20px;
+	border: none;
+	opacity: 1;
+	text-align: center;
+	color: #3887ca;
+	line-height: 0.9;
+}
+
 /*********************************************
  * CONTROLS
  *********************************************/

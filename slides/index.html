@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Zwischenpräsentation</title>
+		<title>Präsentation</title>
 		<meta name="author" content="Lorenz Leutgeb, Moritz Wanzenböck">
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/cold.css" id="theme">
@@ -78,10 +78,7 @@ $(function() {
 	$('.graph.edge').fadeOut();
 	$('#austria').fadeOut();
 	$('#translation').click(function() {
-		//alert('Ähi');
 		$('#austria').fadeIn();
-		//$('#translation').unbind('click');
-
 		$(this).click(function() {
 			$('.map.node').fadeIn();
 			$(this).unbind('click');
@@ -287,12 +284,21 @@ $(function() {
 				</section>
 <!-- /moritz -->
 			</div>
+			<div class="timer" id="timer" onload="">20</div>
 		</div>
 		<a href="https://github.com/flowlo/pcp-vns"><img class="forkme" src="../img/forkme.png" alt="Fork me on GitHub"></a>
 		<script src="js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
 		<script src="js/piechart.js"></script>
 		<script>
+			function refreshTimer() {
+				var timer = document.getElementById('timer');
+				//$(timer).fadeOut('fast', function() {
+					timer.innerHTML = parseInt(timer.innerHTML) - 1;
+				//	$(timer).fadeIn('fast');
+				//});
+			}
+			var timerHandler = false;
 			Reveal.initialize({
 				controls: true,
 				progress: true,
@@ -303,7 +309,15 @@ $(function() {
 			});
 			Reveal.addEventListener('slidechanged', function(event) {
 				document.getElementById('pagenumber').innerHTML = event.indexh + '<br />' + event.indexv;
+				
+				if (event.indexh == 1 && event.indexv == 0) {
+					if (timerHandler)
+						window.clearInterval(timerHandler);
+					document.getElementById('timer').innerHTML = 20;
+					timerHandler = window.setInterval(refreshTimer, 60000)
+				}
 			});
+			document.getElementById('pagenumber').innerHTML = Reveal.getIndices().h + '<br />' + Reveal.getIndices().v;
 			window.onload = function() {
 				new PieChart( "piechart", {
 					includeLabels: true, 
