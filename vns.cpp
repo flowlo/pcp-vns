@@ -160,17 +160,10 @@ namespace pcp {
 
 					curNeighbor++;
 				}
-				if (DEBUG_LEVEL > 1) {
-					cout<<endl;
-					cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
-					cout<<endl;
-				}
 			} // end while neighborhood
 
 			if (DEBUG_LEVEL > 1) {
-				cout<<endl;
-				cout<<"###################### End inner VNS loop ##################"<<endl;
-				cout<<endl;
+				cout << "End of inner VNS loop." << endl;
 			}
 			
 			/// Local minimum of neighborhoods is better than current best
