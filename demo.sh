@@ -18,13 +18,13 @@ echo 'Running'
 ./pcp -d 4 -n cnd -p /tmp/demo.gv < instances/Table2_random_instances/n20p5t2s5.pcp
 
 echo 'Rendering printed graph'
-fdp -Tpdf /tmp/demo.gv > /tmp/demo.pdf
+fdp -Tpdf /tmp/demo.gv > /tmp/demo.pdf 2> /dev/null
 
 echo 'Viewing printed graph'
-evince /tmp/demo.pdf
+evince /tmp/demo.pdf 2> /dev/null
 
 echo 'Cleaning temporary files'
 rm /tmp/demo.gv /tmp/demo.pdf
 
 echo 'Killing Ubigraph server'
-kill $pid
+kill $pid 2> /dev/null
