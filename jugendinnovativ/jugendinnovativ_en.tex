@@ -161,14 +161,26 @@ In technical literature there is an array of different exact algorithms which de
 
 %In der Literatur werden exakte Algorithmen beschrieben, die beweisbar optimale Lös\-ung\-en erzeugen, aber aufgrund der Komplexität des Problems nur auf relativ kleine Netzwerke angewendet werden können. Weiters existieren einfache Konstruktionsheuristiken für die schnelle Generierung gültiger Ausgangslösungen sowie ein Ansatz mittels Tabu-Suche, der gute Ergebnisse für größere Netzwerke liefert.
 
-\subsection{Verfahren zur Lösung des generalisierten Graph Coloring Problems}
-Im Folgenden sollen bereits bestehende Lösungsansätze für das Partition Graph Coloring Problem vorgestellt und kurz behandelt werden. Außerdem wollen wir unseren eigenen Lösungsansatz vorstellen, welcher auf bereits bestehenden Techniken fußt.
+\subsection{Approaches to solving the Partition Graph Coloring Problem}
 
-\subsubsection{Bestehende Lösungsansätze}
-Bei unserer Recherche fanden wir bereits einige vorhandene Lösungsansätze für das relativ junge Partition Graph Coloring Problem. \citet*{Li2000} schlugen mehrere Konstruktionsheuristiken vor, welche auch von \citet*{Noronha2006} genutzt wurden, um ihre Tabu-Suche zu implementieren.
-Desweiteren gibt es einen Algorithmus von \citet*{Lu2010} sowie einen Ansatz mit Hilfe eines Branch-and-Cut Algorithmus von \citet*{Palladino2011}.
+%\subsection{Verfahren zur Lösung des generalisierten Graph Coloring Problems}
 
-\citet*{Li2000} beschreiben mehrere schnelle Greedy Algorithmen zur näherungsweisen Lösung des Problems. Im Vergleich der benötigten Farben schneidet dabei der Algorithmus \emph{onestepCD} am besten ab:
+In the following section we will discuss and present already existing approaches to solving the Partition Graph Coloring Problem. Additionally we will present our own approach, which facilitates already known and testet techniques in optimization problems.
+
+%Im Folgenden sollen bereits bestehende Lösungsansätze für das Partition Graph Coloring Problem vorgestellt und kurz behandelt werden. Außerdem wollen wir unseren eigenen Lösungsansatz vorstellen, welcher auf bereits bestehenden Techniken fußt.
+
+\subsubsection{Existing approaches}
+
+%\subsubsection{Bestehende Lösungsansätze}
+
+While researching, we discovered a few already existing approaches to the relativly new Partition Graph Coloring Problem. \citet*{Li2000} suggested a variety of construction heuristics, which were also used by \citet*{Noronha2006} to implement their Tabu Search. Moreover, \citet*{Lu2010} proposed a different kind of algorithm, which lead to \citet*{Palladino2011} suggesting a new Branch-and-Cut algorithm.
+
+%Bei unserer Recherche fanden wir bereits einige vorhandene Lösungsansätze für das relativ junge Partition Graph Coloring Problem. \citet*{Li2000} schlugen mehrere Konstruktionsheuristiken vor, welche auch von \citet*{Noronha2006} genutzt wurden, um ihre Tabu-Suche zu implementieren.
+%Desweiteren gibt es einen Algorithmus von \citet*{Lu2010} sowie einen Ansatz mit Hilfe eines Branch-and-Cut Algorithmus von \citet*{Palladino2011}.
+
+\citet*{Li2000} described multiple variants of Greedy algorithms to give an approximate solution to the problem. From these different variants the algorithm \emph{onestepCD} looked the most promising:
+
+%\citet*{Li2000} beschreiben mehrere schnelle Greedy Algorithmen zur näherungsweisen Lösung des Problems. Im Vergleich der benötigten Farben schneidet dabei der Algorithmus \emph{onestepCD} am besten ab:
 
 \paragraph{onestepCD}{
 \label{sec:construct}
