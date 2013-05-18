@@ -7,14 +7,14 @@
 \usepackage[margin = 3cm]{geometry}
 \usepackage{graphicx, fancyhdr, array, wrapfig, colortbl, algorithm, algpseudocode}
 \floatname{algorithm}{Algorithmus}
-\renewcommand{\listalgorithmname}{Algorithmenverzeichnis}
-\renewcommand{\algorithmicend}{\textbf{Ende}}
-\renewcommand{\algorithmicif}{\textbf{Falls}}
-\renewcommand{\algorithmicthen}{\textbf{dann}}
-\renewcommand{\algorithmicelse}{\textbf{Sonst}}
-\renewcommand{\algorithmicdo}{\textbf{}}
-\renewcommand{\algorithmicwhile}{\textbf{Solange}}
-\renewcommand{\algorithmicreturn}{\textbf{Returniere}}
+%\renewcommand{\listalgorithmname}{List of algorithms}
+%\renewcommand{\algorithmicend}{\textbf{Ende}}
+%\renewcommand{\algorithmicif}{\textbf{Falls}}
+%\renewcommand{\algorithmicthen}{\textbf{dann}}
+%\renewcommand{\algorithmicelse}{\textbf{Sonst}}
+%\renewcommand{\algorithmicdo}{\textbf{}}
+%\renewcommand{\algorithmicwhile}{\textbf{Solange}}
+%\renewcommand{\algorithmicreturn}{\textbf{Returniere}}
 \renewcommand\familydefault{\sfdefault}
 \linespread{1.5}
 \setlength{\parindent}{4mm}
@@ -102,24 +102,42 @@ at
 % Welche Recherchen wurden getätigt?
 %- Wie wurde der Projektablauf terminlich festgelegt (Meilensteine)?
 % Wie war die Aufgabenverteilung und Ressourcenplanung? (Kooperationen mit außerschulischen Partnern)
-\section{Projektentstehung und -planung}
+\section{Project idea and planning}
+%\section{Projektentstehung und -planung}
 
-Betreiber der Internetinfrastruktur stehen vor dem Problem, immer weiter steigende Kommunikationsbedürfnisse befriedigen zu müssen. Dafür müssen entweder die bestehenden Netze effizienter genutzt, oder die Infrastruktur erweitert werden.
+Providers of internet infrastructure face the problem of satisfying an ever growing need to communicate. There are two main approaches to this problem. They can expand their current network by adding additional devices or they find a way to use their current infrastructure more efficiently.
 
-Innerhalb von Glasfasernetzwerken, die Wavelength Division Multiplexing einsetzen, soll die Anzahl verschiedener Lichtfarben beziehungsweise Wellenlängen verringert, also optimiert werden. Dadurch können vorhandene Ressourcen besser ausgelastet und die Anschaffung und der Betrieb neuer Infrastruktur zumindest hinausgezögert werden, wodurch sich sowohl Anschaffungs- als auch Betriebskosten einsparen lassen.
+%Betreiber der Internetinfrastruktur stehen vor dem Problem, immer weiter steigende Kommunikationsbedürfnisse befriedigen zu müssen. Dafür müssen entweder die bestehenden Netze effizienter genutzt, oder die Infrastruktur erweitert werden.
 
-Die Anzahl der Wellenlängen in einem solchen Netzwerk zu minimieren ist nicht trivial, es handelt sich um ein NP-schwieriges Optimierungsproblem. Modelliert werden die Glasfasernetze in Form von partitionierten Graphen. In der einschlägigen Literatur sind nur einige, wenige Lösungsansätze für dieses Problem bekannt. 
+In a modern fiber-optic network which uses Wavelength Division Multiplexing, the number of different wavelengths used to communicate directly corresponds to the efficiency of the network. The fewer wavelengths used, the better. By optimizing the assignment of wavelengths a network can transfer more data without the need of additional hardware. This leads to an overall cheaper network without a sacrifice in performance.
 
-Im Rahmen dieses Projektes sollen neuartige Wege zur Lösung des Problems implementiert und getestet werden. Ausgehend von bestehenden Technologien sowie bereits erprobten Lösungsansätzen, soll ein Programm entstehen, welches bessere Ergebnisse liefert als seine bereits bekannten Konkurrenten.
+%Innerhalb von Glasfasernetzwerken, die Wavelength Division Multiplexing einsetzen, soll die Anzahl verschiedener Lichtfarben beziehungsweise Wellenlängen verringert, also optimiert werden. Dadurch können vorhandene Ressourcen besser ausgelastet und die Anschaffung und der Betrieb neuer Infrastruktur zumindest hinausgezögert werden, wodurch sich sowohl Anschaffungs- als auch Betriebskosten einsparen lassen.
 
-Die Projektidee entstand nach ausführlicher Beratschlagung und Diskussion mit Univ-Prof.~Dipl.-Ing.~Dr.techn.~Günther~Raidl (Technische Universität Wien, Arbeitsbereich für Algorithmen und Datenstrukturen), welcher mehrere Probleme aus dem Bereich der Optimierung als Diplomarbeit vorschlug. Auch wird die Arbeit weiterhin von ihm unterstützt, sollte es Fragen zur Problemstellung oder konkreten Lösungsansätzen geben.
+The minimization of the number of used wavelengths is not a trivial problem. It is in fact a NP-hard optimization problem. A partitioned graph is created to represent the fiber-optic network, hence the name
+Partition Graph Coloring Problem. There are only a selected few approaches to this problem published in literature.
 
-Ziel ist es, einen neuen Algorithmus zu entwickeln, welcher mit bestehenden Lösungs\-an\-sätz\-en konkurrieren kann. Zu diesem Zwecke wird der Algorithmus in ein konkretes Programm implementiert, um ihn auf die in der Literatur verwendeten Probleminstanzen anzuwenden.
+%Die Anzahl der Wellenlängen in einem solchen Netzwerk zu minimieren ist nicht trivial, es handelt sich um ein NP-schwieriges Optimierungsproblem. Modelliert werden die Glasfasernetze in Form von partitionierten Graphen. In der einschlägigen Literatur sind nur einige, wenige Lösungsansätze für dieses Problem bekannt. 
 
-Neben der fachspezifischen Literatur, welche von der Technischen Universität Wien zur Verfügung gestellt wurde, befassten wir uns zu Beginn des Projekts auch mit der Recherche für geeignete Codebibliotheken und verteilte Versionskontrollsysteme. Weiters wurde die Benutzung des Computing Clusters der Universität ermöglicht, um Berechnungen schneller durchführen zu können.
-\section{Inhaltliche Beschreibung des Projekts}
+Over the course of this project we intend to implement and test a number of new approaches. These new approaches are all inspired by already existing technology. Our goal is create a computer program which 
+yields better results than the existing approaches. 
 
-\subsection{Problemstellung}
+%Im Rahmen dieses Projektes sollen neuartige Wege zur Lösung des Problems implementiert und getestet werden. Ausgehend von bestehenden Technologien sowie bereits erprobten Lösungsansätzen, soll ein Programm entstehen, welches bessere Ergebnisse liefert als seine bereits bekannten Konkurrenten.
+
+The idea to this project developed after a lengthly discussion and consultation with Univ-Prof.~Dipl.-Ing.~Dr.techn.~Günther~Raidl (Vienna University of Technology, Algorithms and Data Structures Group). He proposed a number of different optimization problems for our diploma thesis. He still supports us with feedback and by suggesting new approaches on our project. 
+
+%Die Projektidee entstand nach ausführlicher Beratschlagung und Diskussion mit Univ-Prof.~Dipl.-Ing.~Dr.techn.~Günther~Raidl (Technische Universität Wien, Arbeitsbereich für Algorithmen und Datenstrukturen), welcher mehrere Probleme aus dem Bereich der Optimierung als Diplomarbeit vorschlug. Auch wird die Arbeit weiterhin von ihm unterstützt, sollte es Fragen zur Problemstellung oder konkreten Lösungsansätzen geben.
+
+Our goal is to develop a new algorithm which can compete with already existing approaches. To facilitate the comparison between this new approach and the old ones, a program will be implemented which is then used to solve instances of the problem. These instances originate from technical literatur and any results can thus be easily compared.
+
+%Ziel ist es, einen neuen Algorithmus zu entwickeln, welcher mit bestehenden Lösungs\-an\-sätz\-en konkurrieren kann. Zu diesem Zwecke wird der Algorithmus in ein konkretes Programm implementiert, um ihn auf die in der Literatur verwendeten Probleminstanzen anzuwenden.
+
+Besides technical literature which is provided to us by the Vienna University of Technology we also researched different code libraries and revivision control software. Different code libraries where tested until a suitable was found. To efficiently test and run our newly developed program, we were allowed to use the computing cluster of the Vienna University of Technology.
+
+%Neben der fachspezifischen Literatur, welche von der Technischen Universität Wien zur Verfügung gestellt wurde, befassten wir uns zu Beginn des Projekts auch mit der Recherche für geeignete Codebibliotheken und verteilte Versionskontrollsysteme. Weiters wurde die Benutzung des Computing Clusters der Universität ermöglicht, um Berechnungen schneller durchführen zu können.
+
+\section{Projectcontents}
+
+\subsection{Problem}
 Bei der in der Literatur als Partition Graph Coloring Problem bezeichneten Aufgabenstellung handelt es sich um ein Optimierungsproblem aus dem Bereich des Netzwerkdesigns, konkret um die Planung der Kommunikation in Glasfasernetzwerken. In diesen Netzen wird Wavelength Division Multiplexing betrieben, welches es ermöglicht, zwei oder mehr Übertragungskanäle über die selbe Glasfaser zu leiten, wenn jeder Kanal eine andere Wellenlänge verwendet und somit die anderen Übertragungen nicht stört. Um die Komplexität in einzelnen Netzwerkknoten gering zu halten wird davon ausgegangen, dass eine Verbindung von der Quelle bis zum Ziel nur genau eine Wellenlänge nutzt und diese nicht an Knotenpunkten verändert werden kann.
 
 Zwei unterschiedliche Verbindungen können also nur dann über die selbe Netzwerkstrecke transportiert werden, wenn sie verschiedene Wellenlängen verwenden. Weiters ist die maximale Anzahl an möglichen Wellenlängen pro Strecke beschränkt. Minimiert man in diesem Szenario die Anzahl an benötigten Wellenlängen für die gesamten vorab bekannten Kommunikationsbedürfnisse (z.B.\ im großen Maßstab der Datenaustausch zwischen verschiedenen Providern, deren Verbindungen -- solange es zu keinen Ausfällen kommt -- über eine gewisse Zeit als konstant angesehen werden können), schafft man damit Platz für zusätzliche Datentransfers. Damit kann die bestehende Infrastruktur besser ausgenutzt werden, womit Kosten und Energie für den Ausbau und den Betrieb neuer Netzteile eingespart werden können.
