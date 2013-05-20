@@ -216,13 +216,18 @@ After the Tabu Search reaches a state with zero conflicts, the algorithm begins 
 %Sollte hingegen die Tabu-Suche auch nach vielen Iterationen keine gültige Lösung erzeugen können, bricht sie von selbst ab und gibt ihre Verbesserungsversuche für diese Lösung auf und beginnt mit einer neuen, zufälligen Neufärbung der aktuell besten gefundenen Lösung.}
 
 \subsubsection{Variable Neighborhood Search (VNS)}
-Als Ausgangspunkt für unser Projekt setzen wir auf bereits bewährte Techniken aus anderen Bereichen der Optimierung und versuchen, diese bestmöglich für das Partition Graph Coloring Problem einzusetzen.
+As starting point for our project we decided to use already tried and tested techniques in optimization. We then proceeded to adapt these techniques to the specific needs of the Partition Graph Coloring problem.
 
-\paragraph{Initiallösung}{
-Um eine gültige Startlösung als Ausgangspunkt der Variablen Nachbarschaftssuche zu berechnen, wird wie gemeinhin üblich eine schnelle Konstruktionsheuristik eingesetzt. Konkret wurde nach der Konsultation von \citet*{Li2000} die dort beschriebene Heuristik \emph{onestepCD} (siehe \ref{sec:construct}) gewählt.}
+%Als Ausgangspunkt für unser Projekt setzen wir auf bereits bewährte Techniken aus anderen Bereichen der Optimierung und versuchen, diese bestmöglich für das Partition Graph Coloring Problem einzusetzen.
+
+\paragraph{Initial solution}{
+To get a valid starting solution which can then be improved, we decided to use already existing algorithms. The specific algorithm \emph{onestepCD} we used is already discussed in section~\ref{sec:construct}. It was chosen for its fast runtime while simultaneously providing good results in comparison with similar algorithms.
+
+%Um eine gültige Startlösung als Ausgangspunkt der Variablen Nachbarschaftssuche zu berechnen, wird wie gemeinhin üblich eine schnelle Konstruktionsheuristik eingesetzt. Konkret wurde nach der Konsultation von \citet*{Li2000} die dort beschriebene Heuristik \emph{onestepCD} (siehe \ref{sec:construct}) gewählt.
+}
 
 % Im folgenden soll erläutert werden, wie mit diesem Algorithmus eine Lösung gefunden wird.
-\paragraph{Aufbau der Variablen Nachbarschaftssuche}{
+\paragraph{Structure of a variable neighborhood search}{
 Bei der Variablen Nachbarschaftssuche handelt es sich um eine metaheuristische Methode, um verschiedenste Optimierungsprobleme zu lösen. Als Metaheuristik bezeichnet man dabei Algorithmen, die andere heuristische (und manchmal auch für Teilprobleme exakte) Optimierungsverfahren steuern und deren Ergebnisse sammeln und kombinieren.
 
 Wie der Name bereits suggeriert versucht eine VNS auf Basis unterschiedlicher Nachbarschaften eine bereits bestehende, nicht optimale Lösung zu verbessern. Eine Nachbarschaft wird im Normalfall durch sogenannte \emph{Moves}, also Züge, definiert, die be\-schrei\-ben, wie man von einer Lösung zu einer Nachbarlösung kommt, die hoffentlich besser als die Ursprungslösung ist. Ein solcher Zug kann z.B.\ die Auswahl eines anderen Knotens als Repräsentant eines Clusters sein. Kann eine Lösung mit Zügen aus einer Nachbarschaft nicht mehr verbessert werden, dann befindet man sich in einem \emph{lokalen Optimum}, das leider im Normalfall nicht dem globalen Optimum -- der besten möglichen Lösung -- entspricht.
