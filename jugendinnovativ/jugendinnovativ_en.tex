@@ -194,16 +194,26 @@ This algorithm can get valid solutions exceedingly quickly. The downside however
 %Diese Vorgehensweise führt schnell zu einer gültigen Lösung, die aber nur in den seltensten Fällen auch wirklich optimal bezüglich der Anzahl an benötigten Farben ist. Sie kann aber als Ausgangspunkt für Verbesserungsverfahren dienen.
  
 \paragraph{Tabu-Suche}{
-Mit Hilfe der von \citet*{Noronha2006} vorgeschlagenen Tabu-Suche ist es möglich, eine bereits bestehende Lösung durch verschiedene Transformationen in eine neue, nach Möglichkeit bessere Lösung zu verwandeln.
+\citet*{Noronha2006} described a different way to solve the PCP. Their algorithm, a Tabu Search, uses take existing solutions as input and then proceeds to try to improve them. The work also relies on the algorithm \emph{onestepCD} to get an initial solution.
 
-Zunächst wird bei der Tabu-Suche eine ungültige Lösung erzeugt, und zwar durch das neue Färben aller Knoten, welche in der Ausgangslösung noch die höchste Farbe besaßen, mit einer zufälligen, kleineren Farbe.
+%Mit Hilfe der von \citet*{Noronha2006} vorgeschlagenen Tabu-Suche ist es möglich, eine bereits bestehende Lösung durch verschiedene Transformationen in eine neue, nach Möglichkeit bessere Lösung zu verwandeln.
 
-Nachdem nun natürlich Konflikte zwischen zwei verbunden Knoten mit der gleichen Farbe entstanden sind, versucht die Tabu-Suche diese Konflikte zu lösen. Dazu wird ein zufälliger im Konflikt stehender Knoten ausgewählt und es wird versucht, diesen neu einzufärben. Sollte dies Erfolg haben beginnt die Tabu-Suche wieder bei der Suche nach in Konflikt stehenden Knoten.
+The Tabu Search begins by recoloring all vertices who use the heighest color with a random, smaller color. Through this recoloring process, some vertices come in conflict with one another. 
 
-Sollte für einen Knoten allerdings keine passende Farbe gefunden werden können, wird dieser Knoten auf die Tabu-Liste gesetzt, wo er für einige Iterationen verbleibt. Knoten sind, solange sie auf dieser Liste sind, tabu für eine Neueinfärbung, dürfen also nicht ausgewählt werden.
+%Zunächst wird bei der Tabu-Suche eine ungültige Lösung erzeugt, und zwar durch das neue Färben aller Knoten, welche in der Ausgangslösung noch die höchste Farbe besaßen, mit einer zufälligen, kleineren Farbe.
 
-Ist die Tabu-Suche nun nach mehreren Iterationen zu einer validen Lösung gekommen, welche weniger Farben als die Ausgangslösung verwendet, wird sie erneut aufgerufen, um nach Möglichkeit wieder ein Ergebnis mit einer Farbe weniger zu berechnen.
-Sollte hingegen die Tabu-Suche auch nach vielen Iterationen keine gültige Lösung erzeugen können, bricht sie von selbst ab und gibt ihre Verbesserungsversuche für diese Lösung auf und beginnt mit einer neuen, zufälligen Neufärbung der aktuell besten gefundenen Lösung.}
+These deliberately created conflicts are then stored in a list of all conflicts in a solution. The algorithm then proceeds to try and solve this conflict by selecting a random vertex in a conflict and recoloring it with a random color. If this step leeds to a solution with fewer conflicts, the Tabu Search marks the vertex as done and proceeds to try solving other conflicts.
+
+%Nachdem nun natürlich Konflikte zwischen zwei verbunden Knoten mit der gleichen Farbe entstanden sind, versucht die Tabu-Suche diese Konflikte zu lösen. Dazu wird ein zufälliger im Konflikt stehender Knoten ausgewählt und es wird versucht, diesen neu einzufärben. Sollte dies Erfolg haben beginnt die Tabu-Suche wieder bei der Suche nach in Konflikt stehenden Knoten.
+
+If however the algorithm cannot find a suitable color for a vertex, that same vertex is added to a tabu list, where it remains for a specified amount of iterations. All vertices on the tabu list are forbidden from being recolored, effectivly fixing their state as long as they are on the tabu list.
+
+%Sollte für einen Knoten allerdings keine passende Farbe gefunden werden können, wird dieser Knoten auf die Tabu-Liste gesetzt, wo er für einige Iterationen verbleibt. Knoten sind, solange sie auf dieser Liste sind, tabu für eine Neueinfärbung, dürfen also nicht ausgewählt werden.
+
+After the Tabu Search reaches a state with zero conflicts, the algorithm begins anew. The new solution is again input for the Tabu Search, and all steps described above are taken again. If however the Tabu Search is not able to find a valid solution without conflicts, even after many iterations, the Tabu Search stops, and returns the last known valid solution.}
+
+%Ist die Tabu-Suche nun nach mehreren Iterationen zu einer validen Lösung gekommen, welche weniger Farben als die Ausgangslösung verwendet, wird sie erneut aufgerufen, um nach Möglichkeit wieder ein Ergebnis mit einer Farbe weniger zu berechnen.
+%Sollte hingegen die Tabu-Suche auch nach vielen Iterationen keine gültige Lösung erzeugen können, bricht sie von selbst ab und gibt ihre Verbesserungsversuche für diese Lösung auf und beginnt mit einer neuen, zufälligen Neufärbung der aktuell besten gefundenen Lösung.}
 
 \subsubsection{Variable Nachbarschaftssuche (VNS)}
 Als Ausgangspunkt für unser Projekt setzen wir auf bereits bewährte Techniken aus anderen Bereichen der Optimierung und versuchen, diese bestmöglich für das Partition Graph Coloring Problem einzusetzen.
