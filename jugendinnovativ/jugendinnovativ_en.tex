@@ -193,7 +193,7 @@ This algorithm can get valid solutions exceedingly quickly. The downside however
 
 %Diese Vorgehensweise führt schnell zu einer gültigen Lösung, die aber nur in den seltensten Fällen auch wirklich optimal bezüglich der Anzahl an benötigten Farben ist. Sie kann aber als Ausgangspunkt für Verbesserungsverfahren dienen.
  
-\paragraph{Tabu-Suche}{
+\paragraph{Tabu Search}{
 \citet*{Noronha2006} described a different way to solve the PCP. Their algorithm, a Tabu Search, uses take existing solutions as input and then proceeds to try to improve them. The work also relies on the algorithm \emph{onestepCD} to get an initial solution.
 
 %Mit Hilfe der von \citet*{Noronha2006} vorgeschlagenen Tabu-Suche ist es möglich, eine bereits bestehende Lösung durch verschiedene Transformationen in eine neue, nach Möglichkeit bessere Lösung zu verwandeln.
@@ -215,7 +215,7 @@ After the Tabu Search reaches a state with zero conflicts, the algorithm begins 
 %Ist die Tabu-Suche nun nach mehreren Iterationen zu einer validen Lösung gekommen, welche weniger Farben als die Ausgangslösung verwendet, wird sie erneut aufgerufen, um nach Möglichkeit wieder ein Ergebnis mit einer Farbe weniger zu berechnen.
 %Sollte hingegen die Tabu-Suche auch nach vielen Iterationen keine gültige Lösung erzeugen können, bricht sie von selbst ab und gibt ihre Verbesserungsversuche für diese Lösung auf und beginnt mit einer neuen, zufälligen Neufärbung der aktuell besten gefundenen Lösung.}
 
-\subsubsection{Variable Nachbarschaftssuche (VNS)}
+\subsubsection{Variable Neighborhood Search (VNS)}
 Als Ausgangspunkt für unser Projekt setzen wir auf bereits bewährte Techniken aus anderen Bereichen der Optimierung und versuchen, diese bestmöglich für das Partition Graph Coloring Problem einzusetzen.
 
 \paragraph{Initiallösung}{
