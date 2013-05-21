@@ -295,22 +295,34 @@ Although the Variable Neighborhood Search can be executed for an unlimited time 
 
 \subsubsection{Nachbarschaften}
 \label{sec:neigh}
-Wie bereits beschrieben handelt es sich bei Nachbarschaften um einzelne Algorithmen die versuchen, eine gültige Lösung in eine andere, bessere Lösung durch eine relativ kleine Änderung umzuwandeln. Wir haben uns zunächst auf die drei Nachbarschaften \emph{changeColor}, \emph{changeNode} und \emph{DSATUR} konzentriert, wobei weitere Nachbarschaften noch zur Diskussion stehen.
+As already mentioned earlier, Neighborhoods are small algorithms, often heuristics, that transform one valid solution into another. The result of this transformation is hopefully a better solution than the original one. In this section we will discuss the four different Neighborhoods we used to solve the PCP. These Neighborhoods are named \emph{changeColor}, \emph{changeNode}, \emph{DSTAUR}, and \emph{changeAll}.
 
-Jede Nachbarschaft bietet auch eine Methode an, eine Lösung zu ``schütteln'', welche ähnlich abläuft wie die Methode zur Suche des jeweiligen lokalen Optimums, allerdings ohne die Beschränkung ausschließlich bessere Ergebnisse zurück liefern zu müssen.
+%Wie bereits beschrieben handelt es sich bei Nachbarschaften um einzelne Algorithmen die versuchen, eine gültige Lösung in eine andere, bessere Lösung durch eine relativ kleine Änderung umzuwandeln. Wir haben uns zunächst auf die drei Nachbarschaften \emph{changeColor}, \emph{changeNode} und \emph{DSATUR} konzentriert, wobei weitere Nachbarschaften noch zur Diskussion stehen.
 
-\paragraph{ChangeColor}
-Bei dieser sehr einfachen Nachbarschaft, die von der Tabu-Suche aus \citet*{Noronha2006} inspiriert ist, wird versucht, alle Knoten umzufärben, welche mit der höchsten Farbe markiert wurden. 
+Every Neighborhood also implements a unique way of \emph{Shaking} a solution. This methods resemble for the most part their optimization counter parts. However, they are not limited to only improve a solution, as their task is to randomize the starting point of a VND iteration.
 
-Um dieses Ziel zu erreichen, werden alle Knoten, welche diese höchste Farbe besitzen, mit einer neuen zufälligen Farbe markiert. Dies führt natürlich unweigerlich zu Konflikten zwischen verbundenen Knoten im Konfliktgraph, d.h.\ zu benachbarten Knoten mit gleicher Farbe. 
+%Jede Nachbarschaft bietet auch eine Methode an, eine Lösung zu ``schütteln'', welche ähnlich abläuft wie die Methode zur Suche des jeweiligen lokalen Optimums, allerdings ohne die Beschränkung ausschließlich bessere Ergebnisse zurück liefern zu müssen.
 
-Um diese Konflikte zu lösen wird ein zufälliger, im Konflikt stehender Knoten ausgewählt, um ihn mit einer passenden Farbe zu füllen. Zu beachten ist hierbei die Tatsache, das diese passende Farbe kleiner sein muss als die frühere höchste Farbe, da ja eine Verbesserung (eine Reduktion der Farbenanzahl um 1) erzielt werden soll.
+\paragraph{changeColor}
+This very simple Neighborhood was inspired by the Tabu Search from \citet*{Noronha2006}. The Neighborhood tries to recolor all vertices with the heighest color.
 
-Sollte sich keine passende Farbe finden, wird auch dieser im Konflikt stehende Knoten mit einer zufälligen Farbe neu eingefärbt, was im Normalfall zu weiteren Konflikten führt. Es wird nun versucht, diesen gesamten Vorgang so lange zu wiederholen bis keine Konflikte mehr bestehen. 
+%Bei dieser sehr einfachen Nachbarschaft, die von der Tabu-Suche aus \citet*{Noronha2006} inspiriert ist, wird versucht, alle Knoten umzufärben, welche mit der höchsten Farbe markiert wurden. 
 
-Sollte nach einer gewissen Anzahl an Iterationen keine konfliktfreie Lösung gefunden werden, bricht \emph{ChangeColor} automatisch ab und liefert die letzte valide Lösung zurück.
+To reach its goal, the Neighborhood first selects a vertex colored with the heighest color. This vertex is then recolored with the lowest color, even if this leads to conflicts in the solution. The algorithm then proceeds to find new suitable colors for all adjacent vertices of the selected vertex. 
 
-\paragraph{ChangeNode}
+%Um dieses Ziel zu erreichen, werden alle Knoten, welche diese höchste Farbe besitzen, mit einer neuen zufälligen Farbe markiert. Dies führt natürlich unweigerlich zu Konflikten zwischen verbundenen Knoten im Konfliktgraph, d.h.\ zu benachbarten Knoten mit gleicher Farbe. 
+
+When a suitable color is found, that vertex is recolored. If no suitable color could be found for only a single adjacent vertices, then the next lowest color is used to color the selected vertex. These steps are repeated until a suitable color combination could be found. Once this combination is found, the algorithm searches for other vertices using the heighest color.
+
+%Um diese Konflikte zu lösen wird ein zufälliger, im Konflikt stehender Knoten ausgewählt, um ihn mit einer passenden Farbe zu füllen. Zu beachten ist hierbei die Tatsache, das diese passende Farbe kleiner sein muss als die frühere höchste Farbe, da ja eine Verbesserung (eine Reduktion der Farbenanzahl um 1) erzielt werden soll.
+
+If however no suitable combination could be found, and the recoloring process comes to a halt, the Neighborhood returns with no improvement made. In case the Neighborhood was a success, and the newly computed solution is better than the old one, the Neighborhood repeats itself to further improve the solution.
+
+%Sollte sich keine passende Farbe finden, wird auch dieser im Konflikt stehende Knoten mit einer zufälligen Farbe neu eingefärbt, was im Normalfall zu weiteren Konflikten führt. Es wird nun versucht, diesen gesamten Vorgang so lange zu wiederholen bis keine Konflikte mehr bestehen. 
+
+%Sollte nach einer gewissen Anzahl an Iterationen keine konfliktfreie Lösung gefunden werden, bricht \emph{ChangeColor} automatisch ab und liefert die letzte valide Lösung zurück.
+
+\paragraph{changeNode}
 Diese Nachbarschaft baut auf der Tatsache auf, dass man aus einem Cluster nur jeweils einen Knoten auswählen muss. Dazu werden wie bei \emph{ChangeColor} alle Knoten höchster Farbe ausgewählt und umgefärbt.
 
 Nun wird wieder ein zufälliger Knoten aus den entstandenen Konflikten ausgewählt, welcher dann aber durch einen zufälligen Knoten aus dem selben Cluster ersetzt wird. An diesem Knoten wird dann ein neuer Einfärbeversuch unternommen, wobei die maximal zulässige Farbe natürlich wieder kleiner ist als die ursprünglich höchste Farbe.
@@ -327,6 +339,8 @@ Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das norma
     \item Weise dem gewählten Knoten die kleinste mögliche Farbe zu.
     \item Wiederhole, bis die Repräsentanten aller Cluster eingefärbt wurden.
 \end{enumerate}
+
+\paragraph{changeAll}
 
 \subsubsection{Implementierung}
 Um die im Zuge dieser Arbeit entwickelten Lösungsansätze verifizieren und bewerten zu können, wurde das vorgestellte Konzept (Variable Nachbarschaftssuche mit Ermittlung einer Initiallösung durch \emph{onestepCD}) vollständig implementiert.
