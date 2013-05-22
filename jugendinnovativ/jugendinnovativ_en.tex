@@ -1,6 +1,7 @@
 \documentclass[paper=a4,fontsize=12pt]{scrartcl}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage{multirow}
 \usepackage[babel, german=quotes]{csquotes}
 %\usepackage{hyperref}
 \usepackage[style=authoryear, natbib, backend=biber]{biblatex}
@@ -378,18 +379,22 @@ Every Neighborhood that was discussed in section~\ref{sec:neigh} has been implem
 
 %Alle im Abschnitt \ref{sec:neigh} besprochenen Nachbarschaften wurden umgesetzt, wobei in diesen Codeteilen auf eine effiziente Umsetzung ganz besonders geachtet wurde, da sie das Laufzeitverhalten stark prägen.
 
-\subsection{Ausblick}
+\subsection{Conclusion}
+The demand for communication in huge fiber optic networks, like the ones operated by internet service providers, is an ever rising figure.
 
-Erste Tests auf kleineren Instanzen des Problems zeigten bereits vielversprechende Ergebnisse. Für größere Instanzen ist ungleich mehr Rechenzeit und -leistung notwendig, entsprechende Testläufe, um diesen Ansatz auch z.B.\ mit der Tabu-Suche von \citet*{Noronha2006} vergleichen zu können, sind erst in Vorbereitung. Um zukünftig noch bessere Ergebnisse zu erzielen wird auch die Verwendung  weiterer, problemspezifischer, allerdings auch umfangreicherer Nachbarschaften in Erwägung gezogen.
+%In großen Glasfasernetze, wie sie zum Beispiel von großen Internetinfrastrukturbetreibern betrieben werden, besteht ein immer größer werdendes Kommunikationsbedürfnis.
 
-\subsection{Schluss}
-In großen Glasfasernetze, wie sie zum Beispiel von großen Internetinfrastrukturbetreibern betrieben werden, besteht ein immer größer werdendes Kommunikationsbedürfnis.
+To accommodate with these ever rising demands two steps can be taken. The easier -- but also more expensive -- route is to expand existing networks by using new infrastructe. The harder -- but also cheaper -- route is to use existing networks more efficiently. The task to assign different wavelengths to a fiber optic network to enable parallel communication between many different parties can be seen as a practical application of the Partition Graph Coloring Problem. 
 
-Um diesen steigenden Anforderungen gerecht zu werden kann natürlich einfach die Infrastruktur -- mit entsprechenden (auch laufenden) Kosten -- erweitert werden oder aber die bestehenden Netze werden effizienter genutzt. Das Problem, mehrere Kommunikationskanäle über das selbe Glasfasernetzwerk ohne gegenseitige Störungen zu übertragen, kann allgemein auf das Partition Graph Coloring Problem zurückgeführt werden.
+%Um diesen steigenden Anforderungen gerecht zu werden kann natürlich einfach die Infrastruktur -- mit entsprechenden (auch laufenden) Kosten -- erweitert werden oder aber die bestehenden Netze werden effizienter genutzt. Das Problem, mehrere Kommunikationskanäle über das selbe Glasfasernetzwerk ohne gegenseitige Störungen zu übertragen, kann allgemein auf das Partition Graph Coloring Problem zurückgeführt werden.
 
-In dieser Arbeit stellten wir eine Variable Nachbarschaftssuche vor, die mithilfe eines VND auf Basis von drei Nachbarschaften eine Ausgangslösung schrittweise verfeinert.
+In this work we present a new approach to solving the Partition Graph Coloring Problem by using a Variable Neighborhood Search. The Variable Neighborhood Search facilitates 4 different Neighborhoods to improve an existing solution step-by-step.
 
-Erste Tests auf kleineren Instanzen des Problems zeigten bereits vielversprechende Ergebnisse. Für größere Instanzen ist ungleich mehr Rechenzeit und -leistung notwendig, entsprechende Testläufe, um diesen Ansatz auch z.B.\ mit der Tabu-Suche von \citet*{Noronha2006} vergleichen zu können, sind erst in Vorbereitung. Um zukünftig noch bessere Ergebnisse zu erzielen wird auch die Verwendung  weiterer, problemspezifischer, allerdings auch umfangreicherer Nachbarschaften in Erwägung gezogen.
+%In dieser Arbeit stellten wir eine Variable Nachbarschaftssuche vor, die mithilfe eines VND auf Basis von drei Nachbarschaften eine Ausgangslösung schrittweise verfeinert.
+
+Initial tests on small instances showed promising results. Later tests on large instances of the problem revealed results around 15\% better than the initial solution. Although the results are already promising, further steps will be taken to improve the results even more.
+
+%Erste Tests auf kleineren Instanzen des Problems zeigten bereits vielversprechende Ergebnisse. Für größere Instanzen ist ungleich mehr Rechenzeit und -leistung notwendig, entsprechende Testläufe, um diesen Ansatz auch z.B.\ mit der Tabu-Suche von \citet*{Noronha2006} vergleichen zu können, sind erst in Vorbereitung. Um zukünftig noch bessere Ergebnisse zu erzielen wird auch die Verwendung  weiterer, problemspezifischer, allerdings auch umfangreicherer Nachbarschaften in Erwägung gezogen.
 
 %\subsection{Innovationsgehalt des bearbeiteten Lösungsansatzes}
 %\subsection{Testläufe}
@@ -409,12 +414,6 @@ Erste Tests auf kleineren Instanzen des Problems zeigten bereits vielversprechen
 % Bei Sonderpreis-Projekten ist u.a. die Relevanz der ökologischen, sozialen und ökonomischen Nachhaltigkeit bzw. die wirtschaftliche Machbarkeit anzuführen.
 %\subsection{Ökonomische Grundlage und ökologischer Vorteil}
 
-\section{Bericht des Projektkoordinators}
-
-Moritz und ich arbeiteten bereits in den vergangen Schuljahren gemeinsam an Projekten, und wussten so beide, worauf wir uns einlassen. Neues Konfliktpotential bot die Verwendung des Versionskontrollsystems Git\footnote{siehe \url{http://www.git-scm.org/}}: Zu Beginn des Projekts waren wir damit noch nicht vertraut, und mussten durch Fehler lernen, es richtig einzusetzen. Hierbei konnten wir uns wie so oft gegenseitig ergänzen. Besonders bei der Modellierung der Lösungen brauchten wir länger um uns einig zu werden. Um Entscheidungen zu fällen, wogen wir stets Effizienz der Lösungsvorschläge mit internen Coding Guidelines und Modularität ab. Im Zweifelsfall konnten wir uns auf unseren Betreuer verlassen. 
-
-In den Besprechungen an der Technischen Universität Wien wurden all unsere Fragen beantwortet, und neue Lösungsvorschläge eingebracht, wodurch wir auch Einblick in wissenschaftliche Arbeitsweisen gewinnen konnten.
-
 \newpage
 \printbibliography
 \addcontentsline{toc}{section}{Literatur}
@@ -431,65 +430,89 @@ In den Besprechungen an der Technischen Universität Wien wurden all unsere Frag
 
 \section{Appendix}
 
-\subsection{Bisherige Ergebnisse}
+\subsection{Results}
 
-Eine Auswahl der bisherigen Ergebnisse unseres Projektes auf aus der wissenschaftlichen Literatur für dieses Optimierungsproblem bekannten Instanzen können der Tabelle~\ref{tab:result} entnommen werden, die Bedeutung der einzelnen Spalten ist wie folgt:
+Mit Ende der Arbeit an dem Projekt im Rahmen der Diplomarbeit wurden in Tabelle~\ref{tab:result} ersichtliche Ergebnisse auf dem Berechnungsnetzwerk der Arbeitsgruppe für Algorithmen und Datenstrukturen des Instituts für Computergraphik und Algorithmen an der Technischen Universität Wien erzielt.
+
+Die Instanzen stammen von der genannten Arbeitsgruppe und sind mit jenen von \cite{Noronha2006} vergleichbar.
+
+Das Abbruchkriterium der VNS für diese Ergebnisse war ein Zeitlimit von 600s oder 5000 fehlgeschlagene \enquote{Schüttelversuche}.
+
+
+\subsubsection*{Caption}
 
 \begin{description}
-    \item[Instanz] Name der berechneten Instanz\footnote{Zu finden unter \url{www.ic.uff.br/~celso/grupo/pcp.htm}}.% In dem Format \texttt{n}\textit{(Anzahl der Knoten)}\texttt{}
-    \item[$|V|$] Anzahl an Knoten der Instanz.
-    \item[$|E|$] Anzahl an Kanten der Instanz.
-    \item[$|C|$] Anzahl an Clustern der Instanz.
-    \item[$S_i$] Die Anzahl an Farben, die von der durch \emph{onestepCD} berechneten Ausgangslösung benötigt werden.
+    \item[Instanz] Name der berechneten Instanz.
+    \item[$|V|$] Anzahl der Knoten der Instanz.
+    \item[$|E|$] Anzahl der Kanten der Instanz.
+    \item[$|C|$] Anzahl der Clustern der Instanz.
+    \item[$S_i$] Die Anzahl der Farben, die von der durch \emph{onestepCD} berechneten Ausgangslösung benötigt werden.
     \item[$N$] Die verwendeten Nachbarschaften in Reihenfolge der Iteration:
         \begin{description}
             \item[\texttt{c}] \emph{ChangeColor}
             \item[\texttt{n}] \emph{ChangeNode}
-            \item[\texttt{d}] \emph{NewVertexColoring-DSATUR}
+            \item[\texttt{a}] \emph{ChangeAll}
+            \item[\texttt{d}] \emph{DSATUR}
         \end{description}
-    \item[$S_{avg}$] Die im Durchschnitt benötigte Anzahl an Farben der von unserer Implementierung in 30 Testläufen berechneten Lösungen.
-    \item[$S_{\sigma}$] Die Standardabweichung der Ergebnisse aller Testläufe (verursacht durch Ran\-dom\-isier\-ung in den einzelnen Verfahren).
+    \item[$S_{avg}$] Die im Durchschnitt benötigte Anzahl an Farben der von unserer Implementierung in 40 Testläufen berechneten Lösungen.
+    \item[$S_{\sigma}$] Die Standardabweichung der Ergebnisse aller 40 Testläufe (verursacht durch Ran\-dom\-isier\-ung in den einzelnen Verfahren).
     \item[$S_{\Delta}$] Prozentuelle Verbesserung der Ausgangslösung durch den beschriebenen Ansatz.
-    \item[$t$] Mittlere Laufzeit in Sekunden (ermittelt auf einem Linux-System Kernel 3.5.0 x86\_64, Intel Core i5-3317U CPU mit 1.70GHz, Compiler gcc 4.7.2 ).
+    \item[$t$] Die mittlere Laufzeit in Sekunden.
 \end{description}
 
-\paragraph{Kurzinterpretation}{
-Wie man erkennen kann ist die Reihenfolge, in der das VND die einzelnen Nachbarschaften durchsucht muss um die jeweils besten Resultate zu erzielen, nicht wirklich eindeutig, auch wenn sich eine Tendenz zu \texttt{cnd} abzeichnet. Die erzielten Verbesserung gegenüber der von der Konstruktionsheuristik \emph{onestepCD} ermittelten Ausgangslösungen sind mitunter beachtlich und bewegen sich Großteils im Bereich zwischen 20 und 40\%.}
-
-\begin{table}[!htbp]
+\begin{table}[p]
 \centering
-\begin{tabular}{c|rrr|r|c|rrr|r|r}
-Instanz & $|V|$ & $|E|$ & $|C|$ & $S_i$ & $N$ & $S_{min}$ & $S_{avg}$ & $S_{\sigma}$ & $S_{\Delta}$ & $t$ \\
+\begin{tabular}{|c|ccc|c|c|ccc|c|c|}
+\hline
+Instanz & \multicolumn{1}{c}{$|V|$} & \multicolumn{1}{c}{$|E|$} & \multicolumn{1}{c|}{$|C|$} & \multicolumn{1}{c|}{$S_i$} & \multicolumn{1}{c|}{$N$} & $S_{min}$ & \multicolumn{1}{c}{$S_{avg}$} & \multicolumn{1}{c|}{$S_{\sigma}$} & \multicolumn{1}{c|}{$S_{\Delta}$} & \multicolumn{1}{c|}{$t$} \\
 \hline\hline
-\texttt{n90p5t2s1.pcp} & 90	& 2019	& 45 & 13 & \texttt{cdn} & 9 & 9.61 & 1.8 & 44.44 & 693.2\\
-\texttt{n90p5t2s2.pcp} & 90	& 1963	& 45 & 11 & \texttt{ncd} & 8 & 9.29 & 1.8 & 37.50 & 550.6\\
-\texttt{n90p5t2s3.pcp} & 90	& 2045	& 45 & 13 & \texttt{cdn} & 9 & 9.61 & 1.8 & 44.44 & 568.4\\
-\texttt{n90p5t2s4.pcp} & 90	& 2014	& 45 & 12 & \texttt{cdn} & 9 & 9.61 & 1.8 & 33.33 & 593.9\\
-\texttt{n90p5t2s5.pcp} & 90	& 2057	& 45 & 13 & \texttt{dnc} & 9 & 9.87 & 1.9 & 44.44 & 789.7\\
-\texttt{n90p7t2s4.pcp} & 90	& 2821	& 45 & 16 & \texttt{ndc} & 12 & 13.35 & 2.5 & 33.33 & 656.1\\
-\texttt{n90p7t2s5.pcp} & 90	& 2834	& 45 & 16 & \texttt{cdn} & 13 & 13.94 & 2.6 & 23.08 & 847.7\\
-\texttt{n90p8t2s1.pcp} & 90	& 3257	& 45 & 19 & \texttt{dcn} & 15 & 16.77 & 3.2 & 26.67 & 839.0\\
-\texttt{n90p8t2s2.pcp} & 90	& 3188	& 45 & 19 & \texttt{cdn} & 15 & 16.06 & 3.0 & 26.67 & 1125.5\\
-\texttt{n90p9t2s1.pcp} & 90	& 3631	& 45	& 24 & \texttt{cnd} & 19 & 20.48 & 3.8 & 26.32 & 1247.4\\
-\texttt{n90p9t2s2.pcp} & 90	& 3614	& 45	& 23 & \texttt{cnd} & 18 & 20.42 & 3.9 & 27.78 & 1051.3\\
-\texttt{n90p9t2s3.pcp} & 90	& 3615	& 45	& 24 & \texttt{cdn} & 19 & 19.97 & 3.7 & 26.32 & 1432.6\\
-\texttt{n90p9t2s4.pcp} & 90	& 3619	& 45	& 23 & \texttt{dcn} & 17 & 19.77 & 3.8 & 35.29 & 1407.4\\
-\texttt{n90p9t2s5.pcp} & 90	& 3634	& 45	& 24 & \texttt{dcn} & 18 & 19.42 & 3.6 & 33.33 & 1357.1\\
-\texttt{n100p5t2s1.pcp} & 100	& 2494	& 50	& 13 & \texttt{cdn} & 10 & 10.58 & 2.0 & 30.00 & 689.7\\
-\texttt{n100p5t2s2.pcp} & 100	& 2428	& 50	& 12 & \texttt{cdn} & 10 & 10.55 & 1.9 & 20.00 & 489.0\\
-\texttt{n100p5t2s3.pcp} & 100	& 2513	& 50	& 12 & \texttt{ndc} & 9 & 9.94 & 1.9 & 33.33 & 610.6\\
-\texttt{n100p5t2s4.pcp} & 100	& 2442	& 50	& 12 & \texttt{cdn} & 9 & 9.94 & 1.9 & 33.33 & 602.3\\
-\texttt{n100p5t2s5.pcp} & 100	& 2500	& 50	& 12 & \texttt{dnc} & 9 & 10.55 & 2.1 & 33.33 & 848.7\\
-\texttt{n120p5t2s1.pcp} & 120	& 3593	& 60	& 14 & \texttt{cdn} & 11 & 12.03 & 2.3 & 27.27 & 1549.0\\
-\texttt{n120p5t2s2.pcp} & 120	& 3544	& 60	& 14 & \texttt{cdn} & 11 & 11.77 & 2.2 & 27.27 & 906.8\\
-\texttt{n120p5t2s3.pcp} & 120	& 3613	& 60	& 14 & \texttt{cdn} & 12 & 11.90 & 2.2 & 16.67 & 651.0\\
-\texttt{n120p5t2s4.pcp} & 120	& 3536	& 60	& 14 & \texttt{dcn} & 11 & 11.87 & 2.2 & 27.27 & 1334.2\\
-\texttt{n120p5t2s5.pcp} & 120	& 3623	& 60	& 15 & \texttt{ndc} & 11 & 12.23 & 2.3 & 36.36 & 1050.3\\
+
+\multirow{3}{*}{\texttt{dsjc500.5-1.in}} & \multirow{3}{*}{500} & \multirow{3}{*}{62624} & \multirow{3}{*}{500} & \multirow{32}{*}{69} &
+      \texttt{cnad}	& \multirow{3}{*}{62}	& 63.67	& 0.52	& \multirow{3}{*}{11.29}	& 494109.3\\
+&&&&& \texttt{cand}	&			& 63.55	& 0.55	&				& 494685.3\\
+&&&&& \texttt{acnd}	&			& 63.67	& 0.52	&				& 492537.0\\
+\cline{1-4}\cline{6-11}
+\multirow{14}{*}{\texttt{dsjc500.5-2.in}} & \multirow{14}{*}{1000} & \multirow{14}{*}{249671} & \multirow{14}{*}{500} & &
+      \texttt{cnda}	& \multirow{14}{*}{60}	& 61.30	& 0.51	& \multirow{14}{*}{15.00}	& 482239.0\\
+&&&&& \texttt{cadn}	&			& 61.27	& 0.50	&				& 472219.3\\
+&&&&& \texttt{dcan}	&			& 61.55	& 0.55	&				& 488494.5\\
+&&&&& \texttt{danc}	&			& 61.40	& 0.54	&				& 497711.0\\
+&&&&& \texttt{ncda}	&			& 61.13	& 0.40	&				& 496069.8\\
+&&&&& \texttt{ndca}	&			& 61.27	& 0.50	&				& 499308.0\\
+&&&&& \texttt{ndac}	&			& 61.17	& 0.49	&				& 508483.5\\
+&&&&& \texttt{nacd}	&			& 61.45	& 0.55	&				& 448795.8\\
+&&&&& \texttt{nadc}	&			& 60.95	& 0.31	&				& 499959.3\\
+&&&&& \texttt{acdn}	&			& 60.88	& 0.40	&				& 489919.3\\
+&&&&& \texttt{adcn}	&			& 60.80	& 0.40	&				& 502662.8\\
+&&&&& \texttt{adnc}	&			& 60.95	& 0.31	&				& 509733.8\\
+&&&&& \texttt{ancd}	&			& 61.70	& 0.51	&				& 443322.5\\
+&&&&& \texttt{andc}	&			& 61.00	& 0.45	&				& 499170.8\\
+\cline{1-4}\cline{6-11}
+\multirow{14}{*}{\texttt{dsjc500.5-3.in}} & \multirow{14}{*}{1500} & \multirow{14}{*}{562401} & \multirow{14}{*}{500} & &
+      \texttt{cdna}	& \multirow{14}{*}{60}	& 61.20	& 0.46	& \multirow{14}{*}{15.00}	& 477578.0\\
+&&&&& \texttt{cadn}	&			& 61.20	& 0.51	&				& 465780.5\\
+&&&&& \texttt{dcna}	&			& 61.38	& 0.53	&				& 479848.8\\
+&&&&& \texttt{dnac}	&			& 61.23	& 0.52	&				& 498028.5\\
+&&&&& \texttt{danc}	&			& 61.23	& 0.47	&				& 489702.3\\
+&&&&& \texttt{ncda}	&			& 60.95	& 0.22	&				& 475189.8\\
+&&&&& \texttt{ndca}	&			& 60.88	& 0.33	&				& 484062.0\\
+&&&&& \texttt{ndac}	&			& 60.98	& 0.16	&				& 488796.3\\
+&&&&& \texttt{nacd}	&			& 61.55	& 0.59	&				& 432441.0\\
+&&&&& \texttt{nadc}	&			& 60.92	& 0.35	&				& 491085.8\\
+&&&&& \texttt{acdn}	&			& 60.95	& 0.22	&				& 483350.0\\
+&&&&& \texttt{adcn}	&			& 60.98	& 0.35	&				& 493467.8\\
+&&&&& \texttt{adnc}	&			& 60.95	& 0.22	&				& 501021.3\\
+&&&&& \texttt{andc}	&			& 60.98	& 0.27	&				& 491790.3\\
+\cline{1-4}\cline{6-11}
+\texttt{dsjc500.5-4.in} & 2000 & 999508 & 500 & & \texttt{adnc} & 59 & 60.65 & 0.53 & 16.95 & 497422.8\\
+\hline
 \end{tabular}
-\caption{Ergebnisse der VNS im Überblick}
+\caption{Ergebnisse der VNS}
 \label{tab:result}
 \end{table}
 
+\subsection{Kurzinterpretation}
+Wie man erkennen kann ist die Reihenfolge, in der das VND die einzelnen Nachbarschaften durchsuchen muss, um die jeweils besten Resultate zu erzielen, nicht wirklich eindeutig. Die erzielten Verbesserung gegenüber der von der Konstruktionsheuristik \emph{onestepCD} ermittelten Ausgangslösungen sind mitunter beachtlich und bewegen sich großteils im Bereich zwischen 11 und 15\%.
 \subsection{Visualisierung}
 
 Videoaufzeichnungen des Ablaufs einerVersion des Programms mit Visualisierung finden Sie unter:
