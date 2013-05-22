@@ -198,7 +198,7 @@ This algorithm can get valid solutions exceedingly quickly. The downside however
 
 %Mit Hilfe der von \citet*{Noronha2006} vorgeschlagenen Tabu-Suche ist es möglich, eine bereits bestehende Lösung durch verschiedene Transformationen in eine neue, nach Möglichkeit bessere Lösung zu verwandeln.
 
-The Tabu Search begins by recoloring all vertices who use the heighest color with a random, smaller color. Through this recoloring process, some vertices come in conflict with one another. 
+The Tabu Search begins by recoloring all vertices who use the highest color with a random, smaller color. Through this recoloring process, some vertices come in conflict with one another. 
 
 %Zunächst wird bei der Tabu-Suche eine ungültige Lösung erzeugt, und zwar durch das neue Färben aller Knoten, welche in der Ausgangslösung noch die höchste Farbe besaßen, mit einer zufälligen, kleineren Farbe.
 
@@ -304,15 +304,15 @@ Every Neighborhood also implements a unique way of \emph{Shaking} a solution. Th
 %Jede Nachbarschaft bietet auch eine Methode an, eine Lösung zu ``schütteln'', welche ähnlich abläuft wie die Methode zur Suche des jeweiligen lokalen Optimums, allerdings ohne die Beschränkung ausschließlich bessere Ergebnisse zurück liefern zu müssen.
 
 \paragraph{changeColor}
-This very simple Neighborhood was inspired by the Tabu Search from \citet*{Noronha2006}. The Neighborhood tries to recolor all vertices with the heighest color.
+This very simple Neighborhood was inspired by the Tabu Search from \citet*{Noronha2006}. The Neighborhood tries to recolor all vertices with the highest color.
 
 %Bei dieser sehr einfachen Nachbarschaft, die von der Tabu-Suche aus \citet*{Noronha2006} inspiriert ist, wird versucht, alle Knoten umzufärben, welche mit der höchsten Farbe markiert wurden. 
 
-To reach its goal, the Neighborhood first selects a vertex colored with the heighest color. This vertex is then recolored with the lowest color, even if this leads to conflicts in the solution. The algorithm then proceeds to find new suitable colors for all adjacent vertices of the selected vertex. 
+To reach its goal, the Neighborhood first selects a vertex colored with the highest color. This vertex is then recolored with the lowest color, even if this leads to conflicts in the solution. The algorithm then proceeds to find new suitable colors for all adjacent vertices of the selected vertex. 
 
 %Um dieses Ziel zu erreichen, werden alle Knoten, welche diese höchste Farbe besitzen, mit einer neuen zufälligen Farbe markiert. Dies führt natürlich unweigerlich zu Konflikten zwischen verbundenen Knoten im Konfliktgraph, d.h.\ zu benachbarten Knoten mit gleicher Farbe. 
 
-When a suitable color is found, that vertex is recolored. If no suitable color could be found for only a single adjacent vertices, then the next lowest color is used to color the selected vertex. These steps are repeated until a suitable color combination could be found. Once this combination is found, the algorithm searches for other vertices using the heighest color.
+When a suitable color is found, that vertex is recolored. If no suitable color could be found for only a single adjacent vertices, then the next lowest color is used to color the selected vertex. These steps are repeated until a suitable color combination could be found. Once this combination is found, the algorithm searches for other vertices using the highest color.
 
 %Um diese Konflikte zu lösen wird ein zufälliger, im Konflikt stehender Knoten ausgewählt, um ihn mit einer passenden Farbe zu füllen. Zu beachten ist hierbei die Tatsache, das diese passende Farbe kleiner sein muss als die frühere höchste Farbe, da ja eine Verbesserung (eine Reduktion der Farbenanzahl um 1) erzielt werden soll.
 
@@ -323,33 +323,60 @@ If however no suitable combination could be found, and the recoloring process co
 %Sollte nach einer gewissen Anzahl an Iterationen keine konfliktfreie Lösung gefunden werden, bricht \emph{ChangeColor} automatisch ab und liefert die letzte valide Lösung zurück.
 
 \paragraph{changeNode}
-Diese Nachbarschaft baut auf der Tatsache auf, dass man aus einem Cluster nur jeweils einen Knoten auswählen muss. Dazu werden wie bei \emph{ChangeColor} alle Knoten höchster Farbe ausgewählt und umgefärbt.
+Like with \emph{changeColor}, \emph{changeNode} relies on a fast algorithm to change a solution. This is done by selecting an alternative vertex for each vertex colored with the highest color.
 
-Nun wird wieder ein zufälliger Knoten aus den entstandenen Konflikten ausgewählt, welcher dann aber durch einen zufälligen Knoten aus dem selben Cluster ersetzt wird. An diesem Knoten wird dann ein neuer Einfärbeversuch unternommen, wobei die maximal zulässige Farbe natürlich wieder kleiner ist als die ursprünglich höchste Farbe.
+%Diese Nachbarschaft baut auf der Tatsache auf, dass man aus einem Cluster nur jeweils einen Knoten auswählen muss. Dazu werden wie bei \emph{ChangeColor} alle Knoten höchster Farbe ausgewählt und umgefärbt.
 
-Dieser Vorgang wird solange wiederholt bis alle Konflikte gelöst wurden oder zu viele Iterationen abgelaufen sind.
+Similar to \emph{changeColor}, the algorithm searches for a vertex that uses the highest color. This vertex is then replaced by a different vertex from the same cluster. Then an attempt is made to recolor the new replacement vertex. If the new suitable color is less than the highest color, the replacement vertex becomes the new selected vertex in the solution. 
+
+%Nun wird wieder ein zufälliger Knoten aus den entstandenen Konflikten ausgewählt, welcher dann aber durch einen zufälligen Knoten aus dem selben Cluster ersetzt wird. An diesem Knoten wird dann ein neuer Einfärbeversuch unternommen, wobei die maximal zulässige Farbe natürlich wieder kleiner ist als die ursprünglich höchste Farbe.
+
+If no suitable color could be found, and all possible replacing vertices have been tried without success, the Neighborhood is aborted. When all vertices of highest color have been replaced a new, better solution has been found.
+
+%Dieser Vorgang wird solange wiederholt bis alle Konflikte gelöst wurden oder zu viele Iterationen abgelaufen sind.
 
 \paragraph{NewVertexColoring-DSATUR}
-Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das normale Graph Coloring Problem ohne Clustering der Knoten, indem die aktuell gewählten Repräsentanten fixiert werden und dieses so vereinfachte Problem (das allerdings immer noch NP-hart ist) wird nun mit folgendem Greedy Ansatz näherungsweise gelöst:
+This Neighborhood reduces the PCP to a normal Graph Coloring Problem without clusters. This is done by essentially fixing the current selection of vertices for a cluster. The resulting graph will be colored using a Greedy algorithm to solve the resulting Graph Coloring Problem (that is still NP-hard). This algorithm uses the following steps to recolor the graph:
+
+%Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das normale Graph Coloring Problem ohne Clustering der Knoten, indem die aktuell gewählten Repräsentanten fixiert werden und dieses so vereinfachte Problem (das allerdings immer noch NP-hart ist) wird nun mit folgendem Greedy Ansatz näherungsweise gelöst:
 
 \begin{enumerate}
-    \item Finde den (noch nicht eingefärbten) Repräsentanten mit der größten Anzahl an eingefärbten Nachbarn (engl.\ Degree SATURation).
-    \item Bei Gleichstand: Wähle den Knoten mit der größten Anzahl an nicht eingefärbten Nachbarn.
-    \item Bei Gleichstand wähle den ersten Knoten in lexikographischer Abfolge.
-    \item Weise dem gewählten Knoten die kleinste mögliche Farbe zu.
-    \item Wiederhole, bis die Repräsentanten aller Cluster eingefärbt wurden.
+	 \item Find the (still uncolored) vertex with the highest number of colored neighbors.
+%    \item Finde den (noch nicht eingefärbten) Repräsentanten mit der größten Anzahl an eingefärbten Nachbarn (engl.\ Degree SATURation).
+	 \item In case of tie: Select the vertex with the highest number of uncolored neighbors.
+%    \item Bei Gleichstand: Wähle den Knoten mit der größten Anzahl an nicht eingefärbten Nachbarn.
+	 \item In case of tie: Select the first vertex in lexicographical order.
+%    \item Bei Gleichstand wähle den ersten Knoten in lexikographischer Abfolge.
+	 \item Assign the lowest possible color to the vertex.
+%    \item Weise dem gewählten Knoten die kleinste mögliche Farbe zu.
+	 \item Repeat, until all vertices have been colored.
+%    \item Wiederhole, bis die Repräsentanten aller Cluster eingefärbt wurden.
 \end{enumerate}
 
 \paragraph{changeAll}
+The \emph{changeAll} Neighborhood can be seen as a merging of \emph{changeColor} and \emph{changeNode}. It simultaneously replaces a vertex and recolors it. 
 
-\subsubsection{Implementierung}
-Um die im Zuge dieser Arbeit entwickelten Lösungsansätze verifizieren und bewerten zu können, wurde das vorgestellte Konzept (Variable Nachbarschaftssuche mit Ermittlung einer Initiallösung durch \emph{onestepCD}) vollständig implementiert.
+First, the algorithm searches for vertices of the highest color. It then proceeds to replace the found vertex with another one from the same cluster. This new replacement vertex is then recolored, much like in the \emph{changeColor} Neighborhood. 
 
-Das Programm wurde in C++ entwickelt, da diese Sprache für gute Performance bekannt ist und außerdem etablierte Codebibliotheken, speziell für Probleme der Kombinatorik und Graphentheorie, explizit für C++ zur Verfügung stehen.
+If no suitable pair of color and replacement vertex could be found, the Neighborhood is aborted. If all vertices of highest color have been replaced and recolored, a better solution has been found. 
 
-Nach einigen Recherchen fiel die Wahl auf die Bibliothek Boost\footnote{siehe \url{http://www.boost.org/}}. Bei Boost handelt es sich um eine robuste, gut getestete und vielseitige Bibliothek, welche ein schnelles und einfaches Arbeiten ermöglicht.
+\subsubsection{Implementation}
+%\subsubsection{Implementierung}
+To verify and evaluate our approach, we successfully implemented the presented concept (Variable Neighborhood Search with initial solution by using \emph{onestepCD}). 
 
-Alle im Abschnitt \ref{sec:neigh} besprochenen Nachbarschaften wurden umgesetzt, wobei in diesen Codeteilen auf eine effiziente Umsetzung ganz besonders geachtet wurde, da sie das Laufzeitverhalten stark prägen.
+The actual development was done using C++. C++ was chosen as both a very versatile and fast programming language and because many code libraries for optimization are written using C++.
+
+%Um die im Zuge dieser Arbeit entwickelten Lösungsansätze verifizieren und bewerten zu können, wurde das vorgestellte Konzept (Variable Nachbarschaftssuche mit Ermittlung einer Initiallösung durch \emph{onestepCD}) vollständig implementiert.
+
+%Das Programm wurde in C++ entwickelt, da diese Sprache für gute Performance bekannt ist und außerdem etablierte Codebibliotheken, speziell für Probleme der Kombinatorik und Graphentheorie, explizit für C++ zur Verfügung stehen.
+
+After some research, we decided to use the C++ code library Boost\footnote{see \url{http://www.boost.org/}}. Boost offers a vast variety of different data structures and helper functions. All of these features are heavily tested and easy to use, which enables a rapid programming style.
+
+%Nach einigen Recherchen fiel die Wahl auf die Bibliothek Boost\footnote{siehe \url{http://www.boost.org/}}. Bei Boost handelt es sich um eine robuste, gut getestete und vielseitige Bibliothek, welche ein schnelles und einfaches Arbeiten ermöglicht.
+
+Every Neighborhood that was discussed in section~\ref{sec:neigh} has been implemented. Special attention was given to an efficient implementation for each Neighborhood, as they are essential for a fast run time.
+
+%Alle im Abschnitt \ref{sec:neigh} besprochenen Nachbarschaften wurden umgesetzt, wobei in diesen Codeteilen auf eine effiziente Umsetzung ganz besonders geachtet wurde, da sie das Laufzeitverhalten stark prägen.
 
 \subsection{Ausblick}
 
