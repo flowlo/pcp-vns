@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{multirow}
+\usepackage{setspace}
 \usepackage[babel, german=quotes]{csquotes}
 %\usepackage{hyperref}
 \usepackage[style=authoryear, natbib, backend=biber]{biblatex}
@@ -294,7 +295,7 @@ Although the Variable Neighborhood Search can be executed for an unlimited time 
 \end{algorithm}
 }
 
-\subsubsection{Nachbarschaften}
+\subsubsection{Neighborhoods}
 \label{sec:neigh}
 As already mentioned earlier, Neighborhoods are small algorithms, often heuristics, that transform one valid solution into another. The result of this transformation is hopefully a better solution than the original one. In this section we will discuss the four different Neighborhoods we used to solve the PCP. These Neighborhoods are named \emph{changeColor}, \emph{changeNode}, \emph{DSTAUR}, and \emph{changeAll}.
 
@@ -416,13 +417,13 @@ Initial tests on small instances showed promising results. Later tests on large 
 
 \newpage
 \printbibliography
-\addcontentsline{toc}{section}{Literatur}
+\addcontentsline{toc}{section}{Literature}
 \listoffigures
-\addcontentsline{toc}{section}{Abbildungsverzeichnis}
+\addcontentsline{toc}{section}{List of figures}
 \listoftables
-\addcontentsline{toc}{section}{Tabellenverzeichnis}
+\addcontentsline{toc}{section}{List of tables}
 \listofalgorithms
-\addcontentsline{toc}{section}{Algorithmenverzeichnis}
+\addcontentsline{toc}{section}{List of algorithms}
 
 %Anhang: Skizzen, Grafiken, Zeichnungen, Schaltpläne, Fotos, Links zu Videos oder Websites etc.
 
@@ -432,34 +433,37 @@ Initial tests on small instances showed promising results. Later tests on large 
 
 \subsection{Results}
 
-Mit Ende der Arbeit an dem Projekt im Rahmen der Diplomarbeit wurden in Tabelle~\ref{tab:result} ersichtliche Ergebnisse auf dem Berechnungsnetzwerk der Arbeitsgruppe für Algorithmen und Datenstrukturen des Instituts für Computergraphik und Algorithmen an der Technischen Universität Wien erzielt.
+At the end of this work, we were allowed to use the computing grid of the Algorithms and Data Structures Group of the Vienna University of Technology to test our program. All test instances are taken from \cite{Noronha2006}. Each instance of the program was started with a time limit of 600s and a limit of 5000 unsusccessfull shaking runs. The results of the tests can be found in table~\ref{tab:result}.
 
-Die Instanzen stammen von der genannten Arbeitsgruppe und sind mit jenen von \cite{Noronha2006} vergleichbar.
+%Mit Ende der Arbeit an dem Projekt im Rahmen der Diplomarbeit wurden in Tabelle~\ref{tab:result} ersichtliche Ergebnisse auf dem Berechnungsnetzwerk der Arbeitsgruppe für Algorithmen und Datenstrukturen des Instituts für Computergraphik und Algorithmen an der Technischen Universität Wien erzielt.
 
-Das Abbruchkriterium der VNS für diese Ergebnisse war ein Zeitlimit von 600s oder 5000 fehlgeschlagene \enquote{Schüttelversuche}.
+%Die Instanzen stammen von der genannten Arbeitsgruppe und sind mit jenen von \cite{Noronha2006} vergleichbar.
+
+%Das Abbruchkriterium der VNS für diese Ergebnisse war ein Zeitlimit von 600s oder 5000 fehlgeschlagene \enquote{Schüttelversuche}.
 
 
-\subsubsection*{Caption}
+\subsubsection*{Description}
 
 \begin{description}
-    \item[Instanz] Name der berechneten Instanz.
-    \item[$|V|$] Anzahl der Knoten der Instanz.
-    \item[$|E|$] Anzahl der Kanten der Instanz.
-    \item[$|C|$] Anzahl der Clustern der Instanz.
-    \item[$S_i$] Die Anzahl der Farben, die von der durch \emph{onestepCD} berechneten Ausgangslösung benötigt werden.
-    \item[$N$] Die verwendeten Nachbarschaften in Reihenfolge der Iteration:
+    \item[Instanz] Name of the computed instance.
+    \item[$|V|$] Number of vertices in that instance.
+    \item[$|E|$] Number of edges in that instance.
+    \item[$|C|$] Number of clusters in that instance.
+    \item[$S_i$] Number of colors used by the construction heuristic \emph{onestepCD}.
+    \item[$N$] Used Neighborhoods in order of iteration:
         \begin{description}
             \item[\texttt{c}] \emph{ChangeColor}
             \item[\texttt{n}] \emph{ChangeNode}
             \item[\texttt{a}] \emph{ChangeAll}
             \item[\texttt{d}] \emph{DSATUR}
         \end{description}
-    \item[$S_{avg}$] Die im Durchschnitt benötigte Anzahl an Farben der von unserer Implementierung in 40 Testläufen berechneten Lösungen.
-    \item[$S_{\sigma}$] Die Standardabweichung der Ergebnisse aller 40 Testläufe (verursacht durch Ran\-dom\-isier\-ung in den einzelnen Verfahren).
-    \item[$S_{\Delta}$] Prozentuelle Verbesserung der Ausgangslösung durch den beschriebenen Ansatz.
-    \item[$t$] Die mittlere Laufzeit in Sekunden.
+    \item[$S_{avg}$] The average number of colors used by our program. Every test instance was run 40 times to negate statistical anomalies.
+    \item[$S_{\sigma}$] The mean deviation of our results. Due to randomisation happening in each run of the 40 runs, anomlies may occur.
+    \item[$S_{\Delta}$] Relative improvement when compared to the construction heuristic.
+    \item[$t$] Average runtime in seconds.
 \end{description}
 
+\singlespacing
 \begin{table}[p]
 \centering
 \begin{tabular}{|c|ccc|c|c|ccc|c|c|}
@@ -507,15 +511,21 @@ Instanz & \multicolumn{1}{c}{$|V|$} & \multicolumn{1}{c}{$|E|$} & \multicolumn{1
 \texttt{dsjc500.5-4.in} & 2000 & 999508 & 500 & & \texttt{adnc} & 59 & 60.65 & 0.53 & 16.95 & 497422.8\\
 \hline
 \end{tabular}
-\caption{Ergebnisse der VNS}
+\caption{Results of the VNS}
 \label{tab:result}
 \end{table}
+\setstretch{1.5}
 
-\subsection{Kurzinterpretation}
-Wie man erkennen kann ist die Reihenfolge, in der das VND die einzelnen Nachbarschaften durchsuchen muss, um die jeweils besten Resultate zu erzielen, nicht wirklich eindeutig. Die erzielten Verbesserung gegenüber der von der Konstruktionsheuristik \emph{onestepCD} ermittelten Ausgangslösungen sind mitunter beachtlich und bewegen sich großteils im Bereich zwischen 11 und 15\%.
-\subsection{Visualisierung}
+\subsection{Interpretation}
+It can be seen that in order to get the best results, multiple orders of Neighborhoods in the VND are possible. An overall trend is the average improvement on huge instances around 10\% to 15\%. All these improvements are measured relative to the construction heuristic \emph{onestepCD}.
 
-Videoaufzeichnungen des Ablaufs einerVersion des Programms mit Visualisierung finden Sie unter:
+%Wie man erkennen kann ist die Reihenfolge, in der das VND die einzelnen Nachbarschaften durchsuchen muss, um die jeweils besten Resultate zu erzielen, nicht wirklich eindeutig. Die erzielten Verbesserung gegenüber der von der Konstruktionsheuristik \emph{onestepCD} ermittelten Ausgangslösungen sind mitunter beachtlich und bewegen sich großteils im Bereich zwischen 11 und 15\%.
+
+\subsection{Visualization}
+
+Videos of our visualization of the process of improving an already existing solution can be found at:
+
+%Videoaufzeichnungen des Ablaufs einerVersion des Programms mit Visualisierung finden Sie unter:
 
 \begin{itemize}
 	\item \url{https://www.dropbox.com/s/exl54o9vvty8lc3/demo1.mp4}
@@ -523,9 +533,13 @@ Videoaufzeichnungen des Ablaufs einerVersion des Programms mit Visualisierung fi
 	\item \url{https://www.dropbox.com/s/bwsd130cplt4c07/demo3.mp4}
 \end{itemize}
 
-In allen drei Läufen wird die Instanz \texttt{n20p5t2s5.pcp} gezeigt, die klein genug ist um die Arbeitsweise des Programms zu überblicken.
+In all three videos the instance \texttt{n20p5t2s5.pcp} is shown. The reason for that is, that bigger instances with more vertices tend to get confusing very quickly.
 
-\subsection{Quellcode}
+%In allen drei Läufen wird die Instanz \texttt{n20p5t2s5.pcp} gezeigt, die klein genug ist um die Arbeitsweise des Programms zu überblicken.
 
-Der Quellcode des Programms ist öffentlich unter \url{https://github.com/flowlo/pcp-vns/} einsehbar.
+\subsection{Source code}
+
+The source code of our program can be found at \url{https://github.com/flowlo/pcp-vns/}.
+
+%Der Quellcode des Programms ist öffentlich unter \url{https://github.com/flowlo/pcp-vns/} einsehbar.
 \end{document}
