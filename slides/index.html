@@ -19,21 +19,6 @@
 					<p class="small">betreut durch</p>
 					<p>Dipl.-Ing. Dr.techn. Martin Gruber</p>
 				</section>
-
-				<section>
-				<section>
-					<img src="../img/tu.png" class="standalone noshadow" style="float:left"/>
-				</section>
-				<section>
-					<h2>Kooperation</h2>
-					
-					<ul>
-						<li>Impuls</li>
-						<li>Regelmäßiger Austausch</li>
-						<li>ComputeGrid</li>
-					</ul>
-				</section>
-				</section>
 				<section>
 				<section>
 					<h2>Anwendungsgebiet</h2>
@@ -52,14 +37,10 @@
 				</section>
 				<section>
 					<h2>Problem</h2>
-					
 					<p>Zuweisen von Wellenlängen in Glasfasernetzen</p>
 				</section>
 <!-- /lorenz -->
-<!-- moritz
-	wir schützen die umwelt!
--->
-<!-- /moritz -->
+<!-- moritz -->
 				<section>
 					<h2>Wissenschaftlicher Hintergrund</h2>
 					<ul>
@@ -67,7 +48,7 @@
 						<li><i>Noronha, Ribeiro</i>: Routing and wavelength assignment by partition colouring</li>
 					</ul>
 				</section>
-<!-- moritz+lorenz -->
+<!-- /moritz -->
 				<section>
 <script src="js/jquery.min.js"></script>
 <script type="text/javascript">
@@ -185,10 +166,10 @@ $(function() {
 										<path d="M 621,70 701,70" class="graph lightgray edge" id="path3127" />
 										<path d="M 530,70 655,185" class="graph lightgray edge" id="path3131" />
 										<path d="M 616,70 655,185" class="graph lightgray edge" id="path3133" />
-										<path d="M 703,70 655,185" class="graph darkgray edge" id="path3135" />
+										<path d="M 703,70 655,185" class="graph lightgray edge" id="path3135" />
 										<path d="M 532,70 611,70" class="graph lightgray edge" id="path3163" />
-										<path d="M 616,70 573,185" class="graph darkgray edge" id="path3149" />
-										<path d="M 528,70 569.86,185" class="graph darkgray edge" id="path3125" />
+										<path d="M 616,70 573,185" class="graph lightgray edge" id="path3149" />
+										<path d="M 528,70 569.86,185" class="graph lightgray edge" id="path3125" />
 										<path d="m 688,65 c 0,-8.12 -37.83,-16.25 -75.66,-16.25 -37.82,0 -75.65,9.95 -75.65,19.89" class="graph lightgray edge" id="path3129" />
 									</g>
 									<g id="graph-nodes">
@@ -203,7 +184,6 @@ $(function() {
 						</g>
 					</svg>
 				</section>
-<!-- /moritz+lorenz -->
 <!-- moritz -->
 				<section>
 					<h2>Funktionsweise</h2>
@@ -216,16 +196,12 @@ $(function() {
 						<li>Shaking</li>
 					</ul>
 				</section>
-<!-- /moritz -->
-<!-- lorenz -->
 				<section>
 				<section>
 					<h2>Nachbarschaften</h2>
 					
 					<img src="../img/vns.jpg" />
 				</section>
-<!-- /lorenz -->
-<!-- moritz -->
 				<section>
 					<h2 class="mono">ChangeColor</h2>
 					
@@ -244,8 +220,6 @@ $(function() {
 						<li>Versuche neue Lösung zu finden</li>
 					</ul>
 				</section>
-<!-- /moritz -->
-<!-- lorenz -->
 				<section>
 					<h2>DSATUR</h2>
 					
@@ -265,6 +239,24 @@ $(function() {
 					</ul>
 				</section>
 				</section>
+				<section>
+					<h2>Verwendete Software</h2>
+					<img src="../img/boost.png" /><br /><br /><span class="ubigraph-logo">UBIGRAPH</span>
+				</section>
+				<section>
+				<section>
+					<img src="../img/tu.png" class="standalone noshadow" style="float:left"/>
+				</section>
+				<section>
+					<h2>Kooperation</h2>
+					
+					<ul>
+						<li>Impuls</li>
+						<li>Regelmäßiger Austausch</li>
+						<li>ComputeGrid</li>
+					</ul>
+				</section>
+				</section>
 <!-- /lorenz -->
 <!-- moritz -->
 				<section>
@@ -277,11 +269,6 @@ $(function() {
 						<li>Standardisierte Probleminstanzen</li>
 					</ul>
 				</section>
-				<section>
-					<h2>Verwendete Software</h2>
-					
-					<img src="../img/boost.png" /><br /><br /><span class="ubigraph-logo">UBIGRAPH</span>
-				</section>
 <!-- /moritz -->
 			</div>
 			<div class="timer" id="timer" onload="">20</div>
@@ -293,10 +280,7 @@ $(function() {
 		<script>
 			function refreshTimer() {
 				var timer = document.getElementById('timer');
-				//$(timer).fadeOut('fast', function() {
-					timer.innerHTML = parseInt(timer.innerHTML) - 1;
-				//	$(timer).fadeIn('fast');
-				//});
+				timer.innerHTML = parseInt(timer.innerHTML) - 1;
 			}
 			var timerHandler = false;
 			Reveal.initialize({
@@ -315,6 +299,12 @@ $(function() {
 						window.clearInterval(timerHandler);
 					document.getElementById('timer').innerHTML = 20;
 					timerHandler = window.setInterval(refreshTimer, 60000)
+					
+					$('.map.node').fadeOut();
+					$('.map.edge').fadeOut();
+					$('.graph.node').fadeOut();
+					$('.graph.edge').fadeOut();
+					$('#austria').fadeOut();
 				}
 			});
 			document.getElementById('pagenumber').innerHTML = Reveal.getIndices().h + '<br />' + Reveal.getIndices().v;
