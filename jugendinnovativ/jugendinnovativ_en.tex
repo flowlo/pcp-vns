@@ -1,6 +1,8 @@
 \documentclass[paper=a4,fontsize=12pt]{scrartcl}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage{multirow}
+\usepackage{setspace}
 \usepackage[babel, german=quotes]{csquotes}
 %\usepackage{hyperref}
 \usepackage[style=authoryear, natbib, backend=biber]{biblatex}
@@ -26,7 +28,7 @@
 \displaywidowpenalty = 10000
 \fancyfoot{}
 \rfoot{{\footnotesize \textnormal{\thepage}}}
-\chead{{\footnotesize \textnormal{Variable Neighborhoodsearch for the Partition Graph Coloring Problem}}}
+\chead{{\footnotesize \textnormal{Variable Neighborhood Search for the Partition Graph Coloring Problem}}}
 \cfoot{{\footnotesize \textnormal{Lorenz Leutgeb, Moritz Wanzenböck}}}
 \lhead{{\footnotesize \textnormal{}}}
 \lfoot{{\footnotesize \textnormal{\the\year}}}
@@ -105,62 +107,63 @@ at
 \section{Project idea and planning}
 %\section{Projektentstehung und -planung}
 
-Providers of internet infrastructure face the problem of satisfying an ever growing need to communicate. There are two main approaches to this problem. Providers can either expand their current network by adding additional devices or they can use their current infrastructure more efficiently.
+Providers of internet infrastructure face the problem of satisfying an ever growing need to communicate. There are two main approaches to this problem. They can expand their current network by adding additional devices or they find a way to use their current infrastructure more efficiently.
 
 %Betreiber der Internetinfrastruktur stehen vor dem Problem, immer weiter steigende Kommunikationsbedürfnisse befriedigen zu müssen. Dafür müssen entweder die bestehenden Netze effizienter genutzt, oder die Infrastruktur erweitert werden.
 
-In a modern fiber-optic network, which uses Wavelength Division Multiplexing, the number of different wavelengths used to communicate directly corresponds to the efficiency of the network. The fewer wavelengths are used, the better. By optimizing the assignment of wavelengths a network can transfer more data without the need of additional hardware. This leads to an overall cheaper network without a drop in performance.
+In a modern fiber-optic network which uses Wavelength Division Multiplexing, the number of different wavelengths used to communicate directly corresponds to the efficiency of the network. The fewer wavelengths used, the better. By optimizing the assignment of wavelengths a network can transfer more data without the need of additional hardware. This leads to an overall cheaper network without a sacrifice in performance.
 
 %Innerhalb von Glasfasernetzwerken, die Wavelength Division Multiplexing einsetzen, soll die Anzahl verschiedener Lichtfarben beziehungsweise Wellenlängen verringert, also optimiert werden. Dadurch können vorhandene Ressourcen besser ausgelastet und die Anschaffung und der Betrieb neuer Infrastruktur zumindest hinausgezögert werden, wodurch sich sowohl Anschaffungs- als auch Betriebskosten einsparen lassen.
 
-The minimization of the number of used wavelengths is not a trivial problem though. It is in fact an NP-hard optimization problem. A partitioned graph is created to represent the fiber-optic network, hence the name
-Partition Graph Coloring Problem. Only a selected few approaches to this problem have been published so far.
+The minimization of the number of used wavelengths is not a trivial problem. It is in fact a NP-hard optimization problem. A partitioned graph is created to represent the fiber-optic network, hence the name
+Partition Graph Coloring Problem. There are only a selected few approaches to this problem published in literature.
 
 %Die Anzahl der Wellenlängen in einem solchen Netzwerk zu minimieren ist nicht trivial, es handelt sich um ein NP-schwieriges Optimierungsproblem. Modelliert werden die Glasfasernetze in Form von partitionierten Graphen. In der einschlägigen Literatur sind nur einige, wenige Lösungsansätze für dieses Problem bekannt. 
 
-In the course of this project we intend to implement and test a number of new approaches. They are all inspired by already existing technology. Our goal is create a computer program which yields better results than the existing methods. 
+Over the course of this project we intend to implement and test a number of new approaches. These new approaches are all inspired by already existing technology. Our goal is create a computer program which 
+yields better results than the existing approaches. 
 
 %Im Rahmen dieses Projektes sollen neuartige Wege zur Lösung des Problems implementiert und getestet werden. Ausgehend von bestehenden Technologien sowie bereits erprobten Lösungsansätzen, soll ein Programm entstehen, welches bessere Ergebnisse liefert als seine bereits bekannten Konkurrenten.
 
-The idea to work on this project developed after a lengthly discussion with Univ-Prof.~Dipl.-Ing.~Dr.techn.~Günther~Raidl (Vienna University of Technology, Algorithms and Data Structures Group). He proposed a number of different optimization problems for our diploma thesis and still gives us feedback and support.
+The idea to this project developed after a lengthly discussion and consultation with Univ-Prof.~Dipl.-Ing.~Dr.techn.~Günther~Raidl (Vienna University of Technology, Algorithms and Data Structures Group). He proposed a number of different optimization problems for our diploma thesis. He still supports us with feedback and by suggesting new approaches on our project. 
 
 %Die Projektidee entstand nach ausführlicher Beratschlagung und Diskussion mit Univ-Prof.~Dipl.-Ing.~Dr.techn.~Günther~Raidl (Technische Universität Wien, Arbeitsbereich für Algorithmen und Datenstrukturen), welcher mehrere Probleme aus dem Bereich der Optimierung als Diplomarbeit vorschlug. Auch wird die Arbeit weiterhin von ihm unterstützt, sollte es Fragen zur Problemstellung oder konkreten Lösungsansätzen geben.
 
-Our goal is to develop a new algorithm which can compete with already existing techniques. To facilitate the comparison between this new method and the old ones, a program will be implemented which is then used to solve instances of the problem. These instances originate from technical literature and hence any results can be easily compared.
+Our goal is to develop a new algorithm which can compete with already existing approaches. To facilitate the comparison between this new approach and the old ones, a program will be implemented which is then used to solve instances of the problem. These instances originate from technical literatur and any results can thus be easily compared.
 
 %Ziel ist es, einen neuen Algorithmus zu entwickeln, welcher mit bestehenden Lösungs\-an\-sätz\-en konkurrieren kann. Zu diesem Zwecke wird der Algorithmus in ein konkretes Programm implementiert, um ihn auf die in der Literatur verwendeten Probleminstanzen anzuwenden.
 
-Apart from technical literature, which we are provided with by Vienna University of Technology we also checked different code libraries and revision control software. Different code libraries were tested until a suitable one was found. To efficiently test and run our newly developed program, we were allowed to use the computing cluster of Vienna University of Technology.
+Besides technical literature which is provided to us by the Vienna University of Technology we also researched different code libraries and revivision control software. Different code libraries where tested until a suitable was found. To efficiently test and run our newly developed program, we were allowed to use the computing cluster of the Vienna University of Technology.
 
 %Neben der fachspezifischen Literatur, welche von der Technischen Universität Wien zur Verfügung gestellt wurde, befassten wir uns zu Beginn des Projekts auch mit der Recherche für geeignete Codebibliotheken und verteilte Versionskontrollsysteme. Weiters wurde die Benutzung des Computing Clusters der Universität ermöglicht, um Berechnungen schneller durchführen zu können.
 
 \section{Project contents}
 
 \subsection{Problem}
-In technical publication the problem is known as Partition Graph Coloring Problem (PCP). PCP is an optimization problem in the realm of network design or rather in the realm of planning the communication in an all-fiber-optic network. In most fiber-optic networks Wavelength Division Multiplexing (WDM) is used to transmit two or more communication channels over the same optic fiber. This is possible by using different wavelengths for each channel, as long as these wavelengths are sufficiently destinguishable. To minimize the complexity of a single switch within the network a single communication channel uses only one wavelength on its way through the network.
+In technical literature the problem is known as Partition Graph Coloring Problem (PCP). PCP is an optimization problem in the realm of network design. To be precise, in the realm of planning the communication in an all fiber-optic network. In most fiber-optic networks Wavelength Division Multiplexing is used to transmit two or more communication channels over the same optic fiber. This is made possible through using different wavelengths for each channel, as long as these wavelengths are sufficiently destinguishable. To minimize the complexity of a single switch within the network a single communication channel uses only one wavelength on its way through the network.
 
 %Bei der in der Literatur als Partition Graph Coloring Problem bezeichneten Aufgabenstellung handelt es sich um ein Optimierungsproblem aus dem Bereich des Netzwerkdesigns, konkret um die Planung der Kommunikation in Glasfasernetzwerken. In diesen Netzen wird Wavelength Division Multiplexing betrieben, welches es ermöglicht, zwei oder mehr Übertragungskanäle über die selbe Glasfaser zu leiten, wenn jeder Kanal eine andere Wellenlänge verwendet und somit die anderen Übertragungen nicht stört. Um die Komplexität in einzelnen Netzwerkknoten gering zu halten wird davon ausgegangen, dass eine Verbindung von der Quelle bis zum Ziel nur genau eine Wellenlänge nutzt und diese nicht an Knotenpunkten verändert werden kann.
 
-By using WDM different communications can be simultaneously transmitted over one fiber, as long as two different wavelengths are used. However, the maximum number of possible wavelengths per fiber is limited. If the number of used wavelengths can be minimized for all communications that are known in advance (the communication between two internet service providers can for instance be seen as a constant need to communicate, unless there are no unexpected network failures) the network is far more efficient. By decreasing the number of predetermined wavelengths a network is able to handle a higher number of spontaneous communications. In addition, an optimized network can handle more traffic and transmit the same amount of data consuming less energy. Moreover, the network can handle considerably more data before it has to be expanded.
+By using WDM it is possible to transmit to different communications over the same fiber concurrently, as long as two different wavelengths are used. However, the maximum number of possible wavelengths per fiber is limited. If the number of used wavelengths can be minimized for all communications that are known ahead of time (for example the communication between two internet service providers can be seen as a constant need to communicate, as long as there are no unexpected network failures). By decreasing the number of predetermined wavelengths a network is able to handle more spontaneous communications. Through this optimization a network is able to handle more traffic and transmit the same amount of data with less energy. Moreover, the network can handle considerably more data before it has to be expanded.
 
 %Zwei unterschiedliche Verbindungen können also nur dann über die selbe Netzwerkstrecke transportiert werden, wenn sie verschiedene Wellenlängen verwenden. Weiters ist die maximale Anzahl an möglichen Wellenlängen pro Strecke beschränkt. Minimiert man in diesem Szenario die Anzahl an benötigten Wellenlängen für die gesamten vorab bekannten Kommunikationsbedürfnisse (z.B.\ im großen Maßstab der Datenaustausch zwischen verschiedenen Providern, deren Verbindungen -- solange es zu keinen Ausfällen kommt -- über eine gewisse Zeit als konstant angesehen werden können), schafft man damit Platz für zusätzliche Datentransfers. Damit kann die bestehende Infrastruktur besser ausgenutzt werden, womit Kosten und Energie für den Ausbau und den Betrieb neuer Netzteile eingespart werden können.
 
-This optimization problem can be seen as a generalization of the well-known Graph Coloring Problem (GC). Instead of coloring a single vertex, which is required by the GC, a whole cluster of vertices must be colored: for each communication that is known in advance, a selection of possible routes through the network is computed (for example based on the route length or bandwidth). Each communication represents a cluster of different vertices and each vertex of which represents a different route through the network. In the resulting graph -- also referred to as conflict graph -- every vertex has an edge to another vertex when the routes they represent share the same optical fiber somewhere in the network. These edges indicate that these two vertices must not share the same color, as this would result in an communication error (see figure \ref{fig:translation}). To solve the problem, one representative vertex has to be selected for each cluster, this way selecting a route through the network. Additionally all selected vertices must be colored in such a way that no two vertices connected by the same edge use the same color (the color represents the wavelength used for a communciation). Simultaneously trying to minimize the use of different colors, which leads to fewer used wavelenghts, is the optimization problem known as Partition Graph Coloring Problem. It is known to be NP-hard.
+This optimization problem can be seen as a generalization of the Graph Coloring Problem, a well known problem in optimization. Instead of coloring a single vertex, a whole cluster of vertices must be colored: for each communication that is known ahead of time, a selection of possible routes through the network is computed (for example based on the routes length or bandwidth). Each communication represents a cluster of different vertices and each vertex represents a different route through the network. In the resulting graph -- also referred to as conflict graph -- every vertex has an edge to another vertex when the routes they represent share the same optic fiber somewhere in the network. These edges indicate that these two vertices must not share the same color, as this would result in an error while communicating (see figure \ref{fig:translation}). To solve the problem, one representative vertex has to be selected for each cluster (and by that selecting a route through the network for each communication). Additionally all selected vertices must be colored in such a way, that no two vertices that are connected by the same edge use the same color (the color represents the wavelength used for a communciation). By simultaneously trying to minimize the use of different colors (which leads to fewer used wavelenghts, thereby making room for additional network traffic) this can be expressed as  an optimization problem. This problem is known as Partition Graph Coloring Problem and is known to be NP-hard.
 
 %Dese Aufgabenstellung kann auf einfache Art und Weise in ein generalisiertes Graph Coloring Problem transformiert werden, bei dem statt einfacher Knoten ganze Cluster von Knoten betrachtet werden müssen: Für jede Kommunikation werden vorab mehrere günstige Wege durch das Netzwerk von der Quelle zum Ziel ausgewählt (z.B.\ auf Basis der Weglänge und/oder der Übertragungsgeschwindigkeit). Jede Kommunikation bildet dabei einen eigenen Cluster, die einzelnen vorselektierten Wege dieser Kommunikation die Knoten innerhalb des Clusters. In diesem Graphen -- in der Folge auch \emph{Konfliktgraph} genannt -- werden zwei Knoten dann miteinander verbunden, wenn die jeweiligen Wege im originalen Glasfasernetzwerk eine gemeinsame Übertragunsstrecke besitzen, sie sich also gegenseitig stören würden, wenn sie die gleiche Wellenlänge verwenden würden (siehe auch Grafik \ref{fig:translation}). Ziel ist es nun, in diesem Graphen für jeden Cluster genau einen Knoten auszuwählen (für eine Kommunikation einen Weg durch das Netzwerk festlegen) und die pro Cluster ausgewählten Knoten so einzufärben, dass keine direkt miteinander verbundenen Knoten die selbe Farbe erhalten (die Farbe entspricht dabei der Zuordnung einer Wellenlänge). Minimiert man hierbei gleichzeitig die Anzahl an benötigten Farben (womit die Grundauslastung des Netzwerks reduziert wird), erhält man das generalisierte (oder auch Partition) Graph Coloring Problem, ein NP-schweres Optimierungsproblem.
 
 \begin{figure}
     \includegraphics[width=1.0\textwidth]{../img/translation.pdf}
-    \caption[Simplified test instance]{Simplified test instance: Three different routes were chosen for the communication between \emph{A} and \emph{B} (blue colors). Only two different routes were chosen for the communication between \emph{C} and \emph{D} (yellow/orange). The resulting conflict graph on the right has two clusters, each representing one communication. The edges between two vertices indicate a shared optical fiber along the routes they represent. By choosing the vertices that are indicated by bigger nodes in their respective cluster, a solution that requires only one color can be found. This means that all communications in this network can be handled with only one wavelength.}
+    \caption[Simplified test instance]{Simplified test instance: Three different routes where chosen for the communication between \emph{A} and \emph{B} (blue colors). Only two different routes where chosen for the communication between \emph{C} and \emph{D} (Yellow/Orange). The resulting conflict graph on the right side has to clusters, each representing one communication. The edges between two vertices indicate a shared optic fiber along the routes they represent. By choosing the vertices that are illustrated bigger in each cluster as their cluster's representative, a solution can be found that only requires one color. This means that all communications in this network can be handled with only one wavelength.}
 %    \caption[Simplifizierte Testinstanz]{Simplifizierte Testinstanz: Für die Kommunikation zwischen \emph{A} und \emph{B} wurden drei mögliche Wege ausgewählt (in Blautönen gehalten), zwischen \emph{C} und \emph{D} zwei Wege (Gelb/Orange). Der daraus resultierende Konfliktgraph auf der rechten Seite enthält zwei Cluster mit drei bzw.\ zwei Knoten und die jeweiligen Kanten, wenn zwei Kommunikationswege zumindest eine Strecke im Netzwerk gemeinsam verwenden. Wählt man die größer dargestellten Knoten innerhalb der Cluster, so kann der Konfliktgraph mit nur einer Farbe gefärbt werden, d.h.\ die Kommunikationsbedürfnisse in diesem Netzwerk können mit nur einer Wellenlänge abgewickelt werden.}
     \label{fig:translation}
 \end{figure}
 
-In technical literature there is an array of different exact algorithms which reliably deliver the best solution to any given instance. However, because of the complexity of the problem, these exact algorithms can only be applied to very small instances. There are also a few heuristical approaches and algorithms which can compute solutions, however without the certainty of a proven best solution.
+In technical literature there is an array of different exact algorithms which deliver reliably the best solution to any given instance. However, because of the complexity of the problem, these exact algorithms can only be applied to very small instaces. There are also a selected few heuristical approaches and algorithms which can compute solutions to this problem but without the certainty of a proven best solution.
 
 %In der Literatur werden exakte Algorithmen beschrieben, die beweisbar optimale Lös\-ung\-en erzeugen, aber aufgrund der Komplexität des Problems nur auf relativ kleine Netzwerke angewendet werden können. Weiters existieren einfache Konstruktionsheuristiken für die schnelle Generierung gültiger Ausgangslösungen sowie ein Ansatz mittels Tabu-Suche, der gute Ergebnisse für größere Netzwerke liefert.
 
-\subsection{Solving the Partition Graph Coloring Problem}
+\subsection{Approaches to solving the Partition Graph Coloring Problem}
 
 %\subsection{Verfahren zur Lösung des generalisierten Graph Coloring Problems}
 
@@ -197,7 +200,7 @@ This algorithm can get valid solutions exceedingly quickly. The downside however
 
 %Mit Hilfe der von \citet*{Noronha2006} vorgeschlagenen Tabu-Suche ist es möglich, eine bereits bestehende Lösung durch verschiedene Transformationen in eine neue, nach Möglichkeit bessere Lösung zu verwandeln.
 
-The Tabu Search begins by recoloring all vertices who use the heighest color with a random, smaller color. Through this recoloring process, some vertices come in conflict with one another. 
+The Tabu Search begins by recoloring all vertices who use the highest color with a random, smaller color. Through this recoloring process, some vertices come in conflict with one another. 
 
 %Zunächst wird bei der Tabu-Suche eine ungültige Lösung erzeugt, und zwar durch das neue Färben aller Knoten, welche in der Ausgangslösung noch die höchste Farbe besaßen, mit einer zufälligen, kleineren Farbe.
 
@@ -247,7 +250,7 @@ By systematically cycling throug all the different possible Neighborhoods (for e
 \begin{center}
 \includegraphics{../img/vns.jpg}
 \end{center}
-\caption{Graphic representation of the Variable Neighborhood Search. \cite{Chen}}
+\caption{Graphic representation of Variable Neighborhood Search. \cite{Chen}}
 \end{figure}
 
 For breaking the inevitable stalemate that occurs after the local optimum of all Neighborhoods has been reached, the VNS uses \emph{Shaking}. By \emph{Shaking} a solution, said solution will be randomly altered. These changes do not have to lead to an improvement, they are only used to compute a new starting point for the different neighborhoods. If a small alteration in the globally best solution does not lead to a better results in VND, the alteration grow more severe with each unsuccessfull \emph{Shaking}. In theory these leads to more diverse starting positions and could potentially give better overall results.
@@ -292,7 +295,7 @@ Although the Variable Neighborhood Search can be executed for an unlimited time 
 \end{algorithm}
 }
 
-\subsubsection{Nachbarschaften}
+\subsubsection{Neighborhoods}
 \label{sec:neigh}
 As already mentioned earlier, Neighborhoods are small algorithms, often heuristics, that transform one valid solution into another. The result of this transformation is hopefully a better solution than the original one. In this section we will discuss the four different Neighborhoods we used to solve the PCP. These Neighborhoods are named \emph{changeColor}, \emph{changeNode}, \emph{DSTAUR}, and \emph{changeAll}.
 
@@ -303,15 +306,15 @@ Every Neighborhood also implements a unique way of \emph{Shaking} a solution. Th
 %Jede Nachbarschaft bietet auch eine Methode an, eine Lösung zu ``schütteln'', welche ähnlich abläuft wie die Methode zur Suche des jeweiligen lokalen Optimums, allerdings ohne die Beschränkung ausschließlich bessere Ergebnisse zurück liefern zu müssen.
 
 \paragraph{changeColor}
-This very simple Neighborhood was inspired by the Tabu Search from \citet*{Noronha2006}. The Neighborhood tries to recolor all vertices with the heighest color.
+This very simple Neighborhood was inspired by the Tabu Search from \citet*{Noronha2006}. The Neighborhood tries to recolor all vertices with the highest color.
 
 %Bei dieser sehr einfachen Nachbarschaft, die von der Tabu-Suche aus \citet*{Noronha2006} inspiriert ist, wird versucht, alle Knoten umzufärben, welche mit der höchsten Farbe markiert wurden. 
 
-To reach its goal, the Neighborhood first selects a vertex colored with the heighest color. This vertex is then recolored with the lowest color, even if this leads to conflicts in the solution. The algorithm then proceeds to find new suitable colors for all adjacent vertices of the selected vertex. 
+To reach its goal, the Neighborhood first selects a vertex colored with the highest color. This vertex is then recolored with the lowest color, even if this leads to conflicts in the solution. The algorithm then proceeds to find new suitable colors for all adjacent vertices of the selected vertex. 
 
 %Um dieses Ziel zu erreichen, werden alle Knoten, welche diese höchste Farbe besitzen, mit einer neuen zufälligen Farbe markiert. Dies führt natürlich unweigerlich zu Konflikten zwischen verbundenen Knoten im Konfliktgraph, d.h.\ zu benachbarten Knoten mit gleicher Farbe. 
 
-When a suitable color is found, that vertex is recolored. If no suitable color could be found for only a single adjacent vertices, then the next lowest color is used to color the selected vertex. These steps are repeated until a suitable color combination could be found. Once this combination is found, the algorithm searches for other vertices using the heighest color.
+When a suitable color is found, that vertex is recolored. If no suitable color could be found for only a single adjacent vertices, then the next lowest color is used to color the selected vertex. These steps are repeated until a suitable color combination could be found. Once this combination is found, the algorithm searches for other vertices using the highest color.
 
 %Um diese Konflikte zu lösen wird ein zufälliger, im Konflikt stehender Knoten ausgewählt, um ihn mit einer passenden Farbe zu füllen. Zu beachten ist hierbei die Tatsache, das diese passende Farbe kleiner sein muss als die frühere höchste Farbe, da ja eine Verbesserung (eine Reduktion der Farbenanzahl um 1) erzielt werden soll.
 
@@ -322,48 +325,77 @@ If however no suitable combination could be found, and the recoloring process co
 %Sollte nach einer gewissen Anzahl an Iterationen keine konfliktfreie Lösung gefunden werden, bricht \emph{ChangeColor} automatisch ab und liefert die letzte valide Lösung zurück.
 
 \paragraph{changeNode}
-The changeNode Neighborhood is an adaption of the changeColor Neighborhood specifically for the PCP. The algorithm takes advantage of the unique properties of the PCP. Every vertex with the heighest color will be replaced by a different vertex in the same cluster.
+Like with \emph{changeColor}, \emph{changeNode} relies on a fast algorithm to change a solution. This is done by selecting an alternative vertex for each vertex colored with the highest color.
 
 %Diese Nachbarschaft baut auf der Tatsache auf, dass man aus einem Cluster nur jeweils einen Knoten auswählen muss. Dazu werden wie bei \emph{ChangeColor} alle Knoten höchster Farbe ausgewählt und umgefärbt.
 
-Nun wird wieder ein zufälliger Knoten aus den entstandenen Konflikten ausgewählt, welcher dann aber durch einen zufälligen Knoten aus dem selben Cluster ersetzt wird. An diesem Knoten wird dann ein neuer Einfärbeversuch unternommen, wobei die maximal zulässige Farbe natürlich wieder kleiner ist als die ursprünglich höchste Farbe.
+Similar to \emph{changeColor}, the algorithm searches for a vertex that uses the highest color. This vertex is then replaced by a different vertex from the same cluster. Then an attempt is made to recolor the new replacement vertex. If the new suitable color is less than the highest color, the replacement vertex becomes the new selected vertex in the solution. 
 
-Dieser Vorgang wird solange wiederholt bis alle Konflikte gelöst wurden oder zu viele Iterationen abgelaufen sind.
+%Nun wird wieder ein zufälliger Knoten aus den entstandenen Konflikten ausgewählt, welcher dann aber durch einen zufälligen Knoten aus dem selben Cluster ersetzt wird. An diesem Knoten wird dann ein neuer Einfärbeversuch unternommen, wobei die maximal zulässige Farbe natürlich wieder kleiner ist als die ursprünglich höchste Farbe.
+
+If no suitable color could be found, and all possible replacing vertices have been tried without success, the Neighborhood is aborted. When all vertices of highest color have been replaced a new, better solution has been found.
+
+%Dieser Vorgang wird solange wiederholt bis alle Konflikte gelöst wurden oder zu viele Iterationen abgelaufen sind.
 
 \paragraph{NewVertexColoring-DSATUR}
-Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das normale Graph Coloring Problem ohne Clustering der Knoten, indem die aktuell gewählten Repräsentanten fixiert werden und dieses so vereinfachte Problem (das allerdings immer noch NP-hart ist) wird nun mit folgendem Greedy Ansatz näherungsweise gelöst:
+This Neighborhood reduces the PCP to a normal Graph Coloring Problem without clusters. This is done by essentially fixing the current selection of vertices for a cluster. The resulting graph will be colored using a Greedy algorithm to solve the resulting Graph Coloring Problem (that is still NP-hard). This algorithm uses the following steps to recolor the graph:
+
+%Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das normale Graph Coloring Problem ohne Clustering der Knoten, indem die aktuell gewählten Repräsentanten fixiert werden und dieses so vereinfachte Problem (das allerdings immer noch NP-hart ist) wird nun mit folgendem Greedy Ansatz näherungsweise gelöst:
 
 \begin{enumerate}
-    \item Finde den (noch nicht eingefärbten) Repräsentanten mit der größten Anzahl an eingefärbten Nachbarn (engl.\ Degree SATURation).
-    \item Bei Gleichstand: Wähle den Knoten mit der größten Anzahl an nicht eingefärbten Nachbarn.
-    \item Bei Gleichstand wähle den ersten Knoten in lexikographischer Abfolge.
-    \item Weise dem gewählten Knoten die kleinste mögliche Farbe zu.
-    \item Wiederhole, bis die Repräsentanten aller Cluster eingefärbt wurden.
+	 \item Find the (still uncolored) vertex with the highest number of colored neighbors.
+%    \item Finde den (noch nicht eingefärbten) Repräsentanten mit der größten Anzahl an eingefärbten Nachbarn (engl.\ Degree SATURation).
+	 \item In case of tie: Select the vertex with the highest number of uncolored neighbors.
+%    \item Bei Gleichstand: Wähle den Knoten mit der größten Anzahl an nicht eingefärbten Nachbarn.
+	 \item In case of tie: Select the first vertex in lexicographical order.
+%    \item Bei Gleichstand wähle den ersten Knoten in lexikographischer Abfolge.
+	 \item Assign the lowest possible color to the vertex.
+%    \item Weise dem gewählten Knoten die kleinste mögliche Farbe zu.
+	 \item Repeat, until all vertices have been colored.
+%    \item Wiederhole, bis die Repräsentanten aller Cluster eingefärbt wurden.
 \end{enumerate}
 
 \paragraph{changeAll}
+The \emph{changeAll} Neighborhood can be seen as a merging of \emph{changeColor} and \emph{changeNode}. It simultaneously replaces a vertex and recolors it. 
 
-\subsubsection{Implementierung}
-Um die im Zuge dieser Arbeit entwickelten Lösungsansätze verifizieren und bewerten zu können, wurde das vorgestellte Konzept (Variable Nachbarschaftssuche mit Ermittlung einer Initiallösung durch \emph{onestepCD}) vollständig implementiert.
+First, the algorithm searches for vertices of the highest color. It then proceeds to replace the found vertex with another one from the same cluster. This new replacement vertex is then recolored, much like in the \emph{changeColor} Neighborhood. 
 
-Das Programm wurde in C++ entwickelt, da diese Sprache für gute Performance bekannt ist und außerdem etablierte Codebibliotheken, speziell für Probleme der Kombinatorik und Graphentheorie, explizit für C++ zur Verfügung stehen.
+If no suitable pair of color and replacement vertex could be found, the Neighborhood is aborted. If all vertices of highest color have been replaced and recolored, a better solution has been found. 
 
-Nach einigen Recherchen fiel die Wahl auf die Bibliothek Boost\footnote{siehe \url{http://www.boost.org/}}. Bei Boost handelt es sich um eine robuste, gut getestete und vielseitige Bibliothek, welche ein schnelles und einfaches Arbeiten ermöglicht.
+\subsubsection{Implementation}
+%\subsubsection{Implementierung}
+To verify and evaluate our approach, we successfully implemented the presented concept (Variable Neighborhood Search with initial solution by using \emph{onestepCD}). 
 
-Alle im Abschnitt \ref{sec:neigh} besprochenen Nachbarschaften wurden umgesetzt, wobei in diesen Codeteilen auf eine effiziente Umsetzung ganz besonders geachtet wurde, da sie das Laufzeitverhalten stark prägen.
+The actual development was done using C++. C++ was chosen as both a very versatile and fast programming language and because many code libraries for optimization are written using C++.
 
-\subsection{Ausblick}
+%Um die im Zuge dieser Arbeit entwickelten Lösungsansätze verifizieren und bewerten zu können, wurde das vorgestellte Konzept (Variable Nachbarschaftssuche mit Ermittlung einer Initiallösung durch \emph{onestepCD}) vollständig implementiert.
 
-Erste Tests auf kleineren Instanzen des Problems zeigten bereits vielversprechende Ergebnisse. Für größere Instanzen ist ungleich mehr Rechenzeit und -leistung notwendig, entsprechende Testläufe, um diesen Ansatz auch z.B.\ mit der Tabu-Suche von \citet*{Noronha2006} vergleichen zu können, sind erst in Vorbereitung. Um zukünftig noch bessere Ergebnisse zu erzielen wird auch die Verwendung  weiterer, problemspezifischer, allerdings auch umfangreicherer Nachbarschaften in Erwägung gezogen.
+%Das Programm wurde in C++ entwickelt, da diese Sprache für gute Performance bekannt ist und außerdem etablierte Codebibliotheken, speziell für Probleme der Kombinatorik und Graphentheorie, explizit für C++ zur Verfügung stehen.
 
-\subsection{Schluss}
-In großen Glasfasernetze, wie sie zum Beispiel von großen Internetinfrastrukturbetreibern betrieben werden, besteht ein immer größer werdendes Kommunikationsbedürfnis.
+After some research, we decided to use the C++ code library Boost\footnote{see \url{http://www.boost.org/}}. Boost offers a vast variety of different data structures and helper functions. All of these features are heavily tested and easy to use, which enables a rapid programming style.
 
-Um diesen steigenden Anforderungen gerecht zu werden kann natürlich einfach die Infrastruktur -- mit entsprechenden (auch laufenden) Kosten -- erweitert werden oder aber die bestehenden Netze werden effizienter genutzt. Das Problem, mehrere Kommunikationskanäle über das selbe Glasfasernetzwerk ohne gegenseitige Störungen zu übertragen, kann allgemein auf das Partition Graph Coloring Problem zurückgeführt werden.
+%Nach einigen Recherchen fiel die Wahl auf die Bibliothek Boost\footnote{siehe \url{http://www.boost.org/}}. Bei Boost handelt es sich um eine robuste, gut getestete und vielseitige Bibliothek, welche ein schnelles und einfaches Arbeiten ermöglicht.
 
-In dieser Arbeit stellten wir eine Variable Nachbarschaftssuche vor, die mithilfe eines VND auf Basis von drei Nachbarschaften eine Ausgangslösung schrittweise verfeinert.
+Every Neighborhood that was discussed in section~\ref{sec:neigh} has been implemented. Special attention was given to an efficient implementation for each Neighborhood, as they are essential for a fast run time.
 
-Erste Tests auf kleineren Instanzen des Problems zeigten bereits vielversprechende Ergebnisse. Für größere Instanzen ist ungleich mehr Rechenzeit und -leistung notwendig, entsprechende Testläufe, um diesen Ansatz auch z.B.\ mit der Tabu-Suche von \citet*{Noronha2006} vergleichen zu können, sind erst in Vorbereitung. Um zukünftig noch bessere Ergebnisse zu erzielen wird auch die Verwendung  weiterer, problemspezifischer, allerdings auch umfangreicherer Nachbarschaften in Erwägung gezogen.
+%Alle im Abschnitt \ref{sec:neigh} besprochenen Nachbarschaften wurden umgesetzt, wobei in diesen Codeteilen auf eine effiziente Umsetzung ganz besonders geachtet wurde, da sie das Laufzeitverhalten stark prägen.
+
+\subsection{Conclusion}
+The demand for communication in huge fiber optic networks, like the ones operated by internet service providers, is an ever rising figure.
+
+%In großen Glasfasernetze, wie sie zum Beispiel von großen Internetinfrastrukturbetreibern betrieben werden, besteht ein immer größer werdendes Kommunikationsbedürfnis.
+
+To accommodate with these ever rising demands two steps can be taken. The easier -- but also more expensive -- route is to expand existing networks by using new infrastructure. The harder -- but also cheaper -- route is to use existing networks more efficiently. The task to assign different wavelengths to a fiber optic network to enable parallel communication between many different parties can be seen as a practical application of the Partition Graph Coloring Problem. 
+
+%Um diesen steigenden Anforderungen gerecht zu werden kann natürlich einfach die Infrastruktur -- mit entsprechenden (auch laufenden) Kosten -- erweitert werden oder aber die bestehenden Netze werden effizienter genutzt. Das Problem, mehrere Kommunikationskanäle über das selbe Glasfasernetzwerk ohne gegenseitige Störungen zu übertragen, kann allgemein auf das Partition Graph Coloring Problem zurückgeführt werden.
+
+In this paper we introduce a new approach to solving the Partition Graph Coloring Problem by using Variable Neighborhood Search, which facilitates 4 different Neighborhoods to improve an existing solution step-by-step.
+
+%In dieser Arbeit stellten wir eine Variable Nachbarschaftssuche vor, die mithilfe eines VND auf Basis von drei Nachbarschaften eine Ausgangslösung schrittweise verfeinert.
+
+Initial tests on small instances showed promising results. Later tests on large instances of the problem resulted in a 15\% higher efficiency than the initial solution. Although the results are already promising, further steps will be taken to improve them.
+
+%Erste Tests auf kleineren Instanzen des Problems zeigten bereits vielversprechende Ergebnisse. Für größere Instanzen ist ungleich mehr Rechenzeit und -leistung notwendig, entsprechende Testläufe, um diesen Ansatz auch z.B.\ mit der Tabu-Suche von \citet*{Noronha2006} vergleichen zu können, sind erst in Vorbereitung. Um zukünftig noch bessere Ergebnisse zu erzielen wird auch die Verwendung  weiterer, problemspezifischer, allerdings auch umfangreicherer Nachbarschaften in Erwägung gezogen.
 
 %\subsection{Innovationsgehalt des bearbeiteten Lösungsansatzes}
 %\subsection{Testläufe}
@@ -383,21 +415,15 @@ Erste Tests auf kleineren Instanzen des Problems zeigten bereits vielversprechen
 % Bei Sonderpreis-Projekten ist u.a. die Relevanz der ökologischen, sozialen und ökonomischen Nachhaltigkeit bzw. die wirtschaftliche Machbarkeit anzuführen.
 %\subsection{Ökonomische Grundlage und ökologischer Vorteil}
 
-\section{Bericht des Projektkoordinators}
-
-Moritz und ich arbeiteten bereits in den vergangen Schuljahren gemeinsam an Projekten, und wussten so beide, worauf wir uns einlassen. Neues Konfliktpotential bot die Verwendung des Versionskontrollsystems Git\footnote{siehe \url{http://www.git-scm.org/}}: Zu Beginn des Projekts waren wir damit noch nicht vertraut, und mussten durch Fehler lernen, es richtig einzusetzen. Hierbei konnten wir uns wie so oft gegenseitig ergänzen. Besonders bei der Modellierung der Lösungen brauchten wir länger um uns einig zu werden. Um Entscheidungen zu fällen, wogen wir stets Effizienz der Lösungsvorschläge mit internen Coding Guidelines und Modularität ab. Im Zweifelsfall konnten wir uns auf unseren Betreuer verlassen. 
-
-In den Besprechungen an der Technischen Universität Wien wurden all unsere Fragen beantwortet, und neue Lösungsvorschläge eingebracht, wodurch wir auch Einblick in wissenschaftliche Arbeitsweisen gewinnen konnten.
-
 \newpage
 \printbibliography
-\addcontentsline{toc}{section}{Literatur}
+\addcontentsline{toc}{section}{Literature}
 \listoffigures
-\addcontentsline{toc}{section}{Abbildungsverzeichnis}
+\addcontentsline{toc}{section}{List of figures}
 \listoftables
-\addcontentsline{toc}{section}{Tabellenverzeichnis}
+\addcontentsline{toc}{section}{List of tables}
 \listofalgorithms
-\addcontentsline{toc}{section}{Algorithmenverzeichnis}
+\addcontentsline{toc}{section}{List of algorithms}
 
 %Anhang: Skizzen, Grafiken, Zeichnungen, Schaltpläne, Fotos, Links zu Videos oder Websites etc.
 
@@ -405,68 +431,101 @@ In den Besprechungen an der Technischen Universität Wien wurden all unsere Frag
 
 \section{Appendix}
 
-\subsection{Bisherige Ergebnisse}
+\subsection{Results}
 
-Eine Auswahl der bisherigen Ergebnisse unseres Projektes auf aus der wissenschaftlichen Literatur für dieses Optimierungsproblem bekannten Instanzen können der Tabelle~\ref{tab:result} entnommen werden, die Bedeutung der einzelnen Spalten ist wie folgt:
+At the end of this project, we were allowed to use the computing grid of the Algorithms and Data Structures Group of Vienna University of Technology to test our program. All test instances have been taken from \cite{Noronha2006}. Each instance of the program was started with a time limit of 600s and a limit of 5000 unsuccessfull shaking runs. The results of the tests can be found in table~\ref{tab:result}.
+
+%Mit Ende der Arbeit an dem Projekt im Rahmen der Diplomarbeit wurden in Tabelle~\ref{tab:result} ersichtliche Ergebnisse auf dem Berechnungsnetzwerk der Arbeitsgruppe für Algorithmen und Datenstrukturen des Instituts für Computergraphik und Algorithmen an der Technischen Universität Wien erzielt.
+
+%Die Instanzen stammen von der genannten Arbeitsgruppe und sind mit jenen von \cite{Noronha2006} vergleichbar.
+
+%Das Abbruchkriterium der VNS für diese Ergebnisse war ein Zeitlimit von 600s oder 5000 fehlgeschlagene \enquote{Schüttelversuche}.
+
+
+\subsubsection*{Description}
 
 \begin{description}
-    \item[Instanz] Name der berechneten Instanz\footnote{Zu finden unter \url{www.ic.uff.br/~celso/grupo/pcp.htm}}.% In dem Format \texttt{n}\textit{(Anzahl der Knoten)}\texttt{}
-    \item[$|V|$] Anzahl an Knoten der Instanz.
-    \item[$|E|$] Anzahl an Kanten der Instanz.
-    \item[$|C|$] Anzahl an Clustern der Instanz.
-    \item[$S_i$] Die Anzahl an Farben, die von der durch \emph{onestepCD} berechneten Ausgangslösung benötigt werden.
-    \item[$N$] Die verwendeten Nachbarschaften in Reihenfolge der Iteration:
+    \item[Instance] Name of the computed instance.
+    \item[$|V|$] Number of vertices in that instance.
+    \item[$|E|$] Number of edges in that instance.
+    \item[$|C|$] Number of clusters in that instance.
+    \item[$S_i$] Number of colors used by the construction heuristic \emph{onestepCD}.
+    \item[$N$] Used Neighborhoods in order of iteration:
         \begin{description}
             \item[\texttt{c}] \emph{ChangeColor}
             \item[\texttt{n}] \emph{ChangeNode}
-            \item[\texttt{d}] \emph{NewVertexColoring-DSATUR}
+            \item[\texttt{a}] \emph{ChangeAll}
+            \item[\texttt{d}] \emph{DSATUR}
         \end{description}
-    \item[$S_{avg}$] Die im Durchschnitt benötigte Anzahl an Farben der von unserer Implementierung in 30 Testläufen berechneten Lösungen.
-    \item[$S_{\sigma}$] Die Standardabweichung der Ergebnisse aller Testläufe (verursacht durch Ran\-dom\-isier\-ung in den einzelnen Verfahren).
-    \item[$S_{\Delta}$] Prozentuelle Verbesserung der Ausgangslösung durch den beschriebenen Ansatz.
-    \item[$t$] Mittlere Laufzeit in Sekunden (ermittelt auf einem Linux-System Kernel 3.5.0 x86\_64, Intel Core i5-3317U CPU mit 1.70GHz, Compiler gcc 4.7.2 ).
+    \item[$S_{avg}$] The average number of colors used by our program. Every test instance was run 40 times to avoid statistical anomalies.
+    \item[$S_{\sigma}$] The mean deviation of our results. Due to randomization happening in each of the 40 runs anomlies may occur.
+    \item[$S_{\Delta}$] Relative improvement when compared to the construction heuristic.
+    \item[$t$] Average runtime in seconds.
 \end{description}
 
-\paragraph{Kurzinterpretation}{
-Wie man erkennen kann ist die Reihenfolge, in der das VND die einzelnen Nachbarschaften durchsucht muss um die jeweils besten Resultate zu erzielen, nicht wirklich eindeutig, auch wenn sich eine Tendenz zu \texttt{cnd} abzeichnet. Die erzielten Verbesserung gegenüber der von der Konstruktionsheuristik \emph{onestepCD} ermittelten Ausgangslösungen sind mitunter beachtlich und bewegen sich Großteils im Bereich zwischen 20 und 40\%.}
-
-\begin{table}[!htbp]
+\singlespacing
+\begin{table}[p]
 \centering
-\begin{tabular}{c|rrr|r|c|rrr|r|r}
-Instanz & $|V|$ & $|E|$ & $|C|$ & $S_i$ & $N$ & $S_{min}$ & $S_{avg}$ & $S_{\sigma}$ & $S_{\Delta}$ & $t$ \\
+\begin{tabular}{|c|ccc|c|c|ccc|c|c|}
+\hline
+Instance & \multicolumn{1}{c}{$|V|$} & \multicolumn{1}{c}{$|E|$} & \multicolumn{1}{c|}{$|C|$} & \multicolumn{1}{c|}{$S_i$} & \multicolumn{1}{c|}{$N$} & $S_{min}$ & \multicolumn{1}{c}{$S_{avg}$} & \multicolumn{1}{c|}{$S_{\sigma}$} & \multicolumn{1}{c|}{$S_{\Delta}$} & \multicolumn{1}{c|}{$t$} \\
 \hline\hline
-\texttt{n90p5t2s1.pcp} & 90	& 2019	& 45 & 13 & \texttt{cdn} & 9 & 9.61 & 1.8 & 44.44 & 693.2\\
-\texttt{n90p5t2s2.pcp} & 90	& 1963	& 45 & 11 & \texttt{ncd} & 8 & 9.29 & 1.8 & 37.50 & 550.6\\
-\texttt{n90p5t2s3.pcp} & 90	& 2045	& 45 & 13 & \texttt{cdn} & 9 & 9.61 & 1.8 & 44.44 & 568.4\\
-\texttt{n90p5t2s4.pcp} & 90	& 2014	& 45 & 12 & \texttt{cdn} & 9 & 9.61 & 1.8 & 33.33 & 593.9\\
-\texttt{n90p5t2s5.pcp} & 90	& 2057	& 45 & 13 & \texttt{dnc} & 9 & 9.87 & 1.9 & 44.44 & 789.7\\
-\texttt{n90p7t2s4.pcp} & 90	& 2821	& 45 & 16 & \texttt{ndc} & 12 & 13.35 & 2.5 & 33.33 & 656.1\\
-\texttt{n90p7t2s5.pcp} & 90	& 2834	& 45 & 16 & \texttt{cdn} & 13 & 13.94 & 2.6 & 23.08 & 847.7\\
-\texttt{n90p8t2s1.pcp} & 90	& 3257	& 45 & 19 & \texttt{dcn} & 15 & 16.77 & 3.2 & 26.67 & 839.0\\
-\texttt{n90p8t2s2.pcp} & 90	& 3188	& 45 & 19 & \texttt{cdn} & 15 & 16.06 & 3.0 & 26.67 & 1125.5\\
-\texttt{n90p9t2s1.pcp} & 90	& 3631	& 45	& 24 & \texttt{cnd} & 19 & 20.48 & 3.8 & 26.32 & 1247.4\\
-\texttt{n90p9t2s2.pcp} & 90	& 3614	& 45	& 23 & \texttt{cnd} & 18 & 20.42 & 3.9 & 27.78 & 1051.3\\
-\texttt{n90p9t2s3.pcp} & 90	& 3615	& 45	& 24 & \texttt{cdn} & 19 & 19.97 & 3.7 & 26.32 & 1432.6\\
-\texttt{n90p9t2s4.pcp} & 90	& 3619	& 45	& 23 & \texttt{dcn} & 17 & 19.77 & 3.8 & 35.29 & 1407.4\\
-\texttt{n90p9t2s5.pcp} & 90	& 3634	& 45	& 24 & \texttt{dcn} & 18 & 19.42 & 3.6 & 33.33 & 1357.1\\
-\texttt{n100p5t2s1.pcp} & 100	& 2494	& 50	& 13 & \texttt{cdn} & 10 & 10.58 & 2.0 & 30.00 & 689.7\\
-\texttt{n100p5t2s2.pcp} & 100	& 2428	& 50	& 12 & \texttt{cdn} & 10 & 10.55 & 1.9 & 20.00 & 489.0\\
-\texttt{n100p5t2s3.pcp} & 100	& 2513	& 50	& 12 & \texttt{ndc} & 9 & 9.94 & 1.9 & 33.33 & 610.6\\
-\texttt{n100p5t2s4.pcp} & 100	& 2442	& 50	& 12 & \texttt{cdn} & 9 & 9.94 & 1.9 & 33.33 & 602.3\\
-\texttt{n100p5t2s5.pcp} & 100	& 2500	& 50	& 12 & \texttt{dnc} & 9 & 10.55 & 2.1 & 33.33 & 848.7\\
-\texttt{n120p5t2s1.pcp} & 120	& 3593	& 60	& 14 & \texttt{cdn} & 11 & 12.03 & 2.3 & 27.27 & 1549.0\\
-\texttt{n120p5t2s2.pcp} & 120	& 3544	& 60	& 14 & \texttt{cdn} & 11 & 11.77 & 2.2 & 27.27 & 906.8\\
-\texttt{n120p5t2s3.pcp} & 120	& 3613	& 60	& 14 & \texttt{cdn} & 12 & 11.90 & 2.2 & 16.67 & 651.0\\
-\texttt{n120p5t2s4.pcp} & 120	& 3536	& 60	& 14 & \texttt{dcn} & 11 & 11.87 & 2.2 & 27.27 & 1334.2\\
-\texttt{n120p5t2s5.pcp} & 120	& 3623	& 60	& 15 & \texttt{ndc} & 11 & 12.23 & 2.3 & 36.36 & 1050.3\\
+
+\multirow{3}{*}{\texttt{dsjc500.5-1.in}} & \multirow{3}{*}{500} & \multirow{3}{*}{62624} & \multirow{3}{*}{500} & \multirow{32}{*}{69} &
+      \texttt{cnad}	& \multirow{3}{*}{62}	& 63.67	& 0.52	& \multirow{3}{*}{11.29}	& 494109.3\\
+&&&&& \texttt{cand}	&			& 63.55	& 0.55	&				& 494685.3\\
+&&&&& \texttt{acnd}	&			& 63.67	& 0.52	&				& 492537.0\\
+\cline{1-4}\cline{6-11}
+\multirow{14}{*}{\texttt{dsjc500.5-2.in}} & \multirow{14}{*}{1000} & \multirow{14}{*}{249671} & \multirow{14}{*}{500} & &
+      \texttt{cnda}	& \multirow{14}{*}{60}	& 61.30	& 0.51	& \multirow{14}{*}{15.00}	& 482239.0\\
+&&&&& \texttt{cadn}	&			& 61.27	& 0.50	&				& 472219.3\\
+&&&&& \texttt{dcan}	&			& 61.55	& 0.55	&				& 488494.5\\
+&&&&& \texttt{danc}	&			& 61.40	& 0.54	&				& 497711.0\\
+&&&&& \texttt{ncda}	&			& 61.13	& 0.40	&				& 496069.8\\
+&&&&& \texttt{ndca}	&			& 61.27	& 0.50	&				& 499308.0\\
+&&&&& \texttt{ndac}	&			& 61.17	& 0.49	&				& 508483.5\\
+&&&&& \texttt{nacd}	&			& 61.45	& 0.55	&				& 448795.8\\
+&&&&& \texttt{nadc}	&			& 60.95	& 0.31	&				& 499959.3\\
+&&&&& \texttt{acdn}	&			& 60.88	& 0.40	&				& 489919.3\\
+&&&&& \texttt{adcn}	&			& 60.80	& 0.40	&				& 502662.8\\
+&&&&& \texttt{adnc}	&			& 60.95	& 0.31	&				& 509733.8\\
+&&&&& \texttt{ancd}	&			& 61.70	& 0.51	&				& 443322.5\\
+&&&&& \texttt{andc}	&			& 61.00	& 0.45	&				& 499170.8\\
+\cline{1-4}\cline{6-11}
+\multirow{14}{*}{\texttt{dsjc500.5-3.in}} & \multirow{14}{*}{1500} & \multirow{14}{*}{562401} & \multirow{14}{*}{500} & &
+      \texttt{cdna}	& \multirow{14}{*}{60}	& 61.20	& 0.46	& \multirow{14}{*}{15.00}	& 477578.0\\
+&&&&& \texttt{cadn}	&			& 61.20	& 0.51	&				& 465780.5\\
+&&&&& \texttt{dcna}	&			& 61.38	& 0.53	&				& 479848.8\\
+&&&&& \texttt{dnac}	&			& 61.23	& 0.52	&				& 498028.5\\
+&&&&& \texttt{danc}	&			& 61.23	& 0.47	&				& 489702.3\\
+&&&&& \texttt{ncda}	&			& 60.95	& 0.22	&				& 475189.8\\
+&&&&& \texttt{ndca}	&			& 60.88	& 0.33	&				& 484062.0\\
+&&&&& \texttt{ndac}	&			& 60.98	& 0.16	&				& 488796.3\\
+&&&&& \texttt{nacd}	&			& 61.55	& 0.59	&				& 432441.0\\
+&&&&& \texttt{nadc}	&			& 60.92	& 0.35	&				& 491085.8\\
+&&&&& \texttt{acdn}	&			& 60.95	& 0.22	&				& 483350.0\\
+&&&&& \texttt{adcn}	&			& 60.98	& 0.35	&				& 493467.8\\
+&&&&& \texttt{adnc}	&			& 60.95	& 0.22	&				& 501021.3\\
+&&&&& \texttt{andc}	&			& 60.98	& 0.27	&				& 491790.3\\
+\cline{1-4}\cline{6-11}
+\texttt{dsjc500.5-4.in} & 2000 & 999508 & 500 & & \texttt{adnc} & 59 & 60.65 & 0.53 & 16.95 & 497422.8\\
+\hline
 \end{tabular}
-\caption{Ergebnisse der VNS im Überblick}
+\caption{Results of the VNS}
 \label{tab:result}
 \end{table}
+\setstretch{1.5}
 
-\subsection{Visualisierung}
+\subsection{Interpretation}
+It can be seen that in order to get the best results, multiple orders of Neighborhoods in the VND are possible. The average improvement of 10\% to 15\% on huge instances is the overall trend. All these improvements are measured relative to the construction heuristic \emph{onestepCD}.
 
-Videoaufzeichnungen des Ablaufs einerVersion des Programms mit Visualisierung finden Sie unter:
+%Wie man erkennen kann ist die Reihenfolge, in der das VND die einzelnen Nachbarschaften durchsuchen muss, um die jeweils besten Resultate zu erzielen, nicht wirklich eindeutig. Die erzielten Verbesserung gegenüber der von der Konstruktionsheuristik \emph{onestepCD} ermittelten Ausgangslösungen sind mitunter beachtlich und bewegen sich großteils im Bereich zwischen 11 und 15\%.
+
+\subsection{Visualization}
+
+Videos of our visualization of the process of improving an already existing solution can be found at:
+
+%Videoaufzeichnungen des Ablaufs einerVersion des Programms mit Visualisierung finden Sie unter:
 
 \begin{itemize}
 	\item \url{https://www.dropbox.com/s/exl54o9vvty8lc3/demo1.mp4}
@@ -474,9 +533,13 @@ Videoaufzeichnungen des Ablaufs einerVersion des Programms mit Visualisierung fi
 	\item \url{https://www.dropbox.com/s/bwsd130cplt4c07/demo3.mp4}
 \end{itemize}
 
-In allen drei Läufen wird die Instanz \texttt{n20p5t2s5.pcp} gezeigt, die klein genug ist um die Arbeitsweise des Programms zu überblicken.
+In all three videos the instance \texttt{n20p5t2s5.pcp} is shown. The reason for this is that bigger instances with more vertices tend to get confusing very quickly.
 
-\subsection{Quellcode}
+%In allen drei Läufen wird die Instanz \texttt{n20p5t2s5.pcp} gezeigt, die klein genug ist um die Arbeitsweise des Programms zu überblicken.
 
-Der Quellcode des Programms ist öffentlich unter \url{https://github.com/flowlo/pcp-vns/} einsehbar.
+\subsection{Source code}
+
+The source code of our program can be found at \url{https://github.com/flowlo/pcp-vns/}.
+
+%Der Quellcode des Programms ist öffentlich unter \url{https://github.com/flowlo/pcp-vns/} einsehbar.
 \end{document}
