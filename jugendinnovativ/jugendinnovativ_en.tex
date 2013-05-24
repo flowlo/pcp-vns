@@ -107,33 +107,32 @@ at
 \section{Project idea and planning}
 %\section{Projektentstehung und -planung}
 
-Providers of internet infrastructure face the problem of satisfying an ever growing need to communicate. There are two main approaches to this problem. They can expand their current network by adding additional devices or they find a way to use their current infrastructure more efficiently.
+Providers of internet infrastructure face the problem of satisfying an ever growing need to communicate. There are two main approaches to this problem. Providers can either expand their current network by adding additional devices or they can use their current infrastructure more efficiently.
 
 %Betreiber der Internetinfrastruktur stehen vor dem Problem, immer weiter steigende Kommunikationsbedürfnisse befriedigen zu müssen. Dafür müssen entweder die bestehenden Netze effizienter genutzt, oder die Infrastruktur erweitert werden.
 
-In a modern fiber-optic network which uses Wavelength Division Multiplexing, the number of different wavelengths used to communicate directly corresponds to the efficiency of the network. The fewer wavelengths used, the better. By optimizing the assignment of wavelengths a network can transfer more data without the need of additional hardware. This leads to an overall cheaper network without a sacrifice in performance.
+In a modern fiber-optic network, which uses Wavelength Division Multiplexing, the number of different wavelengths used to communicate directly corresponds to the efficiency of the network. The fewer wavelengths are used, the better. By optimizing the assignment of wavelengths a network can transfer more data without the need of additional hardware. This leads to an overall cheaper network without a drop in performance.
 
 %Innerhalb von Glasfasernetzwerken, die Wavelength Division Multiplexing einsetzen, soll die Anzahl verschiedener Lichtfarben beziehungsweise Wellenlängen verringert, also optimiert werden. Dadurch können vorhandene Ressourcen besser ausgelastet und die Anschaffung und der Betrieb neuer Infrastruktur zumindest hinausgezögert werden, wodurch sich sowohl Anschaffungs- als auch Betriebskosten einsparen lassen.
 
-The minimization of the number of used wavelengths is not a trivial problem. It is in fact a NP-hard optimization problem. A partitioned graph is created to represent the fiber-optic network, hence the name
-Partition Graph Coloring Problem. There are only a selected few approaches to this problem published in literature.
+The minimization of the number of used wavelengths is not a trivial problem though. It is in fact an NP-hard optimization problem. A partitioned graph is created to represent the fiber-optic network, hence the name
+Partition Graph Coloring Problem. Only a selected few approaches to this problem have been published so far.
 
 %Die Anzahl der Wellenlängen in einem solchen Netzwerk zu minimieren ist nicht trivial, es handelt sich um ein NP-schwieriges Optimierungsproblem. Modelliert werden die Glasfasernetze in Form von partitionierten Graphen. In der einschlägigen Literatur sind nur einige, wenige Lösungsansätze für dieses Problem bekannt. 
 
-Over the course of this project we intend to implement and test a number of new approaches. These new approaches are all inspired by already existing technology. Our goal is create a computer program which 
-yields better results than the existing approaches. 
+In the course of this project we intend to implement and test a number of new approaches. They are all inspired by already existing technology. Our goal is create a computer program which yields better results than the existing methods. 
 
 %Im Rahmen dieses Projektes sollen neuartige Wege zur Lösung des Problems implementiert und getestet werden. Ausgehend von bestehenden Technologien sowie bereits erprobten Lösungsansätzen, soll ein Programm entstehen, welches bessere Ergebnisse liefert als seine bereits bekannten Konkurrenten.
 
-The idea to this project developed after a lengthly discussion and consultation with Univ-Prof.~Dipl.-Ing.~Dr.techn.~Günther~Raidl (Vienna University of Technology, Algorithms and Data Structures Group). He proposed a number of different optimization problems for our diploma thesis. He still supports us with feedback and by suggesting new approaches on our project. 
+The idea to work on this project developed after a lengthly discussion with Univ-Prof.~Dipl.-Ing.~Dr.techn.~Günther~Raidl (Vienna University of Technology, Algorithms and Data Structures Group). He proposed a number of different optimization problems for our diploma thesis and still gives us feedback and support.
 
 %Die Projektidee entstand nach ausführlicher Beratschlagung und Diskussion mit Univ-Prof.~Dipl.-Ing.~Dr.techn.~Günther~Raidl (Technische Universität Wien, Arbeitsbereich für Algorithmen und Datenstrukturen), welcher mehrere Probleme aus dem Bereich der Optimierung als Diplomarbeit vorschlug. Auch wird die Arbeit weiterhin von ihm unterstützt, sollte es Fragen zur Problemstellung oder konkreten Lösungsansätzen geben.
 
-Our goal is to develop a new algorithm which can compete with already existing approaches. To facilitate the comparison between this new approach and the old ones, a program will be implemented which is then used to solve instances of the problem. These instances originate from technical literatur and any results can thus be easily compared.
+Our goal is to develop a new algorithm which can compete with already existing techniques. To facilitate the comparison between this new method and the old ones, a program will be implemented which is then used to solve instances of the problem. These instances originate from technical literature and hence any results can be easily compared.
 
 %Ziel ist es, einen neuen Algorithmus zu entwickeln, welcher mit bestehenden Lösungs\-an\-sätz\-en konkurrieren kann. Zu diesem Zwecke wird der Algorithmus in ein konkretes Programm implementiert, um ihn auf die in der Literatur verwendeten Probleminstanzen anzuwenden.
 
-Besides technical literature which is provided to us by the Vienna University of Technology we also researched different code libraries and revivision control software. Different code libraries where tested until a suitable was found. To efficiently test and run our newly developed program, we were allowed to use the computing cluster of the Vienna University of Technology.
+Apart from technical literature, which we are provided with by Vienna University of Technology we also checked different code libraries and revision control software. Different code libraries were tested until a suitable one was found. To efficiently test and run our newly developed program, we were allowed to use the computing cluster of Vienna University of Technology.
 
 %Neben der fachspezifischen Literatur, welche von der Technischen Universität Wien zur Verfügung gestellt wurde, befassten wir uns zu Beginn des Projekts auch mit der Recherche für geeignete Codebibliotheken und verteilte Versionskontrollsysteme. Weiters wurde die Benutzung des Computing Clusters der Universität ermöglicht, um Berechnungen schneller durchführen zu können.
 
@@ -250,7 +249,7 @@ By systematically cycling throug all the different possible Neighborhoods (for e
 \begin{center}
 \includegraphics{../img/vns.jpg}
 \end{center}
-\caption{Graphic representation of Variable Neighborhood Search. \cite{Chen}}
+\caption{Graphic representation of the Variable Neighborhood Search. \cite{Chen}}
 \end{figure}
 
 For breaking the inevitable stalemate that occurs after the local optimum of all Neighborhoods has been reached, the VNS uses \emph{Shaking}. By \emph{Shaking} a solution, said solution will be randomly altered. These changes do not have to lead to an improvement, they are only used to compute a new starting point for the different neighborhoods. If a small alteration in the globally best solution does not lead to a better results in VND, the alteration grow more severe with each unsuccessfull \emph{Shaking}. In theory these leads to more diverse starting positions and could potentially give better overall results.
@@ -325,7 +324,7 @@ If however no suitable combination could be found, and the recoloring process co
 %Sollte nach einer gewissen Anzahl an Iterationen keine konfliktfreie Lösung gefunden werden, bricht \emph{ChangeColor} automatisch ab und liefert die letzte valide Lösung zurück.
 
 \paragraph{changeNode}
-Like with \emph{changeColor}, \emph{changeNode} relies on a fast algorithm to change a solution. This is done by selecting an alternative vertex for each vertex colored with the highest color.
+The changeNode Neighborhood is an adaption of the changeColor Neighborhood specifically for the PCP. The algorithm takes advantage of the unique properties of the PCP. Every vertex with the heighest color will be replaced by a different vertex in the same cluster.
 
 %Diese Nachbarschaft baut auf der Tatsache auf, dass man aus einem Cluster nur jeweils einen Knoten auswählen muss. Dazu werden wie bei \emph{ChangeColor} alle Knoten höchster Farbe ausgewählt und umgefärbt.
 
