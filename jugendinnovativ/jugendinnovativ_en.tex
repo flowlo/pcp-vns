@@ -28,7 +28,7 @@
 \displaywidowpenalty = 10000
 \fancyfoot{}
 \rfoot{{\footnotesize \textnormal{\thepage}}}
-\chead{{\footnotesize \textnormal{Variable Neighborhoodsearch for the Partition Graph Coloring Problem}}}
+\chead{{\footnotesize \textnormal{Variable Neighborhood Search for the Partition Graph Coloring Problem}}}
 \cfoot{{\footnotesize \textnormal{Lorenz Leutgeb, Moritz Wanzenböck}}}
 \lhead{{\footnotesize \textnormal{}}}
 \lfoot{{\footnotesize \textnormal{\the\year}}}
@@ -250,7 +250,7 @@ By systematically cycling throug all the different possible Neighborhoods (for e
 \begin{center}
 \includegraphics{../img/vns.jpg}
 \end{center}
-\caption{Graphic representation of the Variable Neighborhood Search. \cite{Chen}}
+\caption{Graphic representation of Variable Neighborhood Search. \cite{Chen}}
 \end{figure}
 
 For breaking the inevitable stalemate that occurs after the local optimum of all Neighborhoods has been reached, the VNS uses \emph{Shaking}. By \emph{Shaking} a solution, said solution will be randomly altered. These changes do not have to lead to an improvement, they are only used to compute a new starting point for the different neighborhoods. If a small alteration in the globally best solution does not lead to a better results in VND, the alteration grow more severe with each unsuccessfull \emph{Shaking}. In theory these leads to more diverse starting positions and could potentially give better overall results.
@@ -385,15 +385,15 @@ The demand for communication in huge fiber optic networks, like the ones operate
 
 %In großen Glasfasernetze, wie sie zum Beispiel von großen Internetinfrastrukturbetreibern betrieben werden, besteht ein immer größer werdendes Kommunikationsbedürfnis.
 
-To accommodate with these ever rising demands two steps can be taken. The easier -- but also more expensive -- route is to expand existing networks by using new infrastructe. The harder -- but also cheaper -- route is to use existing networks more efficiently. The task to assign different wavelengths to a fiber optic network to enable parallel communication between many different parties can be seen as a practical application of the Partition Graph Coloring Problem. 
+To accommodate with these ever rising demands two steps can be taken. The easier -- but also more expensive -- route is to expand existing networks by using new infrastructure. The harder -- but also cheaper -- route is to use existing networks more efficiently. The task to assign different wavelengths to a fiber optic network to enable parallel communication between many different parties can be seen as a practical application of the Partition Graph Coloring Problem. 
 
 %Um diesen steigenden Anforderungen gerecht zu werden kann natürlich einfach die Infrastruktur -- mit entsprechenden (auch laufenden) Kosten -- erweitert werden oder aber die bestehenden Netze werden effizienter genutzt. Das Problem, mehrere Kommunikationskanäle über das selbe Glasfasernetzwerk ohne gegenseitige Störungen zu übertragen, kann allgemein auf das Partition Graph Coloring Problem zurückgeführt werden.
 
-In this work we present a new approach to solving the Partition Graph Coloring Problem by using a Variable Neighborhood Search. The Variable Neighborhood Search facilitates 4 different Neighborhoods to improve an existing solution step-by-step.
+In this paper we introduce a new approach to solving the Partition Graph Coloring Problem by using Variable Neighborhood Search, which facilitates 4 different Neighborhoods to improve an existing solution step-by-step.
 
 %In dieser Arbeit stellten wir eine Variable Nachbarschaftssuche vor, die mithilfe eines VND auf Basis von drei Nachbarschaften eine Ausgangslösung schrittweise verfeinert.
 
-Initial tests on small instances showed promising results. Later tests on large instances of the problem revealed results around 15\% better than the initial solution. Although the results are already promising, further steps will be taken to improve the results even more.
+Initial tests on small instances showed promising results. Later tests on large instances of the problem resulted in a 15\% higher efficiency than the initial solution. Although the results are already promising, further steps will be taken to improve them.
 
 %Erste Tests auf kleineren Instanzen des Problems zeigten bereits vielversprechende Ergebnisse. Für größere Instanzen ist ungleich mehr Rechenzeit und -leistung notwendig, entsprechende Testläufe, um diesen Ansatz auch z.B.\ mit der Tabu-Suche von \citet*{Noronha2006} vergleichen zu können, sind erst in Vorbereitung. Um zukünftig noch bessere Ergebnisse zu erzielen wird auch die Verwendung  weiterer, problemspezifischer, allerdings auch umfangreicherer Nachbarschaften in Erwägung gezogen.
 
@@ -433,7 +433,7 @@ Initial tests on small instances showed promising results. Later tests on large 
 
 \subsection{Results}
 
-At the end of this work, we were allowed to use the computing grid of the Algorithms and Data Structures Group of the Vienna University of Technology to test our program. All test instances are taken from \cite{Noronha2006}. Each instance of the program was started with a time limit of 600s and a limit of 5000 unsusccessfull shaking runs. The results of the tests can be found in table~\ref{tab:result}.
+At the end of this project, we were allowed to use the computing grid of the Algorithms and Data Structures Group of Vienna University of Technology to test our program. All test instances have been taken from \cite{Noronha2006}. Each instance of the program was started with a time limit of 600s and a limit of 5000 unsuccessfull shaking runs. The results of the tests can be found in table~\ref{tab:result}.
 
 %Mit Ende der Arbeit an dem Projekt im Rahmen der Diplomarbeit wurden in Tabelle~\ref{tab:result} ersichtliche Ergebnisse auf dem Berechnungsnetzwerk der Arbeitsgruppe für Algorithmen und Datenstrukturen des Instituts für Computergraphik und Algorithmen an der Technischen Universität Wien erzielt.
 
@@ -445,7 +445,7 @@ At the end of this work, we were allowed to use the computing grid of the Algori
 \subsubsection*{Description}
 
 \begin{description}
-    \item[Instanz] Name of the computed instance.
+    \item[Instance] Name of the computed instance.
     \item[$|V|$] Number of vertices in that instance.
     \item[$|E|$] Number of edges in that instance.
     \item[$|C|$] Number of clusters in that instance.
@@ -457,8 +457,8 @@ At the end of this work, we were allowed to use the computing grid of the Algori
             \item[\texttt{a}] \emph{ChangeAll}
             \item[\texttt{d}] \emph{DSATUR}
         \end{description}
-    \item[$S_{avg}$] The average number of colors used by our program. Every test instance was run 40 times to negate statistical anomalies.
-    \item[$S_{\sigma}$] The mean deviation of our results. Due to randomisation happening in each run of the 40 runs, anomlies may occur.
+    \item[$S_{avg}$] The average number of colors used by our program. Every test instance was run 40 times to avoid statistical anomalies.
+    \item[$S_{\sigma}$] The mean deviation of our results. Due to randomization happening in each of the 40 runs anomlies may occur.
     \item[$S_{\Delta}$] Relative improvement when compared to the construction heuristic.
     \item[$t$] Average runtime in seconds.
 \end{description}
@@ -468,7 +468,7 @@ At the end of this work, we were allowed to use the computing grid of the Algori
 \centering
 \begin{tabular}{|c|ccc|c|c|ccc|c|c|}
 \hline
-Instanz & \multicolumn{1}{c}{$|V|$} & \multicolumn{1}{c}{$|E|$} & \multicolumn{1}{c|}{$|C|$} & \multicolumn{1}{c|}{$S_i$} & \multicolumn{1}{c|}{$N$} & $S_{min}$ & \multicolumn{1}{c}{$S_{avg}$} & \multicolumn{1}{c|}{$S_{\sigma}$} & \multicolumn{1}{c|}{$S_{\Delta}$} & \multicolumn{1}{c|}{$t$} \\
+Instance & \multicolumn{1}{c}{$|V|$} & \multicolumn{1}{c}{$|E|$} & \multicolumn{1}{c|}{$|C|$} & \multicolumn{1}{c|}{$S_i$} & \multicolumn{1}{c|}{$N$} & $S_{min}$ & \multicolumn{1}{c}{$S_{avg}$} & \multicolumn{1}{c|}{$S_{\sigma}$} & \multicolumn{1}{c|}{$S_{\Delta}$} & \multicolumn{1}{c|}{$t$} \\
 \hline\hline
 
 \multirow{3}{*}{\texttt{dsjc500.5-1.in}} & \multirow{3}{*}{500} & \multirow{3}{*}{62624} & \multirow{3}{*}{500} & \multirow{32}{*}{69} &
@@ -517,7 +517,7 @@ Instanz & \multicolumn{1}{c}{$|V|$} & \multicolumn{1}{c}{$|E|$} & \multicolumn{1
 \setstretch{1.5}
 
 \subsection{Interpretation}
-It can be seen that in order to get the best results, multiple orders of Neighborhoods in the VND are possible. An overall trend is the average improvement on huge instances around 10\% to 15\%. All these improvements are measured relative to the construction heuristic \emph{onestepCD}.
+It can be seen that in order to get the best results, multiple orders of Neighborhoods in the VND are possible. The average improvement of 10\% to 15\% on huge instances is the overall trend. All these improvements are measured relative to the construction heuristic \emph{onestepCD}.
 
 %Wie man erkennen kann ist die Reihenfolge, in der das VND die einzelnen Nachbarschaften durchsuchen muss, um die jeweils besten Resultate zu erzielen, nicht wirklich eindeutig. Die erzielten Verbesserung gegenüber der von der Konstruktionsheuristik \emph{onestepCD} ermittelten Ausgangslösungen sind mitunter beachtlich und bewegen sich großteils im Bereich zwischen 11 und 15\%.
 
@@ -533,7 +533,7 @@ Videos of our visualization of the process of improving an already existing solu
 	\item \url{https://www.dropbox.com/s/bwsd130cplt4c07/demo3.mp4}
 \end{itemize}
 
-In all three videos the instance \texttt{n20p5t2s5.pcp} is shown. The reason for that is, that bigger instances with more vertices tend to get confusing very quickly.
+In all three videos the instance \texttt{n20p5t2s5.pcp} is shown. The reason for this is that bigger instances with more vertices tend to get confusing very quickly.
 
 %In allen drei Läufen wird die Instanz \texttt{n20p5t2s5.pcp} gezeigt, die klein genug ist um die Arbeitsweise des Programms zu überblicken.
 
