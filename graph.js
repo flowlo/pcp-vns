@@ -130,7 +130,7 @@ Graph.prototype.addCluster = function(position, size) {
 	position.y = (position.y / 100) * window.innerHeight;
 	size.x = (size.x / 100) * window.innerWidth;
 	size.y = (size.y / 100) * window.innerHeight;
-	this.clusters.push({'position': position, 'size': size});
+	this.clusters.push({'position': position, 'size': size, 'radius': Math.min(window.innerWidth, window.innerHeight) / 30});
 }
 
 Graph.prototype.paint = function(callback) {
@@ -149,6 +149,9 @@ Graph.prototype.paint = function(callback) {
 		this.context.stroke();
 	}
 
+	this.context.strokeStyle = 'black';
+	this.context.lineWidth = 3;
+
 	for(var i = 0; i < this.nodes.length; i++) {
 		var node = this.nodes[i];
 		this.context.fillStyle = node.color;
@@ -159,13 +162,22 @@ Graph.prototype.paint = function(callback) {
 		this.context.fill();
 	}
 
-	this.context.strokeStyle = 'black';
-	this.strokeWidth = 3;
+	this.context.strokeStyle = '#333';
+	this.context.lineWidth = 2;
 
 	for (var i = 0; i < this.clusters.length; i++) {
 		var cluster = this.clusters[i];
+
 		this.context.beginPath();
-		this.context.rect(cluster.position.x, cluster.position.y, cluster.size.x, cluster.size.y);
+		this.context.moveTo(cluster.position.x + cluster.radius, cluster.position.y);
+		this.context.lineTo(cluster.position.x + cluster.size.x - cluster.radius, cluster.position.y);
+		this.context.quadraticCurveTo(cluster.position.x + cluster.size.x, cluster.position.y, cluster.position.x + cluster.size.x, cluster.position.y + cluster.radius);
+		this.context.lineTo(cluster.position.x + cluster.size.x, cluster.position.y + cluster.size.y - cluster.radius);
+		this.context.quadraticCurveTo(cluster.position.x + cluster.size.x, cluster.position.y + cluster.size.y, cluster.position.x + cluster.size.x - cluster.radius, cluster.position.y + cluster.size.y);
+		this.context.lineTo(cluster.position.x + cluster.radius, cluster.position.y + cluster.size.y);
+		this.context.quadraticCurveTo(cluster.position.x, cluster.position.y + cluster.size.y, cluster.position.x, cluster.position.y + cluster.size.y - cluster.radius);
+		this.context.lineTo(cluster.position.x, cluster.position.y + cluster.radius);
+		this.context.quadraticCurveTo(cluster.position.x, cluster.position.y, cluster.position.x + cluster.radius, cluster.position.y);
 		this.context.closePath();
 		this.context.stroke();
 	}
