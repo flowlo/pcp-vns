@@ -1,4 +1,4 @@
-Graph = function(width, height) {
+Graph = function() {
 	this.nodes = [];
 	this.edges = [];
 	this.state = undefined;
