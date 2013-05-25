@@ -25,7 +25,7 @@ $(HEADER)$(PCH): $(HEADER) ../include/pcp.hpp
 
 clean:
 	@echo "rm: Cleaning directory ./units/"
-	@rm -f unit.o $(OBJECTS)
+	@rm -f unit.a $(OBJECTS)
 
 clang:
 	@$(MAKE) CXX=clang++ unit.a
