@@ -16,8 +16,9 @@ canvas {
 		</style>
 		<script src="graph.js" type="text/javascript"></script>
 		<script type="text/javascript">
+var graph;
 function boot() {
-	var graph = new Graph(true);
+	graph = new Graph(true);
 	graph.addCluster({'x': 5, 'y': 5}, {'x': 40, 'y': 40});
 	graph.addCluster({'x': 55, 'y': 55}, {'x': 40, 'y': 40});
 	graph.addCluster({'x': 55, 'y': 5}, {'x': 40, 'y': 40});
