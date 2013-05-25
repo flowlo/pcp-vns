@@ -1,4 +1,4 @@
-Graph = function() {
+Graph = function(fullscreen) {
 	this.nodes = [];
 	this.edges = [];
 	this.state = undefined;
@@ -6,8 +6,11 @@ Graph = function() {
 	this.drag = this.mobile ? [] : undefined;
 
 	this.canvas = document.getElementsByTagName('canvas')[0];
-	this.canvas.height = window.innerHeight;
-	this.canvas.width = window.innerWidth;
+
+	if (fullscreen) {
+		this.canvas.height = window.innerHeight;
+		this.canvas.width = window.innerWidth;
+	}
 	
 	this.context = this.canvas.getContext('2d');
 	

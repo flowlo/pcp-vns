@@ -17,13 +17,15 @@ canvas {
 		<script src="graph.js" type="text/javascript"></script>
 		<script type="text/javascript">
 function boot() {
-	var graph = new Graph();
+	var graph = new Graph(true);
 	graph.addNodeRandom(40);
 	graph.addEdgeRandom(70);
 }
 		</script>
 	</head>
 	<body onload="boot();">
-		<canvas></canvas>
+		<canvas>
+			<p>Your browser does not support <a href="https://en.wikipedia.org/wiki/Canvas_element">HTML5 Canvas</a>, please <a href="http://browsehappy.com/">get a decent one</a>.</p>
+		</canvas>
 	</body>
 </html>
