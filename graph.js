@@ -8,11 +8,12 @@ Graph = function(fullscreen) {
 	this.selectedColor = undefined;
 	this.conflicts = 0;
 	this.neutralColor = 'rgb(150, 150, 150)';
+	this.heightFactor = 0.95;
 
 	this.canvas = document.getElementsByTagName('canvas')[0];
 
 	if (fullscreen) {
-		this.canvas.height = window.innerHeight * 0.9;
+		this.canvas.height = window.innerHeight * this.heightFactor;
 		this.canvas.width = window.innerWidth;
 	}
 	
@@ -69,13 +70,14 @@ Graph = function(fullscreen) {
 			hit.node.color = that.selectedColor;
 			that.selectedColor = undefined;
 			that.paint();
+			that.check();
 		}
 	};
 	
 	window.onresize = function() {
 		var d = {
 			'x': window.innerWidth / that.canvas.width,
-			'y': window.innerHeight / that.canvas.height
+			'y': window.innerHeight * this.heightFactor / that.canvas.height
 		};
 		
 		for(var i = 0; i < that.nodes.length; i++) {
@@ -145,16 +147,14 @@ Graph.prototype.addEdgeRandom = function(count) {
 	count = count || 1;
 
 	for (var i = 0; i < count; i++) {
-		var a = ~~(Math.random() * this.nodes.length);
-		var b = ~~(Math.random() * this.nodes.length);
+		var a = ~~(Math.random() * this.nodes.length), b;
 
-		while (b == a)
-			b = ~~(Math.random() * this.nodes.length);
+		while ((b = ~~(Math.random() * this.nodes.length)) == a);
 
 		if (b < a) {
 			var tmp = a;
 			a = b;
-			b = a;
+			b = tmp;
 		}
 
 		a = this.nodes[a];
@@ -173,7 +173,7 @@ Graph.prototype.addEdgeRandom = function(count) {
 			i--;
 			continue;
 		}
-	
+
 		this.edges.push({
 			'a': a,
 			'b': b
@@ -194,6 +194,9 @@ Graph.prototype.addCluster = function(position, size) {
 Graph.prototype.paint = function(callback) {
 	this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+	this.conflicts = 0;
+	this.colored = 0;
+
 	for(var i = 0; i < this.edges.length; i++) {
 		var edge = this.edges[i];
 		var delta = Math.atan((edge.a.position.y - edge.b.position.y) / (edge.a.position.x - edge.b.position.x));
@@ -203,9 +206,11 @@ Graph.prototype.paint = function(callback) {
 		if (edge.a.color == edge.b.color && edge.a.color != this.neutralColor) {
 			this.context.strokeStyle = 'rgba(255, 50, 50, 0.9)';
 			this.context.lineWidth = 4;
+			this.conflicts++;
 		}
 		else if (edge.a.color != this.neutralColor || edge.b.color != this.neutralColor) {
 			this.context.lineWidth = 3;
+
 			var gradient = this.context.createLinearGradient(start.x, start.y, stop.x, stop.y);
 			gradient.addColorStop(0, edge.a.color);
 			gradient.addColorStop(1, edge.b.color);
@@ -228,6 +233,10 @@ Graph.prototype.paint = function(callback) {
 
 	for(var i = 0; i < this.nodes.length; i++) {
 		var node = this.nodes[i];
+
+		if (node.color != this.neutralColor)
+			this.colored++;
+
 		this.context.fillStyle = node.color;
 		this.context.beginPath();
 		this.context.arc(node.position.x, node.position.y, node.radius, 0, 2 * Math.PI, false);
@@ -315,4 +324,9 @@ Graph.prototype.selectColor = function(color) {
 	else {
 		this.selectedColor = color;
 	}
+}
+
+Graph.prototype.check = function() {
+	if (this.conflicts == 0 && this.colored == this.clusters.length)
+		alert('You solved this instance!');
 }
