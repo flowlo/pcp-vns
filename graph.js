@@ -22,6 +22,8 @@ Graph = function(fullscreen) {
 	};
 	this.canvas.onmousedown = function(e) {
 		that.drag = that.hit(e);
+		if (that.drag)
+			that.paint();
 	};
 	this.canvas.ontouchstart = function(e) {
 		e.preventDefault();
@@ -29,8 +31,10 @@ Graph = function(fullscreen) {
 			var touch = e.changedTouches[i];
 			var hit = that.hit(touch);
 
-			if (hit)
-			 	that.drag[touch.identifier] = hit;
+			if (hit) {
+				that.drag[touch.identifier] = hit;
+				that.repaint();
+			}
 		}
 	};
 	this.canvas.onmouseup = function(e) {
@@ -222,14 +226,17 @@ Graph.prototype.paint = function(callback) {
 
 Graph.prototype.hit = function(e) {
 	for(var i = this.nodes.length - 1; i >= 0; i--)
-		if (Math.pow(e.clientX - this.nodes[i].position.x, 2) + Math.pow(e.clientY - this.nodes[i].position.y, 2) < Math.pow(this.nodes[i].radius, 2))
+		if (Math.pow(e.clientX - this.nodes[i].position.x, 2) + Math.pow(e.clientY - this.nodes[i].position.y, 2) < Math.pow(this.nodes[i].radius, 2)) {
+			var node = this.nodes[i];
+			this.nodes.splice(this.nodes.length - 1, 0, this.nodes.splice(i, 1)[0]);
 			return {
-				'node': this.nodes[i],
+				'node': node,
 				'offset': {
-					'x': e.clientX - this.nodes[i].position.x,
-					'y': e.clientY - this.nodes[i].position.y
+					'x': e.clientX - node.position.x,
+					'y': e.clientY - node.position.y
 				}
 			};
+		}
 
 	return undefined;
 };
