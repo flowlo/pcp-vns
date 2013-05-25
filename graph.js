@@ -5,11 +5,14 @@ Graph = function(fullscreen) {
 	this.state = undefined;
 	this.mobile = 'ontouchstart' in window;
 	this.drag = this.mobile ? [] : undefined;
+	this.selectedColor = undefined;
+	this.conflicts = 0;
+	this.neutralColor = 'rgb(150, 150, 150)';
 
 	this.canvas = document.getElementsByTagName('canvas')[0];
 
 	if (fullscreen) {
-		this.canvas.height = window.innerHeight;
+		this.canvas.height = window.innerHeight * 0.9;
 		this.canvas.width = window.innerWidth;
 	}
 	
@@ -21,6 +24,9 @@ Graph = function(fullscreen) {
 		return false;
 	};
 	this.canvas.onmousedown = function(e) {
+		if (that.selectedColor)
+			return;
+
 		that.drag = that.hit(e);
 		if (that.drag)
 			that.paint();
@@ -53,6 +59,18 @@ Graph = function(fullscreen) {
 		for (var i = 0; i < e.changedTouches.length; i++)
 			that.dragging(e.changedTouches[i], that.drag[e.changedTouches[i].identifier]);
 	};
+	this.canvas.onclick = function(e) {
+		var hit = that.hit(e);
+		if (hit && that.selectedColor) {
+			for (var i = 0; i < that.nodes.length; i++) {
+				if (that.nodes[i].cluster == hit.node.cluster)
+					that.nodes[i].color = that.neutralColor;
+			}
+			hit.node.color = that.selectedColor;
+			that.selectedColor = undefined;
+			that.paint();
+		}
+	};
 	
 	window.onresize = function() {
 		var d = {
@@ -80,7 +98,7 @@ Graph = function(fullscreen) {
 
 Graph.prototype.addNode = function(color, position, radius) {
 	this.nodes.push({
-		'color': color,
+		'color': that.neutralColor,
 		'position': position,
 		'radius': radius,
 		'cluster': 0
@@ -92,12 +110,12 @@ Graph.prototype.addNodeRandom = function(count, cluster) {
 	count = count || 1;
 	cluster = this.clusters[cluster] || this.clusters[0];
 	
-	var radius = Math.min(window.innerWidth, window.innerHeight) / 30;
+	var radius = Math.min(this.canvas.width, this.canvas.height) / 30;
 	var border = radius * 2;
 
 	for (var i = 0; i < count; i++)
 		this.nodes.push({
-			'color': '#' + ('000000' + (~~(Math.random() * 0xffffff)).toString(16)).slice(-6),
+			'color': this.neutralColor,
 			'position': {
 				'x': cluster.position.x + border + ~~(Math.random() * (cluster.size.x - border * 2)),
 				'y': cluster.position.y + border + ~~(Math.random() * (cluster.size.y - border * 2))
@@ -166,30 +184,47 @@ Graph.prototype.addEdgeRandom = function(count) {
 }
 
 Graph.prototype.addCluster = function(position, size) {
-	position.x = (position.x / 100) * window.innerWidth;
-	position.y = (position.y / 100) * window.innerHeight;
-	size.x = (size.x / 100) * window.innerWidth;
-	size.y = (size.y / 100) * window.innerHeight;
-	this.clusters.push({'position': position, 'size': size, 'radius': Math.min(window.innerWidth, window.innerHeight) / 30});
+	position.x = (position.x / 100) * this.canvas.width;
+	position.y = (position.y / 100) * this.canvas.height;
+	size.x = (size.x / 100) * this.canvas.width;
+	size.y = (size.y / 100) * this.canvas.height;
+	this.clusters.push({'position': position, 'size': size, 'radius': Math.min(this.canvas.width, this.canvas.height) / 30});
 }
 
 Graph.prototype.paint = function(callback) {
 	this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-	this.context.strokeStyle = 'rgba(0, 0, 0, 0.45)';
-	this.context.lineWidth = 2;
-
 	for(var i = 0; i < this.edges.length; i++) {
 		var edge = this.edges[i];
-		var delta = Math.atan((edge.a.position.y - edge.b.position.y) / (edge.a.position.x - edge.b.position.x));	
+		var delta = Math.atan((edge.a.position.y - edge.b.position.y) / (edge.a.position.x - edge.b.position.x));
+		var start = {'x': edge.a.position.x + Math.cos(delta) * edge.a.radius, 'y': edge.a.position.y + Math.sin(delta) * edge.a.radius};
+		var stop = {'x': edge.b.position.x + Math.cos(delta) * edge.b.radius, 'y': edge.b.position.y + Math.sin(delta) * edge.b.radius};
+
+		if (edge.a.color == edge.b.color && edge.a.color != this.neutralColor) {
+			this.context.strokeStyle = 'rgba(255, 50, 50, 0.9)';
+			this.context.lineWidth = 4;
+		}
+		else if (edge.a.color != this.neutralColor || edge.b.color != this.neutralColor) {
+			this.context.lineWidth = 3;
+			var gradient = this.context.createLinearGradient(start.x, start.y, stop.x, stop.y);
+			gradient.addColorStop(0, edge.a.color);
+			gradient.addColorStop(1, edge.b.color);
+			this.context.strokeStyle = gradient;
+		}
+		else {
+			this.context.strokeStyle = 'rgba(0, 0, 0, 0.45)';
+			this.context.lineWidth = 2;
+		}
+	
 		this.context.beginPath();
-		this.context.moveTo(edge.a.position.x + Math.cos(delta) * edge.a.radius, edge.a.position.y + Math.sin(delta) * edge.a.radius);
-		this.context.lineTo(edge.b.position.x + Math.cos(delta) * edge.b.radius, edge.b.position.y + Math.sin(delta) * edge.b.radius);
+		this.context.moveTo(start.x, start.y);
+		this.context.lineTo(stop.x, stop.y);
 		this.context.closePath();
 		this.context.stroke();
 	}
 
 	this.context.strokeStyle = 'black';
+	this.context.lineWidth = 2;
 
 	for(var i = 0; i < this.nodes.length; i++) {
 		var node = this.nodes[i];
@@ -226,7 +261,7 @@ Graph.prototype.paint = function(callback) {
 
 Graph.prototype.hit = function(e) {
 	for(var i = this.nodes.length - 1; i >= 0; i--)
-		if (Math.pow(e.clientX - this.nodes[i].position.x, 2) + Math.pow(e.clientY - this.nodes[i].position.y, 2) < Math.pow(this.nodes[i].radius, 2)) {
+		if (Math.pow((0-this.canvas.offsetLeft) + e.clientX - this.nodes[i].position.x, 2) + Math.pow((0-this.canvas.offsetTop) + e.clientY - this.nodes[i].position.y, 2) < Math.pow(this.nodes[i].radius, 2)) {
 			var node = this.nodes[i];
 			this.nodes.splice(this.nodes.length - 1, 0, this.nodes.splice(i, 1)[0]);
 			return {
@@ -270,5 +305,14 @@ Graph.prototype.dragging = function(e, drag) {
 			drag.node.position.y = position.y;
 		}
 		this.paint();
+	}
+}
+
+Graph.prototype.selectColor = function(color) {
+	if (this.neutralColor == color) {
+		console.log('Tried to select neutral color!');
+	}
+	else {
+		this.selectedColor = color;
 	}
 }
