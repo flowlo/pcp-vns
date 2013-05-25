@@ -18,8 +18,11 @@ canvas {
 		<script type="text/javascript">
 function boot() {
 	var graph = new Graph(true);
-	graph.addNodeRandom(40);
-	graph.addEdgeRandom(70);
+	graph.addCluster({'x': 10, 'y': 10}, {'x': 30, 'y': 30});
+	graph.addCluster({'x': 60, 'y': 60}, {'x': 30, 'y': 30});
+	graph.addNodeRandom(5, 0);
+	graph.addNodeRandom(5, 1);
+	graph.addEdgeRandom(10);
 }
 		</script>
 	</head>

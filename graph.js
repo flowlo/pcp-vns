@@ -1,6 +1,7 @@
 Graph = function(fullscreen) {
 	this.nodes = [];
 	this.edges = [];
+	this.clusters = [];
 	this.state = undefined;
 	this.mobile = 'ontouchstart' in window;
 	this.drag = this.mobile ? [] : undefined;
@@ -41,27 +42,12 @@ Graph = function(fullscreen) {
 			delete that.drag[e.changedTouches[i].identifier];
 	};
 	this.canvas.onmousemove = function(e) {
-		if (that.drag) {
-			that.drag.node.position = {
-				'x': e.clientX - that.drag.offset.x,
-				'y': e.clientY - that.drag.offset.y
-			};
-			that.paint();
-		}
+		that.dragging(e, that.drag);
 	};
 	this.canvas.ontouchmove = function(e) {
 		e.preventDefault();
-		for (var i = 0; i < e.changedTouches.length; i++) {
-			var touch = e.changedTouches[i];
-			var drag = that.drag[touch.identifier];
-			if (drag) {
-				drag.node.position = {
-					'x': touch.clientX - drag.offset.x,
-					'y': touch.clientY - drag.offset.y
-				};
-				that.paint();
-			}
-		}
+		for (var i = 0; i < e.changedTouches.length; i++)
+			that.dragging(e.changedTouches[i], that.drag[e.changedTouches[i].identifier]);
 	};
 	
 	window.onresize = function() {
@@ -75,6 +61,12 @@ Graph = function(fullscreen) {
 			that.nodes[i].position.y *= d.y;
 			that.nodes[i].radius = Math.min(window.innerWidth, window.innerHeight) / 30;
 		}
+		for (var i = 0; i < that.clusters.length; i++) {
+			that.clusters[i].position.x *= d.x;
+			that.clusters[i].position.y *= d.y;
+			that.clusters[i].size.x *= d.x;
+			that.clusters[i].size.y *= d.y;
+		}
 
 		that.canvas.height = window.innerHeight;
 		that.canvas.width = window.innerWidth;
@@ -86,13 +78,15 @@ Graph.prototype.addNode = function(color, position, radius) {
 	this.nodes.push({
 		'color': color,
 		'position': position,
-		'radius': radius
+		'radius': radius,
+		'cluster': 0
 	});
 	this.paint();
 };
 
-Graph.prototype.addNodeRandom = function(count) {
+Graph.prototype.addNodeRandom = function(count, cluster) {
 	count = count || 1;
+	cluster = this.clusters[cluster] || this.clusters[0];
 	
 	var radius = Math.min(window.innerWidth, window.innerHeight) / 30;
 	var border = radius * 2;
@@ -101,10 +95,11 @@ Graph.prototype.addNodeRandom = function(count) {
 		this.nodes.push({
 			'color': '#' + ('000000' + (~~(Math.random() * 0xffffff)).toString(16)).slice(-6),
 			'position': {
-				'x': border + ~~(Math.random() * (window.innerWidth - border * 2)),
-				'y': border + ~~(Math.random() * (window.innerHeight - border * 2))
+				'x': cluster.position.x + border + ~~(Math.random() * (cluster.size.x - border * 2)),
+				'y': cluster.position.y + border + ~~(Math.random() * (cluster.size.y - border * 2))
 			},
-			'radius': radius
+			'radius': radius,
+			'cluster': cluster
 		});
 
 	this.paint();
@@ -128,6 +123,14 @@ Graph.prototype.addEdgeRandom = function(count) {
 		});
 	
 	this.paint();
+}
+
+Graph.prototype.addCluster = function(position, size) {
+	position.x = (position.x / 100) * window.innerWidth;
+	position.y = (position.y / 100) * window.innerHeight;
+	size.x = (size.x / 100) * window.innerWidth;
+	size.y = (size.y / 100) * window.innerHeight;
+	this.clusters.push({'position': position, 'size': size});
 }
 
 Graph.prototype.paint = function(callback) {
@@ -155,9 +158,20 @@ Graph.prototype.paint = function(callback) {
 		this.context.stroke();
 		this.context.fill();
 	}
-	
+
+	this.context.strokeStyle = 'black';
+	this.strokeWidth = 3;
+
+	for (var i = 0; i < this.clusters.length; i++) {
+		var cluster = this.clusters[i];
+		this.context.beginPath();
+		this.context.rect(cluster.position.x, cluster.position.y, cluster.size.x, cluster.size.y);
+		this.context.closePath();
+		this.context.stroke();
+	}
+
 	this.context.restore();
-		
+
 	if (callback)
 		callback();
 };
@@ -175,3 +189,35 @@ Graph.prototype.hit = function(e) {
 
 	return undefined;
 };
+
+Graph.prototype.dragging = function(e, drag) {
+	if (!drag)
+		return;
+
+	var cluster = drag.node.cluster;
+	var position = {
+		'x': e.clientX - drag.offset.x,
+		'y': e.clientY - drag.offset.y
+	};
+
+	var ok = {
+		'x':
+				(position.x - drag.node.radius > cluster.position.x)
+			&&
+				(position.x + drag.node.radius < cluster.position.x + cluster.size.x),
+		'y':
+				(position.y - drag.node.radius > cluster.position.y)
+			&&
+				(position.y + drag.node.radius < cluster.position.y + cluster.size.y)
+	};
+
+	if (ok.x || ok.y) {
+		if (ok.x) {
+			drag.node.position.x = position.x;
+		}
+		if (ok.y) {
+			drag.node.position.y = position.y;
+		}
+		this.paint();
+	}
+}
