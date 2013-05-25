@@ -106,22 +106,58 @@ Graph.prototype.addNodeRandom = function(count, cluster) {
 }
 
 Graph.prototype.addEdge = function(a, b) {
+	if (b < a) {
+		var tmp = a;
+		a = b;
+		b = a;
+	}
+
 	this.edges.push({
-		'a': a,
-		'b': b
+		'a': this.nodes[a],
+		'b': this.nodes[b]
 	});
 	this.paint();
 };
 
 Graph.prototype.addEdgeRandom = function(count) {
 	count = count || 1;
+
+	for (var i = 0; i < count; i++) {
+		var a = ~~(Math.random() * this.nodes.length);
+		var b = ~~(Math.random() * this.nodes.length);
+
+		while (b == a)
+			b = ~~(Math.random() * this.nodes.length);
+
+		if (b < a) {
+			var tmp = a;
+			a = b;
+			b = a;
+		}
+
+		a = this.nodes[a];
+		b = this.nodes[b];
+
+		var ok = true;
+		for (var j = 0; j < this.edges.length; j++) {
+			var edge = this.edges[j];
+			if (edge.a == a && edge.b == b) {
+				ok = false;
+				break;
+			}
+		}
+
+		if (!ok) {
+			i--;
+			continue;
+		}
 	
-	for (var i = 0; i < count; i++)
 		this.edges.push({
-			'a': this.nodes[~~(Math.random() * this.nodes.length)],
-			'b': this.nodes[~~(Math.random() * this.nodes.length)]
+			'a': a,
+			'b': b
 		});
-	
+	}
+
 	this.paint();
 }
 
@@ -136,8 +172,8 @@ Graph.prototype.addCluster = function(position, size) {
 Graph.prototype.paint = function(callback) {
 	this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-	this.context.strokeStyle = 'rgba(0, 0, 0, 0.75)';
-	this.context.save();
+	this.context.strokeStyle = 'rgba(0, 0, 0, 0.45)';
+	this.context.lineWidth = 2;
 
 	for(var i = 0; i < this.edges.length; i++) {
 		var edge = this.edges[i];
@@ -150,7 +186,6 @@ Graph.prototype.paint = function(callback) {
 	}
 
 	this.context.strokeStyle = 'black';
-	this.context.lineWidth = 3;
 
 	for(var i = 0; i < this.nodes.length; i++) {
 		var node = this.nodes[i];
@@ -163,7 +198,6 @@ Graph.prototype.paint = function(callback) {
 	}
 
 	this.context.strokeStyle = '#333';
-	this.context.lineWidth = 2;
 
 	for (var i = 0; i < this.clusters.length; i++) {
 		var cluster = this.clusters[i];
@@ -181,8 +215,6 @@ Graph.prototype.paint = function(callback) {
 		this.context.closePath();
 		this.context.stroke();
 	}
-
-	this.context.restore();
 
 	if (callback)
 		callback();
