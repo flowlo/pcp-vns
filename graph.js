@@ -77,13 +77,15 @@ Graph = function(fullscreen) {
 	window.onresize = function() {
 		var d = {
 			'x': window.innerWidth / that.canvas.width,
-			'y': window.innerHeight * this.heightFactor / that.canvas.height
+			'y': (window.innerHeight * that.heightFactor) / that.canvas.height
 		};
-		
+		that.canvas.height = window.innerHeight * that.heightFactor;
+		that.canvas.width = window.innerWidth;
+
 		for(var i = 0; i < that.nodes.length; i++) {
 			that.nodes[i].position.x *= d.x;
 			that.nodes[i].position.y *= d.y;
-			that.nodes[i].radius = Math.min(window.innerWidth, window.innerHeight) / 30;
+			that.nodes[i].radius = Math.min(that.canvas.width, that.canvas.height) / 30;
 		}
 		for (var i = 0; i < that.clusters.length; i++) {
 			that.clusters[i].position.x *= d.x;
@@ -91,9 +93,6 @@ Graph = function(fullscreen) {
 			that.clusters[i].size.x *= d.x;
 			that.clusters[i].size.y *= d.y;
 		}
-
-		that.canvas.height = window.innerHeight;
-		that.canvas.width = window.innerWidth;
 		that.paint();
 	};
 };
