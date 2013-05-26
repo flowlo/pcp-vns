@@ -64,6 +64,9 @@ ul li span {
 ul li:hover span {
 	opacity: 1;
 }
+.borderless {
+	border-color: transparent;
+}
 		</style>
 		<script src="graph.js" type="text/javascript"></script>
 		<script type="text/javascript">
@@ -85,7 +88,7 @@ function boot() {
 	for (var i = 1; i < ul.children.length; i++) {
 		console.log(ul.children[i]);
 		ul.children[i].onclick = function() {
-			graph.selectColor(this.style.backgroundColor);
+			graph.selectColor(this.style);
 		};
 
 		// This simulates a hover effect on desktop and works around a
@@ -93,17 +96,17 @@ function boot() {
 		ul.children[i].ontouchstart = ul.children[i].ontouchend = function(e) {
 			e.preventDefault();
 			graph.selectColor(this.style.backgroundColor);
-			this.style.borderColor = 'white';
+			this.className = 'borderless';
 			var that = this;
 			window.setTimeout(function() {
-				that.style.borderColor = 'rgb(150, 150, 150)'
+				that.className = '';
 			}, 500);
 		};
 		ul.children[i].onmouseover = function() {
-			this.style.borderColor = 'white';
+			this.className = 'borderless';
 		};
 		ul.children[i].onmouseout = function() {
-			this.style.borderColor = 'rgb(150, 150, 150)'
+			this.className = '';
 		};
 	}
 }
@@ -112,9 +115,10 @@ function boot() {
 	<body onload="boot();">
 		<ul>
 			<li></li>
-			<li style="background-color: yellow"></li>
-			<li style="background-color: green"></li>
-			<li style="background-color: blue"></li>
+			<li style="background-color: #33B5E5; border-color: #0099CC"></li>
+			<li style="background-color: #AA66CC; border-color: #9933CC"></li>
+			<li style="background-color: #99CC00; border-color: #669900"></li>
+			<li style="background-color: #FFBB33; border-color: #FF8800"></li>
 		</ul>
 		<ul>
 			<li>

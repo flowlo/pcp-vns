@@ -5,9 +5,9 @@ Graph = function(fullscreen) {
 	this.state = undefined;
 	this.mobile = 'ontouchstart' in window;
 	this.drag = this.mobile ? [] : undefined;
-	this.selectedColor = undefined;
+	this.selection = undefined;
 	this.conflicts = 0;
-	this.neutralColor = 'rgb(150, 150, 150)';
+	this.neutralColor = {'background': 'rgb(150, 150, 150)', 'border': 'rgba(100, 100, 100, 0.4)'};
 	this.blink = undefined;
 	this.conflictsVisible = false;
 	this.time = new Date();
@@ -27,7 +27,7 @@ Graph = function(fullscreen) {
 		return false;
 	};
 	this.canvas.onmousedown = function(e) {
-		if (that.selectedColor)
+		if (that.selection)
 			return;
 
 		that.drag = that.hit(e);
@@ -46,13 +46,13 @@ Graph = function(fullscreen) {
 			if (hit) {
 				that.drag[touch.identifier] = hit;
 
-				if (that.selectedColor) {
+				if (that.selection) {
 					for (var j = 0; j < that.nodes.length; j++) {
 						if (that.nodes[j].cluster == hit.node.cluster)
 							that.nodes[j].color = that.neutralColor;
 					}
-					hit.node.color = that.selectedColor;
-					that.selectedColor = undefined;
+					hit.node.color = that.selection;
+					that.selection = undefined;
 					that.paint();
 					that.check();
 				}
@@ -81,13 +81,13 @@ Graph = function(fullscreen) {
 	};
 	this.canvas.onclick = function(e) {
 		var hit = that.hit(e);
-		if (hit && that.selectedColor) {
+		if (hit && that.selection) {
 			for (var i = 0; i < that.nodes.length; i++) {
 				if (that.nodes[i].cluster == hit.node.cluster)
 					that.nodes[i].color = that.neutralColor;
 			}
-			hit.node.color = that.selectedColor;
-			that.selectedColor = undefined;
+			hit.node.color = that.selection;
+			that.selection = undefined;
 			that.paint();
 			that.check();
 		}
@@ -224,17 +224,17 @@ Graph.prototype.paint = function(callback) {
 		var start = {'x': edge.a.position.x + Math.cos(delta) * edge.a.radius, 'y': edge.a.position.y + Math.sin(delta) * edge.a.radius};
 		var stop = {'x': edge.b.position.x + Math.cos(delta) * edge.b.radius, 'y': edge.b.position.y + Math.sin(delta) * edge.b.radius};
 
-		if (edge.a.color == edge.b.color && edge.a.color != this.neutralColor) {
+		if (edge.a.color.background == edge.b.color.background && edge.a.color.background != this.neutralColor.background) {
 			this.conflicts++;
-			this.context.strokeStyle = 'rgba(255, 50, 50, 0.9)';
+			this.context.strokeStyle = '#FF4444';
 			this.context.lineWidth = 4;
 		}
-		else if (edge.a.color != this.neutralColor || edge.b.color != this.neutralColor) {
+		else if (edge.a.color.background != this.neutralColor.background || edge.b.color.background != this.neutralColor.background) {
 			this.context.lineWidth = 3;
 
 			var gradient = this.context.createLinearGradient(start.x, start.y, stop.x, stop.y);
-			gradient.addColorStop(0, edge.a.color);
-			gradient.addColorStop(1, edge.b.color);
+			gradient.addColorStop(0, edge.a.color.background);
+			gradient.addColorStop(1, edge.b.color.background);
 			this.context.strokeStyle = gradient;
 		}
 		else {
@@ -260,10 +260,11 @@ Graph.prototype.paint = function(callback) {
 	for(var i = 0; i < this.nodes.length; i++) {
 		var node = this.nodes[i];
 
-		if (node.color != this.neutralColor)
+		if (node.color.background != this.neutralColor.background)
 			this.colored++;
 
-		this.context.fillStyle = node.color;
+		this.context.fillStyle = node.color.background;
+		this.context.strokeStyle = node.color.border;
 		this.context.beginPath();
 		this.context.arc(node.position.x, node.position.y, node.radius, 0, 2 * Math.PI, false);
 		this.context.closePath();
@@ -343,12 +344,12 @@ Graph.prototype.dragging = function(e, drag) {
 	}
 }
 
-Graph.prototype.selectColor = function(color) {
-	if (this.neutralColor == color) {
+Graph.prototype.selectColor = function(style) {
+	if (this.neutralColor.background == style.backgroundColor) {
 		console.log('Tried to select neutral color!');
 	}
 	else {
-		this.selectedColor = color;
+		this.selection = {'background': style.backgroundColor, 'border': style.borderColor};
 	}
 }
 
@@ -364,9 +365,9 @@ Graph.prototype.check = function() {
 		var used = [], colors = -1;
 
 		for (var i = 0; i < this.nodes.length; i++)
-			if (!used[this.nodes[i].color]) {
+			if (!used[this.nodes[i].color.background]) {
 				colors++;
-				used[this.nodes[i].color] = true;
+				used[this.nodes[i].color.background] = true;
 			}
 
 		var time = (new Date() - this.time) / 1000;
