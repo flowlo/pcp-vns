@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>pcp-vns standings</title>
+		<style type="text/css">
+* {
+	font-family: DINOT;
+}
+th {
+	font-weight: normal;
+}
+td {
+	color: #333;
+	text-align: center;
+	border-bottom: 1px solid #333;
+}
+table {
+	height: 100%;
+	width: 100%;
+}
+		</style>
+		<script type="text/javascript">
+function boot() {
+	var tbody = document.getElementsByTagName('tbody')[0];
+	
+	var standings = JSON.parse(localStorage.standings);
+	
+	for (var item in standings) {
+		var tr = document.createElement('tr');
+		var td = document.createElement('td');
+		td.innerHTML = standings[item].user;
+		tr.appendChild(td);
+		td = document.createElement('td');
+		td.innerHTML = standings[item].colors;
+		tr.appendChild(td);
+		td = document.createElement('td');
+		td.innerHTML = standings[item].time;
+		tr.appendChild(td);
+		td = document.createElement('td');
+		var img = document.createElement('img');
+		img.src = standings[item].image;
+		img.style.width = '100%';
+		td.appendChild(img);
+		tr.appendChild(td);
+		tbody.appendChild(tr);
+	}
+}
+		</script>
+	</head>
+	<body onload="boot();">
+		<table>
+			<thead>
+				<tr>
+					<th width="20%">Name</th>
+					<th width="15%">Colors</th>
+					<th width="15%">Time</th>
+					<th width="50%">Image</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</body>
+</html>
