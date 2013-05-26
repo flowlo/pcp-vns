@@ -8,7 +8,6 @@ Graph = function(fullscreen) {
 	this.selectedColor = undefined;
 	this.conflicts = 0;
 	this.neutralColor = 'rgb(150, 150, 150)';
-	this.heightFactor = 0.95;
 	this.blink = undefined;
 	this.conflictsVisible = false;
 	this.time = new Date();
@@ -16,7 +15,7 @@ Graph = function(fullscreen) {
 	this.canvas = document.getElementsByTagName('canvas')[0];
 
 	if (fullscreen) {
-		this.canvas.height = window.innerHeight * this.heightFactor;
+		this.canvas.height = window.innerHeight - 72;
 		this.canvas.width = window.innerWidth;
 	}
 	
@@ -93,14 +92,17 @@ Graph = function(fullscreen) {
 			that.check();
 		}
 	};
+	window.setInterval(function() {
+		document.getElementById('time').innerHTML = Math.round((new Date() - that.time) / 1000);
+	}, 1000);
 	
-/*	window.onresize = function() {
+	window.onresize = function() {
 		var d = {
 			'x': window.innerWidth / that.canvas.width,
-			'y': (window.innerHeight * that.heightFactor) / that.canvas.height
+			'y': (window.innerHeight - 72) / that.canvas.height
 		};
-		//that.canvas.height = window.innerHeight * that.heightFactor;
-		//that.canvas.width = window.innerWidth;
+		that.canvas.height = window.innerHeight - 72;
+		that.canvas.width = window.innerWidth;
 
 		for(var i = 0; i < that.nodes.length; i++) {
 			that.nodes[i].position.x *= d.x;
@@ -114,7 +116,7 @@ Graph = function(fullscreen) {
 			that.clusters[i].size.y *= d.y;
 		}
 		that.paint();
-	};*/
+	};
 };
 
 Graph.prototype.addNode = function(color, position, radius) {
@@ -224,15 +226,7 @@ Graph.prototype.paint = function(callback) {
 
 		if (edge.a.color == edge.b.color && edge.a.color != this.neutralColor) {
 			this.conflicts++;
-			if (!this.blink) {
-				this.blink = window.setInterval('console.log("a"); graph.paint()', 500);
-			}
-
-			if (this.conflictsVisible = !this.conflictsVisible)
-				this.context.strokeStyle = 'rgba(255, 50, 50, 0.9)';
-			else
-				continue;
-
+			this.context.strokeStyle = 'rgba(255, 50, 50, 0.9)';
 			this.context.lineWidth = 4;
 		}
 		else if (edge.a.color != this.neutralColor || edge.b.color != this.neutralColor) {
@@ -359,7 +353,14 @@ Graph.prototype.selectColor = function(color) {
 }
 
 Graph.prototype.check = function() {
+	if (this.conflicts > 0) {
+		document.getElementById('state').src = 'conflict.png';
+	}
+	else if (this.colored < this.clusters.length) {
+		document.getElementById('state').src = 'invalid.png';
+	}
 	if (this.conflicts == 0 && this.colored == this.clusters.length) {
+		document.getElementById('state').src = 'correct.png';
 		var used = [], colors = -1;
 
 		for (var i = 0; i < this.nodes.length; i++)
@@ -374,5 +375,14 @@ Graph.prototype.check = function() {
 		var score = localStorage.score ? JSON.parse(localStorage.score) : [];
 		score.push({'user': user, 'colors': colors, 'time': time, 'image': this.canvas.toDataURL('image/png')});
 		localStorage.score = JSON.stringify(score);
+	}
+}
+
+Graph.prototype.alertState = function() {
+	if (this.conflicts > 0) {
+		alert('Die Färbung des Graphen enthält ' + (this.conflicts > 1 ? this.conflicts + 'Konflikte' : 'einen Konflikt') + '!');
+	}
+	else if (this.colored < this.clusters.length) {
+		alert('Es ' + (this.colored > 0 ? ( this.colored == 1 ? 'ist nur eine' : 'sind nur ' + this.colored) : 'ist keine') +  ' von ' + this.clusters.length + ' Partitionen eingefärbt!');
 	}
 }
