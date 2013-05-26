@@ -176,6 +176,8 @@ Graph.prototype.addEdgeRandom = function(count) {
 			a = b;
 			b = tmp;
 		}
+		
+		var x = a, y = b;
 
 		a = this.nodes[a];
 		b = this.nodes[b];
@@ -193,6 +195,8 @@ Graph.prototype.addEdgeRandom = function(count) {
 			i--;
 			continue;
 		}
+
+		console.log({'a': x, 'b': y});
 
 		this.edges.push({
 			'a': a,

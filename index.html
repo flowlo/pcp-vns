@@ -69,15 +69,57 @@ ul li:hover span {
 var graph;
 function boot() {
 	graph = new Graph(true);
-	graph.addCluster({'x': 5, 'y': 5}, {'x': 40, 'y': 40});
-	graph.addCluster({'x': 55, 'y': 55}, {'x': 40, 'y': 40});
-	graph.addCluster({'x': 55, 'y': 5}, {'x': 40, 'y': 40});
-	graph.addCluster({'x': 5, 'y': 55}, {'x': 40, 'y': 40});
-	graph.addNodeRandom(3, 0);
-	graph.addNodeRandom(3, 1);
-	graph.addNodeRandom(3, 2);
-	graph.addNodeRandom(3, 3);
-	graph.addEdgeRandom(20);
+
+	if (window.location.toString().indexOf('#easy') > 0) {
+		graph.addCluster({'x': 5, 'y': 5}, {'x': 40, 'y': 40});
+		graph.addCluster({'x': 55, 'y': 5}, {'x': 40, 'y': 40});
+		graph.addCluster({'x': 35, 'y': 55}, {'x': 40, 'y': 40});
+		var edges = [{a: 4, b: 6}, {a: 1, b: 6}, {a: 4, b: 5}, {a: 0, b: 8}, {a: 0, b: 2}, {a: 0, b: 5}, {a: 3, b: 6}, {a: 4, b: 7}, {a: 0, b: 1}, {a: 6, b: 8}, {a: 1, b: 4}, {a: 1, b: 7}, {a: 3, b: 8}, {a: 2, b: 8}, {a: 2, b: 6}, {a: 0, b: 3}, {a: 2, b: 3}, {a: 2, b: 7}, {a: 3, b: 7}, {a: 0, b: 7}];
+		graph.addNodeRandom(3, 0);
+		graph.addNodeRandom(3, 1);
+		graph.addNodeRandom(3, 2);
+		for (var i = 0; i < edges.length; i++) {
+			graph.addEdge(edges[i].a, edges[i].b);
+		}
+	}
+	else if (window.location.toString().indexOf('#medium') > 0) {
+		graph.addCluster({'x': 5, 'y': 5}, {'x': 40, 'y': 40});
+		graph.addCluster({'x': 55, 'y': 55}, {'x': 40, 'y': 40});
+		graph.addCluster({'x': 55, 'y': 5}, {'x': 40, 'y': 40});
+		graph.addCluster({'x': 5, 'y': 55}, {'x': 40, 'y': 40});
+		var edges = [{a: 3, b: 6}, {a: 0, b: 4}, {a: 10, b: 11}, {a: 0, b: 10}, {a: 2, b: 11}, {a: 5, b: 11}, {a: 0, b: 2}, {a: 4, b: 11}, {a: 5, b: 8}, {a: 5, b: 10}, {a: 3, b: 8}, {a: 2, b: 7}, {a: 8, b: 11}, {a: 0, b: 3}, {a: 8, b: 10}, {a: 0, b: 8}, {a: 1, b: 5}, {a: 9, b: 10}, {a: 5, b: 6}, {a: 1, b: 7}, {a: 6, b: 11}, {a: 1, b: 8}, {a: 7, b: 8}, {a: 4, b: 7}, {a: 0, b: 7}, {a: 4, b: 10}, {a: 0, b: 6}, {a: 0, b: 9}, {a: 3, b: 5}, {a: 1, b: 10}, {a: 2, b: 5}, {a: 2, b: 10}, {a: 2, b: 6}, {a: 3, b: 10}, {a: 3, b: 11}, {a: 1, b: 9}, {a: 6, b: 9}, {a: 3, b: 4}, {a: 8, b: 9}, {a: 6, b: 8}];
+		graph.addNodeRandom(3, 0);
+		graph.addNodeRandom(3, 1);
+		graph.addNodeRandom(3, 2);
+		graph.addNodeRandom(3, 3);
+		for (var i = 0; i < edges.length; i++) {
+			graph.addEdge(edges[i].a, edges[i].b);
+		}
+	}
+	else if (window.location.toString().indexOf('#hard') > 0) {
+		graph.addCluster({'x': 5, 'y': 5}, {'x': 40, 'y': 25});
+		graph.addCluster({'x': 55, 'y': 70}, {'x': 40, 'y': 25});
+		graph.addCluster({'x': 55, 'y': 5}, {'x': 40, 'y': 25});
+		graph.addCluster({'x': 5, 'y': 70}, {'x': 40, 'y': 25});
+		graph.addCluster({'x': 30, 'y': 35}, {'x': 40, 'y': 30});
+		graph.addNodeRandom(4, 0);
+		graph.addNodeRandom(4, 1);
+		graph.addNodeRandom(4, 2);
+		graph.addNodeRandom(4, 3);
+		graph.addNodeRandom(3, 4);
+		graph.addEdgeRandom(140);
+	}
+	else {
+		graph.addCluster({'x': 5, 'y': 5}, {'x': 40, 'y': 40});
+		graph.addCluster({'x': 55, 'y': 55}, {'x': 40, 'y': 40});
+		graph.addCluster({'x': 55, 'y': 5}, {'x': 40, 'y': 40});
+		graph.addCluster({'x': 5, 'y': 55}, {'x': 40, 'y': 40});
+		graph.addNodeRandom(3, 0);
+		graph.addNodeRandom(3, 1);
+		graph.addNodeRandom(3, 2);
+		graph.addNodeRandom(3, 3);
+		graph.addEdgeRandom(20);
+	}
 
 	var ul = document.getElementsByTagName('ul')[0];
 	for (var i = 0; i < ul.children.length; i++) {
