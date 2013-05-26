@@ -34,13 +34,29 @@ Graph = function(fullscreen) {
 	};
 	this.canvas.ontouchstart = function(e) {
 		e.preventDefault();
+		if (!that.drag)
+			return;
+
 		for (var i = 0; i < e.changedTouches.length; i++) {
 			var touch = e.changedTouches[i];
 			var hit = that.hit(touch);
 
 			if (hit) {
 				that.drag[touch.identifier] = hit;
-				that.repaint();
+
+				if (that.selectedColor) {
+					for (var j = 0; j < that.nodes.length; j++) {
+						if (that.nodes[j].cluster == hit.node.cluster)
+							that.nodes[j].color = that.neutralColor;
+					}
+					hit.node.color = that.selectedColor;
+					that.selectedColor = undefined;
+					that.paint();
+					that.check();
+				}
+				else {
+					that.paint();
+				}
 			}
 		}
 	};
@@ -49,8 +65,9 @@ Graph = function(fullscreen) {
 	};
 	this.canvas.ontouchend = function(e) {
 		e.preventDefault();
-		for (var i = 0; i < e.changedTouches.length; i++)
-			delete that.drag[e.changedTouches[i].identifier];
+		if (e.changedTouches && that.drag)
+			for (var i = 0; i < e.changedTouches.length; i++)
+				delete that.drag[e.changedTouches[i].identifier];
 	};
 	this.canvas.onmousemove = function(e) {
 		that.dragging(e, that.drag);
@@ -74,13 +91,13 @@ Graph = function(fullscreen) {
 		}
 	};
 	
-	window.onresize = function() {
+/*	window.onresize = function() {
 		var d = {
 			'x': window.innerWidth / that.canvas.width,
 			'y': (window.innerHeight * that.heightFactor) / that.canvas.height
 		};
-		that.canvas.height = window.innerHeight * that.heightFactor;
-		that.canvas.width = window.innerWidth;
+		//that.canvas.height = window.innerHeight * that.heightFactor;
+		//that.canvas.width = window.innerWidth;
 
 		for(var i = 0; i < that.nodes.length; i++) {
 			that.nodes[i].position.x *= d.x;
@@ -94,7 +111,7 @@ Graph = function(fullscreen) {
 			that.clusters[i].size.y *= d.y;
 		}
 		that.paint();
-	};
+	};*/
 };
 
 Graph.prototype.addNode = function(color, position, radius) {

@@ -13,8 +13,8 @@ html, body {
 canvas {
 	position: absolute;
 	top: 5%;
-	bottom: 0%;
 	width: 100%;
+	height: 95%:
 	left: 0%;
 	cursor: crosshair;
 }
@@ -42,10 +42,7 @@ ul li {
 	box-shadow: 2px 2px 5px #888888;
 	border-radius: 15px 15px 15px 15px;
 }
-ul li:hover {
-	padding: 10px;
-	margin: 0px;
-}
+
 ul li:last-child {
 	border-bottom-right-radius: 15px;
 }
@@ -67,8 +64,35 @@ function boot() {
 
 	var ul = document.getElementsByTagName('ul')[0];
 	ul.children[0].onclick = function() { graph.selectColor(undefined); }
-	for (var i = 1; i < ul.children.length; i++)
-		ul.children[i].onclick = function() { graph.selectColor(this.style.backgroundColor); }
+	for (var i = 1; i < ul.children.length; i++) {
+		ul.children[i].onclick = function() {
+			graph.selectColor(this.style.backgroundColor);
+		};
+
+		// This simulates a hover effect on desktop and works around a
+		// crippled implementation on Android ...
+		ul.children[i].ontouchstart = ul.children[i].ontouchend = function(e) {
+			e.preventDefault();
+			graph.selectColor(this.style.backgroundColor);
+
+			this.style.margin = '0px';
+			this.style.padding = '10px';
+
+			var that = this;
+			window.setTimeout(function() {
+				that.style.margin = '5px';
+				that.style.padding = '5px';
+			}, 500);
+		};
+		ul.children[i].onmouseover = function() {
+			this.style.margin = '0px';
+			this.style.padding = '10px';
+		};
+		ul.children[i].onmouseout = function() {
+			this.style.margin = '5px';
+			this.style.padding = '5px';
+		};
+	}
 }
 		</script>
 	</head>
