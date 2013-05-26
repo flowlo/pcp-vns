@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>pcp-vns standings</title>
+		<title>pcp-vns scoreboard</title>
 		<style type="text/css">
 * {
 	font-family: DINOT;
@@ -22,24 +22,27 @@ table {
 		</style>
 		<script type="text/javascript">
 function boot() {
+	if (!localStorage.score)
+		window.location.href = window.location.href.replace('score.html', 'index.html');
+
 	var tbody = document.getElementsByTagName('tbody')[0];
 	
-	var standings = JSON.parse(localStorage.standings);
+	var score = JSON.parse(localStorage.score);
 	
-	for (var item in standings) {
+	for (var item in score) {
 		var tr = document.createElement('tr');
 		var td = document.createElement('td');
-		td.innerHTML = standings[item].user;
+		td.innerHTML = score[item].user;
 		tr.appendChild(td);
 		td = document.createElement('td');
-		td.innerHTML = standings[item].colors;
+		td.innerHTML = score[item].colors;
 		tr.appendChild(td);
 		td = document.createElement('td');
-		td.innerHTML = standings[item].time;
+		td.innerHTML = score[item].time;
 		tr.appendChild(td);
 		td = document.createElement('td');
 		var img = document.createElement('img');
-		img.src = standings[item].image;
+		img.src = score[item].image;
 		img.style.width = '100%';
 		td.appendChild(img);
 		tr.appendChild(td);

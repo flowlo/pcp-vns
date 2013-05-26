@@ -368,10 +368,10 @@ Graph.prototype.check = function() {
 			}
 
 		var time = (new Date() - this.time) / 1000;
-		var user = prompt('You solved this instance using ' + colors + ' color' + (colors > 1 ? 's' : '') + ' in ' + this.time + ' seconds, that\'s great!\n\nPlease give us your name for the standings.');
+		var user = prompt('You solved this instance using ' + colors + ' color' + (colors > 1 ? 's' : '') + ' in ' + this.time + ' seconds, that\'s great!\n\nPlease give us your name for the scoreboard.');
 
-		var standings = localStorage.standings ? JSON.parse(localStorage.standings) : [];
-		standings.push({'user': user, 'colors': colors, 'time': time, 'image': this.canvas.toDataURL('image/png')});
-		localStorage.standings = JSON.stringify(standings);
+		var score = localStorage.score ? JSON.parse(localStorage.score) : [];
+		score.push({'user': user, 'colors': colors, 'time': time, 'image': this.canvas.toDataURL('image/png')});
+		localStorage.score = JSON.stringify(score);
 	}
 }
