@@ -8,7 +8,6 @@ Graph = function(fullscreen) {
 	this.selection = undefined;
 	this.conflicts = 0;
 	this.neutralColor = {'background': 'rgb(150, 150, 150)', 'border': 'rgba(100, 100, 100, 0.4)'};
-	this.blink = undefined;
 	this.conflictsVisible = false;
 	this.time = new Date();
 
@@ -121,7 +120,7 @@ Graph = function(fullscreen) {
 
 Graph.prototype.addNode = function(color, position, radius) {
 	this.nodes.push({
-		'color': that.neutralColor,
+		'color': this.neutralColor,
 		'position': position,
 		'radius': radius,
 		'cluster': 0
@@ -345,12 +344,12 @@ Graph.prototype.dragging = function(e, drag) {
 }
 
 Graph.prototype.selectColor = function(style) {
-	if (this.neutralColor.background == style.backgroundColor) {
-		console.log('Tried to select neutral color!');
+	if (this.selection) {
+		if (this.selection.background == style.backgroundColor && this.selection.border == style.borderColor)
+			this.selection = undefined;
 	}
-	else {
+	else
 		this.selection = {'background': style.backgroundColor, 'border': style.borderColor};
-	}
 }
 
 Graph.prototype.check = function() {
