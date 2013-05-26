@@ -11,6 +11,8 @@ Graph = function(fullscreen) {
 	this.heightFactor = 0.95;
 	this.blink = undefined;
 	this.conflictsVisible = false;
+	this.time = new Date();
+	this.user = undefined;
 
 	this.canvas = document.getElementsByTagName('canvas')[0];
 
@@ -358,6 +360,17 @@ Graph.prototype.selectColor = function(color) {
 }
 
 Graph.prototype.check = function() {
-	if (this.conflicts == 0 && this.colored == this.clusters.length)
-		alert('You solved this instance!');
+	if (this.conflicts == 0 && this.colored == this.clusters.length) {
+		var used = [], colors = -1;
+
+		for (var i = 0; i < this.nodes.length; i++)
+			if (!used[this.nodes[i].color]) {
+				colors++;
+				used[this.nodes[i].color] = true;
+			}
+
+		this.time = (new Date() - this.time) / 1000;
+
+		this.user = prompt('You solved this instance using ' + colors + ' color' + (colors > 1 ? 's' : '') + ' in ' + this.time + ' seconds, that\'s great!\n\nPlease give us your name for the standings.');
+	}
 }
