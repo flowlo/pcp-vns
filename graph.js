@@ -9,6 +9,8 @@ Graph = function(fullscreen) {
 	this.conflicts = 0;
 	this.neutralColor = 'rgb(150, 150, 150)';
 	this.heightFactor = 0.95;
+	this.blink = undefined;
+	this.conflictsVisible = false;
 
 	this.canvas = document.getElementsByTagName('canvas')[0];
 
@@ -220,9 +222,17 @@ Graph.prototype.paint = function(callback) {
 		var stop = {'x': edge.b.position.x + Math.cos(delta) * edge.b.radius, 'y': edge.b.position.y + Math.sin(delta) * edge.b.radius};
 
 		if (edge.a.color == edge.b.color && edge.a.color != this.neutralColor) {
-			this.context.strokeStyle = 'rgba(255, 50, 50, 0.9)';
-			this.context.lineWidth = 4;
 			this.conflicts++;
+			if (!this.blink) {
+				this.blink = window.setInterval('console.log("a"); graph.paint()', 500);
+			}
+
+			if (this.conflictsVisible = !this.conflictsVisible)
+				this.context.strokeStyle = 'rgba(255, 50, 50, 0.9)';
+			else
+				continue;
+
+			this.context.lineWidth = 4;
 		}
 		else if (edge.a.color != this.neutralColor || edge.b.color != this.neutralColor) {
 			this.context.lineWidth = 3;
@@ -242,6 +252,11 @@ Graph.prototype.paint = function(callback) {
 		this.context.lineTo(stop.x, stop.y);
 		this.context.closePath();
 		this.context.stroke();
+	}
+
+	if (this.conflicts == 0 && this.blink) {
+		window.clearTimeout(this.blink);
+		this.blink = undefined;
 	}
 
 	this.context.strokeStyle = 'black';
