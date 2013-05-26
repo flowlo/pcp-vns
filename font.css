@@ -1,0 +1,36 @@
+@font-face {
+	font-family: 'DINOT';
+	src: url('font/DINOT-Light.otf');
+	font-weight: 100;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'DINOT';
+	src: url('font/DINOT-LightItalic.otf');
+	font-weight: 100;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'DINOT';
+	src: url('font/DINOT-Regular.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'DINOT';
+	src: url('font/DINOT-RegularItalic.otf');
+	font-weight: normal;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'DINOT';
+	src: url('font/DINOT-Medium.otf');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'DINOT';
+	src: url('font/DINOT-MediumItalic.otf');
+	font-weight: bold;
+	font-style: italic;
+}
