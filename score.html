@@ -14,7 +14,7 @@ td {
 	border-bottom: 1px solid #333;
 }
 table {
-	height: 100%;
+	height: auto;
 	width: 100%;
 }
 		</style>
@@ -50,7 +50,10 @@ function boot() {
 		</script>
 	</head>
 	<body onload="boot();">
-		<table>
+		<a href="index.html"><img src="back.png" /></a>
+		<img src="delete.png" onclick="if (confirm('Delete all saved scores?')) delete localStorage.score" style="cursor: pointer"/>
+		<hr />
+		<table cellspacing="0">
 			<thead>
 				<tr>
 					<th width="20%">Name</th>
