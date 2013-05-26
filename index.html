@@ -80,24 +80,25 @@ function boot() {
 	graph.addEdgeRandom(20);
 
 	var ul = document.getElementsByTagName('ul')[0];
-	ul.children[0].onclick = function() { graph.selectColor(undefined); }
-	for (var i = 1; i < ul.children.length; i++) {
+	for (var i = 0; i < ul.children.length; i++) {
 		ul.children[i].onclick = function() {
 			graph.selectColor(this.style);
 		};
 
 		// This simulates a hover effect on desktop and works around a
 		// crippled implementation on Android ...
-		ul.children[i].ontouchstart = ul.children[i].ontouchend = function(e) {
+		ul.children[i].ontouchstart = function(e) {
 			e.preventDefault();
 			graph.selectColor(this.style);
 			this.style.width = this.style.height = '72px';
 			this.style.borderWidth = '0px';
+		};
+		ul.children[i].ontouchend = function(e) {
 			var that = this;
 			window.setTimeout(function() {
 				that.style.width = that.style.height = '64px';
 				that.style.borderWidth = '4px';
-			}, 500);
+			}, 700);
 		};
 		ul.children[i].onmouseover = function() {
 			this.style.width = this.style.height = '72px';
