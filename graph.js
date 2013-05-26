@@ -11,6 +11,7 @@ Graph = function(fullscreen) {
 	this.heightFactor = 0.95;
 	this.blink = undefined;
 	this.conflictsVisible = false;
+	this.time = new Date();
 
 	this.canvas = document.getElementsByTagName('canvas')[0];
 
@@ -368,7 +369,7 @@ Graph.prototype.check = function() {
 			}
 
 		var time = (new Date() - this.time) / 1000;
-		var user = prompt('You solved this instance using ' + colors + ' color' + (colors > 1 ? 's' : '') + ' in ' + this.time + ' seconds, that\'s great!\n\nPlease give us your name for the scoreboard.');
+		var user = prompt('You solved this instance using ' + colors + ' color' + (colors > 1 ? 's' : '') + ' in ' + time + ' seconds, that\'s great!\n\nPlease give us your name for the scoreboard.');
 
 		var score = localStorage.score ? JSON.parse(localStorage.score) : [];
 		score.push({'user': user, 'colors': colors, 'time': time, 'image': this.canvas.toDataURL('image/png')});
