@@ -1,0 +1,9 @@
+language: perl
+install: sudo apt-get install -qq -y xqilla libxml-xpath-perl
+script: validate
+notifications:
+  email:
+    recipients:
+      - lorenz.leutgeb@gmail.com
+    on_success: never
+    on_failure: change

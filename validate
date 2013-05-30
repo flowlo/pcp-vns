@@ -1,0 +1,17 @@
+#!/bin/bash
+
+errors=0
+
+for item in *.html ; do
+	curl -s -F uploaded_file=@$item -F output=soap12 http://validator.w3.org/check > /tmp/validation.xml
+	xqilla print.xq
+	if [ $(xpath -q -e /env:Envelope/env:Body/m:markupvalidationresponse/m:validity/text\(\) /tmp/validation.xml) != 'true' ] ; then
+		errors=$(expr $errors + 1)
+	fi
+
+	sleep 1
+done
+
+rm /tmp/validation.xml
+
+exit $errors
