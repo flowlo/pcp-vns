@@ -1,6 +1,6 @@
 language: perl
 install: sudo apt-get install -qq -y xqilla libxml-xpath-perl
-script: ./validate
+script: ./validate *.html
 notifications:
   email:
     recipients:
