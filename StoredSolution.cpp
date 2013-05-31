@@ -11,9 +11,16 @@ StoredSolution::StoredSolution(Solution& toStore) {
 	this->n = toStore.numParts;
 	this->colors = new int[n];
 	this->representatives = new int[n];
+	int normalize[n];
+	int maxColor = -1;
+	
+	fill(normalize, normalize + n, -1);
 	
 	for (int i = 0; i < n; i++) {
-		this->colors[i] = toStore.partition[i];
+		// Assign color "0" to first encountered color
+		if (normalize[toStore.partition[i]] == -1) 
+			normalize[toStore.partition[i]] = ++maxColor;
+		this->colors[i] = normalize[toStore.partition[i]];
 		this->representatives[i] = toStore.getOriginalId(i);
 	}
 }
