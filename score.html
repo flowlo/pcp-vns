@@ -11,11 +11,24 @@
 td {
 	color: #333;
 	text-align: center;
+	padding: 0;
+	margin: 0;
 	border-bottom: 1px solid #333;
 }
 table {
 	height: auto;
 	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0px;
+}
+th {
+	width: 15%;
+}
+th:first-child {
+	width: 20%;
+}
+th:last-child {
+	width: 50%;
 }
 		</style>
 		<script type="text/javascript">
@@ -50,16 +63,16 @@ function boot() {
 		</script>
 	</head>
 	<body onload="boot();">
-		<a href="index.html"><img src="back.png" /></a>
-		<img src="delete.png" onclick="if (confirm('Delete all saved scores?')) delete localStorage.score" style="cursor: pointer"/>
+		<a href="index.html"><img src="back.png" alt="Go back to the main page."/></a>
+		<img src="delete.png" onclick="if (confirm('Delete all saved scores?')) delete localStorage.score" style="cursor: pointer" alt="A trash can."/>
 		<hr />
-		<table cellspacing="0">
+		<table>
 			<thead>
 				<tr>
-					<th width="20%">Name</th>
-					<th width="15%">Colors</th>
-					<th width="15%">Time</th>
-					<th width="50%">Image</th>
+					<th>Name</th>
+					<th>Colors</th>
+					<th>Time</th>
+					<th>Image</th>
 				</tr>
 			</thead>
 			<tbody>
