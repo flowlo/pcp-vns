@@ -60,6 +60,7 @@ namespace pcp {
 		Solution *toImprove = &best;
 		Solution *curBest = &best;
 		
+		int shuffleColor[best.numParts];
 		unordered_set<StoredSolution, StoredHash, StoredEqual> solutionStore;
 		
 		/// Run as long as shaking still produces usefull solution
@@ -200,6 +201,23 @@ namespace pcp {
 			curNeighbor = 0;
 			VNS_Unit *shaker = neighbors[shakeNeighbor];
 			toImprove = shaker->shuffleSolution(*toImprove, orig, (shakeSteps += shakeIncrement));
+			
+			if (DEBUG_LEVEL >= 2) {	
+				cout << "Before colorShake: " << toImprove->toString() << endl;
+			}
+			
+			// Change colors around a bit, without actually changing a thing ;)
+			for (int i = 0; i < toImprove->colorsUsed; i++) 
+				shuffleColor[i] = i;
+			std::random_shuffle(shuffleColor, shuffleColor + toImprove->colorsUsed);
+			
+			for (int i = 0; i < toImprove->numParts; i++) 
+				toImprove->setPartitionColor(i, shuffleColor[toImprove->getPartitionColor(i)]);
+			
+			
+			if (DEBUG_LEVEL >= 2) {	
+				cout << "After colorShake: " << toImprove->toString() << endl;
+			}
 			
 			bool checkResult = false;
 			if (checkIntermediate) {
