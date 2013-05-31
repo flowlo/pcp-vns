@@ -3,7 +3,13 @@
 errors=0
 
 for item in $@ ; do
-	curl -s -F uploaded_file=@$item -F output=soap12 http://validator.w3.org/check > /tmp/validation.xml
+	status=$(curl -s -o /tmp/validation.xml -w "%{http_code}" -F uploaded_file=@index.html -F output=soap12 http://validator.w3.org/check)
+	code=$?
+	if [ $status != '200' -o $code != '0' ] ; then
+		echo Failed to check $item \(HTTP status code $status, cURL exit code $code\)
+		continue
+	fi
+
 	xqilla print.xq
 	if [ $(xpath -q -e /env:Envelope/env:Body/m:markupvalidationresponse/m:validity/text\(\) /tmp/validation.xml) != 'true' ] ; then
 		errors=$(expr $errors + 1)
