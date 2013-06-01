@@ -252,33 +252,31 @@ The VNS can be explained using a three-dimensional plane with every point on the
 Although the Variable Neighborhood Search can theoretically be executed infinitely, execution is stopped after a predefined amount of time or in case the currently best solution was not improved for a while.
 
 %Obwohl die Variable Nachbarschaftssuche in der Theorie immer weiter laufen könnte und dabei hoffentlich immer wieder neue, bessere Lösungen erreicht, wird meist eine fixe Zeit oder eine Anzahl an Iterationen bzw.\ ``Schüttelungen'' ohne Verbesserung als Abbruchkriterium gewählt.
-
-%\begin{algorithm}
-%\begin{algorithmic}[1]
-%\State Compute starting solution with \emph{onestepCD}
-%\While{termination condition \textbf{not} fulfilled}
-%\State Execute Variable Neighborhood Descent with Best Improvement Strategy:
-%\State Führe Variable Neighborhood Descent mit Best Improvement Strategie durch:
-%\State Neighborhood $l \leftarrow 1$
-%\While{$l \leq $ number of neighborhoods \textbf{and} time limit not reached}
-%\State Execute neighborhood $n_l$
-%\If {solution improved \textbf{and} $l\neq 1$}
-%\State  $l\leftarrow 1$
-%\Else
-%\State  $l\leftarrow l + 1$
-%\EndIf
-%\EndWhile
-%\If{Got new best solution \textbf{or} $k \geq k_{\mathrm max}$}
-%\State $k \leftarrow k_{\mathrm start}$
-%\Else
-%\State $k \leftarrow k + 1$
-%\EndIf
-%\State Select random neighborhood and use it to shake solution
-%\EndWhile
-%\State\Return best solution
-%\end{algorithmic}
-%\caption{Pseudocode for Variable Neighborhood Search}
-%\end{algorithm}
+\begin{algorithm}
+\begin{algorithmic}[1]
+\State Compute starting solution with \emph{onestepCD}
+\While{termination condition \textbf{not} fulfilled}
+\State Execute Variable Neighborhood Descent with Best Improvement Strategy:
+\State Neighborhood $l \leftarrow 1$
+\While{$l \leq $ number of neighborhoods \textbf{and} time limit not reached}
+\State Execute neighborhood $n_l$
+\If {solution improved \textbf{and} $l\neq 1$}
+\State  $l\leftarrow 1$
+\Else
+\State  $l\leftarrow l + 1$
+\EndIf
+\EndWhile
+\If{new best solution found \textbf{or} $k \geq k_{\mathrm max}$}
+\State $k \leftarrow k_{\mathrm start}$
+\Else
+\State $k \leftarrow k + 1$
+\EndIf
+\State Select random neighborhood and use it to shake solution
+\EndWhile
+\State\Return best solution
+\end{algorithmic}
+\caption{Pseudocode for Variable Neighborhood Search}
+\end{algorithm}
 }
 
 \subsubsection{Neighborhoods}
@@ -525,7 +523,7 @@ It can be seen that in order to get the best results, multiple orders of neighbo
 
 \subsection{Source code}
 
-The source code of our program can be found at \url{https://github.com/flowlo/pcp-vns/}.
+The source code of our program is publicly accessible at \url{https://github.com/flowlo/pcp-vns/}.
 
 %Der Quellcode des Programms ist öffentlich unter \url{https://github.com/flowlo/pcp-vns/} einsehbar.
 \end{document}
