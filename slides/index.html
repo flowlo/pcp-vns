@@ -97,7 +97,6 @@ $(function() {
 											$('.graph.node.ab.purple').fadeIn();
 											$('.map.node.d').fadeIn();
 											$(this).unbind('click');
-										});
 										$(this).click(function() {
 											$('.map.edge.cd.yellow').fadeIn();
 											$('.graph.node.cd.yellow').fadeIn();
@@ -111,6 +110,7 @@ $(function() {
 													$(this).unbind('click');
 											});
 											});
+										});
 										});
 									});
 								});
@@ -200,7 +200,7 @@ $(function() {
 				<section>
 					<h2>Nachbarschaften</h2>
 					
-					<img src="../img/vns.jpg" />
+					<img class="standalone" style="box-shadow: none" src="../img/vns-bright.svg" />
 				</section>
 				<section>
 					<h2 class="mono">ChangeColor</h2>

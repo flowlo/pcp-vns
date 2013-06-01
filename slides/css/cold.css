@@ -35,6 +35,7 @@ p.small, span.small {
 	-webkit-filter: blur(60px);
 	background: url('../../img/background.jpg');
 	background-position: center;
+	background-size: cover;
 	border: none;
 	box-shadow: none;
 	-webkit-transition: -webkit-filter 2s ease-in-out;

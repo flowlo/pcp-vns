@@ -248,9 +248,9 @@ The VND systematically cycles through all the different possible Neighborhoods b
 
 \begin{figure}
 \begin{center}
-\includegraphics{../img/vns.jpg} %TODO gruber bild
+\includegraphics[width=\textwidth]{../img/vns.pdf}
 \end{center}
-\caption{Graphic representation of Variable Neighborhood Search. \cite{Chen}} %TODO remove cite
+\caption{Graphic representation of Variable Neighborhood Search.}
 \end{figure}
 
 In case the VNS gets stuck in a local optimum for all Neighborhoods it uses \emph{shaking}. By shaking a solution, that solution will be randomly altered. These changes do not necessarily lead to an improvement, they are only used to compute a new starting point for VND. If a small alteration in the globally best solution does not lead to a better result after VND, the changes grow more drastic with each unsuccessfull shake. This leads to more diverse starting positions and could potentially give better overall results.
