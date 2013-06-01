@@ -1,4 +1,4 @@
-\documentclass[paper = a4, fontsize = 11pt]{scrartcl}
+\documentclass[paper = a4, fontsize = 10pt]{scrartcl}
 
 %The written project report has five parts:
 %	A typewritten presentation (or essay). Hand written presentations are not admissible. The presentation should describe the project. It may be accompanied by original illustrations (graphs, drawings and photographs).It may consist of up to a maximum of 10 pages of written text (A4 format; single sided; double spaced and unbound in a minimum character size of 10 point); It may be accompanied by up to a further 10 pages of illustrations (A4 format; single sided and unbound); No extra materials such as video tapes and diskettes can be accepted as part of the typewritten presentation
@@ -181,24 +181,24 @@ This algorithm can get valid solutions extremely quickly. The downside, however,
 
 %Diese Vorgehensweise führt schnell zu einer gültigen Lösung, die aber nur in den seltensten Fällen auch wirklich optimal bezüglich der Anzahl an benötigten Farben ist. Sie kann aber als Ausgangspunkt für Verbesserungsverfahren dienen.
 
-\paragraph{Tabu Search}{
-\citet*{Noronha2006} described a different way to solve the PCP. Their algorithm, a Tabu Search, takes existing solutions as input and then proceeds to try improving them. The work also relies on the algorithm \emph{onestepCD} to get an initial solution.
+%\paragraph{Tabu Search}{
+%\citet*{Noronha2006} described a different way to solve the PCP. Their algorithm, a Tabu Search, takes existing solutions as input and then proceeds to try improving them. The work also relies on the algorithm \emph{onestepCD} to get an initial solution.
 
 %Mit Hilfe der von \citet*{Noronha2006} vorgeschlagenen Tabu-Suche ist es möglich, eine bereits bestehende Lösung durch verschiedene Transformationen in eine neue, nach Möglichkeit bessere Lösung zu verwandeln.
 
-The Tabu Search begins by recoloring all vertices who use the highest color with a random, smaller color. Due to this recoloring process, some vertices come in conflict with one another.
+%The Tabu Search begins by recoloring all vertices who use the highest color with a random, smaller color. Due to this recoloring process, some vertices come in conflict with one another.
 
 %Zunächst wird bei der Tabu-Suche eine ungültige Lösung erzeugt, und zwar durch das neue Färben aller Knoten, welche in der Ausgangslösung noch die höchste Farbe besaßen, mit einer zufälligen, kleineren Farbe.
 
-These deliberately created conflicts are then stored in a list. The algorithm consequently proceeds to try and solve this conflict by selecting a random vertex and recoloring it with a random color. If this step leads to a solution with fewer conflicts, the Tabu Search marks the vertex as done and proceeds to try solving other conflicts.
+%These deliberately created conflicts are then stored in a list. The algorithm consequently proceeds to try and solve this conflict by selecting a random vertex and recoloring it with a random color. If this step leads to a solution with fewer conflicts, the Tabu Search marks the vertex as done and proceeds to try solving other conflicts.
 
 %Nachdem nun natürlich Konflikte zwischen zwei verbunden Knoten mit der gleichen Farbe entstanden sind, versucht die Tabu-Suche diese Konflikte zu lösen. Dazu wird ein zufälliger im Konflikt stehender Knoten ausgewählt und es wird versucht, diesen neu einzufärben. Sollte dies Erfolg haben beginnt die Tabu-Suche wieder bei der Suche nach in Konflikt stehenden Knoten.
 
-If, however, the algorithm cannot find a suitable color for a vertex, that same vertex is added to a tabu list where it remains for a specified amount of iterations. All vertices on the tabu list are forbidden from being recolored, effectively fixing their color for as long as they are on the tabu list.
+%If, however, the algorithm cannot find a suitable color for a vertex, that same vertex is added to a tabu list where it remains for a specified amount of iterations. All vertices on the tabu list are forbidden from being recolored, effectively fixing their color for as long as they are on the tabu list.
 
 %Sollte für einen Knoten allerdings keine passende Farbe gefunden werden können, wird dieser Knoten auf die Tabu-Liste gesetzt, wo er für einige Iterationen verbleibt. Knoten sind, solange sie auf dieser Liste sind, tabu für eine Neueinfärbung, dürfen also nicht ausgewählt werden.
 
-When the Tabu Search reaches a state with zero conflicts, the algorithm begins anew. The solution in turn becomes the input for the Tabu Search, and all the steps described above are taken again. If, however, the Tabu Search does not find a valid solution, even after many iterations, the Tabu Search stops and returns the last known result.}
+%When the Tabu Search reaches a state with zero conflicts, the algorithm begins anew. The solution in turn becomes the input for the Tabu Search, and all the steps described above are taken again. If, however, the Tabu Search does not find a valid solution, even after many iterations, the Tabu Search stops and returns the last known result.}
 
 %Ist die Tabu-Suche nun nach mehreren Iterationen zu einer validen Lösung gekommen, welche weniger Farben als die Ausgangslösung verwendet, wird sie erneut aufgerufen, um nach Möglichkeit wieder ein Ergebnis mit einer Farbe weniger zu berechnen.
 %Sollte hingegen die Tabu-Suche auch nach vielen Iterationen keine gültige Lösung erzeugen können, bricht sie von selbst ab und gibt ihre Verbesserungsversuche für diese Lösung auf und beginnt mit einer neuen, zufälligen Neufärbung der aktuell besten gefundenen Lösung.}
@@ -253,32 +253,32 @@ Although the Variable Neighborhood Search can theoretically be executed infinite
 
 %Obwohl die Variable Nachbarschaftssuche in der Theorie immer weiter laufen könnte und dabei hoffentlich immer wieder neue, bessere Lösungen erreicht, wird meist eine fixe Zeit oder eine Anzahl an Iterationen bzw.\ ``Schüttelungen'' ohne Verbesserung als Abbruchkriterium gewählt.
 
-\begin{algorithm}
-\begin{algorithmic}[1]
-\State Compute starting solution with \emph{onestepCD}
-\While{termination condition \textbf{not} fulfilled}
-\State Execute Variable Neighborhood Descent with Best Improvement Strategy:
+%\begin{algorithm}
+%\begin{algorithmic}[1]
+%\State Compute starting solution with \emph{onestepCD}
+%\While{termination condition \textbf{not} fulfilled}
+%\State Execute Variable Neighborhood Descent with Best Improvement Strategy:
 %\State Führe Variable Neighborhood Descent mit Best Improvement Strategie durch:
-\State Neighborhood $l \leftarrow 1$
-\While{$l \leq $ number of neighborhoods \textbf{and} time limit not reached}
-\State Execute neighborhood $n_l$
-\If {solution improved \textbf{and} $l\neq 1$}
-\State  $l\leftarrow 1$
-\Else
-\State  $l\leftarrow l + 1$
-\EndIf
-\EndWhile
-\If{Got new best solution \textbf{or} $k \geq k_{\mathrm max}$}
-\State $k \leftarrow k_{\mathrm start}$
-\Else
-\State $k \leftarrow k + 1$
-\EndIf
-\State Select random neighborhood and use it to shake solution
-\EndWhile
-\State\Return best solution
-\end{algorithmic}
-\caption{Pseudocode for Variable Neighborhood Search}
-\end{algorithm}
+%\State Neighborhood $l \leftarrow 1$
+%\While{$l \leq $ number of neighborhoods \textbf{and} time limit not reached}
+%\State Execute neighborhood $n_l$
+%\If {solution improved \textbf{and} $l\neq 1$}
+%\State  $l\leftarrow 1$
+%\Else
+%\State  $l\leftarrow l + 1$
+%\EndIf
+%\EndWhile
+%\If{Got new best solution \textbf{or} $k \geq k_{\mathrm max}$}
+%\State $k \leftarrow k_{\mathrm start}$
+%\Else
+%\State $k \leftarrow k + 1$
+%\EndIf
+%\State Select random neighborhood and use it to shake solution
+%\EndWhile
+%\State\Return best solution
+%\end{algorithmic}
+%\caption{Pseudocode for Variable Neighborhood Search}
+%\end{algorithm}
 }
 
 \subsubsection{Neighborhoods}
@@ -401,7 +401,7 @@ Initial computations of small instances showed promising results. Later tests on
 % Bei Sonderpreis-Projekten ist u.a. die Relevanz der ökologischen, sozialen und ökonomischen Nachhaltigkeit bzw. die wirtschaftliche Machbarkeit anzuführen.
 %\subsection{Ökonomische Grundlage und ökologischer Vorteil}
 
-\newpage
+%\newpage
 \printbibliography
 \addcontentsline{toc}{section}{Literature}
 \listoffigures
@@ -450,7 +450,7 @@ At the end of this project, we were allowed to use the computing grid of the Alg
 \end{description}
 
 \singlespacing
-\begin{table}[p]
+\begin{table}[h]
 \centering
 \begin{tabular}{|c|ccc|c|c|ccc|c|c|}
 \hline
@@ -507,19 +507,19 @@ It can be seen that in order to get the best results, multiple orders of neighbo
 
 %Wie man erkennen kann ist die Reihenfolge, in der das VND die einzelnen Nachbarschaften durchsuchen muss, um die jeweils besten Resultate zu erzielen, nicht wirklich eindeutig. Die erzielten Verbesserung gegenüber der von der Konstruktionsheuristik \emph{onestepCD} ermittelten Ausgangslösungen sind mitunter beachtlich und bewegen sich großteils im Bereich zwischen 11 und 15\%.
 
-\subsection{Visualization}
+%\subsection{Visualization}
 
-Videos of our visualization of the process of improving an already existing solution can be found at:
+%Videos of our visualization of the process of improving an already existing solution can be found at:
 
 %Videoaufzeichnungen des Ablaufs einerVersion des Programms mit Visualisierung finden Sie unter:
 
-\begin{itemize}
-	\item \url{https://www.dropbox.com/s/exl54o9vvty8lc3/demo1.mp4}
-	\item \url{https://www.dropbox.com/s/kl96yzbz3fteazd/demo2.mp4}
-	\item \url{https://www.dropbox.com/s/bwsd130cplt4c07/demo3.mp4}
-\end{itemize}
+%\begin{itemize}
+%	\item \url{https://www.dropbox.com/s/exl54o9vvty8lc3/demo1.mp4}
+%	\item \url{https://www.dropbox.com/s/kl96yzbz3fteazd/demo2.mp4}
+%	\item \url{https://www.dropbox.com/s/bwsd130cplt4c07/demo3.mp4}
+%\end{itemize}
 
-In all three videos the instance \texttt{n20p5t2s5.pcp} is shown. The reason for this is that bigger instances with more vertices tend to get confusing very quickly.
+%In all three videos the instance \texttt{n20p5t2s5.pcp} is shown. The reason for this is that bigger instances with more vertices tend to get confusing very quickly.
 
 %In allen drei Läufen wird die Instanz \texttt{n20p5t2s5.pcp} gezeigt, die klein genug ist um die Arbeitsweise des Programms zu überblicken.
 
