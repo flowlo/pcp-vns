@@ -1,4 +1,12 @@
-\documentclass[paper=a4,fontsize=12pt]{scrartcl}
+\documentclass[paper = a4, fontsize = 11pt]{scrartcl}
+
+%The written project report has five parts:
+%	A typewritten presentation (or essay). Hand written presentations are not admissible. The presentation should describe the project. It may be accompanied by original illustrations (graphs, drawings and photographs).It may consist of up to a maximum of 10 pages of written text (A4 format; single sided; double spaced and unbound in a minimum character size of 10 point); It may be accompanied by up to a further 10 pages of illustrations (A4 format; single sided and unbound); No extra materials such as video tapes and diskettes can be accepted as part of the typewritten presentation
+%	A one page scientific summary in English containing the most important points of the project (aim of project, materials and methods, observations and conclusions).
+%	A clear, concise project title in English for the Contest Catalogue. This may be accompanied, if required, by the full scientific title.
+%	The full original scientific title, in the original language.
+%	A straightforward description of the project of not more than ten lines in simple English for publication in the Contest Catalogue. Contestants, through their National Organiser, must ensure that this brief project description is readily understandable by the reporting press, other media, and interested members of the wider public.
+
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{multirow}
@@ -6,7 +14,7 @@
 \usepackage[babel, german=quotes]{csquotes}
 %\usepackage{hyperref}
 \usepackage[style=authoryear, natbib, backend=biber]{biblatex}
-\usepackage[margin = 3cm]{geometry}
+\usepackage[bottom = 3cm, top = 3cm, left = 2cm, right = 2cm]{geometry}
 \usepackage{graphicx, fancyhdr, array, wrapfig, colortbl, algorithm, algpseudocode}
 %\floatname{algorithm}{Algorithmus}
 %\renewcommand{\listalgorithmname}{List of algorithms}
@@ -18,7 +26,7 @@
 %\renewcommand{\algorithmicwhile}{\textbf{Solange}}
 %\renewcommand{\algorithmicreturn}{\textbf{Returniere}}
 \renewcommand\familydefault{\sfdefault}
-\linespread{1.5}
+\linespread{2}
 \setlength{\parindent}{4mm}
 \setlength{\parskip}{2mm}
 \pagestyle{fancy}
@@ -36,63 +44,41 @@
 \let\origappendix\appendix
 \renewcommand\appendix{\clearpage\pagenumbering{roman}\origappendix}
 \begin{document}
-% Ein SCIENCE–Projekt ist nicht unbedingt produktorientiert, soll jedoch über eine reine Zusammenstellung von Literatur hinausgehen. Es wird eine wissenschaftlich fundierte Abhandlung und/oder Problemlösung in methodisch sauberer und nachvollziehbarer Ausarbeitung erwartet.
-%foobar \cite{Lu2010, Palladino2011, Noronha2006, Li2000, Frota2010, Demange, pcp-instance-page}
+% \cite{Lu2010, Palladino2011, Noronha2006, Li2000, Frota2010, Demange, pcp-instance-page}
 \begin{titlepage}
 \begin{center}
 \vspace*{\fill}
-{\Large P}\ {\large R\ O\ J\ E\ C\ T\ R\ E\ P\ O\ R\ T}
+{\Large\bfseries European Union Contest for Young Scientists 2013}
 
-\vspace{5mm}
+\vspace{2mm}
 
-for the 
+\includegraphics[width=4cm]{eucys.png}
 
-\vspace{5mm}
+\vspace{10mm}
 
-{\Large\bfseries Jugend Innovativ Competition 2013}
+{\Large P}\ {\large R\ O\ J\ E\ C\ T}\ \ {\Large R}\ {\large E\ P\ O\ R\ T}
 
-\vspace{5mm}
+\vspace{10mm}
 
-\includegraphics[width=10cm]{jugendinnovativ.png}
+{\bfseries
 
-\vspace{5mm}
+{\Huge Variable Neighborhood Search}
 
-on the topic of 
+{\huge for the}
 
-\vspace{5mm}
+{\Huge Partition Graph Coloring Problem}
 
-{\Huge Variable Neighborhood Search for the Partition Graph Coloring Problem}
+}
 
-\vspace{1mm}
-
-(J130193)
-
-\vspace{5mm}
-
-from
-
-\vspace{5mm}
+by
 
 \begin{tabular}{>{\raggedright\arraybackslash}p{.3\textwidth}c>{\raggedleft\arraybackslash}p{.3\textwidth}}
-{\large Lorenz Leutgeb} & and & {\large Moritz Wanzenböck} \\
+{\large\bfseries Lorenz Leutgeb} & and & {\large\bfseries Moritz Wanzenböck} \\
 \end{tabular}
-
-\vspace{5mm}
 
 under supervision from
 
-\vspace{5mm}
-
-{\large Dipl.-Ing.\ Dr.\ techn.\ Martin Gruber}
-
-\vspace{5mm}
-
-at
-
-\vspace{5mm}
-
-\includegraphics[width=5cm]{../img/htl.png}
-
+{\large\bfseries Dipl.-Ing.\ Dr.\ techn.\ Martin Gruber}
 \vspace*{\fill}
 \end{center}
 \end{titlepage}
@@ -118,10 +104,10 @@ In a modern fiber-optic network, which uses Wavelength Division Multiplexing, th
 The minimization of the number of used wavelengths is not a trivial problem though. It is in fact an NP-hard optimization problem. A partitioned graph is created to represent the fiber-optic network, hence the name
 Partition Graph Coloring Problem. Only a selected few approaches to this problem have been published so far.
 
-%Die Anzahl der Wellenlängen in einem solchen Netzwerk zu minimieren ist nicht trivial, es handelt sich um ein NP-schwieriges Optimierungsproblem. Modelliert werden die Glasfasernetze in Form von partitionierten Graphen. In der einschlägigen Literatur sind nur einige, wenige Lösungsansätze für dieses Problem bekannt. 
+%Die Anzahl der Wellenlängen in einem solchen Netzwerk zu minimieren ist nicht trivial, es handelt sich um ein NP-schwieriges Optimierungsproblem. Modelliert werden die Glasfasernetze in Form von partitionierten Graphen. In der einschlägigen Literatur sind nur einige, wenige Lösungsansätze für dieses Problem bekannt.
 
-Over the course of this project we intend to implement and test a number of new approaches. These new approaches are all inspired by already existing technology. Our goal is to create a computer program which 
-yields better results than the existing approaches. 
+Over the course of this project we intend to implement and test a number of new approaches. These new approaches are all inspired by already existing technology. Our goal is to create a computer program which
+yields better results than the existing approaches.
 
 %Im Rahmen dieses Projektes sollen neuartige Wege zur Lösung des Problems implementiert und getestet werden. Ausgehend von bestehenden Technologien sowie bereits erprobten Lösungsansätzen, soll ein Programm entstehen, welches bessere Ergebnisse liefert als seine bereits bekannten Konkurrenten.
 
@@ -186,7 +172,7 @@ In the course of our research, we discovered a few already existing approaches t
 
 \paragraph{onestepCD}{
 \label{sec:construct}
-Before the \emph{onestepCD} algorithm can me applied to a problem, some preprocessing needs to be done. Every edge that connects two vertices in the same cluster is removed from the graph because every communication only needs one route through the network. Hence only one vertex per cluster must be selected, which makes all edges inside a cluster obsolete. Now the algorithm determines the vertex with the least number of colored neighboring vertices in a cluster. This step is repeated for every cluster. Once the process has been completed the vertex with the overall least number of colored neighbors is selected as the next to be colored. In case of ties the vertex with the most uncolored neighbors is selected or, if there is still a tie, the first vertex in the candidate list. The freshly selected vertex is then colored with the lowest possible color, meaning the first color that does not lead to conflicts with existing colored vertices. Then all vertices of the chosen cluster except the selected one are removed from the graph and the algorithm begins anew until every cluster has exactly one representative and is colored. 
+Before the \emph{onestepCD} algorithm can me applied to a problem, some preprocessing needs to be done. Every edge that connects two vertices in the same cluster is removed from the graph because every communication only needs one route through the network. Hence only one vertex per cluster must be selected, which makes all edges inside a cluster obsolete. Now the algorithm determines the vertex with the least number of colored neighboring vertices in a cluster. This step is repeated for every cluster. Once the process has been completed the vertex with the overall least number of colored neighbors is selected as the next to be colored. In case of ties the vertex with the most uncolored neighbors is selected or, if there is still a tie, the first vertex in the candidate list. The freshly selected vertex is then colored with the lowest possible color, meaning the first color that does not lead to conflicts with existing colored vertices. Then all vertices of the chosen cluster except the selected one are removed from the graph and the algorithm begins anew until every cluster has exactly one representative and is colored.
 
 %Zunächst werden in einem Vorverarbeitungsschritt alle Kanten aus dem Konfliktgraphen entfernt, die Knoten innerhalb eines Clusters miteinander verbinden (da für jede Kommunikation nur genau ein Kommunikationsweg gewählt wird, können sich Knoten eines Clusters nie gegenseitig stören, die entsprechenden Kanten sind daher für die Lösung des Problems irrelevant und können gelöscht werden). Danach wird für jeden Cluster der Knoten mit der geringsten Anzahl an bereits eingefärbten Nachbarknoten bestimmt, der Knoten mit der insgesamt kleinsten Anzahl wird ausgewählt. Gibt es hier mehrere gleichwertige Kandidaten, wird aus diesen der Knoten mit der größten Anzahl an noch nicht eingefärbten Nachbarknoten gewählt bzw. -- falls dies immer noch nicht eindeutig möglich ist -- der erste Knoten aus diesen Kandidaten. Nachdem nun ein Knoten als Repräsentant für seinen Cluster bestimmt und ihm die kleinstmögliche Farbe zugewiesen wurde, werden alle anderen Knoten, die sich im selben Cluster befinden, gelöscht. Der Prozess wird solange fortgeführt, bis die Repräsentanten aller Cluster gewählt und eingefärbt sind.
 }
@@ -194,13 +180,13 @@ Before the \emph{onestepCD} algorithm can me applied to a problem, some preproce
 This algorithm can get valid solutions extremely quickly. The downside, however, is that only in rare cases the computed solution is also the best solution, meaning the number of used colors cannot be reduced any further. On the upside the computed solution can be used as a starting point for improvement processes.
 
 %Diese Vorgehensweise führt schnell zu einer gültigen Lösung, die aber nur in den seltensten Fällen auch wirklich optimal bezüglich der Anzahl an benötigten Farben ist. Sie kann aber als Ausgangspunkt für Verbesserungsverfahren dienen.
- 
+
 \paragraph{Tabu Search}{
 \citet*{Noronha2006} described a different way to solve the PCP. Their algorithm, a Tabu Search, takes existing solutions as input and then proceeds to try improving them. The work also relies on the algorithm \emph{onestepCD} to get an initial solution.
 
 %Mit Hilfe der von \citet*{Noronha2006} vorgeschlagenen Tabu-Suche ist es möglich, eine bereits bestehende Lösung durch verschiedene Transformationen in eine neue, nach Möglichkeit bessere Lösung zu verwandeln.
 
-The Tabu Search begins by recoloring all vertices who use the highest color with a random, smaller color. Due to this recoloring process, some vertices come in conflict with one another. 
+The Tabu Search begins by recoloring all vertices who use the highest color with a random, smaller color. Due to this recoloring process, some vertices come in conflict with one another.
 
 %Zunächst wird bei der Tabu-Suche eine ungültige Lösung erzeugt, und zwar durch das neue Färben aller Knoten, welche in der Ausgangslösung noch die höchste Farbe besaßen, mit einer zufälligen, kleineren Farbe.
 
@@ -234,26 +220,26 @@ The Variable Neighborhood Search is a metaheuristic that is used to solve differ
 
 %Bei der Variablen Nachbarschaftssuche handelt es sich um eine metaheuristische Methode, um verschiedenste Optimierungsprobleme zu lösen. Als Metaheuristik bezeichnet man dabei Algorithmen, die andere heuristische (und manchmal auch für Teilprobleme exakte) Optimierungsverfahren steuern und deren Ergebnisse sammeln und kombinieren.
 
-The VNS uses different Neighborhoods, hence the name Variable Neighborhood Search. It can be used to improve already existing solutions to a problem. A Neighborhood is defined by different \emph{Moves} that are made to get from one solution to another. This new solution is ideally an improvement of the current one. Moves can be any kind of change in a solution. A single recolored vertex, for instance, can be seen as a Move. By executing a Neighborhood over and over again until no more improvement is achieved, the algorithm reaches a \emph{local optimum}. Nevertheless this local optimum in most cases is not the global one.
+The VNS uses different neighborhoods, hence the name Variable Neighborhood Search. It can be used to improve already existing solutions to a problem. A neighborhood is defined by different \emph{Moves} that are made to get from one solution to another. This new solution is ideally an improvement of the current one. Moves can be any kind of change in a solution. A single recolored vertex, for instance, can be seen as a Move. By executing a neighborhood over and over again until no more improvement is achieved, the algorithm reaches a \emph{local optimum}. Nevertheless this local optimum in most cases is not the global one.
 
 %Wie der Name bereits suggeriert versucht eine VNS auf Basis unterschiedlicher Nachbarschaften eine bereits bestehende, nicht optimale Lösung zu verbessern. Eine Nachbarschaft wird im Normalfall durch sogenannte \emph{Moves}, also Züge, definiert, die be\-schrei\-ben, wie man von einer Lösung zu einer Nachbarlösung kommt, die hoffentlich besser als die Ursprungslösung ist. Ein solcher Zug kann z.B.\ die Auswahl eines anderen Knotens als Repräsentant eines Clusters sein. Kann eine Lösung mit Zügen aus einer Nachbarschaft nicht mehr verbessert werden, dann befindet man sich in einem \emph{lokalen Optimum}, das leider im Normalfall nicht dem globalen Optimum -- der besten möglichen Lösung -- entspricht.
 
-A special optimization component of the Variable Neighborhood Search is the \emph{Variable Neighborhood Descent} (VND). By using VND several different Neighborhoods are executed one after the other. This helps to further optimize a solution, because the local optimum of one Neighborhood can be very different from that of another. VND tries not to get stuck in the local optimum of one Neighborhood by executing a different one after an improvement was found. This keeps the improvement process going, even if one Neighborhood reaches its local optimum. 
+A special optimization component of the Variable Neighborhood Search is the \emph{Variable Neighborhood Descent} (VND). By using VND several different neighborhoods are executed one after the other. This helps to further optimize a solution, because the local optimum of one neighborhood can be very different from that of another. VND tries not to get stuck in the local optimum of one neighborhood by executing a different one after an improvement was found. This keeps the improvement process going, even if one neighborhood reaches its local optimum.
 
 %Die Variable Nachbarschaftssuche setzt nun in ihrer Optimierungskomponente (\emph{Variable Neighborhood Descent}, VND) nicht nur eine sondern gleich mehrere unterschiedliche Nachbarschaften hintereinander ein in der Hoffnung, dass ein lokales Optimum einer Nachbarschaft nicht zwangsläufig auch ein lokales Optimum einer anderen Nachbarschaft ist. Man setzt also darauf, dass eine Lösung, die in einer Nachbarschaft nicht mehr verbessert werden kann, in einer anderen Nachbarschaft sehr wohl noch Optimierungspotential besitzt. Diese neue Lösung kann dann vielleicht wieder mit einem Zug aus der ursprünglichen Nachbarschaft verbessert werden und so weiter.
 
-The VND systematically cycles through all the different possible Neighborhoods by using the \emph{Best Improvement Strategy}, that is by using the move with the best overall performance of all possible moves. The process stops only if a local optimum for all Neighborhoods is found. This local optimum, however, can still be far from the global optimum, which means the VNS has to do some work to help the Neighborhoods to further optimize the solution.
+The VND systematically cycles through all the different possible neighborhoods by using the \emph{Best Improvement Strategy}, that is by using the move with the best overall performance of all possible moves. The process stops only if a local optimum for all neighborhoods is found. This local optimum, however, can still be far from the global optimum, which means the VNS has to do some work to help the neighborhoods to further optimize the solution.
 
 %Durchsucht man alle definierten Nachbarschaften systematisch (z.B.\ mittels \emph{Best Improvement} Strategie, d.h.\ von allen möglichen Zügen innerhalb einer Nachbarschaft wird jener gewählt, der die Lösung maximal verbessert) hintereinander und wiederholt nach besseren Lösungen, dann stoppt dieser Prozess erst dann, wenn eine Lösung gefunden wurde, die ein lokales Optimum bezüglich sämtlicher Nachbarschaften darstellt.
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\textwidth]{../img/vns.pdf}
+\includegraphics[width=\textwidth]{../img/vns-english.pdf}
 \end{center}
 \caption{Graphic representation of Variable Neighborhood Search.}
 \end{figure}
 
-In case the VNS gets stuck in a local optimum for all Neighborhoods it uses \emph{shaking}. By shaking a solution, that solution will be randomly altered. These changes do not necessarily lead to an improvement, they are only used to compute a new starting point for VND. If a small alteration in the globally best solution does not lead to a better result after VND, the changes grow more drastic with each unsuccessfull shake. This leads to more diverse starting positions and could potentially give better overall results.
+In case the VNS gets stuck in a local optimum for all neighborhoods it uses \emph{shaking}. By shaking a solution, that solution will be randomly altered. These changes do not necessarily lead to an improvement, they are only used to compute a new starting point for VND. If a small alteration in the globally best solution does not lead to a better result after VND, the changes grow more drastic with each unsuccessfull shake. This leads to more diverse starting positions and could potentially give better overall results.
 
 %Um diesem Zustand des vollkommenen Stillstandes zu entkommen, wird, nachdem dieses lokale Optimum für alle definierten Nachbarschaften erreicht wurde, mit immer größer werdenden Kraft die Lösung ``geschüttelt''. Gemeint ist damit, dass die lokal optimale Lösung durch verschiedene Algorithmen verändert wird, welche nicht darauf abzielen, eine Lösung besser zu machen, sondern sie zunächst ein wenig, mit dem Fortschreiten der Optimierung aber auch möglichst stark zu verfremden, um einen neuen Startpunkt für das VND zu besitzen.
 
@@ -276,14 +262,14 @@ Although the Variable Neighborhood Search can theoretically be executed infinite
 \State Neighborhood $l \leftarrow 1$
 \While{$l \leq $ number of neighborhoods \textbf{and} time limit not reached}
 \State Execute neighborhood $n_l$
-\If {solution improved \textbf{and} $l\neq 1$} 
-\State  $l\leftarrow 1$  
+\If {solution improved \textbf{and} $l\neq 1$}
+\State  $l\leftarrow 1$
 \Else
 \State  $l\leftarrow l + 1$
 \EndIf
 \EndWhile
 \If{Got new best solution \textbf{or} $k \geq k_{\mathrm max}$}
-\State $k \leftarrow k_{\mathrm start}$ 
+\State $k \leftarrow k_{\mathrm start}$
 \Else
 \State $k \leftarrow k + 1$
 \EndIf
@@ -297,48 +283,48 @@ Although the Variable Neighborhood Search can theoretically be executed infinite
 
 \subsubsection{Neighborhoods}
 \label{sec:neigh}
-As mentioned above Neighborhoods are small algorithms, often heuristics, that transform one valid solution into another. The result of this transformation is hopefully a better solution than the original one. In this section we will discuss the four different Neighborhoods we used to improve solutions to the PCP. These Neighborhoods are named \emph{changeColor}, \emph{changeNode}, \emph{DSTAUR}, and \emph{changeAll}.
+As mentioned above neighborhoods are small algorithms, often heuristics, that transform one valid solution into another. The result of this transformation is hopefully a better solution than the original one. In this section we will discuss the four different neighborhoods we used to improve solutions to the PCP. These neighborhoods are named \emph{ChangeColor}, \emph{ChangeNode}, \emph{DSTAUR}, and \emph{ChangeAll}.
 
-%Wie bereits beschrieben handelt es sich bei Nachbarschaften um einzelne Algorithmen die versuchen, eine gültige Lösung in eine andere, bessere Lösung durch eine relativ kleine Änderung umzuwandeln. Wir haben uns zunächst auf die drei Nachbarschaften \emph{changeColor}, \emph{changeNode} und \emph{DSATUR} konzentriert, wobei weitere Nachbarschaften noch zur Diskussion stehen.
+%Wie bereits beschrieben handelt es sich bei Nachbarschaften um einzelne Algorithmen die versuchen, eine gültige Lösung in eine andere, bessere Lösung durch eine relativ kleine Änderung umzuwandeln. Wir haben uns zunächst auf die drei Nachbarschaften \emph{ChangeColor}, \emph{ChangeNode} und \emph{DSATUR} konzentriert, wobei weitere Nachbarschaften noch zur Diskussion stehen.
 
-Every Neighborhood also implements a unique way of \emph{shaking} a solution that makes use of the same moves as its optimization counterpart but ignores the objective function, that means not only improving moves are accepted.
+Every neighborhood also implements a unique way of \emph{shaking} a solution that makes use of the same moves as its optimization counterpart but ignores the objective function, that means not only improving moves are accepted.
 
 %Jede Nachbarschaft bietet auch eine Methode an, eine Lösung zu ``schütteln'', welche ähnlich abläuft wie die Methode zur Suche des jeweiligen lokalen Optimums, allerdings ohne die Beschränkung ausschließlich bessere Ergebnisse zurück liefern zu müssen.
 
-\paragraph{changeColor}
-This very simple Neighborhood was inspired by the Tabu Search of \citet*{Noronha2006}. Each color is represented by a number. The Neighborhood chooses the vertices with the currently highest color and tries to recolor them.
+\paragraph{ChangeColor}
+This very simple neighborhood was inspired by the Tabu Search of \citet*{Noronha2006}. Each color is represented by a number. The neighborhood chooses the vertices with the currently highest color and tries to recolor them.
 
-%Bei dieser sehr einfachen Nachbarschaft, die von der Tabu-Suche aus \citet*{Noronha2006} inspiriert ist, wird versucht, alle Knoten umzufärben, welche mit der höchsten Farbe markiert wurden. 
+%Bei dieser sehr einfachen Nachbarschaft, die von der Tabu-Suche aus \citet*{Noronha2006} inspiriert ist, wird versucht, alle Knoten umzufärben, welche mit der höchsten Farbe markiert wurden.
 
-To reach its goal, the Neighborhood first selects a vertex colored with the highest color. This vertex is then randomly recolored, even if this leads to conflicts in the solution. The algorithm then proceeds to find new suitable colors for all adjacent vertices of the selected one. 
+To reach its goal, the neighborhood first selects a vertex colored with the highest color. This vertex is then randomly recolored, even if this leads to conflicts in the solution. The algorithm then proceeds to find new suitable colors for all adjacent vertices of the selected one.
 
-%Um dieses Ziel zu erreichen, werden alle Knoten, welche diese höchste Farbe besitzen, mit einer neuen zufälligen Farbe markiert. Dies führt natürlich unweigerlich zu Konflikten zwischen verbundenen Knoten im Konfliktgraph, d.h.\ zu benachbarten Knoten mit gleicher Farbe. 
+%Um dieses Ziel zu erreichen, werden alle Knoten, welche diese höchste Farbe besitzen, mit einer neuen zufälligen Farbe markiert. Dies führt natürlich unweigerlich zu Konflikten zwischen verbundenen Knoten im Konfliktgraph, d.h.\ zu benachbarten Knoten mit gleicher Farbe.
 
 When a suitable color is found, that vertex is recolored. If no suitable color can be found for only a single adjacent vertex, the next lowest color is used to color the selected vertex. These steps are repeated until a suitable color combination can be found. Once this combination is found, the algorithm searches for other vertices using the highest color.
 
 %Um diese Konflikte zu lösen wird ein zufälliger, im Konflikt stehender Knoten ausgewählt, um ihn mit einer passenden Farbe zu füllen. Zu beachten ist hierbei die Tatsache, das diese passende Farbe kleiner sein muss als die frühere höchste Farbe, da ja eine Verbesserung (eine Reduktion der Farbenanzahl um 1) erzielt werden soll.
 
-If, however, no suitable combination can be found and the recoloring process comes to a halt, the Neighborhood returns with no improvement made. In case the Neighborhood was a success and the newly computed solution is better than the old one, the process continues until no improvement is possible anymore.
+If, however, no suitable combination can be found and the recoloring process comes to a halt, the neighborhood returns with no improvement made. In case the neighborhood was a success and the newly computed solution is better than the old one, the process continues until no improvement is possible anymore.
 
-%Sollte sich keine passende Farbe finden, wird auch dieser im Konflikt stehende Knoten mit einer zufälligen Farbe neu eingefärbt, was im Normalfall zu weiteren Konflikten führt. Es wird nun versucht, diesen gesamten Vorgang so lange zu wiederholen bis keine Konflikte mehr bestehen. 
+%Sollte sich keine passende Farbe finden, wird auch dieser im Konflikt stehende Knoten mit einer zufälligen Farbe neu eingefärbt, was im Normalfall zu weiteren Konflikten führt. Es wird nun versucht, diesen gesamten Vorgang so lange zu wiederholen bis keine Konflikte mehr bestehen.
 
 %Sollte nach einer gewissen Anzahl an Iterationen keine konfliktfreie Lösung gefunden werden, bricht \emph{ChangeColor} automatisch ab und liefert die letzte valide Lösung zurück.
 
-\paragraph{changeNode}
-Like with \emph{changeColor}, \emph{changeNode} relies on a fast algorithm to change a solution. This is done by selecting an alternative vertex of the same cluster for each vertex colored with the highest color.
+\paragraph{ChangeNode}
+Like with \emph{ChangeColor}, \emph{ChangeNode} relies on a fast algorithm to change a solution. This is done by selecting an alternative vertex of the same cluster for each vertex colored with the highest color.
 
 %Diese Nachbarschaft baut auf der Tatsache auf, dass man aus einem Cluster nur jeweils einen Knoten auswählen muss. Dazu werden wie bei \emph{ChangeColor} alle Knoten höchster Farbe ausgewählt und umgefärbt.
 
-Similar to \emph{changeColor}, the algorithm searches for a vertex that currently uses the highest color. This vertex is then replaced by a different vertex from the same cluster. Then an attempt is made to recolor the replacement. If the new suitable color is less than the highest color, the replacement becomes the new selected vertex in the solution for this cluster. 
+Similar to \emph{ChangeColor}, the algorithm searches for a vertex that currently uses the highest color. This vertex is then replaced by a different vertex from the same cluster. Then an attempt is made to recolor the replacement. If the new suitable color is less than the highest color, the replacement becomes the new selected vertex in the solution for this cluster.
 
 %Nun wird wieder ein zufälliger Knoten aus den entstandenen Konflikten ausgewählt, welcher dann aber durch einen zufälligen Knoten aus dem selben Cluster ersetzt wird. An diesem Knoten wird dann ein neuer Einfärbeversuch unternommen, wobei die maximal zulässige Farbe natürlich wieder kleiner ist als die ursprünglich höchste Farbe.
 
-If no suitable color can be found and all other vertices of the cluster have been tried out without success, the Neighborhood stops. When all vertices of highest color have been replaced, a new better solution has been found.
+If no suitable color can be found and all other vertices of the cluster have been tried out without success, the neighborhood stops. When all vertices of highest color have been replaced, a new better solution has been found.
 
 %Dieser Vorgang wird solange wiederholt bis alle Konflikte gelöst wurden oder zu viele Iterationen abgelaufen sind.
 
-\paragraph{NewVertexColoring-DSATUR}
-This Neighborhood reduces the PCP to a normal Graph Coloring Problem without clusters. This is done by essentially fixing the current selection of vertices of all clusters. The resulting graph is colored using a greedy algorithm to solve the resulting Graph Coloring Problem which is still NP-hard. This algorithm uses the following steps to recolor the graph:
+\paragraph{DSATUR}
+This neighborhood reduces the PCP to a normal Graph Coloring Problem without clusters. This is done by essentially fixing the current selection of vertices of all clusters. The resulting graph is colored using a greedy algorithm to solve the resulting Graph Coloring Problem which is still NP-hard. This algorithm uses the following steps to recolor the graph:
 
 %Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das normale Graph Coloring Problem ohne Clustering der Knoten, indem die aktuell gewählten Repräsentanten fixiert werden und dieses so vereinfachte Problem (das allerdings immer noch NP-hart ist) wird nun mit folgendem Greedy Ansatz näherungsweise gelöst:
 
@@ -355,16 +341,16 @@ This Neighborhood reduces the PCP to a normal Graph Coloring Problem without clu
 %    \item Wiederhole, bis die Repräsentanten aller Cluster eingefärbt wurden.
 \end{enumerate}
 
-\paragraph{changeAll}
-The \emph{changeAll} Neighborhood can be seen as a combination of \emph{changeColor} and \emph{changeNode}. It simultaneously replaces a vertex of a cluster and recolors it.
+\paragraph{ChangeAll}
+The \emph{ChangeAll} neighborhood can be seen as a combination of \emph{ChangeColor} and \emph{ChangeNode}. It simultaneously replaces a vertex of a cluster and recolors it.
 
-First the algorithm searches for vertices of the highest color. It then replaces the found vertex with another one from the same cluster. This replacement is then recolored, much like in the \emph{changeColor} Neighborhood. 
+First the algorithm searches for vertices of the highest color. It then replaces the found vertex with another one from the same cluster. This replacement is then recolored, much like in the \emph{ChangeColor} neighborhood.
 
-If no suitable pair of color and replacement vertex can be found, the Neighborhood stops. When all vertices of the highest color have been replaced and recolored a better solution has been found. 
+If no suitable pair of color and replacement vertex can be found, the neighborhood stops. When all vertices of the highest color have been replaced and recolored a better solution has been found.
 
 \subsubsection{Implementation}
 %\subsubsection{Implementierung}
-To verify and evaluate our approach, we successfully implemented the Variable Neighborhood Search as presented above with an initial solution computed by \emph{onestepCD}. 
+To verify and evaluate our approach, we successfully implemented the Variable Neighborhood Search as presented above with an initial solution computed by \emph{onestepCD}.
 
 The actual development was done using C++. C++ was chosen as it is both a very versatile and fast programming language and because many code libraries for optimization are written using C++.
 
@@ -376,7 +362,7 @@ After some research we decided to use the C++ code library Boost\footnote{see \u
 
 %Nach einigen Recherchen fiel die Wahl auf die Bibliothek Boost\footnote{siehe \url{http://www.boost.org/}}. Bei Boost handelt es sich um eine robuste, gut getestete und vielseitige Bibliothek, welche ein schnelles und einfaches Arbeiten ermöglicht.
 
-Every Neighborhood discussed in section~\ref{sec:neigh} was implemented. Special attention was given to an efficient implementation of each Neighborhood, as it is essential for the overall running time.
+Every neighborhood discussed in section~\ref{sec:neigh} was implemented. Special attention was given to an efficient implementation of each neighborhood, as it is essential for the overall running time.
 
 %Alle im Abschnitt \ref{sec:neigh} besprochenen Nachbarschaften wurden umgesetzt, wobei in diesen Codeteilen auf eine effiziente Umsetzung ganz besonders geachtet wurde, da sie das Laufzeitverhalten stark prägen.
 
@@ -385,11 +371,11 @@ There is an increasing demand for communication in huge fiber optic networks lik
 
 %In großen Glasfasernetze, wie sie zum Beispiel von großen Internetinfrastrukturbetreibern betrieben werden, besteht ein immer größer werdendes Kommunikationsbedürfnis.
 
-To accommodate with these ever rising demands two steps can be taken: The easier -- but also more expensive -- route is to expand existing networks by using new infrastructure. The harder -- but also cheaper -- route is to use existing networks more efficiently. The task to assign different wavelengths to a fiber optic network to enable parallel communication between many different parties can be seen as a practical application of the Partition Graph Coloring Problem. 
+To accommodate with these ever rising demands two steps can be taken: The easier -- but also more expensive -- route is to expand existing networks by using new infrastructure. The harder -- but also cheaper -- route is to use existing networks more efficiently. The task to assign different wavelengths to a fiber optic network to enable parallel communication between many different parties can be seen as a practical application of the Partition Graph Coloring Problem.
 
 %Um diesen steigenden Anforderungen gerecht zu werden kann natürlich einfach die Infrastruktur -- mit entsprechenden (auch laufenden) Kosten -- erweitert werden oder aber die bestehenden Netze werden effizienter genutzt. Das Problem, mehrere Kommunikationskanäle über das selbe Glasfasernetzwerk ohne gegenseitige Störungen zu übertragen, kann allgemein auf das Partition Graph Coloring Problem zurückgeführt werden.
 
-In this paper we introduced a new approach to solving the Partition Graph Coloring Problem by using Variable Neighborhood Search, which facilitates 4 different Neighborhoods to improve an existing solution step-by-step.
+In this paper we introduced a new approach to solving the Partition Graph Coloring Problem by using Variable Neighborhood Search, which facilitates 4 different neighborhoods to improve an existing solution step-by-step.
 
 %In dieser Arbeit stellten wir eine Variable Nachbarschaftssuche vor, die mithilfe eines VND auf Basis von drei Nachbarschaften eine Ausgangslösung schrittweise verfeinert.
 
@@ -450,7 +436,7 @@ At the end of this project, we were allowed to use the computing grid of the Alg
     \item[$|E|$] Number of edges in that instance.
     \item[$|C|$] Number of clusters in that instance.
     \item[$S_i$] Number of colors used by the construction heuristic \emph{onestepCD}.
-    \item[$N$] Used Neighborhoods in order of iteration:
+    \item[$N$] Used neighborhoods in order of iteration:
         \begin{description}
             \item[\texttt{c}] \emph{ChangeColor}
             \item[\texttt{n}] \emph{ChangeNode}
@@ -517,7 +503,7 @@ Instance & \multicolumn{1}{c}{$|V|$} & \multicolumn{1}{c}{$|E|$} & \multicolumn{
 \setstretch{1.5}
 
 \subsection{Interpretation}
-It can be seen that in order to get the best results, multiple orders of Neighborhoods in the VND are possible. The average improvement of 10\% to 15\% on huge instances is the overall trend. All these improvements are measured relative to the construction heuristic \emph{onestepCD}.
+It can be seen that in order to get the best results, multiple orders of neighborhoods in the VND are possible. The average improvement of 10\% to 15\% on huge instances is the overall trend. All these improvements are measured relative to the construction heuristic \emph{onestepCD}.
 
 %Wie man erkennen kann ist die Reihenfolge, in der das VND die einzelnen Nachbarschaften durchsuchen muss, um die jeweils besten Resultate zu erzielen, nicht wirklich eindeutig. Die erzielten Verbesserung gegenüber der von der Konstruktionsheuristik \emph{onestepCD} ermittelten Ausgangslösungen sind mitunter beachtlich und bewegen sich großteils im Bereich zwischen 11 und 15\%.
 
