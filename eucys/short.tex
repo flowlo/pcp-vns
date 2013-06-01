@@ -1,0 +1,44 @@
+\documentclass[paper = a4, fontsize = 10pt]{scrartcl}
+
+%The written project report has five parts:
+%	A typewritten presentation (or essay). Hand written presentations are not admissible. The presentation should describe the project. It may be accompanied by original illustrations (graphs, drawings and photographs).It may consist of up to a maximum of 10 pages of written text (A4 format; single sided; double spaced and unbound in a minimum character size of 10 point); It may be accompanied by up to a further 10 pages of illustrations (A4 format; single sided and unbound); No extra materials such as video tapes and diskettes can be accepted as part of the typewritten presentation
+%	A one page scientific summary in English containing the most important points of the project (aim of project, materials and methods, observations and conclusions).
+%	A clear, concise project title in English for the Contest Catalogue. This may be accompanied, if required, by the full scientific title.
+%	The full original scientific title, in the original language.
+%	A straightforward description of the project of not more than ten lines in simple English for publication in the Contest Catalogue. Contestants, through their National Organiser, must ensure that this brief project description is readily understandable by the reporting press, other media, and interested members of the wider public.
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage[babel, german=quotes]{csquotes}
+%\usepackage{hyperref}
+\usepackage[style=authoryear, natbib, backend=biber]{biblatex}
+\usepackage[bottom = 3cm, top = 3cm, left = 2cm, right = 2cm]{geometry}
+\usepackage{graphicx, fancyhdr, array, wrapfig, colortbl, algorithm, algpseudocode}
+\renewcommand\familydefault{\sfdefault}
+\linespread{2}
+\setlength{\parindent}{4mm}
+\setlength{\parskip}{2mm}
+\pagestyle{fancy}
+\fancyhf{}
+\clubpenalty = 10000
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
+\fancyfoot{}
+\cfoot{{\footnotesize \textnormal{Lorenz Leutgeb, Moritz Wanzenböck}}}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\let\origappendix\appendix
+\renewcommand\appendix{\clearpage\pagenumbering{roman}\origappendix}
+\begin{document}
+
+\section*{Variable Neighborhood Search for the Partition Graph Coloring Problem}
+
+\subsection*{Aim of Project}
+
+\subsection*{Materials and Methods}
+
+\subsection*{Observations and Conclusions}
+
+\end{document}
