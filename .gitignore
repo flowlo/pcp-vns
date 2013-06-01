@@ -33,3 +33,15 @@
 
 *.run.xml
 *.bcf
+*.loa
+*.lol
+
+*.bak
+*.orig
+
+*.BACKUP.*
+*.LOCAL.*
+*.BASE.*
+*.REMOTE.*
+
+*.pdf
