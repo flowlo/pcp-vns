@@ -10,12 +10,15 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{multirow}
-\usepackage{setspace}
+\usepackage{setspace, subcaption}
 \usepackage[babel, german=quotes]{csquotes}
 %\usepackage{hyperref}
 \usepackage[style=authoryear, natbib, backend=biber]{biblatex}
 \usepackage[bottom = 3cm, top = 3cm, left = 2cm, right = 2cm]{geometry}
 \usepackage{graphicx, fancyhdr, array, wrapfig, colortbl, algorithm, algpseudocode}
+\usepackage{tikz}
+\usepackage{caption}
+\usetikzlibrary{arrows,shapes,positioning,shadows,trees,fit,shapes.geometric,backgrounds,shadows.blur,shapes.symbols}
 %\floatname{algorithm}{Algorithmus}
 %\renewcommand{\listalgorithmname}{List of algorithms}
 %\renewcommand{\algorithmicend}{\textbf{Ende}}
@@ -97,7 +100,7 @@ Providers of internet infrastructure face the problem of satisfying an ever grow
 
 %Betreiber der Internetinfrastruktur stehen vor dem Problem, immer weiter steigende Kommunikationsbedürfnisse befriedigen zu müssen. Dafür müssen entweder die bestehenden Netze effizienter genutzt, oder die Infrastruktur erweitert werden.
 
-In a modern fiber-optic network, which uses Wavelength Division Multiplexing, the number of different wavelengths used to communicate directly corresponds to the efficiency of the network. The fewer wavelengths are used, the better. By optimizing the assignment of wavelengths a network can transfer more data without the need of additional hardware. This leads to an overall cheaper network without a drop in performance.
+In a modern fiber-optic network, which uses \textit{Wavelength Division Multiplexing} (WDM), the number of different wavelengths used to communicate directly corresponds to the efficiency of the network. The fewer wavelengths are used, the better. By optimizing the assignment of wavelengths a network can transfer more data without the need of additional hardware. This leads to an overall cheaper network without a drop in performance.
 
 %Innerhalb von Glasfasernetzwerken, die Wavelength Division Multiplexing einsetzen, soll die Anzahl verschiedener Lichtfarben beziehungsweise Wellenlängen verringert, also optimiert werden. Dadurch können vorhandene Ressourcen besser ausgelastet und die Anschaffung und der Betrieb neuer Infrastruktur zumindest hinausgezögert werden, wodurch sich sowohl Anschaffungs- als auch Betriebskosten einsparen lassen.
 
@@ -139,8 +142,72 @@ This problem is a generalization of the Graph Coloring Problem (GC), which is we
 %Dese Aufgabenstellung kann auf einfache Art und Weise in ein generalisiertes Graph Coloring Problem transformiert werden, bei dem statt einfacher Knoten ganze Cluster von Knoten betrachtet werden müssen: Für jede Kommunikation werden vorab mehrere günstige Wege durch das Netzwerk von der Quelle zum Ziel ausgewählt (z.B.\ auf Basis der Weglänge und/oder der Übertragungsgeschwindigkeit). Jede Kommunikation bildet dabei einen eigenen Cluster, die einzelnen vorselektierten Wege dieser Kommunikation die Knoten innerhalb des Clusters. In diesem Graphen -- in der Folge auch \emph{Konfliktgraph} genannt -- werden zwei Knoten dann miteinander verbunden, wenn die jeweiligen Wege im originalen Glasfasernetzwerk eine gemeinsame Übertragunsstrecke besitzen, sie sich also gegenseitig stören würden, wenn sie die gleiche Wellenlänge verwenden würden (siehe auch Grafik \ref{fig:translation}). Ziel ist es nun, in diesem Graphen für jeden Cluster genau einen Knoten auszuwählen (für eine Kommunikation einen Weg durch das Netzwerk festlegen) und die pro Cluster ausgewählten Knoten so einzufärben, dass keine direkt miteinander verbundenen Knoten die selbe Farbe erhalten (die Farbe entspricht dabei der Zuordnung einer Wellenlänge). Minimiert man hierbei gleichzeitig die Anzahl an benötigten Farben (womit die Grundauslastung des Netzwerks reduziert wird), erhält man das generalisierte (oder auch Partition) Graph Coloring Problem, ein NP-schweres Optimierungsproblem.
 
 \begin{figure}
-    \includegraphics[width=1.0\textwidth]{../img/translation.pdf}
-    \caption[Simplified test instance]{Simplified test instance: Three different routes were chosen for the communication between \emph{A} and \emph{B} (blue colors). Only two different routes were chosen for the communication between \emph{C} and \emph{D} (yellow/orange). The resulting conflict graph on the right has two clusters, each representing one communication. The edges between two vertices indicate a shared optical fiber along the routes they represent. By choosing the vertices that are indicated by bigger nodes in their respective cluster, a solution that requires only one color can be found. This means that all communications in this network can be handled with only one wavelength.}
+%    \includegraphics[width=1.0\textwidth]{../img/translation.pdf}
+	\begin{subfigure}{0.7\textwidth}
+		\centering
+		\begin{tikzpicture}[scale = 0.7, transform shape, every node/.style = {draw, font=\bfseries\sffamily, text=white, align=center, circle, fill = black!60}]
+			\node [rectangle, fill = white, right = 0mm, draw = white] (background) {\includegraphics[height=0.7\textwidth]{../img/at}};
+
+			\node [fill = blue, right = 2mm, yshift = -5mm] (a) {A};
+			\node [fill = blue, right = 11.3cm of a, yshift = -1.5cm] (b) {B};
+			\node [fill = red, right = 13.5cm of a, yshift = 2cm] (c) {C};
+			\node [fill = red, right = 9 cm of a, yshift = -2.8cm](d) {D};
+			\node [right = 6.5cm of a, yshift = 8mm](x) {};
+			\node [right = 9cm of a, yshift = 2.2cm] (y) {};
+
+			\path [draw, gray, dotted]		(a) edge			(b);
+			\path [draw, gray, dotted]		(c) edge			(d);
+
+			\path [draw, very thick, blue!40]	(x) edge			(y);
+			\path [draw, very thick, yellow]	(x) edge [bend right = 20]	(y);
+			\path [draw, very thick, blue!90]	(x) edge [bend left = 20]	(y);
+
+			\path [draw, very thick, blue!40]	(x) edge			(a);
+			\path [draw, very thick, blue!90]	(x) edge [bend right = 20]	(a);
+			\path [draw, very thick, violet]	(x) edge [bend left = 20]	(a);
+			\path [draw, very thick, yellow]	(x) edge [bend left = 20]	(d);
+			\path [draw, very thick, violet]	(x) edge [bend right = 20]	(d);
+
+			\path [draw, very thick, blue!90]	(y) edge 			(b);
+			\path [draw, very thick, blue!40]	(y) edge [bend left = 20]	(c);
+			\path [draw, very thick, yellow]	(y) edge [bend right = 20]	(c);
+
+			\path [draw, very thick, orange]	(b) edge [bend right = 20]	(d);
+			\path [draw, very thick, violet]	(b) edge [bend left = 20]	(d);
+			\path [draw, very thick, blue!40]	(b) edge [bend right = 20]	(c);
+			\path [draw, very thick, orange]	(b) edge [bend left = 20]	(c);
+		\end{tikzpicture}
+		\caption{Three different routes were chosen for the communication between \emph{A} and \emph{B} (blue colors). Only two different routes were chosen for the communication between \emph{C} and \emph{D} (yellow/orange).}
+		\label{fig:example:b}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.3\textwidth}
+		\centering
+		\begin{tikzpicture}[scale = 0.9, transform shape, every node/.style  = {draw, circle, minimum size = 5mm}]
+			\node [fill = blue!40] (ab1) {};
+			\node [fill = violet, right = 1.7cm of ab1] (ab2) {};
+			\node [fill = blue!90, right = 1.7cm of ab2, minimum size = 0.6cm, very thick] (ab3) {};
+
+			\node [fill = orange, yshift=-2.5cm, xshift = 1.1cm, minimum size = 0.6cm, very thick] (cd1) {};
+			\node [fill = yellow, right = 1.7cm of cd1] (cd2) {};
+
+			\begin{scope}[on background layer]
+				\node[fit=(ab1)(ab2)(ab3), draw = none, shading=radial, outer color=white, inner color = blue!20, inner sep = 0mm, xscale = 1.1, yscale = 0.3] {};
+				\node[fit=(cd1)(cd2), draw = none, shading=radial, outer color=white, inner color = red!20, inner sep = 0mm, xscale = 1.2, yscale = 0.4] {};
+			\end{scope}
+
+			\path [draw, very thick]	(ab1) edge	(ab2);
+			\path [draw, very thick]	(ab2) edge	(ab3);
+			\path [draw, very thick]	(ab1) edge	(cd1);
+			\path [draw, very thick]	(ab1) edge	(cd2);
+			\path [draw, very thick]	(ab2) edge	(cd1);
+			\path [draw, very thick]	(ab2) edge	(cd2);
+			\path [draw, very thick]	(ab3) edge	(cd2);
+			\path [draw, very thick]	(ab1) edge [bend left = 30]	(ab3);
+		\end{tikzpicture}
+		\caption{The resulting conflict graph on the right has two clusters, each representing one communication. The edges between two vertices indicate a shared optical fiber along the routes they represent. By choosing the vertices that are indicated by bigger nodes in their respective cluster, a solution that requires only one color can be found. This means that all communications in this network can be handled with only one wavelength.}
+		\label{fig:example:d}
+	\end{subfigure}
+    \caption{Simplified problem instance}
 %    \caption[Simplifizierte Testinstanz]{Simplifizierte Testinstanz: Für die Kommunikation zwischen \emph{A} und \emph{B} wurden drei mögliche Wege ausgewählt (in Blautönen gehalten), zwischen \emph{C} und \emph{D} zwei Wege (Gelb/Orange). Der daraus resultierende Konfliktgraph auf der rechten Seite enthält zwei Cluster mit drei bzw.\ zwei Knoten und die jeweiligen Kanten, wenn zwei Kommunikationswege zumindest eine Strecke im Netzwerk gemeinsam verwenden. Wählt man die größer dargestellten Knoten innerhalb der Cluster, so kann der Konfliktgraph mit nur einer Farbe gefärbt werden, d.h.\ die Kommunikationsbedürfnisse in diesem Netzwerk können mit nur einer Wellenlänge abgewickelt werden.}
     \label{fig:translation}
 \end{figure}
@@ -243,7 +310,7 @@ In case the VNS gets stuck in a local optimum for all neighborhoods it uses \emp
 
 %Um diesem Zustand des vollkommenen Stillstandes zu entkommen, wird, nachdem dieses lokale Optimum für alle definierten Nachbarschaften erreicht wurde, mit immer größer werdenden Kraft die Lösung ``geschüttelt''. Gemeint ist damit, dass die lokal optimale Lösung durch verschiedene Algorithmen verändert wird, welche nicht darauf abzielen, eine Lösung besser zu machen, sondern sie zunächst ein wenig, mit dem Fortschreiten der Optimierung aber auch möglichst stark zu verfremden, um einen neuen Startpunkt für das VND zu besitzen.
 
-The VNS can be explained using a three-dimensional plane with every point on the plane representing a unique solution to the problem. The \enquote{height} of a point can be seen as the \enquote{quality} of the solution it represents. For our problem this means the fewer colors are used the lower the point lies. For a minimization problem valleys represent good solutions while hills stand for bad solutions. The VND algorithm proceeds into such a valley step by step. This valley is not necessarily the deepest, so by using \emph{Shaking} the algorithm steps back onto a hill and hopefully finds a different, deeper valley to restart the process. It cannot be guaranteed, however, that the global optimum is reached this way.
+The VNS can be explained using a three-dimensional plane with every point on the plane representing a unique solution to the problem. The \enquote{height} of a point can be seen as the \enquote{quality} of the solution it represents. For our problem this means the fewer colors are used the lower the point lies. For a minimization problem valleys represent good solutions while hills stand for bad solutions. The VND algorithm proceeds into such a valley step by step. This valley is not necessarily the deepest, so by using \emph{shaking} the algorithm steps back onto a hill and hopefully finds a different, deeper valley to restart the process. It cannot be guaranteed, however, that the global optimum is reached this way.
 
 %Veranschaulichen kann man sich das Verfahren, wenn man sich alle gültigen Lösungen als eine große Fläche vorstellt. Je nach Güte der Lösung sind einzelne Teile dieser Fläche unterschiedlich hoch, gute Lösungen bilden Senken (wenige Farben werden für die Färbung benötigt), während schlechte Lösungen Berge bilden. Das VND tendiert nun dazu, sich in einer dieser Senken festzufahren, es wurde ein lokales Optimum bezüglich sämtlicher Nachbarschaften erreicht.
 
