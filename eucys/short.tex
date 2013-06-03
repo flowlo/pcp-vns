@@ -13,8 +13,9 @@
 \usepackage[bottom = 2.5cm, top = 1.5cm, left = 1.5cm, right = 1.5cm]{geometry}
 \usepackage{fancyhdr}
 \renewcommand\familydefault{\sfdefault}
-\linespread{1.4}
-\setlength{\parindent}{4mm}
+\linespread{1.3}
+%\setlength{\parindent}{4mm}
+\setlength{\parindent}{0mm}
 \setlength{\parskip}{1mm}
 \pagestyle{fancy}
 \fancyhf{}
@@ -26,20 +27,24 @@
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 \let\origappendix\appendix
+
+
 \begin{document}
 
 \section*{Variable Neighborhood Search for the Partition Graph Coloring Problem}
 
 \subsection*{Aim of Project}
 
-The goal of this project is to adapt the metaheuristic approach \textit{Variable Neighborhood Search} (VNS) to the \textit{Partition Graph Coloring Problem} (PCP) of combinatorial optimization.
+%The goal of this project is to adapt the metaheuristic approach \textit{Variable Neighborhood Search} (VNS) to the \textit{Partition Graph Coloring Problem} (PCP) of combinatorial optimization.
+The goal of this project is to distribute communication demands known in advance in large scale computer networks. This is done to allow for additional communication, thus avoiding or at least delaying the extension of these networks. This problem is transformed into the \textit{Partition Graph Coloring Problem} (PCP), a combinatorial optimization problem, which is solved by a metaheuristic called \textit{Variable Neighborhood Search} (VNS).
+
 
 \subsubsection*{The Partition Graph Coloring Problem}
 
 \paragraph{Definition}
-Given an undirected graph $G = (V,\ E)$, where $V$ is the set of vertices of $G$, $E$ the set of edges (2-tupels of the form $(s,\ t)$, denoteing source and target vertex of each edge) connecting $V$ in $G$ and $V_1,\ V_2,\ V_3,\ \ldots,$ $V_k$ disjoint subsets of $V$ defined as $V_i \cap V_j = \emptyset \ \forall i,\ j = 1,\ \ldots,\ k$ with $i \not = j$, where $\bigcup_{i = 1}^k V_i = V$, called \textit{partitions}, \textit{clusters} or \textit{components}, the \textit{Partition Graph Coloring Problem} (PCP) consists of finding a set of vertices $V'$ such that $|V' \cap V_i| = 1,\ \forall\ i = 1,\ \ldots,\ k$ holds ($V'$ contains a vertex in every cluster) and the coloring $S$ of the graph $G' = (V', E')$ constructable with vertices induced by $V'$ and the implied subset of $E' = \{(i,\ j) \in E\ |\ (i \in V') \vee (j \in V') \}$ is minimal.
+Given an undirected graph $G = (V,\ E)$, where $V$ is the set of vertices of $G$, $E$ denotes the set of undirected edges connecting the vertices of $V$ in $G$, as well as $k$ disjoint subsets of $V$, namely $V_1,\ V_2,\ \ldots,$ $V_k$, $V_i \cap V_j = \emptyset \ \forall i,\ j = 1,\ \ldots,\ k$ with $i \not = j$, where $\bigcup_{i = 1}^k V_i = V$ (called \textit{partitions}, \textit{clusters} or \textit{components}), the \textit{Partition Graph Coloring Problem} (PCP) is to find a set of vertices $V'$ such that $|V' \cap V_i| = 1,\ \forall\ i = 1,\ \ldots,\ k$ ($V'$ contains exactly one vertex of each cluster) and the coloring $S$ of the graph $G' = (V', E')$ ($E'$ being the set of edges induced by $V'$, i.e.\ $E' = \{(a,\ b) \in E\ |\ a \in V' \vee b \in V' \}$) is minimal.
 
-A solution is considered the set of \textit{representants} in $V'$ together with their coloring $S$.
+A solution is considered the set of \textit{representatives}, i.e.\ the vertices in $V'$, together with their coloring $S$ (minimal number of colors, where two connected vertices in $G'$ must have assigned different ones).
 
 \paragraph{Application}
 Modern fiber optic networks using \textit{Wavelength Division Multiplexing} (WDM) can be modeled as instances of the PCP to solve the problem of assigning wavelengths for individual communication paths through the network. This way an ideal assignment of wavelengths can be found.
@@ -47,12 +52,12 @@ Modern fiber optic networks using \textit{Wavelength Division Multiplexing} (WDM
 \subsection*{Materials and Methods}
 
 \subsubsection*{Variable Neighborhood Search}
-The PCP itself is non-deterministic polynomial-time hard (NP-hard) thus the time complexity of obtaining an optimal solution does not grow in polynonmial relation to the problem's size. Therefore exact methods to solve the problem get unusuable quickly because of the tremendously fast increasing computing time. A way to work around the problems of exact approaches are heuristical methods.
+The PCP is a non-deterministic polynomial-time hard (NP-hard) optimization problem, thus the time complexity of obtaining an optimal solution is not polynomially related to the size of the problem instance. Therefore exact methods to solve the PCP can only be applied to relatively small instances due to the tremendously fast increase of computing time. A way to work around the problems of exact approaches is to use heuristic methods.
 
-Heuristics do not necessarily find the optimal solution to a problem but in general are much faster than exact methods. The metaheurisitc VNS takes benefits from combining multiple heuristics in a clever way: Neighborhoods (small heuristics) are applied to an initial solution to improve it. By varying those procedures, optimization gets more effective, because local optimae of different heuristics can be designed in such a way that they rarely overlap. In case all neighborhoods are in a state of local optimality, the VNS triggers a shaking mechanism. Shaking means altering the current solution not only improving it but also accepting mutations that introduce worse solutions.
+Heuristics do not necessarily find the optimal solution to a problem but in general are much faster than exact approaches. The metaheuristic VNS takes advantage from combining multiple heuristics in a clever way: Neighborhoods (small heuristics to slightly modify a solution) are applied to an initial solution to incrementally improve it. Simple heuristics often get stuck in a local optimum (the solution can no longer be improved by a small step), by sophistically combining different heuristics the occurrence of such a situation can be reduced although not completely avoided. In case all neighborhoods are caught in a local optimum, the VNS triggers a shaking mechanism. Shaking means altering the current solution not with the aim to improve it but to escape the current local optimum, thus temporary accepting a worse solution.
 
 \subsection*{Observations and Conclusions}
 
-The VNS approach promises good solutions to the PCP. We implemented the algorithm and computed results using 30\% to 40\% less colors on instances with 90 to 120 vertices, and 15\% on large instances with 500 vertices compared to the initial solution. To compare these results we used instances common with other publications on the PCP. Although this is already a signifacant figure, we are still working on improving our neighborhoods (heuristics).
+The VNS approach already leads to good results to the PCP. We implemented the proposed algorithm and initial solutions computed by a construction heuristic could be improved by 30\% to 40\% on instances with 90 to 120 vertices, and 15\% on large instances with 500 vertices. These instances are taken from the literature to make the results comparable to other publications in this field. Although these results are promising we are still working on improving our (meta-) heuristic framework, especially the design of our neighborhoods.
 
 \end{document}
