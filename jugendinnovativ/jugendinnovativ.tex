@@ -30,7 +30,7 @@
 \cfoot{{\footnotesize \textnormal{Lorenz Leutgeb, Moritz Wanzenböck}}}
 \lhead{{\footnotesize \textnormal{}}}
 \lfoot{{\footnotesize \textnormal{\the\year}}}
-\addbibresource{pcp.bib}
+\addbibresource{../pcp.bib}
 \let\origappendix\appendix
 \renewcommand\appendix{\clearpage\pagenumbering{roman}\origappendix}
 \begin{document}
@@ -104,7 +104,7 @@ an der
 % Wie war die Aufgabenverteilung und Ressourcenplanung? (Kooperationen mit außerschulischen Partnern)
 \section{Projektentstehung und -planung}
 
-Betreiber der Internetinfrastruktur stehen vor dem Problem, immer weiter steigende Kommunikationsbedürfnisse befriedigen zu müssen. Dafür müssen entweder die bestehenden Netze effizienter genutzt, oder die Infrastruktur erweitert werden.
+Betreiber der Internetinfrastruktur stehen vor dem Problem, immer weiter steigende Kommunikationsbedürfnisse befriedigen zu müssen. Dafür müssen entweder die bestehenden Netze effizienter genutzt oder die Infrastruktur erweitert werden.
 
 Innerhalb von Glasfasernetzwerken, die Wavelength Division Multiplexing einsetzen, soll die Anzahl verschiedener Lichtfarben beziehungsweise Wellenlängen verringert, also optimiert werden. Dadurch können vorhandene Ressourcen besser ausgelastet und die Anschaffung und der Betrieb neuer Infrastruktur zumindest hinausgezögert werden, wodurch sich sowohl Anschaffungs- als auch Betriebskosten einsparen lassen.
 
@@ -114,7 +114,7 @@ Im Rahmen dieses Projektes sollen neuartige Wege zur Lösung des Problems implem
 
 Die Projektidee entstand nach ausführlicher Beratschlagung und Diskussion mit Univ-Prof.~Dipl.-Ing.~Dr.techn.~Günther~Raidl (Technische Universität Wien, Arbeitsbereich für Algorithmen und Datenstrukturen), welcher mehrere Probleme aus dem Bereich der Optimierung als Diplomarbeit vorschlug. Auch wird die Arbeit weiterhin von ihm unterstützt, sollte es Fragen zur Problemstellung oder konkreten Lösungsansätzen geben.
 
-Ziel ist es, einen neuen Algorithmus zu entwickeln, welcher mit bestehenden Lösungs\-an\-sätz\-en konkurrieren kann. Zu diesem Zwecke wird der Algorithmus in ein konkretes Programm implementiert, um ihn auf die in der Literatur verwendeten Probleminstanzen anzuwenden.
+Ziel ist es, einen neuen Algorithmus zu entwickeln, welcher mit bestehenden Lösungs\-an\-sät\-zen konkurrieren kann. Zu diesem Zwecke wird der Algorithmus in ein konkretes Programm umgesetzt, um ihn auf die in der Literatur verwendeten Probleminstanzen anzuwenden.
 
 Neben der fachspezifischen Literatur, welche von der Technischen Universität Wien zur Verfügung gestellt wurde, befassten wir uns zu Beginn des Projekts auch mit der Recherche für geeignete Codebibliotheken und verteilte Versionskontrollsysteme. Weiters wurde die Benutzung des Computing Clusters der Universität ermöglicht, um Berechnungen schneller durchführen zu können.
 \section{Inhaltliche Beschreibung des Projekts}
@@ -155,7 +155,7 @@ Mit Hilfe der von \citet*{Noronha2006} vorgeschlagenen Tabu-Suche ist es möglic
 
 Zunächst wird bei der Tabu-Suche eine ungültige Lösung erzeugt, und zwar durch das neue Färben aller Knoten, welche in der Ausgangslösung noch die höchste Farbe besaßen, mit einer zufälligen, kleineren Farbe.
 
-Nachdem nun natürlich Konflikte zwischen zwei verbunden Knoten mit der gleichen Farbe entstanden sind, versucht die Tabu-Suche diese Konflikte zu lösen. Dazu wird ein zufälliger im Konflikt stehender Knoten ausgewählt und es wird versucht, diesen neu einzufärben. Sollte dies Erfolg haben beginnt die Tabu-Suche wieder bei der Suche nach in Konflikt stehenden Knoten.
+Nachdem nun natürlich Konflikte zwischen zwei verbunden Knoten mit der gleichen Farbe entstanden sind, versucht die Tabu-Suche, diese Konflikte zu lösen. Dazu wird ein zufälliger im Konflikt stehender Knoten ausgewählt und es wird versucht, diesen neu einzufärben. Sollte dies Erfolg haben beginnt die Tabu-Suche wieder bei der Suche nach in Konflikt stehenden Knoten.
 
 Sollte für einen Knoten allerdings keine passende Farbe gefunden werden können, wird dieser Knoten auf die Tabu-Liste gesetzt, wo er für einige Iterationen verbleibt. Knoten sind, solange sie auf dieser Liste sind, tabu für eine Neueinfärbung, dürfen also nicht ausgewählt werden.
 
@@ -166,7 +166,7 @@ Sollte hingegen die Tabu-Suche auch nach vielen Iterationen keine gültige Lösu
 Als Ausgangspunkt für unser Projekt setzen wir auf bereits bewährte Techniken aus anderen Bereichen der Optimierung und versuchen, diese bestmöglich für das Partition Graph Coloring Problem einzusetzen.
 
 \paragraph{Initiallösung}{
-Um eine gültige Startlösung als Ausgangspunkt der Variablen Nachbarschaftssuche zu berechnen, wird wie gemeinhin üblich eine schnelle Konstruktionsheuristik eingesetzt. Konkret wurde nach der Konsultation von \citet*{Li2000} die dort beschriebene Heuristik \emph{onestepCD} (siehe \ref{sec:construct}) gewählt.}
+Um eine gültige Startlösung als Ausgangspunkt der Variablen Nachbarschaftssuche zu berechnen wird, wie gemeinhin üblich, eine schnelle Konstruktionsheuristik eingesetzt. Konkret wurde nach der Konsultation von \citet*{Li2000} die dort beschriebene Heuristik \emph{onestepCD} (siehe \ref{sec:construct}) gewählt.}
 
 % Im folgenden soll erläutert werden, wie mit diesem Algorithmus eine Lösung gefunden wird.
 \paragraph{Aufbau der Variablen Nachbarschaftssuche}{
@@ -224,14 +224,14 @@ Obwohl die Variable Nachbarschaftssuche in der Theorie immer weiter laufen könn
 \label{sec:neigh}
 Wie bereits beschrieben handelt es sich bei Nachbarschaften um einzelne Algorithmen die versuchen, eine gültige Lösung in eine andere, bessere Lösung durch eine relativ kleine Änderung umzuwandeln. Wir haben uns zunächst auf die drei Nachbarschaften \emph{changeColor}, \emph{changeNode} und \emph{DSATUR} konzentriert, wobei weitere Nachbarschaften noch zur Diskussion stehen.
 
-Jede Nachbarschaft bietet auch eine Methode an, eine Lösung zu ``schütteln'', welche ähnlich abläuft wie die Methode zur Suche des jeweiligen lokalen Optimums, allerdings ohne die Beschränkung ausschließlich bessere Ergebnisse zurück liefern zu müssen.
+Jede Nachbarschaft bietet auch eine Methode an, eine Lösung zu ``schütteln'', welche ähnlich abläuft wie die Methode zur Suche des jeweiligen lokalen Optimums, allerdings ohne die Beschränkung ausschließlich bessere Ergebnisse zurück\-liefern zu müssen.
 
 \paragraph{ChangeColor}
 Bei dieser sehr einfachen Nachbarschaft, die von der Tabu-Suche aus \citet*{Noronha2006} inspiriert ist, wird versucht, alle Knoten umzufärben, welche mit der höchsten Farbe markiert wurden. 
 
-Um dieses Ziel zu erreichen, werden alle Knoten, welche diese höchste Farbe besitzen, mit einer neuen zufälligen Farbe markiert. Dies führt natürlich unweigerlich zu Konflikten zwischen verbundenen Knoten im Konfliktgraph, d.h.\ zu benachbarten Knoten mit gleicher Farbe. 
+Um dieses Ziel zu erreichen, werden alle Knoten, welche diese höchste Farbe besitzen, mit einer neuen, zufälligen Farbe markiert. Dies führt natürlich unweigerlich zu Konflikten zwischen verbundenen Knoten im Konfliktgraph, d.h.\ zu benachbarten Knoten mit gleicher Farbe. 
 
-Um diese Konflikte zu lösen wird ein zufälliger, im Konflikt stehender Knoten ausgewählt, um ihn mit einer passenden Farbe zu füllen. Zu beachten ist hierbei die Tatsache, das diese passende Farbe kleiner sein muss als die frühere höchste Farbe, da ja eine Verbesserung (eine Reduktion der Farbenanzahl um 1) erzielt werden soll.
+Um diese Konflikte zu lösen wird ein zufälliger, im Konflikt stehender Knoten ausgewählt, um ihn mit einer passenden Farbe zu füllen. Zu beachten ist hierbei die Tatsache, das diese passende Farbe kleiner sein muss als die früher höchste Farbe, da ja eine Verbesserung (eine Reduktion der Farbenanzahl um 1) erzielt werden soll.
 
 Sollte sich keine passende Farbe finden, wird auch dieser im Konflikt stehende Knoten mit einer zufälligen Farbe neu eingefärbt, was im Normalfall zu weiteren Konflikten führt. Es wird nun versucht, diesen gesamten Vorgang so lange zu wiederholen bis keine Konflikte mehr bestehen. 
 
@@ -245,7 +245,7 @@ Nun wird wieder ein zufälliger Knoten aus den entstandenen Konflikten ausgewäh
 Dieser Vorgang wird solange wiederholt bis alle Konflikte gelöst wurden oder zu viele Iterationen abgelaufen sind.
 
 \paragraph{NewVertexColoring-DSATUR}
-Diese Nachbarschaft reduziert das Graph Partition Coloring Problem auf das normale Graph Coloring Problem ohne Clustering der Knoten, indem die aktuell gewählten Repräsentanten fixiert werden und dieses so vereinfachte Problem (das allerdings immer noch NP-hart ist) wird nun mit folgendem Greedy Ansatz näherungsweise gelöst:
+Diese Nachbarschaft reduziert das Partition Graph Coloring Problem auf das normale Graph Coloring Problem ohne Clustering der Knoten, indem die aktuell gewählten Repräsentanten fixiert werden und dieses so vereinfachte Problem (das allerdings immer noch NP-hart ist) wird nun mit folgendem Greedy Ansatz näherungsweise gelöst:
 
 \begin{enumerate}
     \item Finde den (noch nicht eingefärbten) Repräsentanten mit der größten Anzahl an eingefärbten Nachbarn (engl.\ Degree SATURation).
@@ -297,9 +297,9 @@ Erste Tests auf kleineren Instanzen des Problems zeigten bereits vielversprechen
 
 \section{Bericht des Projektkoordinators}
 
-Moritz und ich arbeiteten bereits in den vergangen Schuljahren gemeinsam an Projekten, und wussten so beide, worauf wir uns einlassen. Neues Konfliktpotential bot die Verwendung des Versionskontrollsystems Git\footnote{siehe \url{http://www.git-scm.org/}}: Zu Beginn des Projekts waren wir damit noch nicht vertraut, und mussten durch Fehler lernen, es richtig einzusetzen. Hierbei konnten wir uns wie so oft gegenseitig ergänzen. Besonders bei der Modellierung der Lösungen brauchten wir länger um uns einig zu werden. Um Entscheidungen zu fällen, wogen wir stets Effizienz der Lösungsvorschläge mit internen Coding Guidelines und Modularität ab. Im Zweifelsfall konnten wir uns auf unseren Betreuer verlassen. 
+Moritz und ich arbeiteten bereits in den vergangen Schuljahren gemeinsam an Projekten und wussten so beide, worauf wir uns einlassen. Eine neue Herausforderung bot die Verwendung des Versionskontrollsystems Git\footnote{siehe \url{http://www.git-scm.org/}}: Zu Beginn des Projekts waren wir damit noch nicht vertraut und mussten durch Fehler lernen, es richtig einzusetzen. Hierbei konnten wir uns wie so oft gegenseitig ergänzen. Besonders bei der Modellierung der Lösungen brauchten wir länger um uns einig zu werden. Um Entscheidungen zu fällen, wogen wir stets Effizienz der Lösungsvorschläge mit internen Coding Guidelines und Modularität ab. Im Zweifelsfall konnten wir uns auf unseren Betreuer verlassen.
 
-In den Besprechungen an der Technischen Universität Wien wurden all unsere Fragen beantwortet, und neue Lösungsvorschläge eingebracht, wodurch wir auch Einblick in wissenschaftliche Arbeitsweisen gewinnen konnten.
+In den Besprechungen an der Technischen Universität Wien wurden all unsere Fragen beantwortet und neue Lösungsvorschläge eingebracht, wodurch wir auch Einblick in wissenschaftliche Arbeitsweisen gewinnen konnten.
 
 \newpage
 \printbibliography
@@ -325,8 +325,8 @@ Eine Auswahl der bisherigen Ergebnisse unseres Projektes auf aus der wissenschaf
     \item[Instanz] Name der berechneten Instanz\footnote{Zu finden unter \url{www.ic.uff.br/~celso/grupo/pcp.htm}}.% In dem Format \texttt{n}\textit{(Anzahl der Knoten)}\texttt{}
     \item[$|V|$] Anzahl an Knoten der Instanz.
     \item[$|E|$] Anzahl an Kanten der Instanz.
-    \item[$|C|$] Anzahl an Clustern der Instanz.
-    \item[$S_i$] Die Anzahl an Farben, die von der durch \emph{onestepCD} berechneten Ausgangslösung benötigt werden.
+    \item[$|C|$] Anzahl der Clustern der Instanz.
+    \item[$S_i$] Die Anzahl der Farben, die von der durch \emph{onestepCD} berechneten Ausgangslösung benötigt werden.
     \item[$N$] Die verwendeten Nachbarschaften in Reihenfolge der Iteration:
         \begin{description}
             \item[\texttt{c}] \emph{ChangeColor}
@@ -340,7 +340,7 @@ Eine Auswahl der bisherigen Ergebnisse unseres Projektes auf aus der wissenschaf
 \end{description}
 
 \paragraph{Kurzinterpretation}{
-Wie man erkennen kann ist die Reihenfolge, in der das VND die einzelnen Nachbarschaften durchsucht muss um die jeweils besten Resultate zu erzielen, nicht wirklich eindeutig, auch wenn sich eine Tendenz zu \texttt{cnd} abzeichnet. Die erzielten Verbesserung gegenüber der von der Konstruktionsheuristik \emph{onestepCD} ermittelten Ausgangslösungen sind mitunter beachtlich und bewegen sich Großteils im Bereich zwischen 20 und 40\%.}
+Wie man erkennen kann ist die Reihenfolge, in der das VND die einzelnen Nachbarschaften durchsucht muss, um die jeweils besten Resultate zu erzielen, nicht wirklich eindeutig, auch wenn sich eine Tendenz zu \texttt{cnd} abzeichnet. Die erzielten Verbesserung gegenüber der von der Konstruktionsheuristik \emph{onestepCD} ermittelten Ausgangslösungen sind mitunter beachtlich und bewegen sich Großteils im Bereich zwischen 20 und 40\%.}
 
 \begin{table}[!htbp]
 \centering
@@ -378,7 +378,7 @@ Instanz & $|V|$ & $|E|$ & $|C|$ & $S_i$ & $N$ & $S_{min}$ & $S_{avg}$ & $S_{\sig
 
 \subsection{Visualisierung}
 
-Videoaufzeichnungen des Ablaufs einerVersion des Programms mit Visualisierung finden Sie unter:
+Videoaufzeichnungen des Ablaufs einer Version des Programms mit Visualisierung finden Sie unter:
 
 \begin{itemize}
 	\item \url{https://www.dropbox.com/s/exl54o9vvty8lc3/demo1.mp4}
@@ -386,7 +386,7 @@ Videoaufzeichnungen des Ablaufs einerVersion des Programms mit Visualisierung fi
 	\item \url{https://www.dropbox.com/s/bwsd130cplt4c07/demo3.mp4}
 \end{itemize}
 
-In allen drei Läufen wird die Instanz \texttt{n20p5t2s5.pcp} gezeigt, die klein genug ist um die Arbeitsweise des Programms zu überblicken.
+In allen drei Läufen wird die Instanz \texttt{n20p5t2s5.pcp} gezeigt, die klein genug ist, um die Arbeitsweise des Programms zu überblicken.
 
 \subsection{Quellcode}
 
