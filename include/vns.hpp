@@ -6,6 +6,12 @@
 #include <vector>
 #include <boost/unordered_set.hpp>
 #include <boost/functional/hash.hpp>
+#include <boost/accumulators/accumulators.hpp>
+#include <boost/accumulators/statistics/stats.hpp>
+#include <boost/accumulators/statistics/sum.hpp>
+#include <boost/accumulators/statistics/mean.hpp>
+#include <boost/accumulators/statistics/variance.hpp>
+#include <boost/accumulators/statistics/count.hpp>
 
 namespace pcp {
 	/// Run the VNS with a maximum of k iterations.

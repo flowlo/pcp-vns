@@ -3,6 +3,7 @@
 
 using namespace std;
 using namespace boost;
+using namespace boost::accumulators;
 
 namespace pcp {
 	Solution *bestSolution;
@@ -51,7 +52,13 @@ namespace pcp {
 			}
 		}
 		
-		vector<pair<int, int> > *stats = new vector<pair<int, int> >[neighbors.size()];
+		// stats is an array of vectors of pairs.
+		// stats[i] is te stats for neighborhood i
+		// every pair in stats[i] represents one run, first is collected each run, second only if there was an improvement
+		// vector<pair<int, int> > *stats = new vector<pair<int, int> >[neighbors.size()];
+		
+		vector<accumulator_set<int, stats<tag::count, tag::sum, tag::mean, tag::variance > > > *all = new vector<accumulator_set<int, stats<tag::count, tag::sum, tag::mean, tag::variance > > >[neighbors.size()];
+		vector<accumulator_set<int, stats<tag::count, tag::sum, tag::mean, tag::variance > > > *imp = new vector<accumulator_set<int, stats<tag::count, tag::sum, tag::mean, tag::variance > > >[neighbors.size()];
 	
 		time_t startTime = time(NULL);
 		int no_imp_runs = 0, improvement;
@@ -92,7 +99,11 @@ namespace pcp {
 				improvement = (toImprove->colorsUsed - imp->colorsUsed < 1) ? 0 : toImprove->colorsUsed - imp->colorsUsed;
 				
 				/// Stats tracking
-				stats[curNeighbor].push_back(pair<int, int>(clock() - start, improvement));
+				all[curNeighbor](clock() - start);
+
+				if (improvement > 0)
+					imp[curNeighbor](improvement);
+				// stats[curNeighbor].push_back(pair<int, int>(clock() - start, improvement));
 				
 				if (DEBUG_LEVEL > 1) {
 					cout<<neigh->getName()<<" took about ";
@@ -259,84 +270,25 @@ namespace pcp {
 		cout << "  \"stats\": [" << endl;
 	
 		for (unsigned int i = 0; i < neighbors.size(); i++) {
-			int impCount = 0;
-			pair<int, int> all, imp;
-			all.first = 0;
-			all.second = 0;
-			imp.first = 0;
-			imp.second = 0;
-			for (vector<pair<int, int>>::iterator j = stats[i].begin(); j < stats[i].end(); j++) {
-				all.first += (*j).first;
-				all.second += (*j).second;
-				if ((*j).second > 0) {
-					imp.first += (*j).first;
-					imp.second += (*j).second;
-					impCount++;
-				}
-			}
-			
-			pair<double, double> allAvg, impAvg;
-			allAvg.first = all.first / (double)stats[i].size();
-			allAvg.second = all.second / (double)stats[i].size();
-			impAvg.first = imp.first / (double)impCount;
-			impAvg.second = imp.second / (double)impCount;
-			
-			pair<double, double> allDev, impDev;
-			allDev.first = 0;
-			allDev.second = 0;
-			impDev.first = 0;
-			impDev.second = 0;
-			for (vector<pair<int, int>>::iterator j = stats[i].begin(); j < stats[i].end(); j++) {
-				allDev.first += pow((double)((*j).first - allAvg.first), 2);
-				allDev.second += pow((double)((*j).second - allAvg.second), 2);
-				
-				if ((*j).second > 0) {
-					impDev.first += pow((double)((*j).first - impAvg.first), 2);
-					impDev.second += pow((double)((*j).second - impAvg.second), 2);
-				}
-			}
-			allDev.first = sqrt(allDev.first / (double)stats[i].size());
-			allDev.second = sqrt(allDev.second / (double)stats[i].size());
-			impDev.first = sqrt(impDev.first / (double)impCount);
-			impDev.second = sqrt(impDev.second / (double)impCount);
-		
 			VNS_Unit *cur = neighbors[i];
 			
 			cout << "    {" << endl;
 			cout << "      \"name\" : \"" << cur->getName() << "\"," << endl;
 			cout << "      \"abbreviation\" : \"" << cur->getAbbreviation() << "\"," << endl;
 			cout << "      \"all\" : {" << endl;
-			cout << "        \"runs\" : " << stats[i].size() << "," << endl;
+			cout << "        \"runs\" : " << accumulators::count(all[i]) << "," << endl;
 			cout << "        \"time\" : { " << endl;
-			cout << "          \"sum\" : " << all.first << "," << endl;
-			cout << "          \"avg\" : " << allAvg.first << "," << endl;
-			cout << "          \"dev\" : " << allDev.first << endl;
+			cout << "          \"sum\" : " << accumulators::sum(all[i]) << "," << endl;
+			cout << "          \"avg\" : " << accumulators::mean(all[i]) << "," << endl;
+			cout << "          \"dev\" : " << accumulators::variance(all[i]) << endl;
 			cout << "        }," << endl;
 			cout << "        \"improvements\" : { " << endl;
-			cout << "          \"sum\" : " << all.second << "," << endl;
-			cout << "          \"avg\" : " << allAvg.second << "," << endl;
-			cout << "          \"dev\" : " << allDev.second << endl;
+			cout << "          \"count\": " << accumulators::count(imp[i]) << "," << endl;
+			cout << "          \"sum\"  : " << accumulators::sum(imp[i]) << "," << endl;
+			cout << "          \"avg\"  : " << accumulators::mean(imp[i]) << "," << endl;
+			cout << "          \"dev\"  : " << accumulators::variance(imp[i]) << endl;
 			cout << "        }" << endl;
-			cout << "      }";
-			if (impCount) {
-				cout << "," << endl;
-				cout << "      \"improving\" : {" << endl;
-				cout << "        \"runs\" : " << impCount << "," << endl;
-				cout << "        \"time\" : { " << endl;
-				cout << "          \"sum\" : " << imp.first << "," << endl;
-				cout << "          \"avg\" : " << impAvg.first << "," << endl;
-				cout << "          \"dev\" : " << impDev.first << endl;
-				cout << "        }," << endl;
-				cout << "        \"improvements\" : { " << endl;
-				cout << "          \"sum\" : " << imp.second << "," << endl;
-				cout << "          \"avg\" : " << impAvg.second << "," << endl;
-				cout << "          \"dev\" : " << impDev.second << endl;
-				cout << "        }" << endl;
-				cout << "      }" << endl;
-			}
-			else {
-				cout << endl;
-			}
+			cout << "      }" << endl;
 			cout << "    }";
 			
 			if (i != neighbors.size() - 1)
@@ -349,7 +301,8 @@ namespace pcp {
 		cout << "}" << endl;
 	
 		Solution* res = new Solution(curBest);	
-		delete[] stats;
+		delete[] all;
+		delete[] imp;
 		delete curBest;
 		delete bestSolution;
 		
