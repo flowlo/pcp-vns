@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Präsentation</title>
+		<title>Presentation</title>
 		<meta name="author" content="Lorenz Leutgeb, Moritz Wanzenböck">
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/cold.css" id="theme">
@@ -13,36 +13,34 @@
 <!-- lorenz -->
 				<section data-state="unblur"></section>
 				<section data-state="firstslide">
-					<h2 style="line-height: 1.5">Variable Neighborhood Search<br /><span class="small">für das</span><br />Partition Graph Coloring Problem</h2>
+					<h2 style="line-height: 1.5">Variable Neighborhood Search<br /><span class="small">for the</span><br />Partition Graph Coloring Problem</h2>
 					<br />
-					<p>Lorenz Leutgeb <span class="small">und</span> Moritz Wanzenböck</p>
-					<p class="small">betreut durch</p>
-					<p>Dipl.-Ing. Dr.techn. Martin Gruber</p>
+					<p>Lorenz Leutgeb <span class="small">and</span> Moritz Wanzenböck</p>
 				</section>
 				<section>
 				<section>
-					<h2>Anwendungsgebiet</h2>
+					<h2>Area of application</h2>
 					
-					<p>Design und Optimierung von Glasfasernetzwerken</p>
+					<p>Design and optimization of fibre optical networks</p>
 				</section>
 				<section>
-					<h2>Vorteile von besseren Netzwerkstrukturen</h2>
+					<h2>Benefits of improved network structure</h2>
 					
 					<ul>
-						<li>Expansion leichter</li>
-						<li>Ersparnis von Kosten</li>
-						<li>Geringerer Energieverbrauch</li>
+						<li>Expandable</li>
+						<li>Cheaper</li>
+						<li>Lower energy consumption</li>
 					</ul>
 				</section>
 				</section>
 				<section>
 					<h2>Problem</h2>
-					<p>Zuweisen von Wellenlängen in Glasfasernetzen</p>
+					<p>Assigning wavelengths in fibre optical networks</p>
 				</section>
 <!-- /lorenz -->
 <!-- moritz -->
 				<section>
-					<h2>Wissenschaftlicher Hintergrund</h2>
+					<h2>Scientific Background</h2>
 					<ul>
 						<li><i>Li, Simha</i>: The Partition Coloring Problem and its Application to Wavelength</li>
 						<li><i>Noronha, Ribeiro</i>: Routing and wavelength assignment by partition colouring</li>
@@ -186,19 +184,19 @@ $(function() {
 				</section>
 <!-- moritz -->
 				<section>
-					<h2>Funktionsweise</h2>
+					<h2>How it works</h2>
 					
 					<ul>
-						<li>Berechnen einer Initiallösung mit <span class="mono">onestepCD</span>
+						<li>Computation of an initial solution using <span class="mono">onestepCD</span>
 						<li>Variable Neighborhood Search</li>
 						<li>Variable Neighborhood Descent</li>
-						<li>Lokale Optimierung</li>
+						<li>Local Optimization</li>
 						<li>Shaking</li>
 					</ul>
 				</section>
 				<section>
 				<section>
-					<h2>Nachbarschaften</h2>
+					<h2>Neighborhoods</h2>
 					
 					<img class="standalone" style="box-shadow: none" src="../img/vns-bright.svg" />
 				</section>
@@ -206,18 +204,18 @@ $(function() {
 					<h2 class="mono">ChangeColor</h2>
 					
 					<ul>
-						<li>Einfach & Schnell</li>
-						<li>Färbe Knoten mit maximaler Farbe um</li>
-						<li>Versuche neue Lösung zu finden</li>
+						<li>Fast &amp; easy</li>
+						<li>Recolor node with maximum color</li>
+						<li>Try to find a new solution</li>
 					</ul>
 				</section>
 				<section>
 					<h2>ChangeNode</h2>
 					
 					<ul>
-						<li>Wie ChangeColor</li>
-						<li>Tausche Knoten mit maximaler Farbe aus</li>
-						<li>Versuche neue Lösung zu finden</li>
+						<li>Similar to ChangeColor</li>
+						<li>Swap nodes with maximum color</li>
+						<li>Try to find a new solution</li>
 					</ul>
 				</section>
 				<section>
@@ -225,48 +223,36 @@ $(function() {
 					
 					<ul>
 						<li>Greedy</li>
-						<li>Maximale Saturation</li>
-						<li>Maximale Zahl an nicht eingefärbten Nachbarn</li>
+						<li>Maximum Saturation</li>
+						<li>Maximum number of uncolored adjacencies</li>
 					</ul>
 				</section>
 				<section>
 					<h2>ChangeAll</h2>
 					
 					<ul>
-						<li>Kombination aus ChangeNode & ChangeColor</li>
-						<li>Tausche Knoten und Farbe</li>
-						<li>Aufwendig, aber gute Ergebnisse</li>
+						<li>Combination of ChangeNode &amp; ChangeColor</li>
+						<li>Swap node and color</li>
+						<li>Expensive, but yields good results</li>
 					</ul>
 				</section>
 				</section>
 				<section>
-					<h2>Verwendete Software</h2>
+					<h2>Software used</h2>
 					<img src="../img/boost.png" /><br /><br /><span class="ubigraph-logo">UBIGRAPH</span>
 				</section>
 				<section>
-				<section>
-					<img src="../img/tu.png" class="standalone noshadow" style="float:left"/>
-				</section>
-				<section>
-					<h2>Kooperation</h2>
-					
-					<ul>
-						<li>Impuls</li>
-						<li>Regelmäßiger Austausch</li>
-						<li>ComputeGrid</li>
-					</ul>
-				</section>
 				</section>
 <!-- /lorenz -->
 <!-- moritz -->
 				<section>
-					<h2>Was haben wir erreicht?</h2>
+					<h2>What did we achieve?</h2>
 					
 					<p style="font-size: 200%">&approx; 20%</p>
 					
 					<ul>
-						<li>Bessere Ergebnisse</li>
-						<li>Standardisierte Probleminstanzen</li>
+						<li>Better results</li>
+						<li>Standardized instances</li>
 					</ul>
 				</section>
 <!-- /moritz -->
