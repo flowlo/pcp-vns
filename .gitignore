@@ -3,6 +3,7 @@
 *.a
 *.?ch
 *.out
+*.pyc
 pcp
 
 # input
@@ -15,5 +16,11 @@ pcp
 *.json
 *.gv
 
+# temporary files
+*~
+
 # other nasty stuff
 *.pdf
+
+# NetBeans local files
+/nbproject/private/*
