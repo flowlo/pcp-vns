@@ -90,6 +90,7 @@ namespace pcp {
 			const Graph& getFullGraph();
 			
 			bool isColored(const Vertex& v);
+			bool isVisible(const Vertex& v);
 			
 			void setVertexColor(const Vertex& v, color_t color);
 			

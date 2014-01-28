@@ -65,10 +65,12 @@ namespace pcp {
 		// Check for weird assignments
 		if (this == &rhs)
 			return *this;
-			
-		// Delete old array, smart pointers can do the rest for themselves
-		delete[] coloring;
-
+		
+		if (this->num_parts != rhs.num_parts) {
+			delete[] this->coloring;
+			this->coloring = new color_t[rhs.num_parts];
+		}
+		
 		// Copy const values
 		this->g = rhs.g;
 		this->fg = rhs.fg;
@@ -78,8 +80,7 @@ namespace pcp {
 		this->colors_used = rhs.colors_used;
 		this->part_vertices = rhs.part_vertices;
 		
-		// Add new coloring array and copy values from rhs
-		this->coloring = new color_t[this->num_parts];
+		// copy coloring values from rhs
 		copy(rhs.coloring, rhs.coloring + num_parts, this->coloring);
 		
 		// Use old mapping array, add one manually later
@@ -177,6 +178,10 @@ namespace pcp {
 	bool Solution :: isColored(const Vertex& v) {
 		return getColor(v) > -1;
 	}
+	
+	bool Solution :: isVisible(const Vertex& v) {
+		return this->mapped_vertices[v];
+	}
 
 	// Set a specific vertex to a specific color
 	void Solution :: setVertexColor(const Vertex& v, color_t color) {
@@ -215,13 +220,21 @@ namespace pcp {
 				  this->mapped_vertices.get() + this->num_vertices,
 				  mapped.get());
 			this->mapped_vertices = mapped;
+			
+			// Renew the filtered graph to use the new mapping
+			edge_visible edges(mapped, this->g);
+			vertex_visible vertices(mapped);
+			shared_ptr<FilterGraph> fg(new FilterGraph(*this->g, edges, vertices));
+			this->fg = fg;
 		}
 	}
 	
+	// Return reference to the filtered graph
 	const FilterGraph& Solution :: getCurrentSolution() {
 		return *this->fg;
 	}
 	
+	// Return reference to the full graph
 	const Graph& Solution :: getFullGraph() {
 		return *this->g;
 	}
