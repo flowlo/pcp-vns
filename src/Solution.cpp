@@ -14,6 +14,7 @@ namespace pcp {
 	
 		shared_ptr<Graph> full(new Graph(num_vertices));
 		boost::shared_array<bool> mapped(new bool[num_vertices]);
+		
 		// Construct the predicates for the filtered graph based on the bool array
 		edge_visible edges(mapped, full);
 		vertex_visible vertices(mapped);
@@ -90,8 +91,8 @@ namespace pcp {
 	}
 	
 	// Straightforward access to the property map, return partitionID
-	partition_t Solution :: getPartition(const Vertex& v) {
-		return get(boost::vertex_index1_t(), *this->fg, v);
+	partition_t Solution :: getPartition(const Vertex v) {
+		return get(boost::vertex_index1_t(), *(this->g), v);
 	}
 	
 	// Straightforward access to color of the vertex
@@ -103,7 +104,7 @@ namespace pcp {
 	// number of colored vertices
 	uint32_t Solution :: getColorDegree(const Vertex& v) {
 		uint32_t colored = 0;
-		AdjIter i, end;
+		FAdjIter i, end;
 		
 		for (tie(i, end) = adjacent_vertices(v, *this->fg); i != end; i++) 
 			if (this->isColored(*i))
@@ -117,7 +118,7 @@ namespace pcp {
 	color_t Solution :: minPossibleColor(const Vertex& v) {
 		bool* colors = new bool[this->num_parts];
 		fill_n(colors, this->num_parts, false);
-		AdjIter i, end;
+		FAdjIter i, end;
 
 		color_t c;
 		// Mark all colors which are used by neighbors of node
@@ -147,7 +148,7 @@ namespace pcp {
 		uint32_t colored = 0;
 		pair<uint32_t, color_t> ret;
 		fill_n(colors, this->num_parts, false);
-		AdjIter i, end;
+		FAdjIter i, end;
 
 		// Mark all colors which are used by neighbors of node
 		for (tie(i, end) = adjacent_vertices(v, *this->fg); i != end; i++) {
@@ -190,8 +191,8 @@ namespace pcp {
 
 	// Set an previously unset vertices to a specific partition and 
 	// push it in the correspondig vector for easy access
-	void Solution :: setPartition(const Vertex& v, partition_t part) {
-		put(boost::vertex_index1_t(), *this->g, v, part);
+	void Solution :: setPartition(const Vertex v, partition_t part) {
+		put(boost::vertex_index1_t(), *(this->g), v, part);
 		this->part_vertices[part].push_back(v);
 	}
 	

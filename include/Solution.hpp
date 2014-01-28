@@ -56,19 +56,24 @@ namespace pcp {
    										vertex_visible> FilterGraph;
    										
  	// Represents a vertex
-	typedef boost::graph_traits<FilterGraph>::vertex_descriptor Vertex;
+	typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
+	typedef boost::graph_traits<FilterGraph>::vertex_descriptor FVertex;
 
 	// Represents an edge
-	typedef boost::graph_traits<FilterGraph>::edge_descriptor Edge;
+	typedef boost::graph_traits<Graph>::edge_descriptor Edge;
+	typedef boost::graph_traits<FilterGraph>::edge_descriptor FEdge;
 
 	// Standard vertex_iterator
-	typedef boost::graph_traits<FilterGraph>::vertex_iterator VertexIter;
+	typedef boost::graph_traits<Graph>::vertex_iterator VertexIter;
+	typedef boost::graph_traits<FilterGraph>::vertex_iterator FVertexIter;
 
 	// Standard vertex_iterator
-	typedef boost::graph_traits<FilterGraph>::edge_iterator EdgeIter;
+	typedef boost::graph_traits<Graph>::edge_iterator EdgeIter;
+	typedef boost::graph_traits<FilterGraph>::edge_iterator FEdgeIter;
 
 	// Iterator for adjacent vertices
-	typedef boost::graph_traits<FilterGraph>::adjacency_iterator AdjIter;
+	typedef boost::graph_traits<Graph>::adjacency_iterator AdjIter;
+	typedef boost::graph_traits<FilterGraph>::adjacency_iterator FAdjIter;
 
 	// Stores one Solution, using a filtered graph
 	// Provides methods to manipulating the stored Solution
@@ -84,7 +89,7 @@ namespace pcp {
 			std::uint32_t getNumPartition();
 			std::uint32_t getNumVertices();
 			std::uint32_t getNumEdges();
-			partition_t getPartition(const Vertex& v);
+			partition_t getPartition(const Vertex v);
 			color_t getColor(const Vertex& v);
 			std::uint32_t getColorDegree(const Vertex& v);
 			color_t minPossibleColor(const Vertex& v);
@@ -98,7 +103,7 @@ namespace pcp {
 			
 			void setVertexColor(const Vertex& v, color_t color);
 			
-			void setPartition(const Vertex& v, partition_t part);
+			void setPartition(const Vertex v, partition_t part);
 			void addEdge(const Vertex& v1, const Vertex& v2);
 			
 			void toggleVertex(const Vertex& v);
