@@ -6,13 +6,13 @@ AC_PREREQ([2.69])
 AM_INIT_AUTOMAKE
 AM_PATH_CPPUNIT(1.13.1)
 
+AC_LANG_PUSH([C++])
 # Checks for programs.
 AC_PROG_CXX
 
 # Checks for libraries.
 
 # Checks for header files.
-AC_LANG_PUSH([C++])
 AC_CHECK_HEADERS([boost/graph/adjacency_list.hpp], [], 
 	[AC_MSG_ERROR(You need the Boost Graph libraries.)])
 AC_CHECK_HEADERS([boost/graph/filtered_graph.hpp], [], 
@@ -26,6 +26,11 @@ AC_TYPE_INT32_T
 AC_TYPE_INT64_T
 AC_TYPE_UINT32_T
 AC_TYPE_UINT64_T
+
+AX_CHECK_COMPILE_FLAG([-std=c++11], [
+                        CXXFLAGS="$CXXFLAGS -std=c++11"])
+
+AC_LANG_POP([C++])
 
 # Checks for library functions.
 

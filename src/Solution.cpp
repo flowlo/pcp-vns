@@ -126,7 +126,7 @@ namespace pcp {
 				colors[c] = true;
 
 		// find the first unused color
-		for (int i = 0; i < this->num_parts; i++) {
+		for (uint32_t i = 0; i < this->num_parts; i++) {
 			if (!colors[i]) {
 					delete[] colors;
 					return i;
@@ -198,6 +198,7 @@ namespace pcp {
 	// Add an edge to the graph, visibility depends on the vertices
 	void Solution :: addEdge(const Vertex& v1, const Vertex& v2) {
 		add_edge(v1, v2, *this->g);
+		this->num_edges++;
 	}
 
 	// Toggle the visibility of a vertex in the filtered graph
@@ -237,5 +238,21 @@ namespace pcp {
 	// Return reference to the full graph
 	const Graph& Solution :: getFullGraph() {
 		return *this->g;
+	}
+	
+	std::int32_t Solution :: getColorsUsed() {
+		return this->colors_used;
+	}
+	
+	std::uint32_t Solution :: getNumPartition() {
+		return this->num_parts;
+	}
+	
+	std::uint32_t Solution :: getNumVertices() {
+		return this->num_vertices;
+	}
+	
+	std::uint32_t Solution :: getNumEdges() {
+		return this->num_edges;
 	}
 }

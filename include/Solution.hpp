@@ -80,6 +80,10 @@ namespace pcp {
 		
 			Solution& operator=(const Solution& rhs);
 			
+			std::int32_t getColorsUsed();
+			std::uint32_t getNumPartition();
+			std::uint32_t getNumVertices();
+			std::uint32_t getNumEdges();
 			partition_t getPartition(const Vertex& v);
 			color_t getColor(const Vertex& v);
 			std::uint32_t getColorDegree(const Vertex& v);
