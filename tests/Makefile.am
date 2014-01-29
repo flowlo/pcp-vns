@@ -6,6 +6,7 @@ TESTS = TestSuite
 check_PROGRAMS = TestSuite
 
 TestSuite_SOURCES = SolutionTest.cpp SolutionTest.hpp TestSuite.cpp \
+	IOTest.cpp IOTest.hpp \
 	$(top_builddir)/src/Solution.cpp $(top_builddir)/include/Solution.hpp \
 	$(top_builddir)/src/IO.cpp $(top_builddir)/include/IO.hpp
 	
