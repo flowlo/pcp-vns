@@ -95,8 +95,8 @@ namespace pcp {
 			color_t minPossibleColor(const Vertex& v);
 			std::pair<std::uint32_t, color_t> 
 						getColorDegreeAndMinColor(const Vertex& v);
-			const FilterGraph& getCurrentSolution();
-			const Graph& getFullGraph();
+			FilterGraph& getCurrentSolution();
+			Graph& getFullGraph();
 			
 			bool isColored(const Vertex& v);
 			bool isVisible(const Vertex& v);

@@ -11,6 +11,9 @@ class SolutionTest : public CppUnit::TestFixture
   CPPUNIT_TEST( testAssignOperator );
   CPPUNIT_TEST( testSetPartition );
   CPPUNIT_TEST( testAddEdge );
+  CPPUNIT_TEST( testToggleVertex );
+  CPPUNIT_TEST( testReplaceVertex );
+  CPPUNIT_TEST( testDetach );
   CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -22,6 +25,9 @@ public:
   void testAssignOperator();
   void testSetPartition();
   void testAddEdge();
+  void testToggleVertex();
+  void testReplaceVertex();
+  void testDetach();
 };
 
 #endif

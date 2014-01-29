@@ -232,12 +232,12 @@ namespace pcp {
 	}
 	
 	// Return reference to the filtered graph
-	const FilterGraph& Solution :: getCurrentSolution() {
+	FilterGraph& Solution :: getCurrentSolution() {
 		return *this->fg;
 	}
 	
 	// Return reference to the full graph
-	const Graph& Solution :: getFullGraph() {
+	Graph& Solution :: getFullGraph() {
 		return *this->g;
 	}
 	

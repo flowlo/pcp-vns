@@ -10,6 +10,8 @@ void SolutionTest :: setUp() { }
 
 void SolutionTest :: tearDown() { } 
 
+// Tests the normal contructor for setting the right numbers and initializing
+// the correct graph
 void SolutionTest :: testConstructor() {
 
 	pcp::Solution sol(100 , 5);
@@ -22,6 +24,8 @@ void SolutionTest :: testConstructor() {
 				(boost::graph_traits<pcp::FilterGraph>::vertices_size_type)100);
 }
 
+// Tests wheter the copy constructor works as intended, with the same checks 
+// as normal contructor
 void SolutionTest :: testCopyConstructor() {
 	pcp::Solution sol1(100, 20);
 	pcp::Solution cp(sol1);	
@@ -35,6 +39,7 @@ void SolutionTest :: testCopyConstructor() {
 	CPPUNIT_ASSERT_EQUAL(&sol1.getFullGraph(), &cp.getFullGraph());
 }
 
+// Tests the assign operator (=) for correct graphs and numbers
 void SolutionTest :: testAssignOperator() {
 	pcp::Solution sol1(100, 20);
 	pcp::Solution cp(20, 3);	
@@ -50,11 +55,13 @@ void SolutionTest :: testAssignOperator() {
 	
 }
 
+// Tests the setPartition() and getPartition() methods
 void SolutionTest :: testSetPartition() {
 	pcp::Solution sol(20, 3);
 	pcp::VertexIter i, end;
 	pcp::partition_t p = 0;
-	for (boost::tie(i, end) = vertices(sol.getFullGraph()); i != end; i++) {
+	for (boost::tie(i, end) = boost::vertices(sol.getFullGraph()); i != end; 
+			i++) {
 		if (p % 3 == 0)
 			p = 0;
 		sol.setPartition(*i, p);
@@ -62,21 +69,106 @@ void SolutionTest :: testSetPartition() {
 	}
 }
 
+// Tests the addEdge() method
 void SolutionTest :: testAddEdge() {
 	pcp::Solution sol(20, 3);
 	pcp::VertexIter i, end;
 	
-	const pcp::Graph& g = sol.getFullGraph();
+	pcp::Graph& g = sol.getFullGraph();
 	for (boost::tie(i, end) = boost::vertices(g); i != end-1;) {
 		i++;
 		sol.addEdge(*i, *(i-1));
 	}
-	CPPUNIT_ASSERT_EQUAL((boost::graph_traits<pcp::Graph>::edges_size_type)19,
-		boost::num_edges(g));
+	CPPUNIT_ASSERT_EQUAL(sol.getNumEdges(), (std::uint32_t)boost::num_edges(g));
 		
 	pcp::EdgeIter e, eend;
 	for (boost::tie(e, eend) = boost::edges(g); e != eend; e++) {
 		CPPUNIT_ASSERT(source(*e, g) - target(*e, g) == -1 ||
 			source(*e, g) - target(*e, g) == 1);
 	}
+}
+
+// Tests the toggleVertex() method
+void SolutionTest :: testToggleVertex() {
+	pcp::Solution sol(100, 1);
+	pcp::VertexIter v, vend;
+	pcp::FVertexIter fv, fvend;
+	pcp::Graph& g = sol.getFullGraph();
+	pcp::FilterGraph& fg = sol.getCurrentSolution();
+	int a = 0;
+	for (boost::tie(v, vend) = boost::vertices(g); v != vend; v++) {
+		sol.toggleVertex(*v);
+	}
+	
+	for (boost::tie(fv, fvend) = boost::vertices(fg); fv != fvend; fv++) {
+		CPPUNIT_FAIL("Filtered graph contains vertex");
+	}
+	
+	for (boost::tie(v, vend) = boost::vertices(g); v != vend; v++) {
+		sol.toggleVertex(*v);
+	}
+	
+	for (boost::tie(fv, fvend) = boost::vertices(fg); fv != fvend; fv++) {
+		a++;
+	}
+	
+	CPPUNIT_ASSERT_EQUAL(a, 100);
+}
+
+void SolutionTest :: testReplaceVertex() {
+	pcp::Solution sol(100, 1);
+	pcp::VertexIter v, vend;
+	pcp::FVertexIter fv, fvend;
+	pcp::Graph& g = sol.getFullGraph();
+	pcp::FilterGraph& fg = sol.getCurrentSolution();
+	
+	for (boost::tie(v, vend) = boost::vertices(g); v != vend; v+=2) {
+		sol.toggleVertex(*v);
+	}
+	boost::tie(v, vend) = boost::vertices(g);
+	v++;
+	for (; v+1 != vend; v+=2) {
+		sol.replaceVertex(*v, *(v+1));
+	}
+	for (boost::tie(fv, fvend) = boost::vertices(fg); fv != fvend; fv++) {
+		if ((*v % 2) == 0)
+			CPPUNIT_FAIL("Filtered graph contains wrong vertex");
+	}
+}
+
+void SolutionTest :: testDetach() {
+	pcp::Solution sol(100, 1);
+	pcp::Solution copy(sol);
+	pcp::VertexIter v, vend;
+	pcp::FVertexIter fv, fvend;
+	pcp::Graph& g = sol.getFullGraph();
+	pcp::FilterGraph& fg = copy.getCurrentSolution();
+	int a = 0;
+	CPPUNIT_ASSERT_EQUAL(&copy.getCurrentSolution(),  &sol.getCurrentSolution());
+	for (boost::tie(v, vend) = boost::vertices(g); v != vend; v+=2) {
+		sol.toggleVertex(*v);
+	}
+	
+	CPPUNIT_ASSERT(&copy.getCurrentSolution() != &sol.getCurrentSolution());
+	for (boost::tie(fv, fvend) = boost::vertices(fg); fv != fvend; fv++) {
+		a++;
+	}
+	CPPUNIT_ASSERT_EQUAL(a, 100);
+	
+	copy = sol;
+	a = 0;
+	pcp::Graph& g2 = copy.getFullGraph();
+	pcp::FilterGraph& fg2 = sol.getCurrentSolution();
+	CPPUNIT_ASSERT_EQUAL(&copy.getCurrentSolution(),  &sol.getCurrentSolution());
+	
+	boost::tie(v, vend) = boost::vertices(g2);
+	for (v++; v < vend; v+=2) {
+		copy.toggleVertex(*v);
+	}
+	
+	CPPUNIT_ASSERT(&copy.getCurrentSolution() != &sol.getCurrentSolution());
+	for (boost::tie(fv, fvend) = boost::vertices(fg2); fv != fvend; fv++) {
+		a++;
+	}
+	CPPUNIT_ASSERT_EQUAL(a, 50);
 }
