@@ -19,6 +19,8 @@ AC_CHECK_HEADERS([boost/graph/filtered_graph.hpp], [],
 	[AC_MSG_ERROR(You need the Boost Graph libraries.)])
 AC_CHECK_HEADERS([boost/shared_array.hpp], [], 
 	[AC_MSG_ERROR(You need the Boost Shared Array libraries.)])
+AC_CHECK_HEADERS([boost/log/trivial.hpp], [], 
+	[AC_MSG_ERROR(You need the Boost Logging libraries.)])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
