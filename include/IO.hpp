@@ -1,5 +1,5 @@
 #include "Solution.hpp"
-#include <iostream>
+#include <istream>
 #include <cstdint>
 
 namespace pcp {

@@ -3,7 +3,7 @@
 using namespace std;
 
 namespace pcp {
-	pcp::Solution fromPcpStream(istream& in) {
+	pcp::Solution readPcpStream(istream& in) {
 		uint32_t vertices, edges, partition, i;
 		pcp::VertexIter v, vend;
 
