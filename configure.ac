@@ -1,10 +1,9 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([vns-pcp], [0.1], [moritz9422@gmail.com])
+AC_INIT([pcp-vns], [0.1], [moritz9422@gmail.com])
 AC_PREREQ([2.69])
 AM_INIT_AUTOMAKE([foreign])
-AM_PATH_CPPUNIT(1.13.1)
 AM_SILENT_RULES([yes])
 
 AC_LANG_PUSH([C++])
