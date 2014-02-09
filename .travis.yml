@@ -1,6 +1,6 @@
 language: cpp
 compiler: gcc
-before_script: sudo apt-get install -qq -y libboost-all-dev libboost-dbg
+before_script: sudo ./tools/setup.sh
 script: ./bootstrap.sh && ./configure && make check
 notifications:
   email:
