@@ -1,6 +1,6 @@
 #ifndef _SOLUTION_HPP_
 #define _SOLUTION_HPP_
-
+#include "pcp.hpp"
 #include <cstdint>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/filtered_graph.hpp>
@@ -8,21 +8,7 @@
 #include <memory>
 
 namespace pcp {
-	typedef std::uint64_t vertex_t;
-	typedef std::uint64_t edge_t;
-	typedef std::uint64_t partition_t;
-	typedef std::int64_t color_t;
-	
-	// Stores the partition info for each vertex
-	typedef boost::property<boost::vertex_index1_t, partition_t> VertexProperty;
-	
-	/* TODO: Is this really necessary?
-	// Properties that are stored for each edge in the graph
-  	typedef boost::property<boost::edge_index_t, int> EdgeProperty; */
-  	
-  	// The unfiltered full graph type
-  	typedef boost::adjacency_list<boost::vecS, boost::vecS,
-                boost::undirectedS, VertexProperty> Graph;
+
 	
 	// Predicate to select visible edges
 	struct edge_visible {

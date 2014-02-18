@@ -3,6 +3,7 @@
 #ifndef VNS_H
 #define VNS_H
 #include "pcp.hpp"
+#include "Solution.hpp"
 #include <vector>
 #include <boost/unordered_set.hpp>
 #include <boost/functional/hash.hpp>
@@ -13,7 +14,7 @@ namespace pcp {
 	/// or if 'time' seconds have elapsed.
 	/// Shaking starts with shakeStart steps and is then incremented by
 	/// shakeIncrement.
-	Solution *vnsRun(Solution& best, Solution& orig, std::string units, int unsuccessfulShake, int shakeStart, int shakeIncrement, int maxTime, bool checkIntermediate, bool checkFinal);
+	Solution vnsRun(Solution best, Solution& orig, std::string units, int unsuccessfulShake, int shakeStart, int shakeIncrement, int maxTime, bool checkIntermediate, bool checkFinal);
 }
 
 #endif

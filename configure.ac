@@ -34,5 +34,4 @@ AC_LANG_POP([C++])
 
 # Checks for library functions.
 
-
 AC_OUTPUT(Makefile src/Makefile tests/Makefile)
