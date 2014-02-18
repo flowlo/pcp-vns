@@ -19,8 +19,28 @@ pcp
 # temporary files
 *~
 
+# automake/autoconf generated stuff
+Makefile
+configure
+Makefile.in
+autom4te.cache/*
+depcomp
+install-sh
+missing
+test-driver
+*.Po
+
 # other nasty stuff
 *.pdf
 
+# vim lock/temp files?!
+*.swp
+
 # NetBeans local files
 /nbproject/private/*
+
+# logfiles
+*.log
+
+# test results
+*.trs
