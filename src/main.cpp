@@ -149,7 +149,7 @@ int main(int argc, char* argv[]) {
 			cout << "Printing to '" << vm["print"].as<string>() << "' done!" << endl;
 	}
 	
-	// Visualize the existing onesteo solution along side the new best solution
+	// Visualize the existing onestepCD solution along side the new best solution
 	#ifdef ubigraph
 	int offset = num_vertices(*fullG->g);
 	onecopy->redraw(offset);
