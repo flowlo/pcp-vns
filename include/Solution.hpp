@@ -79,6 +79,7 @@ namespace pcp {
 			color_t getColor(const Vertex& v);
 			std::uint32_t getColorDegree(const Vertex& v);
 			color_t minPossibleColor(const Vertex& v);
+			const std::vector<Vertex>& getPartitionNodes(partition_t t);
 			std::pair<std::uint32_t, color_t> 
 						getColorDegreeAndMinColor(const Vertex& v);
 			FilterGraph& getCurrentSolution();

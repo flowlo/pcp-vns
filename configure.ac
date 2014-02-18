@@ -5,6 +5,8 @@ AC_INIT([pcp-vns], [0.1], [moritz9422@gmail.com])
 AC_PREREQ([2.69])
 AM_INIT_AUTOMAKE([foreign])
 AM_SILENT_RULES([yes])
+AM_PATH_CPPUNIT()
+
 
 AC_LANG_PUSH([C++])
 # Checks for programs.

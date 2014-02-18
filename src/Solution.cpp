@@ -139,6 +139,11 @@ namespace pcp {
 		return -1;
 	}
 	
+	// Return a vector with all nodes of a partition
+	const std::vector<Vertex>& Solution :: getPartitionNodes(partition_t t) {
+	   return part_vertices[t];
+	}
+	
 	// Basically a combination of minPossibleColor() and getColorDegree() to 
 	// speed things up
 	pair<uint32_t, color_t> Solution :: getColorDegreeAndMinColor
