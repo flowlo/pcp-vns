@@ -19,12 +19,12 @@ namespace pcp {
       
       /// Remove all edges between nodes of the same partition, as they are of
       /// no use
-      removePartEdges(sol);
+      // removePartEdges(sol);
 
       /// Initialize the heuristics' parameters
       int minDegree[s.getNumPartition()];
       int maxDegree, target = -1, cd = 0;
-      pair<VertexIter, VertexIter> vp;
+      pair<FVertexIter, FVertexIter> vp;
 
       /// Set the partitions color to "not set"
       // fill(sol->partition, sol->partition + sol->numParts, -1);
@@ -39,14 +39,14 @@ namespace pcp {
          maxDegree = -1;
 
          /// For each vertex in the graph
-         for (vp = vertices(*sol->g); vp.first != vp.second; ++vp.first) {
+         for (vp = vertices(sol.getFilterGraph()); vp.first != vp.second; ++vp.first) {
             /// Compute the color degree for the vertex
-            cd = sol->getColorDegree(*vp.first);
+            cd = sol.getColorDegree(*vp.first);
 
             /// If the color degree of the selected vertex is less than that of
             /// previous vertices in the same partition, and the partition is
             /// uncolored
-            if (cd < minDegree[sol->getPartition(*vp.first)] && !sol->isPartitionColored(*vp.first)) {
+            if (cd < minDegree[sol.getPartition(*vp.first)] && !sol.isColored(*vp.first)) {
                /// Set the minimal color degree for the vertex' partition to cd
                minDegree[sol->getPartition(*vp.first)] = cd;
 
@@ -62,18 +62,19 @@ namespace pcp {
          /// Compute the minimal possible color of the target vertex, set the
          /// corresponding partition to that color and remove all other vertices
          /// in the partition
-         int color = sol->minPossibleColor(target);
-         sol->setPartitionColor(target, color);
+         color_t color = sol.minPossibleColor(target);
+         sol.setVertexColor(target, color);
          if (numColors < color)
-         numColors = color;
+            numColors = color;
 
-         removeOthers(target, *sol);
+         removeOthers(target, sol);
       }
 
       /// Fill in the representatives
-      for (vp = vertices(*sol->g); vp.first != vp.second; vp.first++)
-         sol->representatives[sol->getPartition(*vp.first)] = *vp.first;
-
+      /*for (vp = vertices(sol.getFilteredGraph()); vp.first != vp.second; vp.first++)
+         solrepresentatives[sol->getPartition(*vp.first)] = *vp.first;
+      */
+      
       sol->colorsUsed = numColors + 1;
 
       if (DEBUG_LEVEL > 3) {
