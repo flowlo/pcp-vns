@@ -3,9 +3,34 @@
 using namespace std;
 
 namespace pcp {
-	pcp::Solution readPcpStream(istream& in) {
+	Solution readSolution(istream& in) {
+		// Decide which format the input is in, and parse accordingly
+		if (isdigit(in.peek())) {
+			string buffer = "";
+			getline(in, buffer);
+			in.seekg(0);
+
+			if (buffer.find(' ') == string::npos) {
+				if (DEBUG_LEVEL > 2)
+					cout << "Detected .col.b input." << endl;
+				return readColBStream(in);
+			}
+			else {
+				if (DEBUG_LEVEL > 2)
+					cout << "Detected .pcp input." << endl;
+				return readPcpStream(in);
+			}
+		}
+		else {
+			if (DEBUG_LEVEL > 2)
+				cout << "Detected .col input." << endl;
+			return readColStream(in);
+		}
+	}
+
+	Solution readPcpStream(istream& in) {
 		uint32_t vertices, edges, partition, i;
-		pcp::VertexIter v, vend;
+		VertexIter v, vend;
 
 		//BOOST_LOG_TRIVIAL(info) << "Started parsing PCP-file";	
 
@@ -13,9 +38,9 @@ namespace pcp {
 		//BOOST_LOG_TRIVIAL(debug) << "Reading " << vertices << " vertices, " << edges 
 		//	<< " edges and " << partition << " partitions";
 
-		pcp::Solution ret(vertices, partition);
+		Solution ret(vertices, partition);
 
-		pcp::Graph& g = ret.getFullGraph();
+		Graph& g = ret.getFullGraph();
 		for (boost::tie(v, vend) = boost::vertices(g); v != vend; v++) {
 			partition_t part;
 			in >> part;
@@ -25,7 +50,7 @@ namespace pcp {
 		}
 
 		for (i = 0; i < edges; i++) {
-			pcp::Vertex source, target;
+			Vertex source, target;
 			in >> source >> target;
 			ret.addEdge(source, target);
 
@@ -34,5 +59,13 @@ namespace pcp {
 
 		//BOOST_LOG_TRIVIAL(info) << "Finished parsing PCP-file";
 		return ret;
+	}
+
+	Solution readColStream(istream& in) {
+		return Solution();
+	}
+
+	Solution readColBStream(istream& in) {
+		return Solution();
 	}
 }

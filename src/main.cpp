@@ -72,36 +72,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	// New solution for the full graph
-	Solution fullG;
-
-	// Decide which format the input is in, and parse accordingly
-	if (isdigit(cin.peek())) {
-		string buffer = "";
-		getline(cin, buffer);
-		cin.seekg(0);
-		
-		/*if (buffer.find(' ') == string::npos) {
-			if (DEBUG_LEVEL > 2)
-				cout << "Detected .col.b input." << endl;
-			fullG = Solution::fromColBStream(cin);
-		}
-		else {*/
-			if (DEBUG_LEVEL > 2)
-				cout << "Detected .pcp input." << endl;
-			fullG = readPcpStream(cin);
-		//}
-	}
-	/*else {
-		if (DEBUG_LEVEL > 2)
-			cout << "Detected .col input." << endl;
-	
-		fullG = Solution::fromColStream(cin);
-	}*/
-	
-	if (fullG == NULL) {
-		cerr << "Failed to parse input!" << endl;
-		return -1;
-	}
+	Solution fullG = readSolution(cin);
 
 	// In case of ubigraph visualization stop the program for 3 secs
 	#ifdef ubigraph
@@ -117,7 +88,7 @@ int main(int argc, char* argv[]) {
 	Solution onestep = onestepCD(fullG);
 	
 	if (DEBUG_LEVEL > 2)
-		cout << "Initial solution uses " << onestep->colorsUsed << " colors." << endl;
+		cout << "Initial solution uses " << onestep.getColorsUsed() << " colors." << endl;
 
 	// In case of ubigraph visualization stop here for 3 secs
 	#ifdef ubigraph
@@ -128,10 +99,10 @@ int main(int argc, char* argv[]) {
 	#endif
 
 	// Start Vns
-	Solution *best = vnsRun(*onestep, *fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), !vm.count("checkFinal"));
+	Solution best = vnsRun(onestep, fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), !vm.count("checkFinal"));
 	
-	if (best == NULL)
-		return -1;
+	//if (best == NULL)
+	//	return -1;
 	
 	// print output if option is set
 	if (vm.count("print")) {
@@ -141,7 +112,7 @@ int main(int argc, char* argv[]) {
 			cerr << "Error when trying to access file: " << vm["print"].as<string>() << endl;
 			return -1;
 		}
-		best->print(out);
+		//best.print(out);
 		out.flush();
 		out.close();
 		
@@ -159,8 +130,8 @@ int main(int argc, char* argv[]) {
 	#endif
 	
 	// Clean up duty
-	delete best;
-	delete fullG;
+	//delete best;
+	//delete fullG;
 
 	return 0;
 }

@@ -29,6 +29,8 @@ install-sh
 missing
 test-driver
 *.Po
+aclocal.m4
+config.status
 
 # other nasty stuff
 *.pdf
