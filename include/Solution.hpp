@@ -67,6 +67,8 @@ namespace pcp {
 		public:
 			Solution(std::uint32_t num_vertices, std::uint32_t num_partition);
 			Solution(const Solution& copy);
+			Solution();
+			//Solution(std::istream& in);
 			~Solution();
 		
 			Solution& operator=(const Solution& rhs);

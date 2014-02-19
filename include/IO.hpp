@@ -2,6 +2,11 @@
 #include <istream>
 #include <cstdint>
 
+using namespace std;
+
 namespace pcp {
-	Solution readPcpStream(std::istream& i);
+	Solution readSolution(istream& in);
+	Solution readPcpStream(istream& in);
+	Solution readColStream(istream& in);
+	Solution readColBStream(istream& in);
 }

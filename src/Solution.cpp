@@ -1,5 +1,4 @@
 #include "../include/Solution.hpp"
-
 #include <cstdint>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/filtered_graph.hpp>
@@ -38,6 +37,11 @@ namespace pcp {
 		fill_n(coloring, num_partition, -1);
 	}
 	
+	Solution::Solution() {
+		this->num_edges = this->num_vertices = this->num_parts = 0;
+		this->colors_used = -1;
+	}
+
 	Solution :: Solution(const Solution& cp) {
 		// Copy all const values
 		this->g = cp.g;

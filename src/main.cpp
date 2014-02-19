@@ -72,36 +72,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	// New solution for the full graph
-	Solution fullG(0, 0);
-
-	// Decide which format the input is in, and parse accordingly
-	if (isdigit(cin.peek())) {
-		string buffer = "";
-		getline(cin, buffer);
-		cin.seekg(0);
-		
-		/*if (buffer.find(' ') == string::npos) {
-			if (DEBUG_LEVEL > 2)
-				cout << "Detected .col.b input." << endl;
-			fullG = Solution::fromColBStream(cin);
-		}
-		else {*/
-			if (DEBUG_LEVEL > 2)
-				cout << "Detected .pcp input." << endl;
-			fullG = readPcpStream(cin);
-		//}
-	}
-	/*else {
-		if (DEBUG_LEVEL > 2)
-			cout << "Detected .col input." << endl;
-	
-		fullG = Solution::fromColStream(cin);
-	}
-	
-	if (fullG == NULL) {
-		cerr << "Failed to parse input!" << endl;
-		return -1;
-	}*/
+	Solution fullG = readSolution(cin);
 
 	// In case of ubigraph visualization stop the program for 3 secs
 	#ifdef ubigraph
