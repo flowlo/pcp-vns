@@ -9,7 +9,7 @@ before_script:
 script:
   - aclocal
   - automake --gnu --add-missing
-  - autoconf -I/usr/share/gnulib/m4/stdbool.m4
+  - autoconf -I/usr/share/gnulib/m4
   - ./configure
   - make check
 notifications:
