@@ -10,7 +10,7 @@ if [ -f /etc/fedora-release ] ; then
 	yum install automake cppunit-devel boost-devel autoconf-archive
 elif [ -f /etc/lsb-release ] ; then
 	if [ $TRAVIS ] ; then
-		apt-get install -qq --force-yes libboost-all-dev libboost-dbg automake libcppunit-dev > /dev/null
+		apt-get install --force-yes libboost-all-dev libboost-dbg automake libcppunit-dev
 	else
 		echo 'Detected Ubuntu, installing dependencies:'
 		apt-get install libboost-all-dev libboost-dbg automake libcppunit-dev
