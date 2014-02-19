@@ -1,7 +1,12 @@
 language: cpp
 compiler: gcc
 before_script: sudo ./tools/setup.sh
-script: ./bootstrap.sh && ./configure && make check
+script:
+  - aclocal
+  - automake --gnu --add-missing
+  - autoconf
+  - ./configure
+  - make check
 notifications:
   email:
     recipients:
