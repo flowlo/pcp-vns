@@ -1,15 +1,14 @@
 #ifndef _SOLUTION_HPP_
 #define _SOLUTION_HPP_
 #include "pcp.hpp"
+#include <memory>
 #include <cstdint>
+#include <algorithm>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/filtered_graph.hpp>
 #include <boost/shared_array.hpp>
-#include <memory>
 
 namespace pcp {
-
-	
 	// Predicate to select visible edges
 	struct edge_visible {
 		edge_visible() { }
@@ -36,11 +35,10 @@ namespace pcp {
 		}
 	  	boost::shared_array<bool> mapped_vertices;
 	};
-   
-   // The filtered graph, only showing visible edges and vertices
-   typedef boost::filtered_graph<Graph, edge_visible, 
-   										vertex_visible> FilterGraph;
-   										
+
+	// The filtered graph, only showing visible edges and vertices
+	typedef boost::filtered_graph<Graph, edge_visible, vertex_visible> FilterGraph;
+								
  	// Represents a vertex
 	typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 	typedef boost::graph_traits<FilterGraph>::vertex_descriptor FVertex;
@@ -68,7 +66,7 @@ namespace pcp {
 			Solution(std::uint32_t num_vertices, std::uint32_t num_partition);
 			Solution(const Solution& copy);
 			Solution();
-			//Solution(std::istream& in);
+			//Solution(std::istream& in); avoid this to shorten compilation time
 			~Solution();
 		
 			Solution& operator=(const Solution& rhs);

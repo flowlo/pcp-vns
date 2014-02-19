@@ -1,16 +1,9 @@
 #include "../include/Solution.hpp"
-#include <cstdint>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/filtered_graph.hpp>
-#include <boost/shared_array.hpp>
-#include <memory>
-#include <algorithm>
 
 using namespace std;
 
 namespace pcp {
 	Solution :: Solution(uint32_t num_vertices, uint32_t num_partition) {
-	
 		shared_ptr<Graph> full(new Graph(num_vertices));
 		boost::shared_array<bool> mapped(new bool[num_vertices]);
 		
@@ -21,8 +14,7 @@ namespace pcp {
 		this->fg = fg;
 		this->mapped_vertices = mapped;
 		
-		boost::shared_array<vector<Vertex>> vparts(
-															new vector<Vertex>[num_partition]);
+		boost::shared_array<vector<Vertex>> vparts(new vector<Vertex>[num_partition]);
 		this->part_vertices = vparts;
 		
 		this->coloring = new color_t[num_partition];
@@ -62,7 +54,7 @@ namespace pcp {
 	}
 	
 	Solution :: ~Solution() {
-		// Deallocate color array, smart pointer do the rest
+		// Deallocate color array, smart pointers do the rest
 		delete[] coloring;
 	}
 

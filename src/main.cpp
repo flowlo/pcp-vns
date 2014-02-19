@@ -1,5 +1,5 @@
 #include "../include/main.hpp"
-#include <boost/algorithm/string/predicate.hpp>
+
 using namespace std;
 using namespace pcp;
 using namespace boost;
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
 		DEBUG_LEVEL = 0;
 	}
 
-	// New solution for the full graph
+	// Read input from stdin
 	Solution fullG = readSolution(cin);
 
 	// In case of ubigraph visualization stop the program for 3 secs
@@ -98,12 +98,9 @@ int main(int argc, char* argv[]) {
 		usleep(3000000);
 	#endif
 
-	// Start Vns
+	// Run Variable Neighborhood Search
 	Solution best = vnsRun(onestep, fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), !vm.count("checkFinal"));
-	
-	//if (best == NULL)
-	//	return -1;
-	
+
 	// print output if option is set
 	if (vm.count("print")) {
 		ofstream out(vm["print"].as<string>());
@@ -128,10 +125,6 @@ int main(int argc, char* argv[]) {
 		fullG->redraw(offset * 2);
 	delete onecopy;
 	#endif
-	
-	// Clean up duty
-	//delete best;
-	//delete fullG;
 
 	return 0;
 }
