@@ -10,10 +10,10 @@ if [ -f /etc/fedora-release ] ; then
 	yum install automake cppunit-devel boost-devel autoconf-archive
 elif [ -f /etc/lsb-release ] ; then
 	if [ $TRAVIS ] ; then
-		apt-get install --force-yes libboost-all-dev libboost-dbg automake libcppunit-dev
+		apt-get install --force-yes libboost-all-dev libboost-dbg automake autoconf-archive libcppunit-dev
 	else
 		echo 'Detected Ubuntu, installing dependencies:'
-		apt-get install libboost-all-dev libboost-dbg automake libcppunit-dev
+		apt-get install libboost-all-dev libboost-dbg automake autoconf-archive libcppunit-dev
 		if [ $(pidof X) ] ; then
 			cd /tmp
 			wget 'http://ubietylab.net/files/alpha-0.2.4/UbiGraph-alpha-0.2.4-Linux64-Ubuntu-8.04.tgz'
