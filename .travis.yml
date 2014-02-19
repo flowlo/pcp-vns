@@ -1,6 +1,11 @@
 language: cpp
 compiler: gcc
-before_script: sudo ./tools/setup.sh
+before_script:
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq g++-4.8 libboost-all-dev libboost-dbg automake autoconf-archive libcppunit-dev freeglut3 libxmlrpc-c3-dev
+  - export CXX='g++-4.8' CC='gcc-4.8'
+  - sudo ./tools/setup-ubigraph.sh
 script:
   - aclocal
   - automake --gnu --add-missing
