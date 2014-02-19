@@ -20,7 +20,10 @@ AC_CHECK_HEADERS([boost/shared_array.hpp], [],
 	[AC_MSG_ERROR(You need the Boost Shared Array libraries.)])
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_CHECK_HEADER_STDBOOL
+
+# Travis does not like this macro
+# AC_CHECK_HEADER_STDBOOL
+
 AC_TYPE_INT32_T
 AC_TYPE_INT64_T
 AC_TYPE_UINT32_T
