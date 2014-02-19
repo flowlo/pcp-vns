@@ -13,6 +13,7 @@ AC_LANG_PUSH([C++])
 AC_PROG_CXX
 
 # Checks for libraries.
+AC_CHECK_LIB([boost_program_options], [main], [], [AC_MSG_ERROR[boost program options not found]])
 
 # Checks for header files.
 AC_CHECK_HEADERS([boost/graph/adjacency_list.hpp], [], 

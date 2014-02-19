@@ -89,6 +89,7 @@ namespace pcp {
 			bool isVisible(const Vertex& v);
 			
 			void setVertexColor(const Vertex& v, color_t color);
+			void setColorsUsed(std::int32_t i);
 			
 			void setPartition(const Vertex v, partition_t part);
 			void addEdge(const Vertex& v1, const Vertex& v2);
