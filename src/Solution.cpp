@@ -219,6 +219,11 @@ namespace pcp {
 		this->toggleVertex(nv);
 	}
 	
+	// Set the colors used variable
+	void setColorsUsed(std::int32_t i) {
+	   this->colors_used = i;
+	}
+	
 	// Detach the current maping from the others
 	void Solution :: detach() {
 		if (this->mapped_vertices.use_count() > 1) {
