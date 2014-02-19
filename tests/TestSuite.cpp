@@ -2,6 +2,7 @@
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
 
+int DEBUG_LEVEL = 0;
 
 int main(int argc, char* argv[])
 {

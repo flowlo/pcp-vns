@@ -30,7 +30,7 @@ namespace pcp {
       // fill(sol->partition, sol->partition + sol->numParts, -1);
 
       /// Repeat until there are no uncolored partitions
-      for (int j = 0; j < s.getNumPartition(); j++) {	
+      for (uint32_t j = 0; j < s.getNumPartition(); j++) {	
 
          /// Reset the minimal color degree to maximum each iteration
          fill(minDegree, minDegree + s.getNumPartition(), s.getNumPartition() + 1);
@@ -39,7 +39,7 @@ namespace pcp {
          maxDegree = -1;
 
          /// For each vertex in the graph
-         for (vp = vertices(sol.getFilterGraph()); vp.first != vp.second; ++vp.first) {
+         for (vp = vertices(sol.getCurrentSolution()); vp.first != vp.second; ++vp.first) {
             /// Compute the color degree for the vertex
             cd = sol.getColorDegree(*vp.first);
 
@@ -48,7 +48,7 @@ namespace pcp {
             /// uncolored
             if (cd < minDegree[sol.getPartition(*vp.first)] && !sol.isColored(*vp.first)) {
                /// Set the minimal color degree for the vertex' partition to cd
-               minDegree[sol->getPartition(*vp.first)] = cd;
+               minDegree[sol.getPartition(*vp.first)] = cd;
 
                /// If the vertex' color degree is more then the current maximum
                /// degree, select the current node as the new target
@@ -75,7 +75,7 @@ namespace pcp {
          solrepresentatives[sol->getPartition(*vp.first)] = *vp.first;
       */
       
-      sol->colorsUsed = numColors + 1;
+      sol.setColorsUsed(numColors + 1);
 
       if (DEBUG_LEVEL > 3) {
          cout << "onestepCD complete!" << endl;
@@ -90,14 +90,13 @@ namespace pcp {
    // s the solution to which removeOthers should be applied
    void removeOthers(FVertex node, Solution& s) {
       partition_t part = s.getPartition(node);
-      vector<Vertex>& nodes = s.getPartitionNodes(part);
+      const vector<Vertex>& nodes = s.getPartitionNodes(part);
    
-      auto i;
       
       // Toggle all nodes in the same partition
-      for (i = nodes.begin(); i < nodes.end(); ++i) {
+      for (auto i = nodes.begin(); i < nodes.end(); ++i) {
          if (*i != node) {
-            s.toggleNode(*i);
+            s.toggleVertex(*i);
          }
       }
       
@@ -109,7 +108,7 @@ namespace pcp {
    /* DEPRECATED */
    // Remove edges within the same parition
    // s is the solution to which removeEdges should be applied
-   void removePartEdges(Solution& s) {
+   /*void removePartEdges(Solution& s) {
       graph_traits<Graph>::edge_iterator i, end;
       for (tie(i, end) = edges(*s.g); i != end; i++) {
          if (s.getPartition(source(*i, *s.g)) == s.getPartition(target(*i, *s.g))) {
@@ -123,5 +122,5 @@ namespace pcp {
       if (DEBUG_LEVEL > 3) {
          cout << "removePartEdges complete!" << endl;
       }
-   }
+   }*/
 }
