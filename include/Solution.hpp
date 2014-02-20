@@ -70,6 +70,8 @@ namespace pcp {
 			~Solution();
 		
 			Solution& operator=(const Solution& rhs);
+			bool operator==(const Solution& rhs);
+			bool operator!=(const Solution& rhs);
 			
 			std::int32_t getColorsUsed();
 			std::uint32_t getNumPartition();
