@@ -86,6 +86,30 @@ namespace pcp {
 		return *this;
 	}
 	
+	// Check if 2 solutions are equal
+	bool Solution :: operator==(const Solution& rhs) {
+	   if (this->num_parts == rhs.num_parts && this->num_edges == rhs.num_edges &&
+	       this->num_vertices == rhs.num_vertices && this->colors_used == rhs.colors_used &&
+	       this->g == rhs.g) {
+	      
+	      uint32_t i;
+	      for (i = 0; i < this->num_parts; ++i) {
+	         if (this->mapped_vertices[i] != rhs.mapped_vertices[i] ||
+	             this->coloring[i] != rhs.coloring[i])
+	            return false;
+	      }
+	      for (; i < this->num_vertices; ++i) {
+	         if (this->mapped_vertices[i] != rhs.mapped_vertices[i])
+	            return false;
+	      }
+	   }
+	   return false;
+	}
+	
+	bool Solution :: operator!=(const Solution& rhs) {
+	   return !(*this == rhs);
+	}
+	
 	// Straightforward access to the property map, return partitionID
 	partition_t Solution :: getPartition(const Vertex v) {
 		return get(boost::vertex_index1_t(), *(this->g), v);
