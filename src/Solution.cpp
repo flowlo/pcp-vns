@@ -209,6 +209,10 @@ namespace pcp {
 		return this->mapped_vertices[v];
 	}
 
+	void Solution::setVisible(const Vertex& v, bool value) {
+		this->mapped_vertices[v] = value;
+	}
+
 	// Set a specific vertex to a specific color
 	void Solution :: setVertexColor(const Vertex& v, color_t color) {
 		this->coloring[getPartition(v)] = color;

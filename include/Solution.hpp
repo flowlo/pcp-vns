@@ -93,6 +93,7 @@ namespace pcp {
 			
 			void setVertexColor(const Vertex& v, color_t color);
 			void setColorsUsed(std::int32_t i);
+			void setVisible(const Vertex& v, bool value);
 			
 			void setPartition(const Vertex v, partition_t part);
 			void addEdge(const Vertex& v1, const Vertex& v2);
@@ -100,6 +101,11 @@ namespace pcp {
 			void toggleVertex(const Vertex& v);
 			void replaceVertex(const Vertex& toRep, const Vertex& nv);
 			void detach();
+
+			inline void clearColors() {
+				std::fill_n(this->coloring, this->num_parts, -1);
+			};
+
 		private:
 			std::shared_ptr<Graph> g;
 			std::shared_ptr<FilterGraph> fg;
