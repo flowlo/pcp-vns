@@ -1,3 +1,5 @@
+SUBDIRS = units
+
 AM_CXXFLAGS = -Wall -Werror -std=c++11 -O2 -g
 AM_LDFLAGS = -lboost_program_options
 
