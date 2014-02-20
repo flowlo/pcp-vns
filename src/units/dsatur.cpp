@@ -1,4 +1,4 @@
-#include "../include/vns-priv.hpp"
+#include "../../include/vns-priv.hpp"
 
 using namespace std;
 using namespace boost;
