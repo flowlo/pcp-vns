@@ -3,5 +3,5 @@ AM_LDFLAGS = -lboost_program_options
 
 bin_PROGRAMS = pcp-vns
 
-pcp_vns_SOURCES = main.cpp Solution.cpp IO.cpp onestepCD.cpp vns.cpp \
+pcp_vns_SOURCES = main.cpp Solution.cpp IO.cpp onestepCD.cpp vns.cpp StoredSolution.cpp \
    $(topbuild_dir)/main.hpp

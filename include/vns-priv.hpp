@@ -14,10 +14,10 @@ namespace pcp {
 	class VNS_Unit {
 		public:
 			/// Compute the new improved solution of this neighborhood
-			virtual Solution *findLocalMin(Solution& curBest, Solution& full) = 0;
+			virtual Solution findLocalMin(Solution& curBest) = 0;
 
 			/// Shuffle a solution using the neighborhood as a base
-			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps) = 0;
+			virtual Solution shuffleSolution(Solution& cur, int numSteps) = 0;
 
 			virtual ~VNS_Unit();
 
@@ -32,8 +32,8 @@ namespace pcp {
 	// Definition of changeColor neighborhood
 	class changeColor : public VNS_Unit {
 		public:
-			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
-			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
+			virtual Solution findLocalMin(Solution& curBest);
+			virtual Solution shuffleSolution(Solution& cur, int numSteps);
 
 			virtual const std::string getName();
 			static const char getAbbreviation();
@@ -42,8 +42,8 @@ namespace pcp {
 	// Definition of changeNode neighborhood
 	class changeNode : public VNS_Unit {
 		public:
-			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
-			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
+			virtual Solution findLocalMin(Solution& curBest);
+			virtual Solution shuffleSolution(Solution& cur, int numSteps);
 
 			virtual const std::string getName();
 			static const char getAbbreviation();
@@ -52,8 +52,8 @@ namespace pcp {
 	// Definition of changeAll neighborhood
 	class changeAll : public VNS_Unit {
 		public:
-			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
-			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
+			virtual Solution findLocalMin(Solution& curBest);
+			virtual Solution shuffleSolution(Solution& cur, int numSteps);
 
 			virtual const std::string getName();
 			static const char getAbbreviation();
@@ -62,8 +62,8 @@ namespace pcp {
 	// Definition of DSATUR neighborhood
 	class dsatur : public VNS_Unit {
 		public:
-			virtual Solution *findLocalMin(Solution& curBest, Solution& full);
-			virtual Solution *shuffleSolution(Solution& cur, Solution& full, int numSteps);
+			virtual Solution findLocalMin(Solution& curBest);
+			virtual Solution shuffleSolution(Solution& cur, int numSteps);
 
 			virtual const std::string getName();
 			static const char getAbbreviation();

@@ -3,6 +3,7 @@
 #ifndef SOL_STORE_H
 #define SOL_STORE_H
 #include "pcp.hpp"
+#include "Solution.hpp"
 #include <sstream>
 #include <boost/functional/hash.hpp>
 

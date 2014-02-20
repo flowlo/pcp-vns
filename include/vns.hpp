@@ -14,7 +14,7 @@ namespace pcp {
 	/// or if 'time' seconds have elapsed.
 	/// Shaking starts with shakeStart steps and is then incremented by
 	/// shakeIncrement.
-	Solution vnsRun(Solution best, Solution& orig, std::string units, int unsuccessfulShake, int shakeStart, int shakeIncrement, int maxTime, bool checkIntermediate, bool checkFinal);
+	Solution vns(Solution& best, std::string units, int unsuccessfulShake, int shakeStart, int shakeIncrement, int maxTime, bool checkIntermediate, bool checkFinal);
 }
 
 #endif

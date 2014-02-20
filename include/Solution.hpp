@@ -87,6 +87,7 @@ namespace pcp {
 			
 			bool isColored(const Vertex& v);
 			bool isVisible(const Vertex& v);
+			bool isValid();
 			
 			void setVertexColor(const Vertex& v, color_t color);
 			void setColorsUsed(std::int32_t i);

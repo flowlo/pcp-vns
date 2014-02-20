@@ -99,7 +99,7 @@ int main(int argc, char* argv[]) {
 	#endif
 
 	// Run Variable Neighborhood Search
-	Solution best = vnsRun(onestep, fullG, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), !vm.count("checkFinal"));
+	Solution best = vns(onestep, units, unsuccessfulShake, shakeStart, shakeIncrement, maxTime, vm.count("checkIntermediate"), !vm.count("checkFinal"));
 
 	// print output if option is set
 	if (vm.count("print")) {
