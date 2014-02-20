@@ -109,17 +109,7 @@ namespace pcp {
 	bool Solution :: operator!=(const Solution& rhs) {
 	   return !(*this == rhs);
 	}
-	
-	// Straightforward access to the property map, return partitionID
-	partition_t Solution :: getPartition(const Vertex v) {
-		return get(boost::vertex_index1_t(), *(this->g), v);
-	}
-	
-	// Straightforward access to color of the vertex
-	color_t Solution :: getColor(const Vertex& v) { 
-		return coloring[getPartition(v)];
-	}
-	
+
 	// Step through all adjacent vertices !IN THE FILTERED GRAPH! and count the 
 	// number of colored vertices
 	uint32_t Solution :: getColorDegree(const Vertex& v) {
@@ -159,11 +149,6 @@ namespace pcp {
 		return -1;
 	}
 	
-	// Return a vector with all nodes of a partition
-	const std::vector<Vertex>& Solution :: getPartitionNodes(partition_t t) {
-	   return part_vertices[t];
-	}
-	
 	// Basically a combination of minPossibleColor() and getColorDegree() to 
 	// speed things up
 	pair<uint32_t, color_t> Solution :: getColorDegreeAndMinColor
@@ -200,24 +185,6 @@ namespace pcp {
 		return ret;
 	}
 
-	// Check wheter a vertex is colored or not
-	bool Solution :: isColored(const Vertex& v) {
-		return getColor(v) > -1;
-	}
-	
-	bool Solution :: isVisible(const Vertex& v) {
-		return this->mapped_vertices[v];
-	}
-
-	void Solution::setVisible(const Vertex& v, bool value) {
-		this->mapped_vertices[v] = value;
-	}
-
-	// Set a specific vertex to a specific color
-	void Solution :: setVertexColor(const Vertex& v, color_t color) {
-		this->coloring[getPartition(v)] = color;
-	}
-
 	// Set an previously unset vertices to a specific partition and 
 	// push it in the correspondig vector for easy access
 	void Solution :: setPartition(const Vertex v, partition_t part) {
@@ -243,11 +210,6 @@ namespace pcp {
 		this->toggleVertex(nv);
 	}
 	
-	// Set the colors used variable
-	void Solution :: setColorsUsed(std::int32_t i) {
-	   this->colors_used = i;
-	}
-	
 	// Detach the current maping from the others
 	void Solution :: detach() {
 		if (this->mapped_vertices.use_count() > 1) {
@@ -263,32 +225,6 @@ namespace pcp {
 			shared_ptr<FilterGraph> fg(new FilterGraph(*this->g, edges, vertices));
 			this->fg = fg;
 		}
-	}
-	
-	// Return reference to the filtered graph
-	FilterGraph& Solution :: getCurrentSolution() {
-		return *this->fg;
-	}
-	
-	// Return reference to the full graph
-	Graph& Solution :: getFullGraph() {
-		return *this->g;
-	}
-	
-	std::int32_t Solution :: getColorsUsed() {
-		return this->colors_used;
-	}
-	
-	std::uint32_t Solution :: getNumPartition() {
-		return this->num_parts;
-	}
-	
-	std::uint32_t Solution :: getNumVertices() {
-		return this->num_vertices;
-	}
-	
-	std::uint32_t Solution :: getNumEdges() {
-		return this->num_edges;
 	}
 
 	/// validate solutions

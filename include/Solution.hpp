@@ -20,8 +20,8 @@ namespace pcp {
 		template <typename Ed> bool operator()(const Ed& e) const {
 			return mapped_vertices[source(e, *g)] && mapped_vertices[target(e, *g)];
 		}
-	  	boost::shared_array<bool> mapped_vertices;
-	  	std::shared_ptr<Graph> g;
+		boost::shared_array<bool> mapped_vertices;
+		std::shared_ptr<Graph> g;
 	};
 	
 	// Predicate to select visible vertices
@@ -33,13 +33,13 @@ namespace pcp {
 		template <typename Ve> bool operator()(const Ve& v) const {
 			return mapped_vertices[v];
 		}
-	  	boost::shared_array<bool> mapped_vertices;
+		boost::shared_array<bool> mapped_vertices;
 	};
 
 	// The filtered graph, only showing visible edges and vertices
 	typedef boost::filtered_graph<Graph, edge_visible, vertex_visible> FilterGraph;
-								
- 	// Represents a vertex
+
+	// Represents a vertex
 	typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 	typedef boost::graph_traits<FilterGraph>::vertex_descriptor FVertex;
 
@@ -68,36 +68,84 @@ namespace pcp {
 			Solution();
 			//Solution(std::istream& in); avoid this to shorten compilation time
 			~Solution();
-		
+
 			Solution& operator=(const Solution& rhs);
 			bool operator==(const Solution& rhs);
 			bool operator!=(const Solution& rhs);
-			
-			std::int32_t getColorsUsed();
-			std::uint32_t getNumPartition();
-			std::uint32_t getNumVertices();
-			std::uint32_t getNumEdges();
-			partition_t getPartition(const Vertex v);
-			color_t getColor(const Vertex& v);
+
 			std::uint32_t getColorDegree(const Vertex& v);
 			color_t minPossibleColor(const Vertex& v);
-			const std::vector<Vertex>& getPartitionNodes(partition_t t);
 			std::pair<std::uint32_t, color_t> 
 						getColorDegreeAndMinColor(const Vertex& v);
-			FilterGraph& getCurrentSolution();
-			Graph& getFullGraph();
-			
-			bool isColored(const Vertex& v);
-			bool isVisible(const Vertex& v);
+
 			bool isValid();
-			
-			void setVertexColor(const Vertex& v, color_t color);
-			void setColorsUsed(std::int32_t i);
-			void setVisible(const Vertex& v, bool value);
-			
+
+			inline bool isColored(const Vertex& v) {
+				return getColor(v) > -1;
+			};
+
+			inline bool isVisible(const Vertex& v) {
+				return this->mapped_vertices[v];
+			};
+
+			inline void setVisible(const Vertex& v, bool value) {
+				this->mapped_vertices[v] = value;
+			};
+
+			// Straightforward access to the property map, return partitionID
+			inline partition_t getPartition(const Vertex v) {
+				return get(boost::vertex_index1_t(), *(this->g), v);
+			};
+
+			// Set a specific vertex to a specific color
+			inline void setVertexColor(const Vertex& v, color_t color) {
+				this->coloring[getPartition(v)] = color;
+			};
+
+			// Set the colors used variable
+			inline void setColorsUsed(std::int32_t i) {
+				this->colors_used = i;
+			}
+
+			// Return reference to the filtered graph
+			inline FilterGraph& getCurrentSolution() {
+				return *this->fg;
+			};
+
+			// Return reference to the full graph
+			inline Graph& getFullGraph() {
+				return *this->g;
+			};
+
+			inline std::int32_t getColorsUsed() {
+				return this->colors_used;
+			};
+
+			inline std::uint32_t getNumPartition() {
+				return this->num_parts;
+			};
+
+			inline std::uint32_t getNumVertices() {
+				return this->num_vertices;
+			};
+
+			inline std::uint32_t getNumEdges() {
+				return this->num_edges;
+			};
+
+			// Straightforward access to color of the vertex
+			inline color_t getColor(const Vertex& v) {
+				return coloring[getPartition(v)];
+			};
+
+			// Return a vector with all nodes of a partition
+			inline const std::vector<Vertex>& getPartitionNodes(partition_t t) {
+				return part_vertices[t];
+			};
+
 			void setPartition(const Vertex v, partition_t part);
 			void addEdge(const Vertex& v1, const Vertex& v2);
-			
+
 			void toggleVertex(const Vertex& v);
 			void replaceVertex(const Vertex& toRep, const Vertex& nv);
 			void detach();
@@ -112,7 +160,7 @@ namespace pcp {
 			boost::shared_array<bool> mapped_vertices;
 			boost::shared_array<std::vector<Vertex>> part_vertices;
 			color_t* coloring;
-			
+
 			std::int32_t colors_used;
 			std::uint32_t num_parts;
 			std::uint32_t num_vertices;
