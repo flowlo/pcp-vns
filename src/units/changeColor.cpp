@@ -18,13 +18,11 @@ Solution changeColor::findLocalMin(Solution& solution) {
 	FAdjIter a, aEnd;
 
 	// Change color will not work here....
-	if (maxColor <= 1) {
+	if (maxColor < 2)
 		return solution;
-	}
 
-	if (DEBUG_LEVEL > 2) {
+	if (DEBUG_LEVEL > 2)
 		cout<<"Starting changeColor"<<endl;
-	}
 
 	// Try recoloring all vertices where color=maxColor
 	for (tie(i, iEnd) = vertices(solution.getCurrentSolution()); i != iEnd; i++) {
@@ -73,16 +71,14 @@ Solution changeColor::findLocalMin(Solution& solution) {
 
 	// Find new maxColor and number of used colors
 	maxColor = 0;
-	for (uint32_t i = 0; i < solution.getNumPartition(); i++) {
-		if (solution.getPartitionColor(i) > maxColor) {
+	for (uint32_t i = 0; i < solution.getNumPartition(); i++)
+		if (solution.getPartitionColor(i) > maxColor)
 			maxColor = solution.getPartitionColor(i);
-		}
-	}
+
 	solution.setColorsUsed(maxColor + 1);
 
-	if (DEBUG_LEVEL > 1) {
+	if (DEBUG_LEVEL > 1)
 		cout<<"changeColor uses "<<solution.getColorsUsed()<<" colors"<<endl; 
-	}
 
 	// Try to take it one step further
 	Solution temp = this->findLocalMin(solution);

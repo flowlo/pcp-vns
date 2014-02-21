@@ -22,7 +22,9 @@ Solution dsatur::findLocalMin(Solution& current) {
 
 	for (uint32_t j = 0; j < current.getNumPartition(); j++) {
 		if (DEBUG_LEVEL == 4)
-			cout << "New iteration!" << endl;
+			cout << "Iteration " << j << " ..." << endl;
+
+		maxColorDegree = maxBlankDegree = 0;
 
 		for (tie(i, end) = vertices(current.getCurrentSolution()); i != end; i++) {
 			if (current.isColored(*i))
@@ -44,12 +46,12 @@ Solution dsatur::findLocalMin(Solution& current) {
 			targetColor = minColor;
 
 			if (DEBUG_LEVEL == 4)
-				cout << "New best " << target << " having (" << maxColorDegree << "|" << maxBlankDegree << ")" << endl;
+				cout << "  New best " << target << " having (" << maxColorDegree << "|" << maxBlankDegree << ")" << endl;
 		}
 		current.setVertexColor(target, targetColor);
 
 		if (DEBUG_LEVEL == 4)
-			cout << "Colored " << target << " with " << targetColor << endl;
+			cout << "  Colored " << target << " with " << targetColor << endl;
 	}
 	return current;
 }

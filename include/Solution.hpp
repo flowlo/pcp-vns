@@ -51,7 +51,7 @@ namespace pcp {
 	typedef boost::graph_traits<Graph>::vertex_iterator VertexIter;
 	typedef boost::graph_traits<FilterGraph>::vertex_iterator FVertexIter;
 
-	// Standard vertex_iterator
+	// Standard edge_iterator
 	typedef boost::graph_traits<Graph>::edge_iterator EdgeIter;
 	typedef boost::graph_traits<FilterGraph>::edge_iterator FEdgeIter;
 

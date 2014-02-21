@@ -346,14 +346,13 @@ namespace pcp {
 		//if (curBest != toImprove)
 		//	delete toImprove;
 
-		for(vector<VNS_Unit*>::iterator i = neighbors.begin(); i != neighbors.end();
-			 i++) {
+		for(vector<VNS_Unit*>::iterator i = neighbors.begin(); i != neighbors.end(); i++) {
 			delete *i;
 		}
 		#ifdef ubigraph
 		curBest.redraw();
 		#endif
-		
+
 		return best;
 	}
 }
