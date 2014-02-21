@@ -15,36 +15,33 @@ const char dsatur::getAbbreviation() {
 Solution dsatur::findLocalMin(Solution& current) {
 	current.clearColors();
 
-	color_t targetColor = -1;
+	color_t targetColor = -1, minColor = -1;
 	Vertex target;
-	uint32_t maxColorDegree, maxBlankDegree, blankDegree;
+	uint32_t maxColorDegree = 0, colorDegree = 0, maxBlankDegree = 0, blankDegree = 0;
 	FVertexIter i, end;
-	pair<uint32_t, color_t> candidate;
 
 	for (uint32_t j = 0; j < current.getNumPartition(); j++) {
 		if (DEBUG_LEVEL == 4)
 			cout << "New iteration!" << endl;
 
-		target = maxColorDegree = maxBlankDegree = -1;
-
 		for (tie(i, end) = vertices(current.getCurrentSolution()); i != end; i++) {
 			if (current.isColored(*i))
 				continue;
 
-			candidate = current.getColorDegreeAndMinColor(*i);
+			tie(colorDegree, minColor) = current.getColorDegreeAndMinColor(*i);
 
-			if (candidate.first < maxColorDegree)
+			if (colorDegree < maxColorDegree)
 				continue;
 
-			blankDegree = degree(*i, current.getFullGraph()) - candidate.first;
+			blankDegree = out_degree(*i, current.getCurrentSolution()) - colorDegree;
 
-			if (candidate.first == maxColorDegree && blankDegree <= maxBlankDegree)
+			if (colorDegree == maxColorDegree && blankDegree <= maxBlankDegree)
 				continue;
 
 			target = *i;
-			maxColorDegree = candidate.first;
+			maxColorDegree = colorDegree;
 			maxBlankDegree = blankDegree;
-			targetColor = candidate.second;
+			targetColor = minColor;
 
 			if (DEBUG_LEVEL == 4)
 				cout << "New best " << target << " having (" << maxColorDegree << "|" << maxBlankDegree << ")" << endl;
