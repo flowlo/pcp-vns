@@ -46,7 +46,7 @@ namespace pcp {
 			}
 		}
 
-		vector<pair<int, int> > *stats = new vector<pair<int, int> >[neighbors.size()];
+		vector<pair<int, int>> *stats = new vector<pair<int, int>>[neighbors.size()];
 
 		time_t startTime = time(NULL);
 		int no_imp_runs = 0, improvement;
@@ -84,7 +84,7 @@ namespace pcp {
 				/// Compute the minimum for this neighborhood
 				Solution imp = neigh->findLocalMin(tempImp);	
 
-				improvement = (toImprove.getColorsUsed() - imp.getColorsUsed() < 1) ? 0 : toImprove.getColorsUsed() - imp.getColorsUsed();
+				improvement = (toImprove.getColorsUsed() > imp.getColorsUsed()) ? 0 : toImprove.getColorsUsed() - imp.getColorsUsed();
 
 				/// Stats tracking
 				stats[curNeighbor].push_back(pair<int, int>(clock() - start, improvement));
@@ -150,7 +150,7 @@ namespace pcp {
 					if (DEBUG_LEVEL > 1)
 						cout << "No improvement found." << endl;
 
-					if (toImprove.getColorsUsed() - imp.getColorsUsed() < 0) {
+					if (toImprove.getColorsUsed() > imp.getColorsUsed()) {
 						//delete tempImp;
 						tempImp = toImprove;
 					}

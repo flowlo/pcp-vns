@@ -86,7 +86,7 @@ Solution changeColor::findLocalMin(Solution& solution) {
 
 	// Try to take it one step further
 	Solution temp = this->findLocalMin(solution);
-	if (temp.getColorsUsed() < solution.getColorsUsed()) {
+	if (temp < solution) {
 		solution = temp;
 		#ifdef ubigraph
 		solution.redraw();

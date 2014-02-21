@@ -107,7 +107,23 @@ namespace pcp {
 	}
 	
 	bool Solution :: operator!=(const Solution& rhs) {
-	   return !(*this == rhs);
+		return !(*this == rhs);
+	}
+
+	bool Solution :: operator<(const Solution& rhs) {
+		return this->colors_used < rhs.colors_used;
+	}
+
+	bool Solution :: operator<=(const Solution& rhs) {
+		return !(*this > rhs);
+	}
+
+	bool Solution :: operator>(const Solution& rhs) {
+		return this->colors_used > rhs.colors_used;
+	}
+
+	bool Solution :: operator>=(const Solution& rhs) {
+		return !(*this < rhs);
 	}
 
 	// Step through all adjacent vertices !IN THE FILTERED GRAPH! and count the 
