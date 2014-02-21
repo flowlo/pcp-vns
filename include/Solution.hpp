@@ -137,6 +137,10 @@ namespace pcp {
 			inline color_t getColor(const Vertex& v) {
 				return coloring[getPartition(v)];
 			};
+			
+			inline color_t getPartitionColor(uint32_t partition) {
+				return coloring[partition];
+			};
 
 			// Return a vector with all nodes of a partition
 			inline const std::vector<Vertex>& getPartitionNodes(partition_t t) {
