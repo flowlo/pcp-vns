@@ -12,8 +12,9 @@ const char changeColor::getAbbreviation() {
 	return 'c';
 }
 
-Solution changeColor::findLocalMin(Solution& solution) {
-	int maxColor = solution.getColorsUsed() - 1;
+Solution changeColor::findLocalMin(Solution& sol) {
+	Solution solution(sol);
+	color_t maxColor = solution.getColorsUsed() - 1;
 	FVertexIter i, iEnd;
 	FAdjIter a, aEnd;
 
@@ -32,8 +33,8 @@ Solution changeColor::findLocalMin(Solution& solution) {
 			}
 
 			// Try recoloring the vertex with every possible color < maxColor - 1
-			int j;
-			for(j = 0; j < maxColor - 1; ++j)  {
+			color_t j;
+			for(j = 0; j < maxColor; ++j)  {
 				solution.setVertexColor(*i, j);
 
 				if (DEBUG_LEVEL > 3) {
@@ -45,7 +46,7 @@ Solution changeColor::findLocalMin(Solution& solution) {
 				bool allColored = true;
 				for (tie(a, aEnd) = adjacent_vertices(*i, solution.getCurrentSolution()); a != aEnd; a++) {
 					if (solution.getColor(*a) == j) {
-						int recolor = solution.minPossibleColor(*a);
+						color_t recolor = solution.minPossibleColor(*a);
 						if (recolor >= maxColor) {
 							allColored = false;
 							break;
@@ -59,7 +60,7 @@ Solution changeColor::findLocalMin(Solution& solution) {
 					break;
 			}
 			// No new color could be found for all adjacent vertices
-			if (j == maxColor - 1) {
+			if (j == maxColor) {
 				if (DEBUG_LEVEL > 1) {
 					cout << "Conflict found: could not resolve conflict with node " << *i <<endl;
 				}
