@@ -44,7 +44,7 @@ Solution changeColor::findLocalMin(Solution& solution) {
 				// maxColor
 				bool allColored = true;
 				for (tie(a, aEnd) = adjacent_vertices(*i, solution.getCurrentSolution()); a != aEnd; a++) {
-					if (solution.getPartitionColor(*a) == j) {
+					if (solution.getColor(*a) == j) {
 						int recolor = solution.minPossibleColor(*a);
 						if (recolor >= maxColor) {
 							allColored = false;
@@ -71,7 +71,7 @@ Solution changeColor::findLocalMin(Solution& solution) {
 
 	// Find new maxColor and number of used colors
 	maxColor = 0;
-	for (uint32_t i = 0; i < solution.getNumPartition(); i++)
+	for (partition_t i = 0; i < solution.getNumPartition(); i++)
 		if (solution.getPartitionColor(i) > maxColor)
 			maxColor = solution.getPartitionColor(i);
 
