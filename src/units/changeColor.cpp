@@ -81,7 +81,8 @@ Solution changeColor::findLocalMin(Solution& solution) {
 		cout<<"changeColor uses "<<solution.getColorsUsed()<<" colors"<<endl; 
 
 	// Try to take it one step further
-	Solution temp = this->findLocalMin(solution);
+	Solution temp(solution);
+	temp = this->findLocalMin(temp);
 	if (temp < solution) {
 		solution = temp;
 		#ifdef ubigraph

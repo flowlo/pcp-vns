@@ -5,6 +5,7 @@ AM_SILENT_RULES([yes])
 AM_PATH_CPPUNIT()
 
 AC_LANG_PUSH([C++])
+: ${CXXFLAGS=""} 
 # Checks for programs.
 AC_PROG_CXX
 

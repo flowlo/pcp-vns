@@ -52,7 +52,7 @@ namespace pcp {
 		int no_imp_runs = 0, improvement;
 		unsigned int curNeighbor = 0;
 		int shakeSteps = shakeStart - shakeIncrement;
-		Solution &toImprove = best;
+		Solution toImprove = best;
 		Solution &curBest = best;
 
 		unordered_set<StoredSolution, StoredHash, StoredEqual> solutionStore;
@@ -84,7 +84,7 @@ namespace pcp {
 				/// Compute the minimum for this neighborhood
 				Solution imp = neigh->findLocalMin(tempImp);	
 
-				improvement = (toImprove.getColorsUsed() > imp.getColorsUsed()) ? 0 : toImprove.getColorsUsed() - imp.getColorsUsed();
+				improvement = (toImprove.getColorsUsed() < imp.getColorsUsed()) ? 0 : toImprove.getColorsUsed() - imp.getColorsUsed();
 
 				/// Stats tracking
 				stats[curNeighbor].push_back(pair<int, int>(clock() - start, improvement));
@@ -102,7 +102,7 @@ namespace pcp {
 					//	delete toImprove;
 
 					// TODO
-					//toImprove = tempImp = imp;
+					toImprove = tempImp = imp;
 					//tempImp = new Solution(tempImp);
 
 					StoredSolution *check = new StoredSolution(imp);
