@@ -84,7 +84,7 @@ namespace pcp {
 				/// Compute the minimum for this neighborhood
 				Solution imp = neigh->findLocalMin(tempImp);	
 
-				improvement = (toImprove.getColorsUsed() < imp.getColorsUsed()) ? 0 : toImprove.getColorsUsed() - imp.getColorsUsed();
+				improvement = (toImprove < imp) ? 0 : toImprove - imp;
 
 				/// Stats tracking
 				stats[curNeighbor].push_back(pair<int, int>(clock() - start, improvement));
@@ -150,7 +150,7 @@ namespace pcp {
 					if (DEBUG_LEVEL > 1)
 						cout << "No improvement found." << endl;
 
-					if (toImprove.getColorsUsed() > imp.getColorsUsed()) {
+					if (toImprove > imp)) {
 						//delete tempImp;
 						tempImp = toImprove;
 					}
@@ -165,7 +165,7 @@ namespace pcp {
 
 			/// Local minimum of neighborhoods is better than current best
 			/// solution
-			if (toImprove.getColorsUsed() < curBest.getColorsUsed()) {
+			if (toImprove < curBest) {
 				if (DEBUG_LEVEL > 1) {
 					cout << "Improvement to global best solution found!" << endl;
 				}

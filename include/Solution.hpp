@@ -76,6 +76,8 @@ namespace pcp {
 			bool operator<=(const Solution& rhs);
 			bool operator>(const Solution& rhs);
 			bool operator>=(const Solution& rhs);
+			uint32_t operator+(const Solution& rhs);
+			uint32_t operator+(const Solution& rhs);
 
 			std::uint32_t getColorDegree(const Vertex& v);
 			color_t minPossibleColor(const Vertex& v);
