@@ -85,7 +85,8 @@ Solution changeColor::findLocalMin(Solution& solution) {
 	}
 
 	// Try to take it one step further
-	Solution temp = this->findLocalMin(solution);
+	Solution temp(solution);
+	temp = this->findLocalMin(temp);
 	if (temp < solution) {
 		solution = temp;
 		#ifdef ubigraph
