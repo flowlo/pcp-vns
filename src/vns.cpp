@@ -84,7 +84,7 @@ namespace pcp {
 				/// Compute the minimum for this neighborhood
 				Solution imp = neigh->findLocalMin(tempImp);	
 
-				improvement = (toImprove < imp) ? 0 : toImprove - imp;
+				improvement = (toImprove < imp) ? 0 : toImprove.getColorsUsed() - imp.getColorsUsed();
 
 				/// Stats tracking
 				stats[curNeighbor].push_back(pair<int, int>(clock() - start, improvement));

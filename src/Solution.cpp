@@ -126,14 +126,6 @@ namespace pcp {
 		return !(*this < rhs);
 	}
 
-	uint32_t Solution :: operator-(const Solution& rhs) {
-		return this->colors_used - rhs.colors_used;
-	}
-
-	uint32_t Solution :: operator+(const Solution& rhs) {
-		return this->colors_used + rhs.colors_used;
-	}
-
 	// Step through all adjacent vertices !IN THE FILTERED GRAPH! and count the 
 	// number of colored vertices
 	uint32_t Solution :: getColorDegree(const Vertex& v) {
