@@ -12,10 +12,12 @@ StoredSolution::StoredSolution(Solution& toStore) {
 	this->colors = new int[n];
 	this->representatives = new int[n];
 	
-	for (int i = 0; i < n; i++) {
-		this->colors[i] = toStore.getColor(i);
-		// TODO
-		//this->representatives[i] = toStore.getOriginalId(i);
+	FVertexIter v,end;
+	int i = 0;
+	for (tie(v,end) = vertices(toStore.getCurrentSolution()); v != end; v++) {
+		this->colors[i] = toStore.getColor(*v);
+		this->representatives[i] = *v;
+		i++;
 	}
 }
 
