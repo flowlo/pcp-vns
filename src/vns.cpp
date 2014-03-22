@@ -150,7 +150,7 @@ namespace pcp {
 					if (DEBUG_LEVEL > 1)
 						cout << "No improvement found." << endl;
 
-					if (toImprove > imp)) {
+					if (toImprove > imp) {
 						//delete tempImp;
 						tempImp = toImprove;
 					}
