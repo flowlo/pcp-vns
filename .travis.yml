@@ -13,7 +13,7 @@ script:
   - ./configure
   - make check
   - make
-  - valgrind --error-exitcode=1 --leak-check=full -v ./src/pcp-vns -n cnd -d 4 < ./tests/instance.pcp
+  - valgrind --error-exitcode=1 --leak-check=full --track-origins=yes --show-reachable=yes -v ./src/pcp-vns -n cnd -d 4 < ./tests/instance.pcp
 notifications:
   email:
     recipients:
