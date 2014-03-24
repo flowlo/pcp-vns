@@ -105,27 +105,26 @@ namespace pcp {
 					toImprove = tempImp = imp;
 					//tempImp = new Solution(tempImp);
 
-					StoredSolution *check = new StoredSolution(imp);
-					if (solutionStore.find(*check) != solutionStore.end()) {
+					StoredSolution check(imp);
+					if (solutionStore.find(check) != solutionStore.end()) {
 						if (DEBUG_LEVEL >= 3) {
 							cout << "Detected duplicate solution";
 
 							if (DEBUG_LEVEL >= 4)
-								cout << " " << check->toString();
+								cout << " " << check.toString();
 
 							cout << ", proceeding to shake!" << endl;
 						}
 						curNeighbor = 0;
-						delete check;
 						break;
 					}
 					else {
-						solutionStore.insert(*check);
+						solutionStore.insert(check);
 						if (DEBUG_LEVEL >= 3) {
 							cout << "Added new solution ";
 
 							if (DEBUG_LEVEL >= 4)
-								cout << check->toString() << " ";
+								cout << check.toString() << " ";
 
 							cout << "to set." << endl;
 						}
