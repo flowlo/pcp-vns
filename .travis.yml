@@ -3,10 +3,11 @@ compiler: gcc
 before_script:
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
   - sudo apt-get update -qq
-  - sudo apt-get install -qq g++-4.8 libboost-all-dev libboost-dbg automake autoconf-archive gnulib libcppunit-dev freeglut3 libxmlrpc-c3-dev valgrind
+  - sudo apt-get install -qq g++-4.8 libboost-all-dev libboost-dbg automake autoconf-archive gnulib libcppunit-dev freeglut3 libxmlrpc-c3-dev valgrind cppcheck
   - export CXX='g++-4.8' CC='gcc-4.8'
   - sudo ./tools/setup-ubigraph.sh
 script:
+  - cppcheck -v --enable=all --error-exitcode=1 .
   - aclocal
   - automake --gnu --add-missing
   - autoconf
