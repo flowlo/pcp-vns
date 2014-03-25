@@ -29,7 +29,7 @@ namespace pcp {
 
 		vector<VNS_Unit*> neighbors = vector<VNS_Unit*>();
 
-		for (string::iterator i = units.begin(); i < units.end(); i++) {
+		for (string::iterator i = units.begin(); i < units.end(); ++i) {
 			if (*i == changeNode::getAbbreviation())
 				neighbors.push_back(new changeNode());
 			else if (*i == changeColor::getAbbreviation())
@@ -254,7 +254,7 @@ namespace pcp {
 			all.second = 0;
 			imp.first = 0;
 			imp.second = 0;
-			for (vector<pair<int, int>>::iterator j = stats[i].begin(); j < stats[i].end(); j++) {
+			for (vector<pair<int, int>>::iterator j = stats[i].begin(); j < stats[i].end(); ++j) {
 				all.first += (*j).first;
 				all.second += (*j).second;
 				if ((*j).second > 0) {
@@ -275,7 +275,7 @@ namespace pcp {
 			allDev.second = 0;
 			impDev.first = 0;
 			impDev.second = 0;
-			for (vector<pair<int, int>>::iterator j = stats[i].begin(); j < stats[i].end(); j++) {
+			for (vector<pair<int, int>>::iterator j = stats[i].begin(); j < stats[i].end(); ++j) {
 				allDev.first += pow((double)((*j).first - allAvg.first), 2);
 				allDev.second += pow((double)((*j).second - allAvg.second), 2);
 
@@ -345,7 +345,7 @@ namespace pcp {
 		//if (curBest != toImprove)
 		//	delete toImprove;
 
-		for(vector<VNS_Unit*>::iterator i = neighbors.begin(); i != neighbors.end(); i++) {
+		for(vector<VNS_Unit*>::iterator i = neighbors.begin(); i != neighbors.end(); ++i) {
 			delete *i;
 		}
 		#ifdef ubigraph

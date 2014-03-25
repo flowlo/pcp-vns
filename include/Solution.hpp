@@ -12,26 +12,25 @@ namespace pcp {
 	// Predicate to select visible edges
 	struct edge_visible {
 		edge_visible() { }
-		edge_visible(boost::shared_array<bool> m_v,
-						 std::shared_ptr<Graph> graph) {
-			mapped_vertices = m_v;
-			g = graph;
+		edge_visible(boost::shared_array<bool> mapped_vertices, std::shared_ptr<Graph> graph) {
+			this->mapped_vertices = mapped_vertices;
+			this->graph = graph;
 		}
-		template <typename Ed> bool operator()(const Ed& e) const {
-			return mapped_vertices[source(e, *g)] && mapped_vertices[target(e, *g)];
+		template <typename Ed> bool operator()(const Ed& edge) const {
+			return mapped_vertices[source(edge, *graph)] && mapped_vertices[target(edge, *graph)];
 		}
 		boost::shared_array<bool> mapped_vertices;
-		std::shared_ptr<Graph> g;
+		std::shared_ptr<Graph> graph;
 	};
 	
 	// Predicate to select visible vertices
 	struct vertex_visible {
 		vertex_visible() { }
-		vertex_visible(boost::shared_array<bool> m_v) {
-			mapped_vertices = m_v;
+		vertex_visible(boost::shared_array<bool> mapped_vertices) {
+			this->mapped_vertices = mapped_vertices;
 		}
-		template <typename Ve> bool operator()(const Ve& v) const {
-			return mapped_vertices[v];
+		template <typename Ve> bool operator()(const Ve& vertex) const {
+			return mapped_vertices[vertex];
 		}
 		boost::shared_array<bool> mapped_vertices;
 	};

@@ -23,7 +23,7 @@ namespace pcp {
 
       /// Initialize the heuristics' parameters
       int minDegree[s.getNumPartition()];
-      int maxDegree, target = -1, cd = 0;
+      int target = -1, cd = 0;
       pair<FVertexIter, FVertexIter> vp;
 
       /// Set the partitions color to "not set"
@@ -36,7 +36,7 @@ namespace pcp {
          fill(minDegree, minDegree + s.getNumPartition(), s.getNumPartition() + 1);
 
          /// Reset the maximum degree
-         maxDegree = -1;
+         int maxDegree = -1;
 
          /// For each vertex in the graph
          for (vp = vertices(sol.getCurrentSolution()); vp.first != vp.second; ++vp.first) {

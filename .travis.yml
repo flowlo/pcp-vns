@@ -7,7 +7,7 @@ before_script:
   - export CXX='g++-4.8' CC='gcc-4.8'
   - sudo ./tools/setup-ubigraph.sh
 script:
-  - cppcheck -v --enable=all --error-exitcode=1 .
+  - cppcheck --quiet --verbose --enable=all --error-exitcode=1 .
   - aclocal
   - automake --gnu --add-missing
   - autoconf

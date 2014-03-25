@@ -10,7 +10,7 @@ int DEBUG_LEVEL = 2;
 
 // main method, starting point of the program
 int main(int argc, char* argv[]) {
-	string units, printFile, inputFile;
+	string units, printFile;
 	int unsuccessfulShake, shakeStart, shakeIncrement, maxTime, rSeed;
 	
 	// Add program options to be parsed using boost:program_options

@@ -19,13 +19,13 @@ Solution changeNode::findLocalMin(Solution& solution) {
 	vector<Vertex> candidates;
 
 	// Search all vertices for minimal colors
-	for (tie(i, end) = vertices(solution.getCurrentSolution()); i != end; i++) {
+	for (tie(i, end) = vertices(solution.getCurrentSolution()); i != end; ++i) {
 		if (solution.getColor(*i) == maxColor) {
 			// Only execute changeNode if there are nodes to replace
 			candidates = solution.getPartitionNodes(solution.getPartition(*i));
 			if (candidates.size() > 1) {
 				vector<Vertex>::iterator replacement;
-				for (replacement = candidates.begin(); replacement != candidates.end(); replacement++) {
+				for (replacement = candidates.begin(); replacement != candidates.end(); ++replacement) {
 					if (*replacement != *i) {
 						solution.replaceVertex(*i, *replacement);
 

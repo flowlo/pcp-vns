@@ -32,12 +32,11 @@ namespace pcp {
 	Solution::Solution() {
 		this->num_edges = this->num_vertices = this->num_parts = 0;
 		this->colors_used = -1;
+		this->coloring = NULL;
 	}
 
-	Solution :: Solution(const Solution& cp) {
+	Solution :: Solution(const Solution& cp) : g(cp.g), fg(cp.fg) {
 		// Copy all const values
-		this->g = cp.g;
-		this->fg = cp.fg;
 		this->num_parts = cp.num_parts;
 		this->num_edges = cp.num_edges;
 		this->num_vertices = cp.num_vertices;
