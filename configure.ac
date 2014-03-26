@@ -7,7 +7,7 @@ AM_PATH_CPPUNIT()
 AC_LANG_PUSH([C++])
 : ${CXXFLAGS=""} 
 # Checks for programs.
-AC_PROG_CXX
+AC_PROG_CXX([clang gcc g++])
 
 # Checks for libraries.
 AC_CHECK_LIB([boost_program_options], [main], [], [AC_MSG_ERROR[boost program options not found]])
