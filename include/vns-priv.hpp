@@ -3,7 +3,6 @@
 #define VNS_PRIV_H
 #include "pcp.hpp"
 #include "vns.hpp"
-#include "StoredSolution.hpp"
 #include <time.h>
 #include <utility>
 #include <boost/tuple/tuple.hpp>

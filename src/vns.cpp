@@ -12,8 +12,7 @@ namespace pcp {
 	}
 	
 	/// Implementation of VNS, see vns.hpp
-	Solution vns(Solution& best, string units, int unsuccessfulShake, 
-						 int shakeStart, int shakeIncrement, int maxTime, bool checkIntermediate, bool checkFinal) {
+	Solution vns(Solution& best, string units, int unsuccessfulShake, int shakeStart, int shakeIncrement, int maxTime, bool checkIntermediate, bool checkFinal) {
 		/// Backup the starting solutions
 		int initialUsed = best.getColorsUsed();
 
@@ -55,7 +54,7 @@ namespace pcp {
 		Solution toImprove = best;
 		Solution &curBest = best;
 
-		unordered_set<StoredSolution, StoredHash, StoredEqual> solutionStore;
+		unordered_set<condensate> solutionStore;
 
 		/// Run as long as shaking still produces usefull solution
 		while (!TERM_SIGINT) {
@@ -105,29 +104,18 @@ namespace pcp {
 					toImprove = tempImp = imp;
 					//tempImp = new Solution(tempImp);
 
-					StoredSolution check(imp);
+					condensate check = imp.condense();
 					if (solutionStore.find(check) != solutionStore.end()) {
-						if (DEBUG_LEVEL >= 3) {
-							cout << "Detected duplicate solution";
+						if (DEBUG_LEVEL >= 3)
+							cout << "Detected duplicate solution, proceeding to shake!" << endl;
 
-							if (DEBUG_LEVEL >= 4)
-								cout << " " << check.toString();
-
-							cout << ", proceeding to shake!" << endl;
-						}
 						curNeighbor = 0;
 						break;
 					}
 					else {
 						solutionStore.insert(check);
-						if (DEBUG_LEVEL >= 3) {
-							cout << "Added new solution ";
-
-							if (DEBUG_LEVEL >= 4)
-								cout << check.toString() << " ";
-
-							cout << "to set." << endl;
-						}
+						if (DEBUG_LEVEL >= 3)
+							cout << "Added new solution to set." << endl;
 					}
 
 					if (DEBUG_LEVEL > 1) {

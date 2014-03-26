@@ -378,4 +378,12 @@ namespace pcp {
 		return valid;*/
 		return false;
 	}
+
+	condensate Solution::condense() {
+		condensate result(this->num_parts);
+		FVertexIter v,end;
+		for (tie(v,end) = vertices(this->getCurrentSolution()); v != end; v++)
+			result.push_back(make_pair(*v, this->getColor(*v)));
+		return result;
+	}
 }

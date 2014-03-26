@@ -10,7 +10,6 @@ pcp_vns_SOURCES = main.cpp \
 	IO.cpp \
 	onestepCD.cpp \
 	vns.cpp \
-	StoredSolution.cpp \
 	units/base.cpp \
 	units/dsatur.cpp \
 	units/changeAll.cpp \

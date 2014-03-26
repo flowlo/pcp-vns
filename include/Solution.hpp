@@ -58,6 +58,8 @@ namespace pcp {
 	typedef boost::graph_traits<Graph>::adjacency_iterator AdjIter;
 	typedef boost::graph_traits<FilterGraph>::adjacency_iterator FAdjIter;
 
+	typedef std::vector<std::pair<vertex_t, color_t>> condensate;
+
 	// Stores one Solution, using a filtered graph
 	// Provides methods to manipulating the stored Solution
 	class Solution {
@@ -80,6 +82,7 @@ namespace pcp {
 			color_t minPossibleColor(const Vertex& v);
 			std::pair<std::uint32_t, color_t> 
 						getColorDegreeAndMinColor(const Vertex& v);
+			condensate condense();
 
 			bool isValid();
 
