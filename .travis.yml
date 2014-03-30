@@ -1,7 +1,7 @@
 language: cpp
 compiler: clang
 before_script:
-  - sudo apt-get install -qq libboost-all-dev libboost-dbg automake autoconf-archive gnulib libcppunit-dev freeglut3 libxmlrpc-c3-dev valgrind cppcheck llvm-symbolizer scan-build
+  - sudo apt-get install -qq libboost-all-dev libboost-dbg automake autoconf-archive gnulib libcppunit-dev freeglut3 libxmlrpc-c3-dev valgrind cppcheck
   - sudo ./tools/setup-ubigraph.sh
 script:
   - cppcheck --quiet --verbose --enable=all --error-exitcode=1 .
