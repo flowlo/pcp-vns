@@ -1,0 +1,325 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Präsentation</title>
+		<meta name="author" content="Lorenz Leutgeb, Moritz Wanzenböck">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/cold.css" id="theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+<!-- lorenz -->
+				<section data-state="unblur"></section>
+				<section data-state="firstslide">
+					<h2 style="line-height: 1.5">Variable Neighborhood Search<br /><span class="small">für das</span><br />Partition Graph Coloring Problem</h2>
+					<br />
+					<p>Lorenz Leutgeb <span class="small">und</span> Moritz Wanzenböck</p>
+					<p class="small">betreut durch</p>
+					<p>Dipl.-Ing. Dr.techn. Martin Gruber</p>
+				</section>
+				<section>
+				<section>
+					<h2>Anwendungsgebiet</h2>
+					
+					<p>Design und Optimierung von Glasfasernetzwerken</p>
+				</section>
+				<section>
+					<h2>Vorteile von besseren Netzwerkstrukturen</h2>
+					
+					<ul>
+						<li>Expansion leichter</li>
+						<li>Ersparnis von Kosten</li>
+						<li>Geringerer Energieverbrauch</li>
+					</ul>
+				</section>
+				</section>
+				<section>
+					<h2>Problem</h2>
+					<p>Zuweisen von Wellenlängen in Glasfasernetzen</p>
+				</section>
+<!-- /lorenz -->
+<!-- moritz -->
+				<section>
+					<h2>Wissenschaftlicher Hintergrund</h2>
+					<ul>
+						<li><i>Li, Simha</i>: The Partition Coloring Problem and its Application to Wavelength</li>
+						<li><i>Noronha, Ribeiro</i>: Routing and wavelength assignment by partition colouring</li>
+					</ul>
+				</section>
+<!-- /moritz -->
+				<section>
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript">
+$(function() {
+	$('.map.node').fadeOut();
+	$('.map.edge').fadeOut();
+	$('.graph.node').fadeOut();
+	$('.graph.edge').fadeOut();
+	$('#austria').fadeOut();
+	$('#translation').click(function() {
+		$('#austria').fadeIn();
+		$(this).click(function() {
+			$('.map.node').fadeIn();
+			$(this).unbind('click');
+			$(this).click(function() {
+				$('.map.edge.ab.blue').fadeIn();
+				$(this).unbind('click');
+				$(this).click(function() {
+					$('.map.edge.ab.mediumblue').fadeIn();
+					$(this).unbind('click');
+					$(this).click(function() {
+						$('.map.edge.ab.purple').fadeIn();
+						$(this).unbind('click');
+						$(this).click(function() {
+							$('.map.edge.cd.yellow').fadeIn();
+							$(this).unbind('click');
+							$(this).click(function() {
+								$('.map.edge.cd.orange').fadeIn();
+								$(this).unbind('click');
+								$(this).click(function() {
+									$('.map.node.c').fadeOut();
+									$('.map.node.d').fadeOut();
+									$('.map.edge.cd').fadeOut();
+									$('.map.edge.ab.mediumblue').fadeOut();
+									$('.map.edge.ab.purple').fadeOut();
+									$('.map.edge.ab.blue').fadeIn();
+									$('.graph.node.ab.blue').fadeIn();
+									$(this).unbind('click');
+									$(this).click(function() {
+										$('.map.edge.ab.mediumblue').fadeIn();
+										$('.graph.node.ab.mediumblue').fadeIn();
+										$('.map.node.c').fadeIn();
+										$(this).unbind('click');
+										$(this).click(function() {
+											$('.map.edge.ab.purple').fadeIn();
+											$('.graph.node.ab.purple').fadeIn();
+											$('.map.node.d').fadeIn();
+											$(this).unbind('click');
+										$(this).click(function() {
+											$('.map.edge.cd.yellow').fadeIn();
+											$('.graph.node.cd.yellow').fadeIn();
+											$(this).unbind('click');
+											$(this).click(function() {
+												$('.map.edge.cd.orange').fadeIn();
+												$('.graph.node.cd.orange').fadeIn();
+												$(this).unbind('click');
+												$(this).click(function() {
+													$('.graph.edge').fadeIn();
+													$(this).unbind('click');
+											});
+											});
+										});
+										});
+									});
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	});
+});
+</script>
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="translation" version="1.1" width="100%" height="100%" xml:space="preserve" viewBox="0 0 720 260">
+	  					<g>
+	  						<image width="1330" height="688" transform="scale(0.36, 0.36)" xlink:href="../img/at-transparent.png" id="austria" style="opacity: .9;" />
+							<g id="map">
+								<g id="map-edges">
+									<g id="map-edges-ab">
+										<path d="M 435,77.5 310,67.5" class="map edge cd yellow edge" id="cy2" />
+										<path d="M 378.5,177 432.5,75" class="map edge cd orange edge" id="bc1" />
+										<path d="M 381,174.5 310,212.5" class="map edge cd orange edge" id="bd1" />
+										<path d="M 312.5,215 232.5,110" class="map edge cd yellow edge" id=dx2" />
+										<path d="M 230,115 310,70" class="map edge cd yellow edge" id="xy3" />
+									</g>
+									<g id="map-edges-cd">
+										<path d="M 435,72.5 310,62.5" class="map edge ab mediumblue edge" id="cy1" />
+										<path d="M 381,177 310,65" class="map edge ab blue edge" id="by" />
+										<path d="M 383.5,177 437.5,75" class="map edge ab mediumblue edge" id="bc2" />
+										<path d="M 381,179.5 310,217.5" class="map edge ab purple edge" id="bd2" />
+										<path d="M 307.5,215 227.5,110" class="map edge ab purple edge" id="dx1" />
+										<path d="M 20,135 230,105" class="map edge ab blue edge" id="ax1" />
+										<path d="M 20,140 230,110" class="map edge ab mediumblue edge" id="ax2" />
+										<path d="M 20,145 230,115" class="map edge ab purple edge" id="ax3" />
+										<path d="M 230,105 310,60" class="map edge ab blue edge" id="xy1" />
+										<path d="M 230,110 310,65" class="map edge ab mediumblue edge" id="xy2" />
+									</g>
+								</g>
+								<g id="map-nodes">
+									<circle id="map-node-a" r="10" cx="20" cy="140" class="map node a darkblue" />
+									<circle id="map-node-b" r="10" cx="381" cy="177" class="map node b darkblue" />
+									<circle id="map-node-d" r="10" cx="310" cy="215" class="map node d fullred" />
+									<circle id="map-node-c" r="10" cx="435" cy="75" class="map node c fullred" />
+									<circle id="map-node-y" r="10" cx="310" cy="65" class="map node y darkgray" />
+									<circle id="map-node-x" r="10" cx="230" cy="110" class="map node x darkgray" />
+									<text class="map node a" x="14" y="145" id="tspan3103">A</text>
+									<text class="map node b" x="376" y="183" id="tspan3063">B</text>
+									<text class="map node c" x="429" y="81" id="tspan3035">C</text>
+									<text class="map node d" x="303.5" y="221">D</text>
+								</g>
+							</g>
+							<g id="graph">
+									<g id="graph-edges">
+										<path d="M 621,70 701,70" class="graph lightgray edge" id="path3127" />
+										<path d="M 530,70 655,185" class="graph lightgray edge" id="path3131" />
+										<path d="M 616,70 655,185" class="graph lightgray edge" id="path3133" />
+										<path d="M 703,70 655,185" class="graph lightgray edge" id="path3135" />
+										<path d="M 532,70 611,70" class="graph lightgray edge" id="path3163" />
+										<path d="M 616,70 573,185" class="graph lightgray edge" id="path3149" />
+										<path d="M 528,70 569.86,185" class="graph lightgray edge" id="path3125" />
+										<path d="m 688,65 c 0,-8.12 -37.83,-16.25 -75.66,-16.25 -37.82,0 -75.65,9.95 -75.65,19.89" class="graph lightgray edge" id="path3129" />
+									</g>
+									<g id="graph-nodes">
+										<circle r="10" cx="655" cy="183" class="graph node cd yellow" />
+										<circle r="15" cx="572" cy="183" class="graph node cd orange" />
+										<circle r="10" cx="530" cy="71" class="graph node ab mediumblue" />
+										<circle r="10" cx="616" cy="71" class="graph node ab purple" />
+										<circle r="15" cx="699" cy="71" class="graph node ab blue" />
+									</g>
+								</g>
+							</g>
+						</g>
+					</svg>
+				</section>
+<!-- moritz -->
+				<section>
+					<h2>Funktionsweise</h2>
+					
+					<ul>
+						<li>Berechnen einer Initiallösung mit <span class="mono">onestepCD</span>
+						<li>Variable Neighborhood Search</li>
+						<li>Variable Neighborhood Descent</li>
+						<li>Lokale Optimierung</li>
+						<li>Shaking</li>
+					</ul>
+				</section>
+				<section>
+				<section>
+					<h2>Nachbarschaften</h2>
+					
+					<img class="standalone" style="box-shadow: none" src="../img/vns-bright.svg" />
+				</section>
+				<section>
+					<h2 class="mono">ChangeColor</h2>
+					
+					<ul>
+						<li>Einfach & Schnell</li>
+						<li>Färbe Knoten mit maximaler Farbe um</li>
+						<li>Versuche neue Lösung zu finden</li>
+					</ul>
+				</section>
+				<section>
+					<h2>ChangeNode</h2>
+					
+					<ul>
+						<li>Wie ChangeColor</li>
+						<li>Tausche Knoten mit maximaler Farbe aus</li>
+						<li>Versuche neue Lösung zu finden</li>
+					</ul>
+				</section>
+				<section>
+					<h2>DSATUR</h2>
+					
+					<ul>
+						<li>Greedy</li>
+						<li>Maximale Saturation</li>
+						<li>Maximale Zahl an nicht eingefärbten Nachbarn</li>
+					</ul>
+				</section>
+				<section>
+					<h2>ChangeAll</h2>
+					
+					<ul>
+						<li>Kombination aus ChangeNode & ChangeColor</li>
+						<li>Tausche Knoten und Farbe</li>
+						<li>Aufwendig, aber gute Ergebnisse</li>
+					</ul>
+				</section>
+				</section>
+				<section>
+					<h2>Verwendete Software</h2>
+					<img src="../img/boost.png" /><br /><br /><span class="ubigraph-logo">UBIGRAPH</span>
+				</section>
+				<section>
+				<section>
+					<img src="../img/tu.png" class="standalone noshadow" style="float:left"/>
+				</section>
+				<section>
+					<h2>Kooperation</h2>
+					
+					<ul>
+						<li>Impuls</li>
+						<li>Regelmäßiger Austausch</li>
+						<li>ComputeGrid</li>
+					</ul>
+				</section>
+				</section>
+<!-- /lorenz -->
+<!-- moritz -->
+				<section>
+					<h2>Was haben wir erreicht?</h2>
+					
+					<p style="font-size: 200%">&approx; 20%</p>
+					
+					<ul>
+						<li>Bessere Ergebnisse</li>
+						<li>Standardisierte Probleminstanzen</li>
+					</ul>
+				</section>
+<!-- /moritz -->
+			</div>
+			<div class="timer" id="timer" onload="">20</div>
+		</div>
+		<a href="https://github.com/flowlo/pcp-vns"><img class="forkme" src="../img/forkme.png" alt="Fork me on GitHub"></a>
+		<script src="js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+		<script src="js/piechart.js"></script>
+		<script>
+			function refreshTimer() {
+				var timer = document.getElementById('timer');
+				timer.innerHTML = parseInt(timer.innerHTML) - 1;
+			}
+			var timerHandler = false;
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				theme: Reveal.getQueryHash().theme || 'cold',
+				transition: Reveal.getQueryHash().transition || 'concave'
+			});
+			Reveal.addEventListener('slidechanged', function(event) {
+				document.getElementById('pagenumber').innerHTML = event.indexh + '<br />' + event.indexv;
+				
+				if (event.indexh == 1 && event.indexv == 0) {
+					if (timerHandler)
+						window.clearInterval(timerHandler);
+					document.getElementById('timer').innerHTML = 20;
+					timerHandler = window.setInterval(refreshTimer, 60000)
+					
+					$('.map.node').fadeOut();
+					$('.map.edge').fadeOut();
+					$('.graph.node').fadeOut();
+					$('.graph.edge').fadeOut();
+					$('#austria').fadeOut();
+				}
+			});
+			document.getElementById('pagenumber').innerHTML = Reveal.getIndices().h + '<br />' + Reveal.getIndices().v;
+			window.onload = function() {
+				new PieChart( "piechart", {
+					includeLabels: true, 
+					data: [0.875 * 360, 0.067 * 360, 0.058 * 360],
+					labels: ['C++', 'Python', 'Shell'],
+					colors: [
+						["#f34b7d", "#FFDAB9"],
+						["#3581ba", "#E6E6FA"],
+						["#5861ce", "#E0FFFF"]
+					]
+				}).draw();
+			}
+		</script>
+	</body>
+</html>
