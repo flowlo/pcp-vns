@@ -1,0 +1,24 @@
+language: cpp
+compiler: gcc
+before_script:
+  - sudo apt-get install -qq -y
+    biblatex
+    latexmk
+    texlive
+    texlive-base
+    texlive-latex
+    texlive-latex-extra
+    texlive-latex-recommended
+    texlive-pictures
+    texlive-science
+  - git clone git@github.com:plk/biber.git
+  - export PATH=$PATH:$(pwd)/biber/bin
+script:
+  - cd diplomarbeit
+  - latexmk -pdf diplomarbeit.tex
+notifications:
+  email:
+    recipients:
+      - lorenz.leutgeb@gmail.com
+    on_success: never
+    on_failure: change
