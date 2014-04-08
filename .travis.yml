@@ -9,7 +9,7 @@ before_script:
     texlive-latex-recommended
     texlive-pictures
     texlive-science
-  - git clone git@github.com:plk/biber.git
+  - git clone git://github.com/plk/biber.git
   - export PATH=$PATH:$(pwd)/biber/bin
 script:
   - cd diplomarbeit
