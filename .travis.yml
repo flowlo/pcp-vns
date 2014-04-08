@@ -6,7 +6,6 @@ before_script:
     latexmk
     texlive
     texlive-base
-    texlive-latex
     texlive-latex-extra
     texlive-latex-recommended
     texlive-pictures
@@ -15,7 +14,7 @@ before_script:
   - export PATH=$PATH:$(pwd)/biber/bin
 script:
   - cd diplomarbeit
-  - latexmk -pdf diplomarbeit.tex
+  - latexmk -pdf -interaction=nonstopmode -file-line-error -shell-escape diplomarbeit
 notifications:
   email:
     recipients:
