@@ -68,4 +68,27 @@ namespace pcp {
 	Solution readColBStream(istream& in) {
 		return Solution();
 	}
+	
+	string getInfoString(Solution& s) {
+		stringstream ss;
+		int dim = s.getNumPartition();
+		FVertex reps[dim];
+		FVertexIter v,end;
+		for (tie(v,end) = vertices(s.getCurrentSolution()); v != end; ++v) {
+			reps[s.getPartition(*v)] = *v;
+		}
+		
+		ss << "{ \"representatives\": [ " << reps[0];
+	
+		for (partition_t i = 1; i < dim; ++i)
+			ss << ", " << reps[i];
+	
+		ss << " ], \"colors\": [ " << s.getPartitionColor(0);
+		for (partition_t i = 1; i < dim; ++i)
+			ss << ", " << s.getPartitionColor(i);
+	
+		ss << " ] }";
+		
+		return ss.str();
+	}
 }

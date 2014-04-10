@@ -12,8 +12,7 @@ const char changeColor::getAbbreviation() {
 	return 'c';
 }
 
-Solution changeColor::findLocalMin(Solution& sol) {
-	Solution solution(sol);
+Solution changeColor::findLocalMin(Solution& solution) {
 	color_t maxColor = solution.getColorsUsed() - 1;
 	FVertexIter i, iEnd;
 	FAdjIter a, aEnd;
@@ -82,14 +81,14 @@ Solution changeColor::findLocalMin(Solution& sol) {
 		cout<<"changeColor uses "<<solution.getColorsUsed()<<" colors"<<endl; 
 
 	// Try to take it one step further
-	Solution temp(solution);
+	/*Solution temp(solution);
 	temp = this->findLocalMin(temp);
 	if (temp < solution) {
 		solution = temp;
 		#ifdef ubigraph
 		solution.redraw();
 		#endif
-	}
+	}*/
 
 	return solution;
 }

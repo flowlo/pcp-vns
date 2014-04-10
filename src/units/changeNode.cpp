@@ -13,7 +13,7 @@ const char changeNode::getAbbreviation() {
 }
 
 Solution changeNode::findLocalMin(Solution& solution) {
-	int maxColor = solution.getColorsUsed() - 1;
+	color_t maxColor = solution.getColorsUsed() - 1;
 
 	FVertexIter i, end;
 	vector<Vertex> candidates;
@@ -30,7 +30,7 @@ Solution changeNode::findLocalMin(Solution& solution) {
 						solution.replaceVertex(*i, *replacement);
 
 						// Check for improvement
-						int color = solution.minPossibleColor(*replacement);
+						color_t color = solution.minPossibleColor(*replacement);
 						if (color < maxColor) {
 							solution.setVertexColor(*replacement, color);
 							break;
@@ -54,9 +54,9 @@ Solution changeNode::findLocalMin(Solution& solution) {
 	}
 
 	maxColor = 0;
-	for (uint32_t i = 0; i < solution.getNumPartition(); i++)
-		if (solution.getColor(i) > maxColor)
-			maxColor = solution.getColor(i);
+	for (partition_t i = 0; i < solution.getNumPartition(); i++)
+		if (solution.getPartitionColor(i) > maxColor)
+			maxColor = solution.getPartitionColor(i);
 
 	solution.setColorsUsed(maxColor + 1);
 
@@ -64,13 +64,13 @@ Solution changeNode::findLocalMin(Solution& solution) {
 		cout<<"changeNode uses "<<solution.getColorsUsed()<<" colors"<<endl; 
 	}
 
-	Solution temp = this->findLocalMin(solution);
+	/*Solution temp = this->findLocalMin(solution);
 	if (temp < solution) {
 		solution = temp;
 		#ifdef ubigraph
 		solution.redraw();
 		#endif
-	}
+	}*/
 
 	return solution;
 }
