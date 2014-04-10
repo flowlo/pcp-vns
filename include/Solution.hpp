@@ -4,6 +4,7 @@
 #include <memory>
 #include <cstdint>
 #include <algorithm>
+#include <string>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/filtered_graph.hpp>
 #include <boost/shared_array.hpp>
@@ -84,7 +85,7 @@ namespace pcp {
 						getColorDegreeAndMinColor(const Vertex& v);
 			condensate condense();
 
-			bool isValid();
+			std::pair<bool,std::string> isValid();
 
 			inline bool isColored(const Vertex& v) {
 				return getColor(v) > -1;

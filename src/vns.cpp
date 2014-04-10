@@ -23,7 +23,7 @@ namespace pcp {
 			//cout<<"Full solution uses "<<orig.getColorsUsed()<<" colors"<<endl;
 		}
 		if (DEBUG_LEVEL > 1) {
-			cout<<"The supplied solution is valid: "<<(best.isValid() ? "true": "false")<<endl;
+			cout<<"The supplied solution is valid: "<<(best.isValid().first ? "true": "false")<<endl;
 		}
 
 		vector<VNS_Unit*> neighbors = vector<VNS_Unit*>();
@@ -123,7 +123,7 @@ namespace pcp {
 						cout << "New solution uses " << tempImp.getColorsUsed() << " colors";
 
 						if (checkIntermediate)
-							cout << " and is "<<(tempImp.isValid() ? "valid" : "invalid");
+							cout << " and is "<<(tempImp.isValid().first ? "valid" : "invalid");
 
 						cout << "." << endl;
 					}
@@ -187,7 +187,7 @@ namespace pcp {
 
 			bool checkResult = false;
 			if (checkIntermediate) {
-				checkResult = toImprove.isValid();
+				checkResult = toImprove.isValid().first;
 				if (!checkResult) {
 					//delete toImprove;
 					toImprove = Solution(curBest);
@@ -209,7 +209,7 @@ namespace pcp {
 		bool isValid = false;
 
 		if (checkFinal)
-			isValid = curBest.isValid();
+			isValid = curBest.isValid().first;
 
 		if (DEBUG_LEVEL > 0) {
 			cout << "Final best solution uses " << curBest.getColorsUsed() << " colors";

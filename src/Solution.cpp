@@ -243,140 +243,64 @@ namespace pcp {
 	}
 
 	/// validate solutions
-	bool Solution::isValid() {
-		/*pair<VertexIter, VertexIter> vIter;
-		int *parts = new int[s->numParts];
-		int *colors = new int[s->numParts];
-		pair<AdjIter, AdjIter> aIter;
-		VertexPart_Map vParts = get(boost::vertex_index1_t(), *s->g);
+	pair<bool, string> Solution::isValid() {
 		bool valid = true;
-		list<Vertex> allOrigIds;
-	
-		/// Initialize parts and colors
-		for (int i = 0; i < s->numParts; i++) {
-			parts[i] = 0;
-			colors[i] = 0;
+		string reason = "";
+		
+		bool colTest[this->num_parts];
+		bool parTest[this->num_parts];
+		int j;
+		for (j = 0; j < this->num_parts; ++j) {
+			colTest[j] = false;
+			parTest[j] = false;
 		}
-	
-		/// Check all vertices
-		for (vIter = vertices(*s->g); vIter.first != vIter.second; vIter.first++) {
-			/// Mark partition and color as used
-			parts[vParts[*vIter.first]] = 1;
-			colors[s->partition[vParts[*vIter.first]]] = 1;
+		
+		FVertexIter i,end;
+		for (tie(i, end) = vertices(*this->fg); i != end; ++i) {
+			// partition check
+			parTest[this->getPartition(*i)] = true;
 			
-			allOrigIds.push_back(s->getOriginalId(*vIter.first));
-			
-			/// Check color conflicts
-			for (aIter = adjacent_vertices(*vIter.first, *s->g); 
-				  aIter.first != aIter.second; aIter.first++) {
-			
-				if (s->partition[vParts[*aIter.first]] == 
-					 s->partition[vParts[*vIter.first]]) {
-				
-					valid = false;
-					cerr<<"Solution is invalid"<<endl;
-					cerr<<"Adjacent vertices "<<*aIter.first<<" and "<<*vIter.first;
-					cerr<<" have same color "<<s->partition[vParts[*vIter.first]];
-					cerr<<endl;
+			// color check
+			color_t c = this->getColor(*i);
+			if (c < 0 || c > this->num_parts) {
+				valid = false;
+				reason += "Vertex has invalid color\n";
+			}
+			else {
+				colTest[c] = true;
+				FAdjIter ai, aend;
+				for (tie(ai, aend) = adjacent_vertices(*i, *this->fg); ai != aend; ++ai) {
+					if (this->getColor(*ai) == c) {
+						reason += "Adjacent vertices with the same color\n";
+					}
 				}
 			}
 		}
 		
-		/// Check getColorsUsed()
-		int count = 0;
-		for (int i = 0; i < s->numParts; i++) {
-			if (colors[i] == 1) {
-				count++;
+		int colorcount = 0;
+		bool lastcol = true;
+		for (j = 0; j < this->num_parts; ++j) {
+			if (colTest[j] && !lastcol) {
+				valid = false;
+				reason += "Orphan color\n";
+			}
+			lastcol = colTest[j];
+			if (colTest[j]) {
+				colorcount++;
+			}
+			if (!parTest[j]) {
+				valid = false;
+				reason += "Missing partition\n";
 			}
 		}
-		if (count != s->getColorsUsed()) {
+		
+		if (this->colors_used != colorcount) {
 			valid = false;
-			cerr<<"Solution is invalid"<<endl;
-			cerr<<"Wrong getColorsUsed() stored: stored: "<<s->getColorsUsed();
-			cerr<<", computed: "<<count<<endl;
+			reason += "Miscounted colors_used\n";
 		}
 		
-		/// Check partitions and representatives
-		for (int i = 0; i < s->numParts; i++) {
-			if (parts[i] == 0) {
-				valid = false;
-				cerr<<"Solution is invalid"<<endl;
-				cerr<<"partition "<<i<<" seems to be missing"<<endl;
-			}
-			if (s->representatives[vParts[i]] != i) {
-				valid = false;
-				cerr<<"Solution is invalid"<<endl;
-				cerr<<"Node "<<i<<" is not representative of partition "<<vParts[i];
-				cerr<<endl;
-			}
-		}
-		
-		/// Compares the solution to the full graph, to report missing edges, 
-		/// wrong adjacency and other bad stuff
-		list<Vertex> origAdj;
-		list<Vertex> curAdj;
-		
-		for (vIter = vertices(*s->g); vIter.first != vIter.second; 
-			  vIter.first++) {
-			
-			origAdj.clear();
-			curAdj.clear();
-			
-			Vertex toCompare = *vIter.first;
-			Vertex origComp = s->getOriginalId(toCompare);
-			
-			/// Check if the partitions match
-			if (s->getPartition(toCompare) != full->getPartition(origComp)) {
-				cerr<<"Vertex "<<toCompare<<" has other partition than the ";
-				cerr<<"original vertex "<<origComp<<endl;
-			}
-			
-			/// Fill in all adjacencies in the original graph
-			for (aIter = adjacent_vertices(origComp, *full->g); 
-				  aIter.first != aIter.second; aIter.first++) {
-				
-				origAdj.push_back(*aIter.first);
-			}
-			
-			/// Fill in all current adjacencies
-			for (aIter = adjacent_vertices(toCompare, *s->g); 
-				  aIter.first != aIter.second; aIter.first++) {
-				
-				curAdj.push_back(*aIter.first);
-			}
-			
-			/// Check if all current adjacencies are part of the original graph
-			list<Vertex>::iterator lIter, found;
-			for (lIter = curAdj.begin(); lIter != curAdj.end(); lIter++) {
-				found = find(origAdj.begin(), origAdj.end(), 
-								 s->getOriginalId(*lIter));
-								 
-				if (found == origAdj.end()) {
-					cerr<<"Edge ("<<*lIter<<"|"<<toCompare<<") is not in the";
-					cerr<<" original graph"<<endl;
-					valid = false;
-				}
-				else {
-					origAdj.erase(found);
-				}
-			}
-			
-			/// Check if there are missing adjacencies
-			for (lIter = origAdj.begin(); lIter != origAdj.end(); lIter++) {
-			
-				found = find(allOrigIds.begin(), allOrigIds.end(), *lIter);
-				if (found != allOrigIds.end()) {
-					cerr<<"Vertex "<<toCompare<<" seems to be an missing edge to ";
-					cerr<<"original vertex "<<*found<<endl;
-					valid = false;
-				}
-			}
-		}
-		delete[] parts;
-		delete[] colors;
-			
-		return valid;*/
-		return false;
+		auto ret = pair<bool,string>(valid, reason);
+		return ret;
 	}
 
 	condensate Solution::condense() {
