@@ -16,13 +16,12 @@ Solution changeNode::findLocalMin(Solution& solution) {
 	color_t maxColor = solution.getColorsUsed() - 1;
 
 	FVertexIter i, end;
-	vector<Vertex> candidates;
 
 	// Search all vertices for minimal colors
 	for (tie(i, end) = vertices(solution.getCurrentSolution()); i != end; ++i) {
-		if (solution.getColor(*i) == maxColor) {
+		if (solution.getVertexColor(*i) == maxColor) {
 			// Only execute changeNode if there are nodes to replace
-			candidates = solution.getPartitionNodes(solution.getPartition(*i));
+			vector<Vertex> candidates = solution.getPartitionNodes(solution.getPartition(*i));
 			if (candidates.size() > 1) {
 				vector<Vertex>::iterator replacement;
 				for (replacement = candidates.begin(); replacement != candidates.end(); ++replacement) {
@@ -76,5 +75,27 @@ Solution changeNode::findLocalMin(Solution& solution) {
 }
 
 Solution changeNode::shuffleSolution(Solution& cur, int numSteps) {
+	FVertex rep[cur.getNumPartition()];
+	FVertexIter fi, fend;
+	for (tie(fi,fend) = vertices(cur.getCurrentSolution()); fi != fend; ++fi) {
+		rep[cur.getPartition(*fi)] = *fi;
+	}
+	
+	for (int i = 0; i < numSteps; ++i) {
+		partition_t part = rand() % cur.getNumPartition();
+		cur.setPartitionColor(part, -1);
+		vector<Vertex> cand = cur.getPartitionNodes(part);
+		Vertex replace = cand[rand() % cand.size()];
+		cur.replaceVertex(rep[part], replace);
+	}
+	
+	color_t maxcolor = -1;
+	for (tie(fi,fend) = vertices(cur.getCurrentSolution()); fi != fend; ++fi) {
+		color_t c = cur.minPossibleColor(*fi);
+		if (c > maxcolor)
+			c = maxcolor;
+		cur.setVertexColor(*fi, c);
+	}
+	cur.setColorsUsed(maxcolor+1);
 	return cur;
 }

@@ -148,7 +148,7 @@ namespace pcp {
 		color_t c;
 		// Mark all colors which are used by neighbors of node
 		for (tie(i, end) = adjacent_vertices(v, *this->fg); i != end; i++)
-			if ((c = getColor(*i)) >= 0)
+			if ((c = getVertexColor(*i)) >= 0)
 				colors[c] = true;
 
 		// find the first unused color
@@ -177,7 +177,7 @@ namespace pcp {
 
 		// Mark all colors which are used by neighbors of node
 		for (tie(i, end) = adjacent_vertices(v, *this->fg); i != end; i++) {
-			if ((c = getColor(*i)) >= 0) {
+			if ((c = getVertexColor(*i)) >= 0) {
 				colors[c] = true;
 				colored++;
 			}
@@ -261,7 +261,7 @@ namespace pcp {
 			parTest[this->getPartition(*i)] = true;
 			
 			// color check
-			color_t c = this->getColor(*i);
+			color_t c = this->getVertexColor(*i);
 			if (c < 0 || c > this->num_parts) {
 				valid = false;
 				reason += "Vertex has invalid color\n";
@@ -270,7 +270,7 @@ namespace pcp {
 				colTest[c] = true;
 				FAdjIter ai, aend;
 				for (tie(ai, aend) = adjacent_vertices(*i, *this->fg); ai != aend; ++ai) {
-					if (this->getColor(*ai) == c) {
+					if (this->getVertexColor(*ai) == c) {
 						reason += "Adjacent vertices with the same color\n";
 					}
 				}
@@ -307,7 +307,7 @@ namespace pcp {
 		condensate result(this->num_parts);
 		FVertexIter v,end;
 		for (tie(v,end) = vertices(this->getCurrentSolution()); v != end; v++)
-			result.push_back(make_pair(*v, this->getColor(*v)));
+			result.push_back(make_pair(*v, this->getVertexColor(*v)));
 		return result;
 	}
 }

@@ -26,7 +26,7 @@ Solution changeColor::findLocalMin(Solution& solution) {
 
 	// Try recoloring all vertices where color=maxColor
 	for (tie(i, iEnd) = vertices(solution.getCurrentSolution()); i != iEnd; i++) {
-		if (solution.getColor(*i) == maxColor) {
+		if (solution.getVertexColor(*i) == maxColor) {
 			if (DEBUG_LEVEL > 3) {
 				cout<<"vertex "<<*i<<"has maxColor; ";
 			}
@@ -44,7 +44,7 @@ Solution changeColor::findLocalMin(Solution& solution) {
 				// maxColor
 				bool allColored = true;
 				for (tie(a, aEnd) = adjacent_vertices(*i, solution.getCurrentSolution()); a != aEnd; a++) {
-					if (solution.getColor(*a) == j) {
+					if (solution.getVertexColor(*a) == j) {
 						color_t recolor = solution.minPossibleColor(*a);
 						if (recolor >= maxColor) {
 							allColored = false;
@@ -94,5 +94,31 @@ Solution changeColor::findLocalMin(Solution& solution) {
 }
 
 Solution changeColor::shuffleSolution(Solution& cur, int numSteps) {
+	if (DEBUG_LEVEL > 3) {
+		cout<<"Shaking with changeColor with"<<endl;
+	}
+
+	vector<FVertex> uncolored;
+
+	/// Reset all colors
+	for (int i = 0; i < numSteps; i++) {
+		uncolored.push_back(rand() % cur.getNumPartition());
+	}
+
+	random_shuffle(uncolored.begin(), uncolored.end());
+	/// Proceed until all nodes are colored
+	FVertex node;
+	color_t color;
+	int maxColor = cur.getColorsUsed() - 1;
+	while (uncolored.size() != 0) {
+		node = uncolored.back();
+		uncolored.pop_back();
+		color = cur.minPossibleColor(node);
+		cur.setVertexColor(node, color);
+		if (color > maxColor)
+			maxColor = color;
+	}
+	cur.setColorsUsed(maxColor + 1);
+
 	return cur;
 }

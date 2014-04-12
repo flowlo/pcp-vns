@@ -88,7 +88,7 @@ namespace pcp {
 			std::pair<bool,std::string> isValid();
 
 			inline bool isColored(const Vertex& v) {
-				return getColor(v) > -1;
+				return getVertexColor(v) > -1;
 			};
 
 			inline bool isVisible(const Vertex& v) {
@@ -107,6 +107,11 @@ namespace pcp {
 			// Set a specific vertex to a specific color
 			inline void setVertexColor(const Vertex& v, color_t color) {
 				this->coloring[getPartition(v)] = color;
+			};
+			
+			// Set a specific vertex to a specific color
+			inline void setPartitionColor(partition_t part, color_t color) {
+				this->coloring[part] = color;
 			};
 
 			// Set the colors used variable
@@ -141,7 +146,7 @@ namespace pcp {
 			};
 
 			// Straightforward access to color of the vertex
-			inline color_t getColor(const Vertex& v) {
+			inline color_t getVertexColor(const Vertex& v) {
 				return coloring[getPartition(v)];
 			};
 			
