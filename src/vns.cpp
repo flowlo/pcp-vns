@@ -1,4 +1,4 @@
-/// This file contains the implementation of VNS
+// This file contains the implementation of VNS
 #include "../include/vns-priv.hpp"
 
 using namespace std;
@@ -11,9 +11,9 @@ namespace pcp {
 		TERM_SIGINT = signum == SIGINT;
 	}
 	
-	/// Implementation of VNS, see vns.hpp
-	Solution vns(Solution& best, string units, int unsuccessfulShake, int shakeStart, int shakeIncrement, int maxTime, bool checkIntermediate, bool checkFinal) {
-		/// Backup the starting solutions
+	// Implementation of VNS, see vns.hpp
+	Solution vns(Solution& best, std::string units, int unsuccessfulShake, int shakeStart, int shakeIncrement, int maxTime, bool checkIntermediate, bool checkFinal) {
+		// Backup the starting solutions
 		int initialUsed = best.getColorsUsed();
 
 		signal(SIGINT, sigint_catch);
@@ -56,10 +56,10 @@ namespace pcp {
 
 		unordered_set<condensate> solutionStore;
 
-		/// Run as long as shaking still produces usefull solution
+		// Run as long as shaking still produces usefull solution
 		while (!TERM_SIGINT) {
 
-			/// No time left, abort main loop
+			// No time left, abort main loop
 			if (startTime + maxTime < time(NULL)) {
 				if (DEBUG_LEVEL > 0) {
 					cout << "Time's up! Aborting VNS ..." << endl;
@@ -69,10 +69,10 @@ namespace pcp {
 
 			Solution tempImp(toImprove);
 
-			/// Run all possible neighborhood
+			// Run all possible neighborhood
 			while (curNeighbor < neighbors.size() && !TERM_SIGINT) {
 
-				/// Select the new neighborhood
+				// Select the new neighborhood
 				clock_t start = clock();
 				VNS_Unit *neigh = neighbors[curNeighbor];
 
@@ -80,13 +80,13 @@ namespace pcp {
 					cout << "Running " << neigh->getName() << " ..." << endl;
 				}
 
-				/// Compute the minimum for this neighborhood
+				// Compute the minimum for this neighborhood
 				Solution imp(tempImp);
 				neigh->findLocalMin(imp);	
 
 				improvement = (toImprove < imp) ? 0 : toImprove.getColorsUsed() - imp.getColorsUsed();
 
-				/// Stats tracking
+				// Stats tracking
 				stats[curNeighbor].push_back(pair<int, int>(clock() - start, improvement));
 
 				if (DEBUG_LEVEL > 1) {
@@ -94,8 +94,8 @@ namespace pcp {
 					cout<<(clock() - start)/(float)CLOCKS_PER_SEC;
 					cout<<" seconds to complete."<<endl;
 				}
-				/// Replace the existing solution with the new solution if it is an
-				/// improvement
+				// Replace the existing solution with the new solution if it is an
+				// improvement
 				if (improvement > 0) {
 					//TODO
 					//if (toImprove != curBest)
@@ -129,11 +129,11 @@ namespace pcp {
 						cout << "." << endl;
 					}
 
-					/// Restart neighborhoods
+					// Restart neighborhoods
 					curNeighbor = curNeighbor == 0 ? 1 : 0;
 				}
 
-				/// Step to next neighborhood, no improvement found
+				// Step to next neighborhood, no improvement found
 				else {
 					if (DEBUG_LEVEL > 1)
 						cout << "No improvement found." << endl;
@@ -151,8 +151,8 @@ namespace pcp {
 				cout << "End of inner VNS loop." << endl;
 			}
 
-			/// Local minimum of neighborhoods is better than current best
-			/// solution
+			// Local minimum of neighborhoods is better than current best
+			// solution
 			if (toImprove < curBest) {
 				if (DEBUG_LEVEL > 1) {
 					cout << "Improvement to global best solution found!" << endl;
@@ -167,12 +167,12 @@ namespace pcp {
 				no_imp_runs = 0;
 				shakeSteps = shakeStart - shakeIncrement;
 			}
-			/// Reset local best solution to global best Solution
+			// Reset local best solution to global best Solution
 			else {
 				//delete tempImp;
 				no_imp_runs++;
 
-				/// Stopping condition, quit VNS
+				// Stopping condition, quit VNS
 				if (no_imp_runs > unsuccessfulShake) {
 					if (DEBUG_LEVEL > 0) {
 						cout << "Too many unsuccessful shakes!" << endl;
@@ -221,7 +221,7 @@ namespace pcp {
 
 			cout << "." << endl;
 		}
-		/// Print stats
+		// Print stats
 		cout << "{" << endl;
 		cout << "  \"units\": \"" << units << "\"," << endl;
 		cout << "  \"improvement\" : " << (initialUsed - curBest.getColorsUsed()) << "," << endl;

@@ -3,7 +3,7 @@
 using namespace std;
 
 namespace pcp {
-	Solution :: Solution(uint32_t num_vertices, uint32_t num_partition) {
+	Solution :: Solution(std::uint32_t num_vertices, std::uint32_t num_partition) {
 		shared_ptr<Graph> full(new Graph(num_vertices));
 		boost::shared_array<bool> mapped(new bool[num_vertices]);
 		
@@ -132,7 +132,7 @@ namespace pcp {
 		FAdjIter i, end;
 		
 		for (tie(i, end) = adjacent_vertices(v, *this->fg); i != end; i++) 
-			if (this->isColored(*i))
+			if (this->isVertexColored(*i))
 				colored++;
 		
 		return colored;

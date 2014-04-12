@@ -9,26 +9,37 @@
 #include <signal.h>
 
 namespace pcp {
-	/// every neighborhood has to be inherited from this class
+	//! The base class for all neighborhood units
+	/*!
+		The base class from which all other neighborhood units must inherit.
+		Every unit must provide on method to imrove a solution and
+		one method to shake a solution.
+		\sa changeColor, changeNode, dsatur
+	*/
 	class VNS_Unit {
 		public:
-			/// Compute the new improved solution of this neighborhood
+			//! Prototype for an improvement method
 			virtual Solution findLocalMin(Solution& curBest) = 0;
 
-			/// Shuffle a solution using the neighborhood as a base
+			//! Prototype for a shaking method
 			virtual Solution shuffleSolution(Solution& cur, int numSteps) = 0;
 
+			//! Prototype destructor
 			virtual ~VNS_Unit();
 
-			/// Returns a given name for the neighborhood
+			//! Prototype name
 			virtual const std::string getName() = 0;
-
-			/// Returns a given (unique) character used to quickly reference
-			/// an unit via command line argument.
+			
+			//! Prototype abbreviation
 			static const char getAbbreviation();
 	};
-
-	// Definition of changeColor neighborhood
+	
+	//! Implementation of the changeColor neighborhood
+	/*!
+		changeColor is a simple and fast neighborhood.
+		It is based on the idea of recoloring single vertices, and then trying
+		to solve the generated conflicts by recoloring neighboring vertices.
+	*/
 	class changeColor : public VNS_Unit {
 		public:
 			virtual Solution findLocalMin(Solution& curBest);
@@ -38,7 +49,12 @@ namespace pcp {
 			static const char getAbbreviation();
 	};
 
-	// Definition of changeNode neighborhood
+	//! Implementation of the changeNode neighborhood
+	/*!
+		changeNode is a simple neighborhood.
+		It is based on the idea of replacing single vertices, and then trying
+		to solve the generated conflicts by recoloring the recentyl replaced vertex.
+	*/
 	class changeNode : public VNS_Unit {
 		public:
 			virtual Solution findLocalMin(Solution& curBest);
@@ -48,7 +64,13 @@ namespace pcp {
 			static const char getAbbreviation();
 	};
 
-	// Definition of changeAll neighborhood
+	//! Implementation of the changeAll neighborhood
+	/*!
+		The changeAll neighborhood is a combination of changeColor and changeNode.
+		It is based on the idea of replacing single vertices, recoloring them and
+		then trying to solve any remaining conflicts by recoloring neighboring
+		vertices.
+	*/
 	class changeAll : public VNS_Unit {
 		public:
 			virtual Solution findLocalMin(Solution& curBest);
@@ -58,7 +80,12 @@ namespace pcp {
 			static const char getAbbreviation();
 	};
 
-	// Definition of DSATUR neighborhood
+	//! Implementation of the dsatur neighborhood
+	/*!
+		dsatur is a very simple and fast neighborhood. It is based on the idea
+		of solving a traditional graph coloring problem, by completely ignoring
+		the different selections of vertices.
+	*/
 	class dsatur : public VNS_Unit {
 		public:
 			virtual Solution findLocalMin(Solution& curBest);

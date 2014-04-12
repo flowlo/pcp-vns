@@ -27,7 +27,7 @@ Solution dsatur::findLocalMin(Solution& current) {
 		maxColorDegree = maxBlankDegree = 0;
 
 		for (tie(i, end) = vertices(current.getCurrentSolution()); i != end; i++) {
-			if (current.isColored(*i))
+			if (current.isVertexColored(*i))
 				continue;
 
 			tie(colorDegree, minColor) = current.getColorDegreeAndMinColor(*i);
