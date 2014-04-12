@@ -1,6 +1,0 @@
-<map id="pcp::VNS_Unit" name="pcp::VNS_Unit">
-<area shape="rect" id="node3" href="$classpcp_1_1change_all.html" title="Implementation of the changeAll neighborhood. " alt="" coords="5,83,112,112"/>
-<area shape="rect" id="node5" href="$classpcp_1_1change_color.html" title="Implementation of the changeColor neighborhood. " alt="" coords="136,83,259,112"/>
-<area shape="rect" id="node7" href="$classpcp_1_1change_node.html" title="Implementation of the changeNode neighborhood. " alt="" coords="283,83,405,112"/>
-<area shape="rect" id="node9" href="$classpcp_1_1dsatur.html" title="Implementation of the dsatur neighborhood. " alt="" coords="429,83,515,112"/>
-</map>

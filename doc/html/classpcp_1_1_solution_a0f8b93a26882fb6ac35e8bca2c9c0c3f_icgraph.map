@@ -1,7 +1,0 @@
-<map id="pcp::Solution::detach" name="pcp::Solution::detach">
-<area shape="rect" id="node3" href="$classpcp_1_1_solution.html#af3c6b0314c8ba949d188a90c2e58d18a" title="Toggle the visibility of a given vertex. " alt="" coords="200,59,379,88"/>
-<area shape="rect" id="node5" href="$classpcp_1_1_solution.html#a0dc971c8eaa6b721b03489244584c0c0" title="Replace one given vertex with another. " alt="" coords="427,59,613,88"/>
-<area shape="rect" id="node7" href="$classpcp_1_1change_all.html#a1613b7d5c5e5b4b5de20dee3ff7d88fa" title="Compute the new improved solution of this neighborhood. " alt="" coords="669,5,859,35"/>
-<area shape="rect" id="node9" href="$classpcp_1_1change_node.html#acd40eb7fbcc9479a0216e23f17b07c25" title="Compute the new improved solution of this neighborhood. " alt="" coords="661,59,867,88"/>
-<area shape="rect" id="node11" href="$classpcp_1_1change_node.html#a59fc22e271c7d29df70171769449f3fd" title="Shuffle a solution using the neighborhood as a base. " alt="" coords="679,111,849,158"/>
-</map>
