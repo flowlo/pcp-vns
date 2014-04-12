@@ -79,21 +79,23 @@ Solution changeNode::shuffleSolution(Solution& cur, int numSteps) {
 	FVertexIter fi, fend;
 	for (tie(fi,fend) = vertices(cur.getCurrentSolution()); fi != fend; ++fi) {
 		rep[cur.getPartition(*fi)] = *fi;
+		cur.setVertexColor(*fi, -1);
 	}
 	
 	for (int i = 0; i < numSteps; ++i) {
 		partition_t part = rand() % cur.getNumPartition();
-		cur.setPartitionColor(part, -1);
 		vector<Vertex> cand = cur.getPartitionNodes(part);
 		Vertex replace = cand[rand() % cand.size()];
 		cur.replaceVertex(rep[part], replace);
+		rep[part] = replace;
 	}
 	
 	color_t maxcolor = -1;
 	for (tie(fi,fend) = vertices(cur.getCurrentSolution()); fi != fend; ++fi) {
 		color_t c = cur.minPossibleColor(*fi);
 		if (c > maxcolor)
-			c = maxcolor;
+			maxcolor = c;
+			
 		cur.setVertexColor(*fi, c);
 	}
 	cur.setColorsUsed(maxcolor+1);

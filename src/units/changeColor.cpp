@@ -95,30 +95,25 @@ Solution changeColor::findLocalMin(Solution& solution) {
 
 Solution changeColor::shuffleSolution(Solution& cur, int numSteps) {
 	if (DEBUG_LEVEL > 3) {
-		cout<<"Shaking with changeColor with"<<endl;
+		cout<<"Shaking with changeColor"<<endl;
+	}
+	FVertex rep[cur.getNumPartition()];
+	FVertexIter fi, fend;
+	for (tie(fi,fend) = vertices(cur.getCurrentSolution()); fi != fend; ++fi) {
+		rep[cur.getPartition(*fi)] = *fi;
 	}
 
-	vector<FVertex> uncolored;
-
-	/// Reset all colors
-	for (int i = 0; i < numSteps; i++) {
-		uncolored.push_back(rand() % cur.getNumPartition());
-	}
-
-	random_shuffle(uncolored.begin(), uncolored.end());
-	/// Proceed until all nodes are colored
+	// recolor randomly selected nodes
 	FVertex node;
-	color_t color;
-	int maxColor = cur.getColorsUsed() - 1;
-	while (uncolored.size() != 0) {
-		node = uncolored.back();
-		uncolored.pop_back();
+	color_t color, maxcolor = -1;
+	for (int i = 0; i < numSteps; i++) {
+		node = rep[rand() % cur.getNumPartition()];
 		color = cur.minPossibleColor(node);
-		cur.setVertexColor(node, color);
-		if (color > maxColor)
-			maxColor = color;
+		cur.setVertexColor(node, color);		
+		if (color > maxcolor)
+			maxcolor = color;
 	}
-	cur.setColorsUsed(maxColor + 1);
+	cur.setColorsUsed(maxcolor + 1);
 
 	return cur;
 }

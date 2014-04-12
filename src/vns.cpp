@@ -186,10 +186,10 @@ namespace pcp {
 			VNS_Unit *shaker = neighbors[shakeNeighbor];
 			toImprove = shaker->shuffleSolution(toImprove, (shakeSteps += shakeIncrement));
 
-			bool checkResult = false;
+			pair<bool,string> checkResult(false,"");
 			if (checkIntermediate) {
-				checkResult = toImprove.isValid().first;
-				if (!checkResult) {
+				checkResult = toImprove.isValid();
+				if (!checkResult.first) {
 					//delete toImprove;
 					toImprove = Solution(curBest);
 				}
@@ -200,11 +200,12 @@ namespace pcp {
 				cout << shakeSteps << " steps returned a ";
 
 				if (checkIntermediate)
-					cout << (checkResult ? "valid" : "invalid");
+					cout << (checkResult.first ? "valid" : "invalid");
 				else
 					cout << "new";
-
 				cout << " solution using " << toImprove.getColorsUsed() << " colors." << endl;
+				if (checkIntermediate && !checkResult.first)
+					cout << "Reason: " << checkResult.second << endl;
 			}
 		}
 		bool isValid = false;

@@ -141,7 +141,7 @@ namespace pcp {
 	// Step through all adjacent vertices !IN THE FILTERED GRAPH! and check for
 	// the min color possible
 	color_t Solution :: minPossibleColor(const Vertex& v) {
-		bool* colors = new bool[this->num_parts];
+		bool colors[this->num_parts];
 		fill_n(colors, this->num_parts, false);
 		FAdjIter i, end;
 
@@ -154,13 +154,11 @@ namespace pcp {
 		// find the first unused color
 		for (uint32_t i = 0; i < this->num_parts; i++) {
 			if (!colors[i]) {
-					delete[] colors;
 					return i;
 			}
 		}
 
 		// This cant happen, but maybe it will...
-		delete[] colors;
 		return -1;
 	}
 	
