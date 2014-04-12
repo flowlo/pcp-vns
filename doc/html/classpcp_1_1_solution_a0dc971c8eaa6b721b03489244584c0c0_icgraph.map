@@ -1,0 +1,5 @@
+<map id="pcp::Solution::replaceVertex" name="pcp::Solution::replaceVertex">
+<area shape="rect" id="node3" href="$classpcp_1_1change_all.html#a1613b7d5c5e5b4b5de20dee3ff7d88fa" title="Compute the new improved solution of this neighborhood. " alt="" coords="248,5,437,35"/>
+<area shape="rect" id="node5" href="$classpcp_1_1change_node.html#acd40eb7fbcc9479a0216e23f17b07c25" title="Compute the new improved solution of this neighborhood. " alt="" coords="240,59,445,88"/>
+<area shape="rect" id="node7" href="$classpcp_1_1change_node.html#a59fc22e271c7d29df70171769449f3fd" title="Shuffle a solution using the neighborhood as a base. " alt="" coords="257,111,428,158"/>
+</map>
