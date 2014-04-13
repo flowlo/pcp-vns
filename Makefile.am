@@ -3,7 +3,7 @@ AM_LDFLAGS = -lboost_program_options -lstdc++ -lm
 
 bin_PROGRAMS = pcp-vns
 check_PROGRAMS = TestSuite
-EXTRA_PROGRAMS = pcp-vns-asan pcp-vns-perform pcp-vns-static
+EXTRA_PROGRAMS = pcp-vns-asan pcp-vns-perform pcp-vns-static pcp-vns-perftools
 TESTS = TestSuite
 
 pcp_vns_CXXFLAGS = $(AM_CXXFLAGS) -g3
@@ -43,6 +43,10 @@ pcp_vns_perform_CXXFLAGS = $(AM_CXXFLAGS) -O3
 pcp_vns_static_SOURCES = $(pcp_vns_SOURCES)
 pcp_vns_static_CXXFLAGS = $(pcp_vns_perform_CXXFLAGS)
 pcp_vns_static_LDFLAGS = -static $(AM_LDFLAGS)
+
+pcp_vns_perftools_SOURCES = $(pcp_vns_SOURCES)
+pcp_vns_perftools_CXXFLAGS = $(pcp_vns_perform_CXXFLAGS)
+pcp_vns_perftools_LDFLAGS = -lprofiler $(AM_LDFLAGS)
 
 asan: pcp-vns-asan
 perform: pcp-vns-perform
