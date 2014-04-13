@@ -105,13 +105,21 @@ Solution changeColor::shuffleSolution(Solution& cur, int numSteps) {
 
 	// recolor randomly selected nodes
 	FVertex node;
-	color_t color, maxcolor = -1;
+	FAdjIter ai,aend;
+	color_t color, maxcolor = cur.getColorsUsed()-1;
 	for (int i = 0; i < numSteps; i++) {
 		node = rep[rand() % cur.getNumPartition()];
-		color = cur.minPossibleColor(node);
-		cur.setVertexColor(node, color);		
-		if (color > maxcolor)
-			maxcolor = color;
+		color = rand() % cur.getColorsUsed();
+		cur.setVertexColor(node,color);
+		for (tie(ai,aend) = adjacent_vertices(node, cur.getCurrentSolution());
+				ai != aend; ++ai) {
+			if (cur.getVertexColor(*ai) == color) {
+				color_t c = cur.minPossibleColor(*ai);
+				cur.setVertexColor(*ai, c);
+				if (c > maxcolor)
+					maxcolor = c;
+			}
+		}
 	}
 	cur.setColorsUsed(maxcolor + 1);
 
