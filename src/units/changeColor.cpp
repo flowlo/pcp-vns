@@ -98,30 +98,27 @@ Solution changeColor::shuffleSolution(Solution& cur, int numSteps) {
 		cout<<"Shaking with changeColor"<<endl;
 	}
 	FVertex rep[cur.getNumPartition()];
+	partition_t uncol[numSteps];
 	FVertexIter fi, fend;
 	for (tie(fi,fend) = vertices(cur.getCurrentSolution()); fi != fend; ++fi) {
 		rep[cur.getPartition(*fi)] = *fi;
 	}
 
-	// recolor randomly selected nodes
-	FVertex node;
-	FAdjIter ai,aend;
-	color_t color, maxcolor = cur.getColorsUsed()-1;
-	for (int i = 0; i < numSteps; i++) {
-		node = rep[rand() % cur.getNumPartition()];
-		color = rand() % cur.getColorsUsed();
-		cur.setVertexColor(node,color);
-		for (tie(ai,aend) = adjacent_vertices(node, cur.getCurrentSolution());
-				ai != aend; ++ai) {
-			if (cur.getVertexColor(*ai) == color) {
-				color_t c = cur.minPossibleColor(*ai);
-				cur.setVertexColor(*ai, c);
-				if (c > maxcolor)
-					maxcolor = c;
-			}
-		}
+	for (partition_t i = 0; i < numSteps; ++i) {
+		partition_t part = rand() % cur.getNumPartition();
+		cur.setPartitionColor(part, -1);
+		uncol[i] = part;
 	}
-	cur.setColorsUsed(maxcolor + 1);
-
+	
+	for (int j = 0; j < numSteps; ++j) {
+		cur.setPartitionColor(uncol[j], cur.minPossibleColor(rep[uncol[j]]));
+	}
+	color_t maxcolor = -1,c;
+	for (partition_t i = 0; i < cur.getNumPartition(); ++i) {
+		c = cur.getPartitionColor(i);
+		if (c > maxcolor)
+			maxcolor = c;
+	}
+	cur.setColorsUsed(maxcolor+1);
 	return cur;
 }
