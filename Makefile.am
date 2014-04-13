@@ -45,9 +45,10 @@ pcp_vns_static_CXXFLAGS = $(pcp_vns_perform_CXXFLAGS)
 pcp_vns_static_LDFLAGS = -static $(AM_LDFLAGS)
 
 pcp_vns_perftools_SOURCES = $(pcp_vns_SOURCES)
-pcp_vns_perftools_CXXFLAGS = $(pcp_vns_perform_CXXFLAGS)
+pcp_vns_perftools_CXXFLAGS = $(pcp_vns_perform_CXXFLAGS) -O2
 pcp_vns_perftools_LDFLAGS = -lprofiler $(AM_LDFLAGS)
 
 asan: pcp-vns-asan
 perform: pcp-vns-perform
 static: pcp-vns-static
+perftools: pcp-vns-perftools
