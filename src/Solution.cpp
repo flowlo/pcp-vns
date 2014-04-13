@@ -294,7 +294,7 @@ namespace pcp {
 		
 		if (this->colors_used != colorcount) {
 			valid = false;
-			reason += "Miscounted colors_used\n";
+			reason += "Miscounted colors_used. Is " + to_string(this->colors_used) + " but should be " + to_string(colorcount) + ".\n";
 		}
 		
 		auto ret = pair<bool,string>(valid, reason);

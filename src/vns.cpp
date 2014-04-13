@@ -53,6 +53,7 @@ namespace pcp {
 		int shakeSteps = shakeStart - shakeIncrement;
 		Solution toImprove = best;
 		Solution &curBest = best;
+		pair<bool,string> checkResult(false,"");
 
 		unordered_set<condensate> solutionStore;
 
@@ -120,13 +121,17 @@ namespace pcp {
 					}
 
 					if (DEBUG_LEVEL > 1) {
-						cout << "Improvement found! ";
-						cout << "New solution uses " << tempImp.getColorsUsed() << " colors";
+						cout << "Found new local minimum with " << neigh->getName() << " using " << tempImp.getColorsUsed() << " colors.";
 
-						if (checkIntermediate)
-							cout << " and is "<<(tempImp.isValid().first ? "valid" : "invalid");
+						if (checkIntermediate) {
+							checkResult = tempImp.isValid();
 
-						cout << "." << endl;
+							if (checkResult.first) {
+								cout << "The new solution is valid." << endl;
+							} else {
+								cout << "The new solution is invalid (" << checkResult.second << ")." << endl;
+							}
+						}
 					}
 
 					// Restart neighborhoods
@@ -186,7 +191,6 @@ namespace pcp {
 			VNS_Unit *shaker = neighbors[shakeNeighbor];
 			toImprove = shaker->shuffleSolution(toImprove, (shakeSteps += shakeIncrement));
 
-			pair<bool,string> checkResult(false,"");
 			if (checkIntermediate) {
 				checkResult = toImprove.isValid();
 				if (!checkResult.first) {
@@ -197,12 +201,13 @@ namespace pcp {
 
 			if (DEBUG_LEVEL > 1) {
 				cout << "Shaking Solution using " << shaker->getName()<< " with ";
-				cout << shakeSteps << " steps returned a ";
+				cout << shakeSteps << " steps returned ";
 
 				if (checkIntermediate)
-					cout << (checkResult.first ? "valid" : "invalid");
+					cout << (checkResult.first ? "a valid" : "an invalid");
 				else
-					cout << "new";
+					cout << "a new";
+
 				cout << " solution using " << toImprove.getColorsUsed() << " colors." << endl;
 				if (checkIntermediate && !checkResult.first)
 					cout << "Reason: " << checkResult.second << endl;
