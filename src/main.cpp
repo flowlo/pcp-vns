@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
 		cout << "Constructing initial solution ..." << endl;
 	}
 	
-	// Calcutalte initial solution using oneStepCd
+	// Calculate initial solution using oneStepCd
 	Solution onestep = onestepCD(fullG);
 	
 	if (DEBUG_LEVEL > 2)
