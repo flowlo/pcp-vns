@@ -17,17 +17,10 @@ namespace pcp {
       // Copy the old solution
       Solution sol(s);
       
-      // Remove all edges between nodes of the same partition, as they are of
-      // no use
-      // removePartEdges(sol);
-
       // Initialize the heuristics' parameters
       int minDegree[s.getNumPartition()];
       int target = -1, cd = 0;
       pair<FVertexIter, FVertexIter> vp;
-
-      // Set the partitions color to "not set"
-      // fill(sol->partition, sol->partition + sol->numParts, -1);
 
       // Repeat until there are no uncolored partitions
       for (uint32_t j = 0; j < s.getNumPartition(); j++) {	
@@ -70,11 +63,6 @@ namespace pcp {
          removeOthers(target, sol);
       }
 
-      // Fill in the representatives
-      /*for (vp = vertices(sol.getFilteredGraph()); vp.first != vp.second; vp.first++)
-         solrepresentatives[sol->getPartition(*vp.first)] = *vp.first;
-      */
-      
       sol.setColorsUsed(numColors + 1);
 
       if (DEBUG_LEVEL > 3) {
