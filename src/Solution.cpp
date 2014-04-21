@@ -269,6 +269,7 @@ namespace pcp {
 				FAdjIter ai, aend;
 				for (tie(ai, aend) = adjacent_vertices(*i, *this->fg); ai != aend; ++ai) {
 					if (this->getVertexColor(*ai) == c) {
+						valid = false;
 						reason += "Adjacent vertices with the same color\n";
 					}
 				}
