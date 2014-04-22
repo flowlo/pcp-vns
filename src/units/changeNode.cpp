@@ -75,7 +75,7 @@ Solution changeNode::findLocalMin(Solution& solution) {
 }
 
 Solution changeNode::shuffleSolution(Solution& cur, int numSteps) {
-	FVertex rep[cur.getNumPartition()];
+	vector<FVertex> rep(cur.getNumPartition(),0);
 	FVertexIter fi, fend;
 	for (tie(fi,fend) = vertices(cur.getCurrentSolution()); fi != fend; ++fi) {
 		rep[cur.getPartition(*fi)] = *fi;

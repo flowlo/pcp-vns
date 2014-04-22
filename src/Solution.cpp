@@ -141,8 +141,7 @@ namespace pcp {
 	// Step through all adjacent vertices !IN THE FILTERED GRAPH! and check for
 	// the min color possible
 	color_t Solution :: minPossibleColor(const Vertex& v) {
-		bool colors[this->num_parts];
-		fill_n(colors, this->num_parts, false);
+		vector<bool> colors(this->num_parts,false);
 		FAdjIter i, end;
 
 		color_t c;
@@ -244,16 +243,13 @@ namespace pcp {
 	pair<bool, string> Solution::isValid() {
 		bool valid = true;
 		string reason = "";
-		
-		bool colTest[this->num_parts];
-		bool parTest[this->num_parts];
-		int j;
-		for (j = 0; j < this->num_parts; ++j) {
-			colTest[j] = false;
-			parTest[j] = false;
-		}
-		
+		bool lastcol = true;
+		int colorcount = 0;
+		int j = 0;
 		FVertexIter i,end;
+		vector<bool> colTest(this->num_parts,false);
+		vector<bool> parTest(this->num_parts,false);
+		
 		for (tie(i, end) = vertices(*this->fg); i != end; ++i) {
 			// partition check
 			parTest[this->getPartition(*i)] = true;
@@ -269,14 +265,14 @@ namespace pcp {
 				FAdjIter ai, aend;
 				for (tie(ai, aend) = adjacent_vertices(*i, *this->fg); ai != aend; ++ai) {
 					if (this->getVertexColor(*ai) == c) {
+						valid = false;
 						reason += "Adjacent vertices with the same color\n";
 					}
 				}
 			}
 		}
-		
-		int colorcount = 0;
-		bool lastcol = true;
+
+
 		for (j = 0; j < this->num_parts; ++j) {
 			if (colTest[j] && !lastcol) {
 				valid = false;

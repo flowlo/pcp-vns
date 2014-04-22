@@ -32,7 +32,7 @@ Solution changeAll::findLocalMin(Solution& solution) {
 						// Try all colors
 						color_t j;
 						for(j = 0; j < maxColor; ++j)  {
-							solution.setVertexColor(*i, j);
+							solution.setVertexColor(*replacement, j);
 
 							if (DEBUG_LEVEL > 3) {
 								cout<<"new color is "<<j<<endl;
@@ -41,7 +41,7 @@ Solution changeAll::findLocalMin(Solution& solution) {
 							// Try recoloring adjacent vertices with a color smaller than 
 							// maxColor
 							bool allColored = true;
-							for (tie(a, aEnd) = adjacent_vertices(*i, solution.getCurrentSolution()); a != aEnd; a++) {
+							for (tie(a, aEnd) = adjacent_vertices(*replacement, solution.getCurrentSolution()); a != aEnd; a++) {
 								if (solution.getVertexColor(*a) == j) {
 									color_t recolor = solution.minPossibleColor(*a);
 									if (recolor >= maxColor) {

@@ -97,8 +97,8 @@ Solution changeColor::shuffleSolution(Solution& cur, int numSteps) {
 	if (DEBUG_LEVEL > 3) {
 		cout<<"Shaking with changeColor"<<endl;
 	}
-	FVertex rep[cur.getNumPartition()];
-	partition_t uncol[numSteps];
+	vector<FVertex> rep(cur.getNumPartition(),0);
+	vector<partition_t> uncol(numSteps,0);
 	FVertexIter fi, fend;
 	for (tie(fi,fend) = vertices(cur.getCurrentSolution()); fi != fend; ++fi) {
 		rep[cur.getPartition(*fi)] = *fi;
