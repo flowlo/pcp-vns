@@ -71,9 +71,9 @@ namespace pcp {
 	
 	string getInfoString(Solution& s) {
 		stringstream ss;
-		int dim = s.getNumPartition();
-		FVertex reps[dim];
 		FVertexIter v,end;
+		int dim = s.getNumPartition();
+		vector<FVertex> reps(dim,0);
 		for (tie(v,end) = vertices(s.getCurrentSolution()); v != end; ++v) {
 			reps[s.getPartition(*v)] = *v;
 		}

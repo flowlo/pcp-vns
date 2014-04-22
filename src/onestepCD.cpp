@@ -10,7 +10,7 @@ namespace pcp {
 
    // Implementation of onestepCD from oneStepCd.hpp
    Solution onestepCD(Solution& s) {
-
+		int maxDegree;
       // Number of colors used for the onestepCd solution
       int numColors = 0;
 
@@ -22,7 +22,7 @@ namespace pcp {
       // removePartEdges(sol);
 
       // Initialize the heuristics' parameters
-      int minDegree[s.getNumPartition()];
+      vector<int> minDegree(s.getNumPartition(),0);
       int target = -1, cd = 0;
       pair<FVertexIter, FVertexIter> vp;
 
@@ -33,10 +33,10 @@ namespace pcp {
       for (uint32_t j = 0; j < s.getNumPartition(); j++) {	
 
          // Reset the minimal color degree to maximum each iteration
-         fill(minDegree, minDegree + s.getNumPartition(), s.getNumPartition() + 1);
+         fill(minDegree.begin(), minDegree.end(), s.getNumPartition() + 1);
 
          // Reset the maximum degree
-         int maxDegree = -1;
+         maxDegree = -1;
 
          // For each vertex in the graph
          for (vp = vertices(sol.getCurrentSolution()); vp.first != vp.second; ++vp.first) {
