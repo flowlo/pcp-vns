@@ -20,12 +20,11 @@ pcp_vns_SOURCES = \
 	src/units/changeColor.cpp
 
 TestSuite_SOURCES = \
-	test/SolutionTest.cpp \
-	test/SolutionTest.hpp \
-	test/TestSuite.cpp \
-	test/IOTest.cpp test/IOTest.hpp \
-	src/Solution.cpp include/Solution.hpp \
-	src/IO.cpp include/IO.hpp
+	tests/SolutionTest.cpp \
+	tests/TestSuite.cpp \
+	tests/IOTest.cpp \
+	src/Solution.cpp \
+	src/IO.cpp 
 
 TestSuite_CXXFLAGS = $(CPPUNIT_CFLAGS)
 TestSuite_LDADD = $(CPPUNIT_LIBS)
