@@ -8,11 +8,30 @@ A VNS approach to solve the Partition Graph Coloring Problem.
 
 We use `onestepCD` from [1] to find an initial solution and then iteratively apply various neighborhood improvement strategies.
 
-### Prerequisites
+### Dependencies
 
-This implementation uses various components of the [boost C++ libraries](http://www.boost.org/). Needed packages on Ubuntu are [`libboost-dev` and `libboost-program-options-dev`](apt:libboost-dev,libboost-program-options-dev).
+This implementation uses various components of the [boost C++ libraries](http://www.boost.org/).
 
-To compile with support for [Ubigraph](http://ubietylab.net/ubigraph/) consider installing [`freeglut3` and `libxmlrpc-c3-dev`](apt:freeglut3,libxmlrpc-c3-dev).
+To compile with support for [Ubigraph](http://ubietylab.net/ubigraph/), further libraries are needed.
+
+#### [Ubuntu](apt:libboost-dev,libboost-program-options-dev,freeglut3,freeglut3,libxmlrpc-c3-dev,wmctrl)
+
+| Package                                                                  | Component |
+| -------------------------------------------------------------------------|-----------|
+| [`libboost-dev`](apt:libboost-dev)                                       | core      |
+| [`libboost-program-options-dev`](apt:libboost-program-options-dev)       | core      |
+| [`libxmlrpc-c3-dev`](apt:libxmlrpc-c3-dev)                               | ubigraph  |
+| [`freeglut3`](apt:freeglut3)                                             | ubigraph  |
+| [`wmctrl`](apt:wmctrl)                                                   | scripts   |
+
+#### Fedora
+
+| Package          | Component |
+| -----------------|-----------|
+| `boost-devel`    | core      |
+| `freeglut`       | ubigraph  |
+| `xmlrpc-c-devel` | ubigraph  |
+| `wmctrl`         | scripts   |
 
 ### References
 
