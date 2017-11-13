@@ -1,6 +1,6 @@
 ## pcp-vns
 
-[![Build Status](https://travis-ci.org/flowlo/pcp-vns.png?branch=master)](https://travis-ci.org/flowlo/pcp-vns)
+[![Build Status](https://travis-ci.org/lorenzleutgeb/pcp-vns.png?branch=master)](https://travis-ci.org/lorenzleutgeb/pcp-vns)
 
 A VNS approach to solve the Partition Graph Coloring Problem.
 
@@ -35,8 +35,8 @@ To compile with support for [Ubigraph](http://ubietylab.net/ubigraph/), further 
 
 ### References
 
-[1] G. Li, R. Simha, *"The partition coloring problem and its application to wavelength routing and assignment"*, in: *Proceedings of the First Workshop on Optical Networks*, 2000. (see http://www.seas.gwu.edu/~simha/research/partcolor.ps)
+[1] Guangzhi Li, Rahul Simha, [The partition coloring problem and its application to wavelength routing and assignment](http://www.seas.gwu.edu/~simha/research/partcolor.ps), In Proceedings of the First Workshop on Optical Networks, 2000
 
-[2] T.F. Noronha, C.C. Ribeiro, *"Routing and wavelength assignment by partition coloring"*, in: *European Journal of Operational Research 171:797-810*, 2006
+[2] Thiago F. Noronha, Celso C. Ribeiro, [Routing and wavelength assignment by partition colouring](https://doi.org/10.1016/j.ejor.2004.09.007), In European Journal of Operational Research, Volume 171, Issue 3, 2006, Pages 797-810, ISSN 0377-2217
 
-[3] T.F. Noronha, M.G.C. Resende, C.C. Ribeiro, *"Instances for the routing and wavelength assignment problem"*. (see http://www.ic.uff.br/~celso/grupo/rwa.html)
+[3] Thiago F. Noronha, Mauricio G.C. Resende, Celso C. Ribeiro, [Instances for the routing and wavelength assignment problem](http://www.ic.uff.br/~celso/grupo/rwa.html)
